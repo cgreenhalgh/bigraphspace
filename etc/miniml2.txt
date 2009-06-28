@@ -1,0 +1,3 @@
+let val a = fn x => plus(x,x) in a 4 end;
+
+

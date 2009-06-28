@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.mrl.nott.ac.uk/bigraphs/signature/1.0">
+	<controls>
+		<!-- physical world model -->
+		<control name="PhysicalRoom" status="active">
+			<description>A physical room (no, really).</description>
+		</control>
+		<control name="PhysicalHandheld" status="active">
+			<description>A PDA-type device presenting local information</description>
+		</control>
+		<control name="PhysicalBluetooth" status="atomic">
+			<description>A (physical) bluetooth radio.</description>
+			<port name="btaddress">
+				<description>The constant string corresponding to the (globally unique)
+				Bluetooth MAC address of this radio</description>
+			</port>
+			<port name="output">
+				<description>The link to the corresponding BigraphSpaceBluetooth
+				</description>
+			</port>
+		</control>
+		<control name="PhysicalBluetoothSignal" status="active">
+			<description>The spatial extent of a Bluetooth radio signal, i.e.
+			the region within which another Bluetooth radio can detect it.
+			Associated to the generating PhysicalBluetooth by the btaddress 
+			(the generating PhysicalBluetooth should also be its descendent in 
+			the place graph).</description>
+			<port name="btaddress">
+				<description>The constant string corresponding to the (globally unique)
+				Bluetooth MAC address of the Bluetooth radio generating this signal.
+				</description>
+			</port>
+		</control>
+		<control name="PhysicalScreen" status="active">
+			<description>The physical display/screen</description>
+			<port name="input">
+				<description>The link to the corresponding ScreenBuffer.</description>
+			</port>
+		</control>
+		<!-- internal/authoring representation of physical world -->
+		<control name="DescriptionRoom" status="passive">
+			<description>The description (digital) of a physical room, which may
+			be used (for example) in authoring, or internal representation.</description>
+			<port name="name"/>
+			<port name="content">
+				<description>Linked to Document.context to model the association
+				between a Room and a Document.</description>
+			</port>
+			<port name="identifier">
+				<description>Linked to (e.g.) DescriptionBluetooth, which is 
+				intended to identify this particular room.</description>
+			</port>
+		</control>
+		<control name="DescriptionHandheld" status="passive">
+			<description>The description of a Handheld, e.g. for authoring or
+			internal representation</description>
+		</control>
+		<control name="DescriptionBluetooth" status="atomic">
+			<description>A description of a Bluetooth radio within the system,
+			for authoring and/or internal representation</description>
+			<port name="btaddress">
+				<description>The constant string corresponding to the (globally unique)
+				Bluetooth MAC address of this radio. The same as for the corresponding 
+				PhysicalBluetooth</description>
+			</port>
+			<port name="associatedwith">
+				<description>Linked to DescriptionRoom.identifier to model the association
+				between a Room and a Document.</description>
+			</port>
+		</control>
+		<!-- digital correlates (aspects) of physical things - not just descriptions
+			 but somehow active digital perspectives on the physical thing(s) -->
+		<control name="ExecutionContext" status="active">
+			<description>Where programs and other digital things live on a particular
+			device</description>
+		</control>
+		<control name="BigraphSpaceBluetooth" status="passive">
+			<description>The "bigraph-space" within the device's ExecutionContext
+			where (descriptions of) Bluetooth sensor input are published to processes running
+			on the device</description>
+			<port name="device">
+				<description>The link to the corresponding PhysicalBluetooth</description>
+			</port>
+		</control>
+		<control name="BigraphSpaceScreen" status="passive">
+			<description>The digital representation of a PhysicalScreen within 
+			an ExecutionContext, approximately the ScreenBuffer.</description>
+			<port name="device">
+				<description>THe link to the corresponding PhysicalScreen</description>
+			</port>
+		</control>
+		<control name="BigraphSpaceAuthored" status="passive">
+			<description>The authored configuration as deployed to the device</description>
+		</control>
+		<!-- digital artefacts -->
+		<control name="DigitalDocument" status="atomic">
+			<description>A document, e.g. the information to be presented to a user
+			about a room. Make passive if exposing internal structure.</description>
+			<port name="filename">
+				<description>The filename of the document - a string constant</description>
+			</port>
+			<port name="associatedwith">
+				<description>Linked to DescriptionRoom.content to model the association
+				between a Room and a Document.</description>
+			</port>
+		</control>
+	</controls>
+	<sorts>
+		<!-- implicit Sort corresponding to PhysicalRoom control (only) -->
+		<sort name="PhysicalRoom">
+			<childsorts>
+				<sort name="PhysicalHandheld"/>
+				<sort name="PhysicalBluetooth"/>
+				<sort name="PhysicalBluetoothSignal"/>
+			</childsorts>
+		</sort>	
+		<!-- implicit sort for PhysicalHandheld -->
+		<sort name="PhysicalHandheld">
+			<childsorts>
+				<sort name="PhysicalBluetooth"/>
+				<sort name="PhysicalScreen"/>
+				<sort name="ExecutionContext"/>
+			</childsorts>
+		</sort>
+		<!--  implicit sort for PhysicalBluetoothSignal -->
+		<sort name="PhysicalBluetoothSignal">
+			<childsorts>
+				<sort name="PhysicalHandheld"/>
+				<sort name="PhysicalBluetooth"/>
+				<sort name="PhysicalBluetoothSignal"/>
+			</childsorts>
+		</sort>
+		<!-- implicit sort for ExecutionContext -->
+		<sort name="ExecutionContext">
+			<childsorts>
+				<sort name="BigraphSpaceBluetooth"/>
+				<sort name="BigraphSpaceScreen"/>
+				<sort name="BigraphSpaceAuthored"/>
+			</childsorts>
+		</sort>
+		<!-- implicit sort for BigraphSpaceBluetooth -->
+		<sort name="BigraphSpaceBluetooth">
+			<childsorts>
+				<sort name="DescriptionBluetooth"/>
+			</childsorts>
+		</sort>
+		<!-- implicit sort for BigraphSpaceScreen -->
+		<sort name="BigraphSpaceScreen">
+			<childsorts>
+				<sort name="DigitalDocument"/>
+			</childsorts>
+		</sort>
+		<!-- implicit sort for BigraphSpaceAuthored -->
+		<sort name="BigraphSpaceAuthored">
+			<childsorts>
+				<sort name="DescriptionRoom"/>
+				<sort name="DigitalDocument"/>
+				<sort name="DescriptionBluetooth"/>
+			</childsorts>
+		</sort>
+		<!-- implicit sort for DescriptionRoom -->
+		<sort name="DescriptionRoom">
+			<childsorts>
+				<sort name="DigitalDocument"/>
+				<sort name="DescriptionBluetooth"/>
+			</childsorts>
+		</sort>
+	</sorts>
+	<!-- reaction rules -->
+	<rules>
+		<rule>
+			<description>A PhysicalHandheld can enter a PhysicalRoom</description>
+			<redex>
+				<bigraph>
+					<root>
+						<PhysicalHandheld>
+							<site index="0"/>
+						</PhysicalHandheld>
+						<PhysicalRoom>
+							<site index="1"/>
+						</PhysicalRoom>
+					</root>
+				</bigraph>
+			</redex>
+			<reactum>
+				<bigraph>
+					<root>
+						<PhysicalRoom>
+							<site index="1"/>
+							<PhysicalHandheld>
+								<site index="0"/>
+							</PhysicalHandheld>
+						</PhysicalRoom>
+					</root>
+				</bigraph>
+			</reactum>
+		</rule>				
+		<rule>
+			<description>A visible DescriptionBluetooth and an (authored) mapping to
+			a DigitalDocument displays the document</description>
+			<redex>
+				<bigraph>
+					<root>
+						<ExecutionContext>
+							<!-- the observer bluetooth address (unchanged?!) -->
+							<BigraphSpaceBluetooth>
+								<DescriptionBluetooth btaddress="btaddress"/>
+								<site index="0"/>
+							</BigraphSpaceBluetooth>
+							<!-- the screen -->
+							<BigraphSpaceScreen>
+								<site index="1"/>
+							</BigraphSpaceScreen>
+							<!--  the authored mapping -->
+							<BigraphSpaceAuthored>
+								<DescriptionRoom content="roomcontent" identifier="roomidentifier">
+									<DescriptionBluetooth associatedwith="roomidentifiers" btaddress="btaddress"/>
+									<site index="3"/>		
+								</DescriptionRoom>
+								<DigitalDocument associatedwith="roomcontent" filename="filename"/>
+								<site index="4"/>
+							</BigraphSpaceAuthored>
+						</ExecutionContext>	
+						<site index="5"/>
+					</root>
+				</bigraph>
+			</redex>
+			<redex>
+				<bigraph>
+					<root>
+						<ExecutionContext>
+							<!-- the observer bluetooth address (unchanged?!) -->
+							<BigraphSpaceBluetooth>
+								<DescriptionBluetooth btaddress="btaddress"/>
+								<site index="0"/>
+							</BigraphSpaceBluetooth>
+							<!-- the screen -->
+							<BigraphSpaceScreen>
+								<site index="1"/>
+							</BigraphSpaceScreen>
+							<!--  the authored mapping - unchanged -->
+							<BigraphSpaceAuthored>
+								<DescriptionRoom content="roomcontent" identifier="roomidentifier">
+									<DescriptionBluetooth associatedwith="roomidentifiers" btaddress="btaddress"/>
+									<site index="3"/>		
+								</DescriptionRoom>
+								<DigitalDocument associatedwith="roomcontent" filename="filename"/>
+								<site index="4"/>
+							</BigraphSpaceAuthored>
+						</ExecutionContext>	
+						<site index="5"/>
+					</root>
+				</bigraph>
+			</redex>
+			<reactum>
+				<bigraph>
+					<root>
+						<ExecutionContext>
+							<!-- the observer bluetooth address (unchanged?!) -->
+							<BigraphSpaceBluetooth>
+								<DescriptionBluetooth btaddress="btaddress"/>
+								<site index="0"/>
+							</BigraphSpaceBluetooth>
+							<!-- the screen -->
+							<BigraphSpaceScreen>
+								<DigitalDocument associatedwith="" filename="filename"/>
+							</BigraphSpaceScreen>
+							<!--  the authored mapping -->
+							<BigraphSpaceAuthored>
+								<DescriptionRoom content="roomcontent" identifier="roomidentifier">
+									<DescriptionBluetooth associatedwith="roomidentifiers" btaddress="btaddress"/>
+									<site index="3"/>		
+								</DescriptionRoom>
+								<DigitalDocument associatedwith="roomcontent" filename="filename"/>
+								<site index="4"/>
+							</BigraphSpaceAuthored>
+						</ExecutionContext>	
+						<site index="5"/>
+					</root>
+				</bigraph>
+			</reactum>
+		</rule>
+	</rules>
+</definitions>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<syntax root="root">
+  <node name="root">
+     <pattern optional="n" repeatable="n">
+        <noderef name="STRING"/>
+     </pattern>
+   </node>
+</syntax>

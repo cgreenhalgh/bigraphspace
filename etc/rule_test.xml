@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests>
+	<!-- first test - remove one thing -->
+	<test>
+		<rule>
+			<!-- no preconditions -->
+			<redex>
+				<bigraph>
+					<root>
+						<PhysicalHandheld _support="_PH1">
+							<site index="0" />
+						</PhysicalHandheld>
+					</root>
+				</bigraph>
+			</redex>
+			<reactum>
+				<bigraph>
+					<root>
+					</root>
+				</bigraph>
+			</reactum>
+		</rule>
+		<target>
+			<bigraph>
+				<root>
+					<PhysicalHandheld _support="PH1"></PhysicalHandheld>
+					<PhysicalHandheld _support="PH2"></PhysicalHandheld>
+					<PhysicalHandheld _support="PH3"></PhysicalHandheld>
+					<PhysicalRoom _support="PR1"></PhysicalRoom>
+				</root>
+			</bigraph>
+		</target>
+		<result>
+			<bigraph>
+				<root>
+					<PhysicalRoom _support="PR1"></PhysicalRoom>
+				</root>
+			</bigraph>
+		</result>
+	</test>
+	<!--  go in -->
+	<test>
+		<rule>
+			<!-- no preconditions -->
+			<redex>
+				<bigraph>
+					<root>
+						<PhysicalHandheld _support="_PH1">
+							<site index="0" />
+						</PhysicalHandheld>
+						<PhysicalRoom _support="_PR1">
+							<site index="1" />
+						</PhysicalRoom>
+					</root>
+				</bigraph>
+			</redex>
+			<reactum>
+				<bigraph>
+					<root>
+						<PhysicalRoom _support="_PR1">
+							<PhysicalHandheld _support="_PH1">
+								<site index="0" />
+							</PhysicalHandheld>
+							<site index="1" />
+						</PhysicalRoom>
+					</root>
+				</bigraph>
+			</reactum>
+		</rule>
+		<target>
+			<bigraph>
+				<root>
+					<PhysicalHandheld _support="PH1"></PhysicalHandheld>
+					<PhysicalHandheld _support="PH2"></PhysicalHandheld>
+					<PhysicalHandheld _support="PH3"></PhysicalHandheld>
+					<PhysicalRoom _support="PR1"></PhysicalRoom>
+				</root>
+			</bigraph>
+		</target>
+		<result>
+			<bigraph>
+				<root>
+					<PhysicalRoom _support="PR1">
+						<PhysicalHandheld _support="PH1"></PhysicalHandheld>
+						<PhysicalHandheld _support="PH2"></PhysicalHandheld>
+						<PhysicalHandheld _support="PH3"></PhysicalHandheld>
+					</PhysicalRoom>
+				</root>
+			</bigraph>
+		</result>
+	</test>
+	<!--  go in -->
+	<test>
+		<rule>
+			<!-- simple negation preconditions -->
+			<condition minOccurs="0" maxOccurs="0">
+				<bigraph>
+					<root>
+						<PhysicalRoom _support="_PR1">
+							<PhysicalHandheld _support="_PH1">
+								<site index="0" />
+							</PhysicalHandheld>
+							<site index="1" />
+						</PhysicalRoom>
+					</root>
+				</bigraph>
+			</condition>
+			<redex>
+				<bigraph>
+					<root>
+						<PhysicalHandheld _support="_PH1">
+							<site index="0" />
+						</PhysicalHandheld>
+						<PhysicalRoom _support="_PR1">
+							<site index="1" />
+						</PhysicalRoom>
+					</root>
+				</bigraph>
+			</redex>
+			<reactum>
+				<bigraph>
+					<root>
+						<PhysicalRoom _support="_PR1">
+							<PhysicalHandheld _support="_PH1">
+								<site index="0" />
+							</PhysicalHandheld>
+							<site index="1" />
+						</PhysicalRoom>
+					</root>
+				</bigraph>
+			</reactum>
+		</rule>
+		<target>
+			<bigraph>
+				<root>
+					<PhysicalHandheld _support="PH1"></PhysicalHandheld>
+					<PhysicalHandheld _support="PH2"></PhysicalHandheld>
+					<PhysicalHandheld _support="PH3"></PhysicalHandheld>
+					<PhysicalRoom _support="PR1"></PhysicalRoom>
+				</root>
+			</bigraph>
+		</target>
+		<result>
+			<bigraph>
+				<root>
+					<PhysicalHandheld _support="PH2"></PhysicalHandheld>
+					<PhysicalHandheld _support="PH3"></PhysicalHandheld>
+					<PhysicalRoom _support="PR1">
+						<PhysicalHandheld _support="PH1"></PhysicalHandheld>
+					</PhysicalRoom>
+				</root>
+			</bigraph>
+		</result>
+	</test>
+</tests>

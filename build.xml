@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="usage" name="bigraphspace">
+    <description>
+        BigraphSpace - tuple-space meets bigraph model.
+    </description>
+
+	<!-- local properties -->
+	<property file="build.properties"/>
+
+	<target name="usage">
+		<echo>targets: init gen compile test clean</echo>
+	</target>
+	
+	<target name="init">
+		<mkdir dir="gen"/>
+		<mkdir dir="build"/>
+	</target>
+		
+	<target name="clean">
+		<delete dir="bin"/>
+		<delete dir="gen/bigraphspace"/>
+	</target>
+
+	<taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">
+	  <classpath>
+	    <fileset dir="lib/jaxb" includes="*.jar" />
+	  </classpath>
+	</taskdef>
+
+	<target name="gen" depends="init">
+		<!-- Mini ML parser -->
+	    <java fork="true" classname="org.antlr.Tool" failonerror="true">
+			<classpath refid="classpath"/>
+	        <arg value="-o"/>
+	    	<arg value="gen/bigraphspace/parser/antlr"/>
+	    	<arg value="src/bigraphspace/parser/antlr/MiniML.g"/>
+	    </java>
+		<!-- Bigraph Term language parser -->
+	    <java fork="true" classname="org.antlr.Tool" failonerror="true">
+			<classpath refid="classpath"/>
+	        <arg value="-o"/>
+	    	<arg value="gen/bigraphspace/parser/antlr"/>
+	    	<arg value="src/bigraphspace/parser/antlr/BigraphTerm.g"/>
+	    </java>
+		<!-- Signature/sorting XML serialisation (JAXB) -->
+		<xjc schema="etc/signature.xsd" package="bigraphspace.model.signaturexml" destdir="gen" extension="true">
+			<depends file="etc/signature.xsd"/>
+			<produces dir="gen/bigraphspace/model/signaturexml">
+				<include name="*.java"/>
+			</produces>	
+		</xjc>
+   	</target>
+
+	<target name="compile" depends="gen">
+	    <javac destdir="build" debug="true" excludes="**/gui/**">
+	      <classpath refid="classpath"/>
+	      <src path="src"/>
+	      <src path="gen"/>
+	    </javac>
+	    <copy todir="build">
+	        <fileset dir="src">
+	            <include name="**/*.properties"/>
+	            <include name="**/*.gif"/>
+	        </fileset>
+	    </copy>
+	</target>
+		
+	<path id="classpath">
+	    <pathelement location="lib/log4j-1.2.13.jar"/>
+	    <pathelement location="lib/antlr-3.1.3.jar"/>
+		<pathelement location="build" />
+	</path>
+
+	<target name="test" depends="compile">
+		<echo>read miniml2.txt</echo>
+	    <java fork="true" classname="bigraphspace.parser.antlr.TestMiniML" failonerror="true">
+			<classpath refid="classpath"/>
+			<arg value="etc\miniml2.txt"/>
+	    </java>
+		<echo>read bigraph1.txt</echo>
+	    <java fork="true" classname="bigraphspace.parser.antlr.TestBigraphTerm" failonerror="true">
+			<classpath refid="classpath"/>
+			<arg value="etc\bigraph1.txt"/>
+	    </java>
+		<echo>read bigraph2.txt</echo>
+	    <java fork="true" classname="bigraphspace.parser.antlr.TestBigraphTerm" failonerror="true">
+			<classpath refid="classpath"/>
+			<arg value="etc\bigraph2.txt"/>
+	    </java>
+		<echo>read rule1.txt</echo>
+	    <java fork="true" classname="bigraphspace.parser.antlr.TestBigraphTerm" failonerror="true">
+			<classpath refid="classpath"/>
+			<arg value="etc\rule1.txt"/>
+	    </java>
+		<echo>read signature_buildingex.xml</echo>
+	    <java fork="true" classname="bigraphspace.model.signaturexml.TestRead" failonerror="true">
+			<classpath refid="classpath"/>
+			<arg value="etc\signature_buildingex.xml"/>
+	    </java>
+	</target>
+		
+	<target name="bluetoothex" depends="compile">
+		<echo>read signature_bluetoothex.xml</echo>
+	    <java fork="true" classname="bigraphspace.model.signaturexml.TestRead" failonerror="true">
+			<classpath refid="classpath"/>
+			<arg value="etc\signature_bluetoothex.xml"/>
+	    </java>
+		<echo>read bluetoothex_physical.btl</echo>
+	    <java fork="true" classname="bigraphspace.parser.antlr.TestBigraphTerm" failonerror="true">
+			<classpath refid="classpath"/>
+			<arg value="etc\bluetoothex_physical.btl"/>
+			<arg value="etc\signature_bluetoothex.xml"/>
+	    </java>
+		<echo>read bluetoothex_authored.btl</echo>
+	    <java fork="true" classname="bigraphspace.parser.antlr.TestBigraphTerm" failonerror="true">
+			<classpath refid="classpath"/>
+			<arg value="etc\bluetoothex_authored.btl"/>
+			<arg value="etc\signature_bluetoothex.xml"/>
+	    </java>
+		<echo>read bluetoothex_combined1.btl</echo>
+	    <java fork="true" classname="bigraphspace.parser.antlr.TestBigraphTerm" failonerror="true">
+			<classpath refid="classpath"/>
+			<arg value="etc\bluetoothex_combined1.btl"/>
+			<arg value="etc\signature_bluetoothex.xml"/>
+	    </java>
+		<echo>match pattern1.xml with target1.xml</echo>
+	    <java fork="true" classname="bigraphspace.model.xml.TestMatch" failonerror="true">
+			<classpath refid="classpath"/>
+			<arg value="etc\signature_bluetoothex.xml"/>
+			<arg value="etc\pattern1.xml"/>
+			<arg value="etc\target1.xml"/>
+	    </java>
+	</target>
+
+	<target name="matchtest" depends="compile">
+	    <java fork="true" classname="bigraphspace.model.xml.RunMatchTests" failonerror="true">
+			<classpath refid="classpath"/>
+			<arg value="etc\signature_bluetoothex.xml"/>
+			<arg value="etc\match_test.xml"/>
+	    </java>
+	</target>
+	
+	<target name="transformtest" depends="compile">
+	    <java fork="true" classname="bigraphspace.model.xml.RunTransformerTests" failonerror="true">
+			<classpath refid="classpath"/>
+			<arg value="etc\signature_bluetoothex.xml"/>
+			<arg value="etc\transformer_test.xml"/>
+	    </java>
+	</target>
+	
+	<target name="ruletest" depends="compile">
+	    <java fork="true" classname="bigraphspace.model.xml.RunReactiveBigraphTests" failonerror="true">
+			<classpath refid="classpath"/>
+			<arg value="etc\signature_bluetoothex.xml"/>
+			<arg value="etc\rule_test.xml"/>
+	    </java>
+	</target>
+	
+</project>
+	
