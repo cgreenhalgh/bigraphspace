@@ -1,0 +1,35 @@
+// Bluetooth example, using signature_bluetoothel.xml, example combined state2
+// with the device in the signal range (in the room), and the address therefore reported
+// and the document shown
+bigraph
+	PhysicalRoom 
+	(	PhysicalBluetoothSignal  { btaddress="00:00:00:00:00:01" }
+		(	PhysicalBluetooth { btaddress="00:00:00:00:00:01" }
+			// the handheld
+		|	PhysicalHandheld 
+			(	PhysicalScreen { input=screenlink }
+				(	// could optionally model the fact the document is actually on the display
+				)
+			|	PhysicalBluetooth { output=bluetoothlink }
+			|	ExecutionContext 
+				(	BigraphSpaceScreen { device=screenlink }
+					(	// the "request" to display the document"
+						DigitalDocument { filename="room1.html", associatedwith=room1content}
+					)
+				|	BigraphSpaceBluetooth { device=bluetoothlink } 
+					(	// detected bluetooth signals => devices
+						DescriptionBluetooth { btaddress="00:00:00:00:00:01" }
+					)
+					// deployed authored info (from bluetoothex_authored.btl)
+				|	BigraphSpaceAuthored 
+					(	DescriptionRoom { content=room1content, identifier=room1identifiers }
+						(	// depending on the rules it may or may not matter if the Bluetooth is in the Room.
+							DescriptionBluetooth { btaddress="00:00:00:00:00:01", associatedwith=room1identifiers }
+						)
+					|	DigitalDocument { filename="room1.html", associatedwith=room1content}
+					)
+				)
+			)			
+		)
+	)
+	
