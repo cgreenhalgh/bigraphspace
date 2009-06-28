@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.mrl.nott.ac.uk/bigraphs/signature/1.0" xmlns:tns="http://www.mrl.nott.ac.uk/bigraphs/signature/1.0" elementFormDefault="qualified" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+           xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+           jaxb:extensionBindingPrefixes="xjc"
+           jaxb:version="1.0">
+
+
+    <element name="definitions" type="tns:Definitions"></element>
+    
+    <complexType name="Definitions">
+    	<sequence>
+    		<element name="controls" maxOccurs="1" minOccurs="0"
+    			type="tns:Controls">
+    		</element>
+
+    		<element name="sorts" type="tns:Sorts" maxOccurs="1"
+    			minOccurs="0">
+    		</element>
+
+    		<element name="renderers" type="tns:Renderers" maxOccurs="1"
+    			minOccurs="0">
+    		</element>
+    		<element name="rules" type="tns:Rules" maxOccurs="1" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+    
+    <complexType name="Control">
+    	<sequence>
+    		<element name="description" type="string" maxOccurs="1"
+    			minOccurs="0">
+    		</element>
+    		<element name="index" type="tns:ControlIndex"
+    			maxOccurs="unbounded" minOccurs="0">
+    		</element>
+    		<element name="port" type="tns:Port" maxOccurs="unbounded" minOccurs="0"></element>
+    	</sequence>
+    	<attribute name="name" type="string" use="required"></attribute>
+    	<attribute name="arity" type="int" use="optional"></attribute>
+    	<attribute name="status" use="optional">
+    		<simpleType>
+    			<restriction base="string">
+    				<enumeration value="active"></enumeration>
+    				<enumeration value="passive"></enumeration>
+    				<enumeration value="atomic"></enumeration>
+    			</restriction>
+    		</simpleType>
+    	</attribute>
+    </complexType>
+    
+    <complexType name="ControlIndex">
+    	<sequence>
+    		<element name="description" type="string" maxOccurs="1" minOccurs="0"></element>
+    	</sequence>
+    	<attribute name="type">
+    		<simpleType>
+    			<restriction base="string">
+    				<enumeration value="nonnegativeinteger"></enumeration>
+    				<enumeration value="integer"></enumeration>
+    				<enumeration value="real"></enumeration>
+    				<enumeration value="string"></enumeration>
+    			</restriction>
+    		</simpleType>
+    	</attribute>
+    </complexType>
+
+    <complexType name="Port">
+    	<sequence>
+    		<element name="description" type="string" maxOccurs="1" minOccurs="0"></element>
+    	</sequence>
+    	<attribute name="name" type="string" use="required"></attribute>
+    </complexType>
+
+    <complexType name="Sort">
+    	<sequence>
+    		<element name="description" type="string" maxOccurs="1"
+    			minOccurs="0">
+    		</element>
+
+    		<element name="controls" type="tns:ControlRefs"
+    			maxOccurs="1" minOccurs="0">
+    		</element>
+            <element name="parentsorts" type="tns:SortRefs" maxOccurs="1" minOccurs="0"></element>
+            <element name="childsorts" type="tns:SortRefs" maxOccurs="1"
+    			minOccurs="0">
+    		</element>
+    	</sequence>
+    	<attribute name="name" type="string" use="required"></attribute>
+    </complexType>
+
+    <complexType name="ControlRef">
+    	<attribute name="name" type="string" use="required"></attribute>
+    </complexType>
+
+    <complexType name="Renderer">
+    	<attribute name="control" type="string" use="required"></attribute>
+    	<attribute name="class" type="string"></attribute>
+    	<attribute name="linewidth" type="int"></attribute>
+    	<attribute name="color">
+    		<simpleType>
+    			<restriction base="string">
+    				<pattern
+    					value="[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]">
+    				</pattern>
+    			</restriction>
+    		</simpleType>
+    	</attribute>
+    	<attribute name="imagefile" type="string"></attribute>
+    	<attribute name="label" type="string"></attribute>
+    </complexType>
+
+    <complexType name="Controls">
+    	<sequence>
+    		<element name="control" type="tns:Control" maxOccurs="unbounded" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="Sorts">
+    	<sequence>
+    		<element name="sort" type="tns:Sort" maxOccurs="unbounded" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="Renderers">
+    	<sequence>
+    		<element name="renderer" type="tns:Renderer" maxOccurs="unbounded" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="SortRef">
+    	<attribute name="name" type="string" use="required"></attribute>
+    </complexType>
+
+    <complexType name="ControlRefs">
+    	<sequence>
+    		<element name="control" type="tns:ControlRef" maxOccurs="unbounded" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="SortRefs">
+    	<sequence>
+    		<element name="sort" type="tns:SortRef" maxOccurs="unbounded" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="Rules">
+    	<sequence>
+    		<element name="rule" type="tns:Rule" maxOccurs="unbounded" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+    
+    <complexType name="Rule">
+    	<sequence>
+    		<element name="description" type="string" maxOccurs="1" minOccurs="0"></element>
+    		<element name="redex" type="tns:DOM" maxOccurs="1" minOccurs="1"></element>
+    		<element name="reactum" type="tns:DOM"  maxOccurs="1" minOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+	<complexType name="DOM">
+          <sequence>
+             <any maxOccurs="1" minOccurs="1" processContents="skip">
+                <annotation><appinfo>
+                  <xjc:dom />
+                </appinfo></annotation>
+             </any>
+          </sequence>
+       </complexType>
+
+</schema>

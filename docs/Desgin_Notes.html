@@ -1,0 +1,354 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+
+  
+  <title>Desgin Notes</title>
+</head>
+
+
+<body>
+
+
+<h1>Design Notes</h1>
+
+
+Chris Greenhalgh, 2009-06-17; last updated 2009-06-24<br>
+
+
+<h2>Introduction</h2>
+
+
+<p class="MsoPlainText">To get myself going my initial
+thoughts are to focus on
+representation(s) as a starting point, in particular both language-type
+(concise) representations and 2D graphical representations, and
+scaffolding
+their two-way translation to/from the XML representation of the
+bigraph(s).</p>
+
+
+<p class="MsoPlainText"><o:p></o:p>In the
+first instance my inclination is to mostly ignore
+interfaces and try to explore how these (and sortings/disciplines in
+general)
+can be layered on top of the basic model. As far as I can see, most of
+the subtlety
+in the first instance is around handling attribute values (i.e. links),
+and in
+the second round it is in constraining rule matching correctly.</p>
+
+
+<p>So I'll start by assuming that the XML model will be standard
+(Java) DOM.</p>
+
+
+<p>Package reactivexml.model will be utilities for working with
+this
+"raw" format, e.g. wrappers for read/write, built-in element names.</p>
+
+
+<p>Package reacticexml.parser will be a (hopefully generalisable)
+parser/renderer for working with programming language views of the
+bigraphs (and vice versa).</p>
+
+
+<p style="margin-left: 40px;">Initially there is (a
+version of) the
+bigraph term language - for basic modelling and reaction rules; and
+(approximately) a subset of the mini-ML in Elsborg's thesis (but using
+Standard ML syntax for some parts and others bits currently omitted).</p>
+
+
+<p>Package reactivexml.gui will be 2D GUI support/views for the
+core model.</p>
+
+
+<p> Package reactivexml.sorting will be for sortings and
+signatures.</p>
+
+
+<p style="margin-left: 40px;">The basic elements of a
+signature/sorting
+are: (the set of sorts) the sort of each control, the arity (no. of
+ports) of each control (in the XML encoding extended to the name of
+each port), whether each control (sort??) is atomic, the activity of
+each control (active or passive (if not atomic), a.k.a. status), a
+formation rule - a property which is satisfied by well-formed bigraphs
+of this sorting&nbsp; "by the identities and symmetries and
+preserved
+by composition and product" [Milner, 2009, p.59].</p>
+
+
+<p style="margin-left: 40px;">In a well-formed sorting the
+formation
+rule corresponds to a decomposable predicate - which is never false for
+a sub-bigraph if it can be true of the composition of that bigraph with
+another. </p>
+
+
+<p style="margin-left: 40px;">Each root and hole also has
+a sort
+(interface sort), and typically the formation rule will determine this
+from&nbsp; node sorts. </p>
+
+
+<p style="margin-left: 40px;">There are some special sorts
+which are
+infinite sets of controls, e.g. corresponding to the natural numbers,
+or the points in a cartesian space.</p>
+
+
+<p style="margin-left: 40px;">Typically, the visual
+rendering of a node is also keyed to its control (and perhaps sort).</p>
+
+
+<h2>Future directions</h2>
+
+
+<p>A bigraph workbench? E.g. based on Eclipse. Allowing modeling,
+simulation, authoring, development.</p>
+
+
+<p>A bigraph programming language, i.e. a programming language
+"fitted"
+to working with bigraphs, e.g. manipulating and responding to
+bigraphical representations (like ML type constructor [=control] and
+record [=node]?) and reaction rules (including creating its own
+reaction rules).</p>
+
+
+<p>A bigraph-based distributed infrastructure, for creating
+ubicomp
+systems, using the above, which are therefore more amenable to
+analysis, etc. E.g. a bigraph equivalent of LIME for coordination? plus
+a bigraphical programming language for behaviour? plus the workbench
+for authoring, etc.?</p>
+
+
+<p style="margin-left: 40px;">How would this differ from
+EQUIP or Linda?</p>
+
+
+<p style="margin-left: 40px;">First, in the "things" in
+the dataspace,
+i.e. bigraph(s) rather than tuple (approx. atomic nodes only) or
+objects (approx. bigraphs but without explicit links and with no
+support for changing fields, etc.).</p>
+
+
+<p style="margin-left: 40px;">Second, in that the
+dataspace(s) are themselves bigraph places/nodes, and might be
+manipulated as such.</p>
+
+
+<p style="margin-left: 40px;">Third, in that the
+pattern(s) used would naturally correspond to the redex of a bigraph
+rule.</p>
+
+
+<p style="margin-left: 40px;">Fourth, in the the
+operations admitted on
+the dataspace might include the full range of "primitive" bigraph
+manipulations (e.g. movement, link formation), not just in/out (place
+introduction and removal).</p>
+
+
+<p style="margin-left: 40px;">As well as the basic
+(non-distributed) model, one or more approaches to distribution would
+also need to be supported. E.g. the
+system is constructed using one or more shared long-lived remotely
+accessible bigraph-spaces (c.f. LINDA, EQUIP2
+client/server),&nbsp;the system is constructed using one or more
+shared long-lived
+transparently distributed bigraph-spaces (c.f.&nbsp;Limbo, EQUIP),
+multiple
+bigraph-spaces are (termporarily) brought together as a transparently
+distributed entity (c.f. LIME), multiple bigraph-spaces are
+linked/briged by application-level agents (c.f. Limbo, EQUIP2).</p>
+
+
+<p style="margin-left: 40px;">How would you implement it
+(efficiently)?? E.g. partial updates, history, indexing/query
+performance, link following and link-based rules?</p>
+
+
+<p style="margin-left: 40px;">How do you actually realise
+link-preservation/tracking across process bounaries? E.g. distributed
+naming service(s), GUID(s), ...?</p>
+
+
+<p>The same implementation could then form the basis of the
+workbench :-) </p>
+
+
+<p>What are the options/issues of using the XML mapping of
+bigraphs?</p>
+
+
+<p style="margin-left: 40px;">The mapping is simple and
+the XML form is quite understandable and intuitive (typically more so
+than the bigraphical form as expressed in the usual presentations at
+least to developers familiary with XML). This mapping and the
+intuitions it leads to may be useful irrespective of the actual
+realisation.</p>
+
+
+<p style="margin-left: 40px;">It is possible to leverage
+XML technologies to support the implementation of the system.
+Particular options include:</p>
+
+
+<ul>
+
+
+  
+  <ul>
+
+
+    <li>Standard XML facilities could be used in the
+implementation, e.g. DOM, SAX, marshalling, unmarshalling, XSLT.</li>
+
+
+    <li>The XML encoding might be used for inter-process
+communication of bigraphs and bigraph fragments.</li>
+
+
+    <li>An XML database might be used to realise
+bigraph(s),&nbsp;within the design tool and/or within the run-time
+system (c.f. EQUIP2 J2EE's use of Hibernate as the underlying
+implementation of the dataspace API).</li>
+
+
+    <li>An existing/standard XML database protocol might be used
+to interactive with the bigraph model, e.g. XPath, XQuery, XML:DB
+XUpdate.</li>
+
+
+    <li>The signature and/or sorting might be mapped to a
+corresponding XML Schema, allowing XML-schema tooling to be exploited,
+e.g. the XML encoding of a bigraph to be edited in a schema-driven
+editor, or to use development tool support to help in programming
+against such models (e.g. JAXB for object binding).</li>
+
+
+    <li>XML ID/IDREF might be used to directly model
+DAG-structured place-graphs. (But note that ID should not be used for
+support as one XML document might contain multiple bigraphs (e.g. a
+reaction rule) each of which might contain nodes with the same support)</li>
+
+
+    <li>Aside from the XML mapping of bigraphs we can use XML in
+other places and exploit XML technologies, e.g. the signature file
+format and the use of JAXB for reading/writing it.</li>
+
+
+  
+  </ul>
+
+
+</ul>
+
+
+<p style="margin-left: 40px;">However, the correspondence is not absolute, and there are
+some complexities to consider:</p>
+
+
+<ul>
+
+  
+  <ul>
+
+
+    <li>The queries expressed by (e.g.) XPath are not the same as
+those expressed by bigraph matching; some mapping would be required. </li>
+
+
+    <li>There are some additional semantics not native to XML, e.g.
+holes and roots. </li>
+
+
+    <li>Order of children is not generally significant in bigraphs,
+but can be in XML, and care has to be taken to correctly abstract this.
+    </li>
+
+
+    <li>The notion of linking as expressed in the encoding has no
+direct correspondence in XML, consequently care must be taken e.g. when
+moving and copying bigraph fragments, to do the "right thing" with
+linking. For example, this might require renaming (i.e. rewriting
+specific attribute values).</li>
+
+
+    <li>Different XML technologies and implementations have their
+own general context(s) and paradigms of use, which may or may not fit
+well. E.g. update behaviour, transaction support, history support.</li>
+
+
+    <li>Only some strings are valid as XML element names or XML
+attribute names; in general control and port names might not respect
+these constraints.</li>
+
+
+    <li>If string constants are encoded directly as
+identically-named links to a corresponding node then some string
+constants will not be valid as XML attribute value(s). Some constant
+link renaming would be required.</li>
+
+
+    <li>XML has a reputation for inefficiency, and support for XML
+is patchy on small devices (e.g. mobile phones, J2ME). Various other
+low-level semi-structured encodings are also used/suggested as
+alternatives, e.g. JSON.&nbsp;</li>
+
+
+  
+  </ul>
+
+</ul>
+
+
+<p style="margin-left: 40px;" 40px="">Should we add an abstraction
+layer, and make the use of XML (or
+whatever) an internal implementation detail? This is my current
+inclination.</p>
+
+
+<h2>
+
+Matching</h2>
+I matching of a redex is (i think):<br>
+<ul>
+  <li>a one-to-one mapping from nodes in the redex (pattern) to nodes in the bigraph&nbsp;</li>
+  <li>a one-to-zero-or-more mapping from sites in the redex to nodes in the bigraph</li>
+  <li>a one-to-one mapping from roots in the redex to roots or nodes in the bigraph</li>
+  <li>a one-to-one mapping from link names in the redex to link names in the bigraph, which is identity for constant link names</li>
+</ul>
+such that:<br>
+<ul>
+  <li>for each node in the pattern, the control of the bigraph node is the same as the control of the  redex node&nbsp;(the redex control may be parameterised, in which case the mapping binds a value to the pattern control parameter);</li>
+  <li>if two nodes (or a node and site) in the pattern are parent/child then this is true of the corresponding nodes in the bigraph</li>
+  <li>if two nodes (or a node and a site or two sites) in the pattern
+are juxtoposed (sublings) then the same is true of the corresponding
+nodes in the bigraph.</li>
+  <li>the nodes mapped to in the bigraph by a a site in the pattern are siblings</li>
+  <li>if a node in the pattern maps to a node in the bigraph then all
+of the children of the node in the bigraph are in the image of the
+children of the pattern node (i.e. none are missed out - remember sites
+can "soak up" any number of nodes in the mapping)</li>
+  <li>each constant link name in the pattern maps to exactly the same constant link name in the bigraph</li>
+  <li>the ports on a node in the pattern map to the identically named ports on the corresponding node in the bigraph</li>
+  <li>every port in the bigraph has a link value equal to the mapping of the link value of the corresponding port in the pattern </li>
+  <li>a port in the pattern which is explicitly unconnected maps to an unconnected port in the bigraph or to a port with a non-constrant link name that has no other occurance in the bigraph</li>
+  <li>a pattern root which is identified as "active" is only considered
+to&nbsp;matches a root or a node in the bigraph&nbsp;which is active
+and all of whose ancestors are active</li>
+  <li>no node in the bigraph is mapped to by more than one node, root or site in the pattern</li>
+</ul>
+
+</body>
+</html>
