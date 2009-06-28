@@ -1,2 +1,0 @@
-bigraph
-building(room)

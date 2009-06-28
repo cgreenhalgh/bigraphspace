@@ -1,5 +1,0 @@
-"Hello world";
-3+4;
-fun double x = 2*x;
-fun inc x = x+1;
-fun adda s = s ^ "a";
