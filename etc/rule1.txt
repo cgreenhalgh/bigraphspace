@@ -1,2 +1,0 @@
-rule
-room(agent(_1)|_2) -> room(_2)|agent(_1)
