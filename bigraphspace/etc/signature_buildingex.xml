@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.mrl.nott.ac.uk/bigraphs/signature/1.0">
+	<controls>
+		<control name="Building" arity="0" status="active"></control>
+		<control name="Room" arity="0" status="active"></control>
+		<control name="Computer" arity="0" status="active"></control>
+	</controls>
+</definitions>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bigraph>
+	<root>
+		<PhysicalHandheld _support="PH1">
+		</PhysicalHandheld>
+		<PhysicalRoom _support="PR1">
+		</PhysicalRoom>
+	</root>
+</bigraph>

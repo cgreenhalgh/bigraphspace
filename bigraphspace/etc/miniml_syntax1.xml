@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!--  attempt at mini-ML syntax as per Elsborg's thesis -->
+<syntax root="p">
+  <node name="p">
+     <pattern optional="n" repeatable="n">
+        <noderef name="e"/>
+     </pattern>
+   </node>
+   <!--  datatype ... -->
+  <node name="e">
+     <pattern optional="n" repeatable="n">
+        <noderef name="e"/>
+        <noderef name="e"/>
+     </pattern>
+     <pattern optional="n" repeatable="n">
+        <noderef name="v"/>
+     </pattern>
+   </node>
+  <node name="v">
+     <pattern optional="n" repeatable="n">
+        <noderef name="INTEGER"/>
+     </pattern>
+   </node>
+	<!--  ...  -->     
+</syntax>
