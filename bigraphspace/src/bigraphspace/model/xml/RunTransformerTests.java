@@ -10,6 +10,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
+import bigraphspace.model.Match;
 import bigraphspace.model.xml.DomBigraph;
 import bigraphspace.model.xml.DomMatch;
 import bigraphspace.model.xml.DomMatcher;

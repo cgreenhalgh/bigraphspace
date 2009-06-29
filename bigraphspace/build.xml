@@ -8,7 +8,7 @@
 	<property file="build.properties"/>
 
 	<target name="usage">
-		<echo>targets: init gen compile javadoc test clean</echo>
+		<echo>targets: init forcegen compile javadoc test clean</echo>
 	</target>
 	
 	<target name="init">
@@ -17,9 +17,9 @@
 	</target>
 		
 	<target name="clean">
+		<delete dir="build"/>
 		<delete dir="bin"/>
 		<delete dir="docs/api"/>
-		<delete dir="gen/bigraphspace"/>
 	</target>
 
 	<target depends="gen" description="generate the javadocs for the distribution" name="javadoc">
@@ -42,6 +42,12 @@
 	</taskdef>
 
 	<target name="gen" depends="init">
+	</target>
+	
+	<target name="forcegen">	
+		<delete dir="gen">
+			<include name="**/*.java"/>
+		</delete>
 		<!-- Mini ML parser -->
 	    <java fork="true" classname="org.antlr.Tool" failonerror="true">
 			<classpath refid="classpath"/>
