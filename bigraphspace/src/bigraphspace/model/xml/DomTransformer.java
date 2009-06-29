@@ -163,6 +163,7 @@ public class DomTransformer {
 					Attr reactumAttribute = (Attr)reactumAttributes.item(rai);
 					String portName = reactumAttribute.getName();
 					String value = reactumAttribute.getValue();
+					logger.debug("Map reactum node "+reactumChildEl+" port "+portName+"="+value);
 					// map support
 					if (Constants.NODE_SUPPORT_ATTRIBUTE_NAME.equals(portName)) {
 						if (value==null || value.length()==0)
@@ -176,6 +177,22 @@ public class DomTransformer {
 								String support = nodeMatch.targetEl.getAttribute(Constants.NODE_SUPPORT_ATTRIBUTE_NAME);
 								if (support!=null && support.length()>0)
 									resultChildEl.setAttribute(Constants.NODE_SUPPORT_ATTRIBUTE_NAME, support);
+								// copy any link values which are in redex target but null in reactum and redex to target as defaults
+								NamedNodeMap redexTargetAttributes = nodeMatch.targetEl.getAttributes();
+								for (int rtai=0; rtai<redexTargetAttributes.getLength(); rtai++) {
+									Attr redexTargetAttribute = (Attr)redexTargetAttributes.item(rtai);
+									String rtPortName = redexTargetAttribute.getName();
+									if (Constants.NODE_SUPPORT_ATTRIBUTE_NAME.equals(rtPortName))
+										continue;
+									String rtValue = redexTargetAttribute.getValue();
+									if (rtValue.length()==0)
+										continue;
+									if (!reactumChildEl.hasAttribute(rtPortName) && !nodeMatch.patternEl.hasAttribute(rtPortName) && !resultChildEl.hasAttribute(rtPortName)) {
+										// map default
+										resultChildEl.setAttribute(rtPortName, rtValue);
+										logger.debug("Map default port value "+rtPortName+"="+rtValue);
+									}
+								}
 								found = true;
 								break;
 							}
@@ -184,9 +201,10 @@ public class DomTransformer {
 							logger.warn("Reactum support "+value+" not found in redex");
 						continue;
 					}
-					// empty -> empty (unbound)
-					if (value==null || value.length()==0)
+					// empty -> Leave alone (default(s) may be copied on support match)
+					if (value==null || value.length()==0) {
 						continue;
+					}
 					// constant 
 					if (DomMatcher.linkIsConstant(value)) {
 						resultChildEl.setAttribute(portName, value);

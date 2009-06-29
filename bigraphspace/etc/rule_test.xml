@@ -152,4 +152,273 @@
 			</bigraph>
 		</result>
 	</test>
+	<!-- bluetooth display bluetoothex_combined1.btl -->
+	<test>
+		<!--  enter the room - physical mobility rule -->
+		<rule>
+			<!-- no preconditions -->
+			<redex>
+				<bigraph>
+					<root>
+						<PhysicalHandheld _support="_PH1">
+							<site index="0" />
+						</PhysicalHandheld>
+						<PhysicalRoom _support="_PR1">
+							<site index="1" />
+						</PhysicalRoom>
+					</root>
+				</bigraph>
+			</redex>
+			<reactum>
+				<bigraph>
+					<root>
+						<PhysicalRoom _support="_PR1">
+							<PhysicalHandheld _support="_PH1">
+								<site index="0" />
+							</PhysicalHandheld>
+							<site index="1" />
+						</PhysicalRoom>
+					</root>
+				</bigraph>
+			</reactum>
+		</rule>
+		<!--  enter the signal - physical mobility rule -->
+		<rule>
+			<!-- no preconditions -->
+			<redex>
+				<bigraph>
+					<root>
+						<PhysicalHandheld _support="_PH1">
+							<site index="0" />
+						</PhysicalHandheld>
+						<PhysicalBluetoothSignal _support="_PR1">
+							<site index="1" />
+						</PhysicalBluetoothSignal>
+					</root>
+				</bigraph>
+			</redex>
+			<reactum>
+				<bigraph>
+					<root>
+						<PhysicalBluetoothSignal _support="_PR1">
+							<PhysicalHandheld _support="_PH1">
+								<site index="0" />
+							</PhysicalHandheld>
+							<site index="1" />
+						</PhysicalBluetoothSignal>
+					</root>
+				</bigraph>
+			</reactum>
+		</rule>
+		<!-- add signal(s) in range - sensing simultion rule -->
+ 		<rule>
+			<!--  not already known?! -->
+			<condition minOccurs="0" maxOccurs="0">
+				<bigraph>
+					<root>
+						<PhysicalBluetoothSignal _support="_PR1" btaddress="btaddress">
+							<PhysicalHandheld _support="_PH1">
+		     					<PhysicalBluetooth output="bluetoothlink"/>
+								<ExecutionContext>
+									<BigraphSpaceBluetooth device="bluetoothlink">
+										<DescriptionBluetooth btaddress="btaddress"/>
+										<site index="2"/>
+									</BigraphSpaceBluetooth>
+								</ExecutionContext>
+								<site index="0" />
+							</PhysicalHandheld>
+							<site index="1" />
+						</PhysicalBluetoothSignal>
+					</root>
+				</bigraph>
+			</condition>
+			<redex>
+				<bigraph>
+					<root>
+						<PhysicalBluetoothSignal _support="_PR1" btaddress="btaddress">
+							<PhysicalHandheld _support="_PH1">
+		     					<PhysicalBluetooth output="bluetoothlink"/>
+								<ExecutionContext>
+									<BigraphSpaceBluetooth device="bluetoothlink">
+										<site index="2"/>
+									</BigraphSpaceBluetooth>
+									<site index="3" />
+								</ExecutionContext>
+								<site index="0" />
+							</PhysicalHandheld>
+							<site index="1" />
+						</PhysicalBluetoothSignal>
+					</root>
+				</bigraph>
+			</redex>
+			<reactum>
+				<bigraph>
+					<root>
+						<PhysicalBluetoothSignal _support="_PR1" btaddress="btaddress">
+							<PhysicalHandheld _support="_PH1">
+		     					<PhysicalBluetooth output="bluetoothlink"/>
+								<ExecutionContext>
+									<BigraphSpaceBluetooth device="bluetoothlink">
+										<DescriptionBluetooth btaddress="btaddress"/>
+										<site index="2"/>
+									</BigraphSpaceBluetooth>
+									<site index="3" />
+								</ExecutionContext>
+								<site index="0" />
+							</PhysicalHandheld>
+							<site index="1" />
+						</PhysicalBluetoothSignal>
+					</root>
+				</bigraph>
+			</reactum>
+		</rule>
+		
+		<!--  display - software action/rule -->
+		<rule>
+			<!--  not already known?! -->
+			<condition minOccurs="0" maxOccurs="0">
+				<bigraph>
+					<root>
+						<ExecutionContext>
+							<BigraphSpaceBluetooth
+								device="bluetoothlink">
+								<DescriptionBluetooth
+									btaddress="btaddress" />
+								<site index="0" />
+							</BigraphSpaceBluetooth>
+							<BigraphSpaceScreen device="screenlink">
+								<DigitalDocument associatedwith="room1content" filename="filename"/>
+								<site index="1"/>
+							</BigraphSpaceScreen>
+		     				<BigraphSpaceAuthored>
+		     					<DescriptionRoom content="room1content" identifier="room1identifiers">
+		     						<DescriptionBluetooth associatedwith="room1identifiers" btaddress="btaddress"/>
+								</DescriptionRoom>
+								<DigitalDocument associatedwith="room1content" filename="filename"/>
+							</BigraphSpaceAuthored>
+							<site index="3"/>
+						</ExecutionContext>
+					</root>
+				</bigraph>
+			</condition>
+			<redex>
+				<bigraph>
+					<root>
+						<ExecutionContext>
+							<BigraphSpaceBluetooth
+								device="bluetoothlink">
+								<DescriptionBluetooth
+									btaddress="btaddress" />
+								<site index="0" />
+							</BigraphSpaceBluetooth>
+							<BigraphSpaceScreen device="screenlink">
+								<site index="1"/>
+							</BigraphSpaceScreen>
+		     				<BigraphSpaceAuthored>
+		     					<DescriptionRoom content="room1content" identifier="room1identifiers">
+		     						<DescriptionBluetooth associatedwith="room1identifiers" btaddress="btaddress"/>
+								</DescriptionRoom>
+								<DigitalDocument associatedwith="room1content" filename="filename"/>
+							</BigraphSpaceAuthored>
+							<site index="3"/>
+						</ExecutionContext>
+					</root>
+				</bigraph>
+			</redex>
+			<reactum>
+				<bigraph>
+					<root>
+						<ExecutionContext>
+							<BigraphSpaceBluetooth
+								device="bluetoothlink">
+								<DescriptionBluetooth
+									btaddress="btaddress" />
+								<site index="0" />
+							</BigraphSpaceBluetooth>
+							<BigraphSpaceScreen device="screenlink">
+								<DigitalDocument associatedwith="room1content" filename="filename"/>
+							</BigraphSpaceScreen>
+		     				<BigraphSpaceAuthored>
+		     					<DescriptionRoom content="room1content" identifier="room1identifiers">
+		     						<DescriptionBluetooth associatedwith="room1identifiers" btaddress="btaddress"/>
+								</DescriptionRoom>
+								<DigitalDocument associatedwith="room1content" filename="filename"/>
+							</BigraphSpaceAuthored>
+							<site index="3"/>
+						</ExecutionContext>
+					</root>
+				</bigraph>
+			</reactum>
+		
+		</rule>
+		<target>
+		     <bigraph>
+		     	<root>
+		     		<PhysicalHandheld>
+		     			<PhysicalScreen input="screenlink"/>
+		     			<PhysicalBluetooth output="bluetoothlink"/>
+		     			<ExecutionContext>
+		     				<BigraphSpaceScreen device="screenlink"/>
+		     				<BigraphSpaceBluetooth device="bluetoothlink"/>
+		     				<BigraphSpaceAuthored>
+		     					<DescriptionRoom content="room1content" identifier="room1identifiers">
+		     						<DescriptionBluetooth associatedwith="room1identifiers" btaddress="&quot;00:00:00:00:00:01&quot;"/>
+								</DescriptionRoom>
+								<DigitalDocument associatedwith="room1content" filename="&quot;room1.html&quot;"/>
+							</BigraphSpaceAuthored>
+						</ExecutionContext>
+					</PhysicalHandheld>
+					<PhysicalRoom>
+						<PhysicalBluetoothSignal btaddress="&quot;00:00:00:00:00:01&quot;">
+								<PhysicalBluetooth btaddress="&quot;00:00:00:00:00:01&quot;"/>
+						</PhysicalBluetoothSignal>
+					</PhysicalRoom>
+				</root>
+			</bigraph>
+		</target>
+		
+		<result>
+		     <bigraph>
+		     	<root>
+		     		<PhysicalRoom>
+		     			<PhysicalBluetoothSignal
+		     				btaddress="&quot;00:00:00:00:00:01&quot;">
+		     				<PhysicalHandheld>
+		     					<PhysicalScreen input="screenlink" />
+		     					<PhysicalBluetooth
+		     						output="bluetoothlink" />
+		     					<ExecutionContext>
+		     						<BigraphSpaceScreen
+		     							device="screenlink">
+		     							<DigitalDocument
+		     								associatedwith="room1content"
+		     								filename="&quot;room1.html&quot;" />
+		     						</BigraphSpaceScreen>
+		     						<BigraphSpaceBluetooth
+		     							device="bluetoothlink">
+		     							<DescriptionBluetooth
+		     								btaddress="&quot;00:00:00:00:00:01&quot;" />
+		     						</BigraphSpaceBluetooth>
+		     						<BigraphSpaceAuthored>
+		     							<DescriptionRoom
+		     								content="room1content" identifier="room1identifiers">
+		     								<DescriptionBluetooth
+		     									associatedwith="room1identifiers"
+		     									btaddress="&quot;00:00:00:00:00:01&quot;" />
+		     							</DescriptionRoom>
+		     							<DigitalDocument
+		     								associatedwith="room1content"
+		     								filename="&quot;room1.html&quot;" />
+		     						</BigraphSpaceAuthored>
+		     					</ExecutionContext>
+		     				</PhysicalHandheld>
+		     				<PhysicalBluetooth
+		     					btaddress="&quot;00:00:00:00:00:01&quot;" />
+		     			</PhysicalBluetoothSignal>
+		     		</PhysicalRoom>
+		     	</root>
+		     </bigraph>
+		</result>
+		
+	</test>
 </tests>
