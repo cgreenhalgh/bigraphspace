@@ -20,6 +20,7 @@ import bigraphspace.api.RuleCondition;
 import bigraphspace.api.RuleFiredEvent;
 import bigraphspace.api.RuleFiredListener;
 import bigraphspace.model.Bigraph;
+import bigraphspace.model.Match;
 import bigraphspace.sorting.Sorting;
 
 /** Tests of DomReactiveBigraph.

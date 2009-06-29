@@ -25,6 +25,7 @@ public class BigraphTermUtils {
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		Document doc = builder.newDocument();
 
+		// TODO: support for rule ?!
 		// root should be 'bigraph'
 		if (tree.getType()!=BigraphTermParser.BIGRAPH)
 			throw new ParseException("tree root node is not BIGRAPH ("+tree.getType()+"/"+tree.getText()+")");

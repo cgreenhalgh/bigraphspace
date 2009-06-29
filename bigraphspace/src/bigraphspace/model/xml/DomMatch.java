@@ -14,7 +14,6 @@ import bigraphspace.model.Port;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.LinkedList;
@@ -51,23 +50,6 @@ public class DomMatch implements Match {
 	 * in the target bigraph. I.e. these are the nodes that mark the top level
 	 * immediately above that which might be changed. */
 	ArrayList<ElementMatch> rootMatches = new ArrayList<ElementMatch>();
-	/** (variable) link matches from pattern to target (not constants).
-	 * Can be derived from nodeMatches, pattern and target bigraphs.
-	 * Note that different link variables in the pattern may correspond to the same
-	 * link in the target provided that all the link variables are outer names
-	 * (so could be joined in context; inner names cannot be joined in parameter;
-	 * if one is an inner name then the combination can be).
-	 * One link in the pattern can NOT map to two links in the target as this would
-	 * imply that they were not in fact connected in the target.
-	 *  */
-	static class LinkMatch {
-		HashSet<String> patternLinks = new HashSet<String>();
-		//String mergePatternLink;
-		String targetLink;
-		// additional constraints from the pattern
-		boolean notOuterName;
-		boolean notInnerName;
-	}
 	/** all link matches */
 	ArrayList<LinkMatch> linkMatches = new ArrayList<LinkMatch>();
 	/** cons

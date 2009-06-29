@@ -6,6 +6,7 @@ package bigraphspace.model.xml;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 
+import bigraphspace.model.Match;
 import bigraphspace.model.xml.DomBigraph;
 import bigraphspace.model.xml.DomMatch;
 import bigraphspace.model.xml.DomMatcher;
