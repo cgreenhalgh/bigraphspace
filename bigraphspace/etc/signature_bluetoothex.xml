@@ -4,9 +4,15 @@
 		<!-- physical world model -->
 		<control name="PhysicalRoom" status="active">
 			<description>A physical room (no, really).</description>
+			<port name="wifi">
+				<description>The availability of WiFi within the room</description>
+			</port>
 		</control>
 		<control name="PhysicalHandheld" status="active">
 			<description>A PDA-type device presenting local information</description>
+			<port name="wifi">
+				<description>Connection to a WiFi network (e.g. from room)</description>
+			</port>
 		</control>
 		<control name="PhysicalBluetooth" status="atomic">
 			<description>A (physical) bluetooth radio.</description>
