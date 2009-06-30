@@ -2,87 +2,137 @@
 <html>
 <head>
 
+
+  
   <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+
+  
   <title>Tutorial</title>
-
-
 </head>
+
+
 <body>
+
 
 <h1>Bigraphspace Tutorial</h1>
 
+
 <p>Chris Greenhalgh, 2009-06-29</p>
+
 
 <p>Note that this is currently rather skeletal, and is likely to
 refer you to code and XML files for more information. The project is
 also in early evolution, so parts of it may become out of date
 relatively quickly. Still, better than nothing?!</p>
 
+
 <p>Contents:</p>
+
 
 <ul>
 
+
   <li><a href="#Introduction">Introduction</a></li>
 
+
+  
   <ul>
+
 
     <li><a href="#What_is_the_Bigraphspace_project">What is the Bigraphspace project?</a></li>
 
+
+  
   </ul>
+
 
   <li><a href="#Gettingbuilding_Bigraphspace">Getting/building Bigraphspace</a></li>
 
+
+  
   <ul>
+
 
     <li><a href="#Source">Source</a></li>
 
+
     <li><a href="#Building">Building</a></li>
 
+
+  
   </ul>
+
 
   <li><a href="#What_is_a_bigraph">What is a bigraph?</a></li>
 
+
+  
   <ul>
+
 
     <li><a href="#Overview">Overview</a></li>
 
+
     <li><a href="#XML_encoding">XML encoding</a></li>
+
 
     <li><a href="#Simple_Text_Encoding">Simple text encoding</a></li>
 
+
     <li><a href="#Signature">Signature</a></li>
+
 
     <li><a href="#Sorting">Sorting</a></li>
 
+
     <li><a href="#Patterns_Redexes">Patterns (Redexes)</a></li>
+
 
     <li><a href="#Inner_and_Outer_Names">Inner and Outer Names</a></li>
 
+
     <li><a href="#Reaction_Rules">Reaction Rules</a></li>
 
+
+  
   </ul>
+
 
   <li><a href="#The_bigraphspace_API">The bigraphspace API</a></li>
 
+
+  
   <ul>
 
+
     <li><a href="#Introduction_">Introduction</a></li>
+
     <li><a href="#BigraphSession">BigraphSession</a></li>
+
     <li><a href="#Callbacks_and_Reaction_Rules">Callbacks and Reaction Rules</a></li>
 
+
+  
   </ul>
+
 
   <li><a href="#Issues_and_Future_Work">Issues and Future Work</a></li>
 
+
   <li><a href="#References">References</a></li>
+
 
   <li><a href="#Changes_">Changes</a></li>
 
+
 </ul>
+
 
 <h2><a name="Introduction"></a>Introduction</h2>
 
+
 <h3><a name="What_is_the_Bigraphspace_project"></a>What is the Bigraphspace project?</h3>
+
 
 <p>Bigraphs (Milner, 2009) are proposed as a formal model of
 systems having location, communication and behaviour. It has been shown
@@ -91,20 +141,25 @@ calculus can be mapped to bigraphs without loss, supporting the
 proposal that bigraphs might be a common representation for such
 systems.</p>
 
+
 <p>A tuple-space (Gelernter, 1985) is a shared data
 store-cum-communication channel through which concurrent processes
 share tuples of data.&nbsp; </p>
 
+
 <p>The bigraphspace project is&nbsp;built around a (currently
 Java) library that provides tuple-space-like API over a bigraph, rather
 than a bag of tuples.&nbsp;</p>
+
 
 <p>The intention is to also develop a suite of supporting
 modelling/authoring/software development tools on top of this to
 support more general exploration of evaluation of bigraphs as an
 approach to modelling systems.</p>
 
+
 <h3>Related Activities</h3>
+
 
 <p>Most practical work with bigraphs to date has been done in the
 Laboratory for Context-dependent Mobile Communication, of the IT
@@ -114,59 +169,85 @@ emerged in its current form from discussions and meetings between the
 Mixed Reality Lab, University of Nottingham, England, Robin Milner and
 members of the Laboratory for Context-dependent Mobile Communication.</p>
 
+
 <p>The project draws particular inspiration from the with at ITU
 on ReactiveXML (Hildebrandt et al, 2006) and Bigraphical Location
 Models (Elsborg, 2006 and Elsborg, 2009).&nbsp;</p>
+
 
 <p>The bigraphspace project is also the direct successor to the <a href="http://sourceforge.net/projects/equip">EQUIP and EQUIP2</a>
 object-oriented data-spaces (again, a twist on tuple-spaces, storing
 programming-language objects rather than tuples). </p>
 
+
 <h2><a name="Gettingbuilding_Bigraphspace"></a>Getting/building Bigraphspace</h2>
+
 
 <h3><a name="Source"></a>Source</h3>
 
+
 <p>The bigraphspace project is hosted on sourceforge: <a href="http://sourceforge.net/projects/bigraphspace">http://sourceforge.net/projects/bigraphspace</a></p>
+
 
 <p>The sourceforge project SVN repository is the main
 source/development repository. Its URL is: <span style="text-decoration: underline;">https://bigraphspace.svn.sourceforge.net/svnroot/bigraphspace</span></p>
 
+
 <p>Currently there is one top-level directory/module,
 bigraphspace, which contains a reasonably standard Java project:</p>
 
+
 <ul>
+
 
   <li style="font-family: monospace;">bigraphspace/</li>
 
+
+  
   <ul>
+
 
     <li><span style="font-family: monospace;">build.xml</span>
 - the main ANT build file</li>
 
+
     <li><span style="font-family: monospace;">docs/</span>
 - initial working documentation</li>
 
+
+    
     <ul>
+
 
       <li><span style="font-family: monospace;">api/</span>
 - target for generated API javadocs</li>
 
+
+    
     </ul>
+
 
     <li><span style="font-family: monospace;">etc/</span>
 - various non-source data files, e.g. for tests</li>
 
+
     <li><span style="font-family: monospace;">src/</span>
 - the source (currently including test applications)</li>
+
 
     <li><span style="font-family: monospace;">lib/</span>
 - third party dependencies (currently log4j, antlr and jaxb)</li>
 
+
+  
   </ul>
+
 
 </ul>
 
+
 <h3><a name="Building"></a>Building</h3>
+
 
 <p>You will need a <a href="http://java.sun.com/javase/downloads/index.jsp">Java
 SE SDK</a> and the <a href="http://ant.apache.org/">Apache
@@ -174,40 +255,54 @@ ANT</a> Java build tool. I am currently developing using Java 1.6
 and Apache ANT 1.7 (but at least some older versions should work -
 requires Java generics). </p>
 
+
 The other dependencies (currently bundled in <span style="font-family: monospace;">lib/</span>) are:<br>
 
+
 <ul>
+
 
   <li>The <a href="http://www.antlr.org/">ANTLR</a>
 Java parser generator (currently using version 3.1.3)</li>
 
+
   <li>The <a href="https://jaxb.dev.java.net/">Java
 API for XML Binding (JAXB)</a> (currently using version 2.1.11)</li>
+
 
   <li><a href="http://logging.apache.org/log4j/">Apache
 Log4j</a> &nbsp;(currently using version 1.2.13)</li>
 
+
 </ul>
+
 
 <p>Once Java and ANT are installed and the environment variable
 configured appropriately (JAVA_HOME set to JDK directory, ant and java
 in path) then ant can be used to build/test, e.g.</p>
 
+
 <pre>&gt; <span style="font-weight: bold;">ant ruletest</span></pre>
+
 
 Some of the main ant targets are:<br>
 
+
 <ul>
+
 
   <li><span style="font-family: monospace;">clean</span>
 - remove generated files/directories</li>
 
+
   <li><span style="font-family: monospace;">javadoc</span>
 - generate Java API documentation in docs/api/</li>
+
 
   <li><span style="font-family: monospace;">gen</span>
 - (re)generate generated source files (for ANTLR parsers and JAXB XML
 bindings)</li>
+
 
   <li><span style="font-family: monospace;">test</span>,
     <span style="font-family: monospace;">bluetoothex</span>,
@@ -216,11 +311,15 @@ bindings)</li>
     <span style="font-family: monospace;">ruletest</span>
 - various test applications/suites</li>
 
+
 </ul>
+
 
 <h2><a name="What_is_a_bigraph"></a>What is a bigraph?</h2>
 
+
 <h3><a name="Overview"></a>Overview</h3>
+
 
 <p>A bigraph is a two part structure, which combines a&nbsp;<span style="font-style: italic;">place</span> <span style="font-style: italic;">graph</span> and
 a&nbsp;<span style="font-style: italic;">link</span>
@@ -232,6 +331,7 @@ of <span style="font-style: italic;">port</span>s
 (think connection points or fields), which in bigraphspace are
 identified by name (they are identified by ordinal in the pure bigraph
 model). &nbsp;</p>
+
 
 <p>For most purposes - at least in bigraphspace - the <span style="font-style: italic;">place graph</span> is the
 starting point. This is a hierarchical structure of <span style="font-style: italic;">node</span>s, with one or
@@ -245,6 +345,7 @@ of a <span style="font-style: italic;">node</span>
 (or <span style="font-style: italic;">root</span>)
 are unordered.&nbsp;</p>
 
+
 <p>The following diagram illustrates a simple <span style="font-style: italic;">place graph</span> which
 is intended to model a handheld computer in a room. The <span style="font-style: italic;">place graph</span> has a
 single tree (starting at the single <span style="font-style: italic;">root</span>), which in
@@ -255,7 +356,9 @@ with <span style="font-style: italic;">control</span>
 is shown on the right. The individual nodes are identified as "<span style="font-style: italic;">v</span><sub style="font-style: italic;">0</sub>" and "<span style="font-style: italic;">v</span><sub style="font-style: italic;">1</sub>" (this is their <span style="font-style: italic;">support</span> - think
 unique name). </p>
 
+
 <p><img style="width: 570px; height: 350px;" alt="place graph 1" src="images/Tutorial_place_graph1.PNG"></p>
+
 
 <p>The <span style="font-style: italic;">link graph</span>
 specifies how the <span style="font-style: italic;">port</span>s
@@ -272,6 +375,7 @@ represent connections between <span style="font-style: italic;">node</span>s
 (specifically between <span style="font-style: italic;">port</span>s
 of those <span style="font-style: italic;">node</span>s).&nbsp;</p>
 
+
 <p>For example, the PhysicalRoom <span style="font-style: italic;">control</span> in the
 previous example might have one <span style="font-style: italic;">port</span>
 "wifi" which represents its provision of local WiFi networking, while
@@ -287,7 +391,9 @@ is labelled as "<span style="font-style: italic;">e</span><sub style="font-style
 combined with the <span style="font-style: italic;">place
 graph</span> from the first figure to describe the complete <span style="font-style: italic;">bigraph</span>.</p>
 
+
 <p> <img style="width: 594px; height: 350px;" alt="link graph 1" src="images/Tutorial_link_graph1.PNG"></p>
+
 
 <p>A bigraph can also include explicit "holes" where in general
 other nodes may be; these are termed <span style="font-style: italic;">site</span>s. Bigraphs with<span style="font-style: italic;"> site</span>s are very
@@ -296,9 +402,11 @@ important for describing <span style="font-style: italic;">bigraph</span>
 rule</span>s which describe how <span style="font-style: italic;">bigraph</span>s can change
 (see below).&nbsp;</p>
 
+
 <p>Note that <span style="font-style: italic;">node</span>s,
 <span style="font-style: italic;">root</span>s and <span style="font-style: italic;">site</span>s are all
 considered to be <span style="font-style: italic;">place</span>s.</p>
+
 
 <p>The folllowing diagram shows a <span style="font-style: italic;">bigraph</span> that
 represents a "PhysicalRoom" <span style="font-style: italic;">node</span>
@@ -311,41 +419,54 @@ links into&nbsp;<span style="font-style: italic;">site</span>s
 are handled through&nbsp;<span style="font-style: italic;">name</span>s,
 described later.</p>
 
+
 <p><img style="width: 562px; height: 350px;" alt="site example" src="images/Tutorial_site_ex.PNG"></p>
+
 
 <p><span style="font-style: italic;"></span>Note
 that there is active work to generalise bigraphs <span style="font-style: italic;">place graph</span>s to
 Directed Acyclic Graphs (DAGs) rather than lists of trees, but this is
 not currently supported by bigraphspace.</p>
 
+
 <h4>API Notes</h4>
+
 
 <p>The core bigraph model is represented in bigraph space by the
 interfaces:</p>
 
+
 <ul>
+
 
   <li><a href="api/bigraphspace/model/Bigraph.html">bigraphspace.model.Bigraph</a>
 - a bigraph :-)</li>
 
+
   <li><a href="api/bigraphspace/model/Place.html">bigraphspace.model.Place</a>
 - a node, site or root</li>
+
 
   <li><a href="api/bigraphspace/model/Port.html">bigraphspace.model.Port</a>
 - one port of a particular node</li>
 
+
   <li><a href="api/bigraphspace/model/Control.html">bigraphspace.model.Control</a>
 - a control</li>
 
+
 </ul>
+
 
 <p>These interfaces provide an abstract layer over whatever the
 underlying implementation is (at present it is an XML DOM internal
 model - see package <a href="api/bigraphspace/model/xml/package-frame.html">bigraphspace.odel.xml</a>).</p>
 
+
 (Note that the links depend on the Javadocs being generated - see ant
 target "javadoc")
 <h3><a name="XML_encoding"></a>XML encoding</h3>
+
 
 <p>The work on bigraphs and ReactiveXML, e.g. (Hildebrandt et al,
 2006) notes and exploits a strong correspondence between bigraphs and
@@ -353,10 +474,12 @@ XML documents. Bigraphspace adopts and extends the mapping between
 bigraphs and XML for the (first) internal implementation and
 representation of bigraphs.&nbsp;</p>
 
+
 <p>The mapping or encoding has two potential benefits: it allows
 prior understanding of XML documents to be leveraged when working with
 bigraphs, and it allows XML technologies to be exploited when
 implementing bigraph-based systems.</p>
+
 
 <p>The essence of the mapping is simple: a&nbsp;<span style="font-style: italic;">place</span> in a bigraph
 corresponds to an&nbsp;<span style="font-style: italic;">element&nbsp;</span>in
@@ -370,16 +493,21 @@ valid <span style="font-style: italic;">bigraph</span>s,
 and an XML-encoded <span style="font-style: italic;">bigraph</span>
 must be treated as such to retain its validity.</p>
 
+
 <p>The full mapping as currently implemented in bigraphspace is
 as follows:</p>
 
+
 <ul>
+
 
   <li>B:=<span style="font-family: monospace;">
 &lt;bigraph&gt;</span> E* H* I* R* <span style="font-family: monospace;">&lt;/bigraph&gt;</span></li>
 
+
   <li>E:= <span style="font-family: monospace;">&lt;edge
 id="</span><span style="font-style: italic;">EDGE</span><span style="font-family: monospace;">"/&gt;</span><br>
+
 
     <span style="font-style: italic;">An
 edge, i.e. EDGE is not visible as an outer name. Generally only useful
@@ -387,8 +515,10 @@ in a Redex/pattern for a little extra expressiveness. The EDGE is
 visible throughout the bigraph and (by default) any sites/parameter
 (i.e. it is&nbsp;at the "top" of the bigraph).</span></li>
 
+
   <li>H:= <span style="font-family: monospace;">&lt;hide
 id="</span><span style="font-style: italic;">EDGE</span><span style="font-family: monospace;">"/&gt;</span><br>
+
 
     <span style="font-style: italic;">A "hidden" name,
 i.e. NOT an inner name (by default every link/name is
@@ -397,8 +527,10 @@ for a little extra expressiveness. The EDGE is still visible throughout
 the bigraph.&nbsp;</span><span style="font-style: italic;">(i.e.
 it is hidden at the "bottom" of the bigraph)</span></li>
 
+
   <li>I:= <span style="font-family: monospace;">&lt;innername
 name="</span><span style="font-style: italic;">NAME</span><span style="font-family: monospace;">" id="</span><span style="font-style: italic;">EDGE</span><span style="font-family: monospace;">"/&gt;</span><br>
+
 
     <span style="font-style: italic;">Only
 useful in a reactum: an inner name which may occur in the
@@ -410,16 +542,22 @@ link name is generated and used to replace the NAME in the parameter.</span>.
     <span style="font-style: italic;">(i.e. it is renamed
 at the "bottom" of the bigraph, immediately before any hiding of edges)</span></li>
 
+
   <li>R:= <span style="font-family: monospace;">&lt;root&gt;</span>
 P <span style="font-family: monospace;">&lt;/root&gt;</span><br style="font-family: monospace;">
 
+
     <span style="font-style: italic;">A prime bigraph</span></li>
+
 
   <li>P:= N*</li>
 
+
   <li>N:= <span style="font-family: monospace;">&lt;</span><span style="font-style: italic;">K</span> <span style="font-family: monospace;">_support="</span>S<span style="font-family: monospace;">"</span> <span style="font-style: italic;">a1</span><span style="font-family: monospace;">="</span><span style="font-style: italic;">v1</span><span style="font-family: monospace;">"</span> ... <span style="font-family: monospace;"><span style="font-style: italic;">ai</span>="</span><span style="font-style: italic;">vi</span><span style="font-family: monospace;">"&gt;</span> P <span style="font-family: monospace;">&lt;/</span><span style="font-style: italic;">K</span><span style="font-family: monospace;">&gt;</span>&nbsp;&nbsp;<br>
 
+
 &nbsp; &nbsp; &nbsp;|&nbsp;S<br>
+
 
     <span style="font-style: italic;">K is the control
 name; S is the
@@ -427,66 +565,90 @@ support name (node identifier) which is optional; a1..ai are the port
 (attribute) names (as per the signature); v1..vi are the names of the
 links connected to the corresponding ports.<br>
 
+
 The current encoding does not use namespaces, so the names "site" and
 "root" should not be used for controls.<br>
+
 
 The following link "names" are "constant", i.e. considered to
 correspond to globally available link(s) to unique nodes representing
 the corresponding constant value: numbers, double-quoted strings.</span></li>
 
+
   <li>S:= <span style="font-family: monospace;">&lt;
 site index="</span>N<span style="font-family: monospace;">"
 /&gt;</span><br>
+
 
     <span style="font-style: italic;">A site (hole); N is
 optional, but should uniquely identify the site within this bigraph
 (usually an ordinal).</span></li>
 
+
 </ul>
+
 
 <p> For example the three previous diagrams are represented in
 the XML encoding as follows:</p>
 
+
 <p>Example 1: no links.</p>
+
 
 <pre>&lt;bigraph&gt;<br>	&lt;root&gt;<br>	&lt;PhysicalRoom _support="v0"&gt;<br>	&lt;PhysicalHandheld _support="v1"&gt;&lt;/PhysicalHandheld&gt;<br>	&lt;/PhysicalRoom&gt;<br>	&lt;/root&gt;<br>&lt;/bigraph&gt;<br></pre>
 
+
 <p>Example 2: lone link.</p>
+
 
 <pre>&lt;bigraph&gt;<br>	&lt;root&gt;<br>	&lt;PhysicalRoom _support="v0" wifi="e0"&gt;<br>	&lt;PhysicalHandheld _support="v1" wifi="e0"&gt;&lt;/PhysicalHandheld&gt;<br>	&lt;/PhysicalRoom&gt;<br>	&lt;/root&gt;<br>&lt;/bigraph&gt;<br></pre>
 
+
 <p>Example 3: a site.</p>
+
 
 <pre>&lt;bigraph&gt;<br>	&lt;root&gt;<br>	&lt;PhysicalRoom _support="v0"&gt;<br>	&lt;site index="0" /&gt;<br>	&lt;/PhysicalRoom&gt;<br>	&lt;/root&gt;<br>&lt;/bigraph&gt;<br></pre>
 
+
 <h4>API Notes</h4>
+
 
 <p>The class <a href="api/bigraphspace/model/xml/XmlUtils.html">bigraphspace.model.xml.XmlUtils</a>
 has some general XML handling utility methods (e.g. read XML file).</p>
+
 
 <p>The class <a href="api/bigraphspace/model/xml/DomBigraph.html">bigraphspace.model.xml.DomBigraph</a>
 implements the abstract bigraphspace.model.Bigraph interface using an
 XML DOM internal model.&nbsp; </p>
 
+
 <h3><a name="Simple_Text_Encoding"></a>Simple Text Encoding</h3>
+
 
 <p>Bigraphspace also supports a simple text encoding of bigraphs
 based on the bigraph term language in (Elsberg, 2006). See&nbsp;<a href="../src/bigraphspace/parser/antlr/BigraphTerm.g">bigraphspace/parser/antlr/BigraphTerm.g</a>
 for the ANTLR grammer:</p>
 
+
 <p>The encodings corresponding to the above examples would be:</p>
+
 
 <pre>bigraph PhysicalRoom:v0 ( PhysicalHandheld:v1 )<br><br>bigraph PhysicalRoom:v0{ wifi="e0" } ( PhysicalHandheld:v1{ wifi="e0" } )<br><br>bigraph PhysicalRoom:v0 ( _0 )</pre>
 
+
 Note that the support (e.g. ":v0") is optional.<br>
 
+
 <h4>API Notes</h4>
+
 
 <p>The generated lexer and parser classes are <a href="api/bigraphspace/parser/antlr/BigraphTermLexer.html">bigraphspace.parser.antlr.BigraphTermLexer</a>
 and <a href="api/bigraphspace/parser/antlr/BigraphTermParser.html">BigraphTermParser</a>.
 An example of using them is in <a href="../src/bigraphspace/parser/antlr/TestBigraphTerm.java">bigraphspace/parser/antlr/TestBigraphTerm.java</a>.</p>
 
+
 <h3><a name="Signature"></a>Signature</h3>
+
 
 <p>A <span style="font-style: italic;">bigraph</span>
 has a <span style="font-style: italic;">signature</span>,
@@ -494,60 +656,86 @@ which defines the set of <span style="font-style: italic;">control</span>s
 that are allowed, and gives basic definitions for each <span style="font-style: italic;">control</span>, in
 particular:</p>
 
+
 <ul>
+
 
   <li><span style="font-style: italic;">status</span>,
 one of&nbsp;</li>
 
+
+  
   <ul>
+
 
     <li><span style="font-style: italic;">atomic</span>
 - cannot contain child <span style="font-style: italic;">node</span>s/<span style="font-style: italic;">site</span>s</li>
 
+
     <li>active - can contain child nodes/sites and in which (in
 process calculus terms) those child nodes may be active (e.g. reduced).</li>
+
 
     <li>passive - can contain child nodes/sites but in which
 those child nodes are not active (e.g. in a data structure)</li>
 
+
+  
   </ul>
+
 
   <li><span style="font-style: italic;">arity</span>,
 i.e. the number of <span style="font-style: italic;">port</span>s</li>
 
+
+  
   <ul>
+
 
     <li>in bigraphspace names must be given for each <span style="font-style: italic;">port</span>, not just the
 number of ports.</li>
 
+
+  
   </ul>
 
+
 </ul>
+
 
 <p>In addition a <span style="font-style: italic;">sorting</span>
 (see below) may place additional constraints on how <span style="font-style: italic;">node</span>s can be nested
 and linked.</p>
 
+
 <h4>XML Encoding</h4>
+
 
 <p>Bigraphspace defines a simple XML schema for various
 definitions, including signatures:&nbsp;<a href="../etc/signature.xsd">etc/signature.xsd</a>. </p>
 
+
 The signature for the above example could be (see <a href="../etc/signature_bluetoothex.xml">etc/signature_bluetoothex.xml</a>):<br>
+
 
 <pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br>&lt;definitions xmlns="http://www.mrl.nott.ac.uk/bigraphs/signature/1.0"&gt;<br>	&lt;controls&gt;<br>	&lt;!-- physical world model --&gt;<br>	&lt;control name="PhysicalRoom" status="active"&gt;<br>	&lt;description&gt;A physical room (no, really).&lt;/description&gt;<br>	&lt;port name="wifi"&gt;<br>	&lt;description&gt;The availability of WiFi within the room&lt;/description&gt;<br>	&lt;/port&gt;<br>	&lt;/control&gt;<br>	&lt;control name="PhysicalHandheld" status="active"&gt;<br>	&lt;description&gt;A PDA-type device presenting local information&lt;/description&gt;<br>	&lt;port name="wifi"&gt;<br>	&lt;description&gt;Connection to a WiFi network (e.g. from room)&lt;/description&gt;<br>	&lt;/port&gt;<br>	&lt;/control&gt;<br>	&lt;/controls&gt;<br>&lt;/definitions&gt;</pre>
 
+
 <h4>API Notes</h4>
+
 
 <p>In bigraphspace, a <span style="font-style: italic;">signature</span>
 is represented by an instance of the class <a href="api/bigraphspace/model/BasicSignature.html">bigraphspace.model.BasicSignature</a>.</p>
+
 
 <p>A signature can be created from a definitions XML file (XML
 schema <a href="../etc/signature.xsd">etc/signature.xsd</a>)
 using <a href="api/bigraphspace/model/signaturexml/SignatureFactory.html">bigraphspace.model.signaturexml.SignatureFactory</a>.
 </p>
 
+
 <h3><a name="Sorting"></a>Sorting</h3>
+
 
 <p>A <span style="font-style: italic;">sorting</span>
 extends a bigraph <span style="font-style: italic;">signature</span>
@@ -555,12 +743,15 @@ with further constaints on how <span style="font-style: italic;">control</span>s
 can be combined and linked, which typically represent the
 characteristic limitations and invariants of the modelled system.</p>
 
+
 <p>For example, it is reasonable for a PhysicalHandheld to be
 inside a PhsyicalRoom, but not vice versa.</p>
+
 
 <p>At present bigraphspace supports only simple <span style="font-style: italic;">sorting</span>s, which
 constrain which <span style="font-style: italic;">control</span>(s)
 can appear as the immediate children of a non-<span style="font-style: italic;">atomic</span> <span style="font-style: italic;">control</span>.&nbsp;</p>
+
 
 <p>By default, every <span style="font-style: italic;">control</span>
 is assumed to be the only member of a <span style="font-style: italic;">sort</span> of the same
@@ -569,25 +760,33 @@ are specified in terms of <span style="font-style: italic;">sort</span>s
 &nbsp;rather than <span style="font-style: italic;">control</span>s
 directly to allow an additional level of abstraction where required.)</p>
 
+
 <h4>XML Encoding</h4>
+
 
 <p>The same definition schema (<a href="../etc/signature.xsd">etc/signature.xsd</a>)
 used for basic signatures (above) also allows simple sortings to be
 specified.</p>
 
+
 <p>The sorting corresponding to the above Handheld/Room
 constraint would be specified as follows, given the above <span style="font-style: italic;">signature</span> (see <a href="../etc/signature_bluetoothex.xml">etc/signature_bluetoothex.xml</a>):<br>
 
+
 </p>
 
+
 <pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br>&lt;definitions xmlns="http://www.mrl.nott.ac.uk/bigraphs/signature/1.0"&gt;<br>	...<br>	&lt;sorts&gt;<br>	&lt;!-- implicit Sort corresponding to PhysicalRoom control (only) --&gt;<br>	&lt;sort name="PhysicalRoom"&gt;<br>	&lt;childsorts&gt;<br>	&lt;sort name="PhysicalHandheld"/&gt;<br>	&lt;/childsorts&gt;<br>	&lt;/sort&gt; <br>	&lt;!-- implicit sort for PhysicalHandheld --&gt;<br>	&lt;sort name="PhysicalHandheld"&gt;<br>	&lt;childsorts&gt;<br>	&lt;/childsorts&gt;<br>	&lt;/sort&gt;<br>	&lt;/sorts&gt;<br>&lt;/definitions&gt;<br></pre>
+
 
 <p>Note that the controls for a sort can be specified explicitly
 by <span style="font-family: monospace;">&lt;controls&gt;&lt;control
 name="CONTROLNAME"/&gt;...&lt;/controls&gt;</span>.&nbsp;
 </p>
 
+
 <h4>API Notes</h4>
+
 
 A <span style="font-style: italic;">sorting</span>
 is represented by the class <a href="api/bigraphspace/sorting/Sorting.html">bigraphspace.sorting.Sorting</a>.
@@ -595,39 +794,50 @@ It can be created from a defintion XML file using&nbsp;the static
 method <span style="font-family: monospace;">createSorting</span>.
 <h3><a name="Patterns_Redexes"></a>Patterns (Redexes)</h3>
 
+
 <p>A bigraph (especially one with sites) can be thought of a
 pattern for another bigraph to be matched against. This is expecially
 important when considering bigraph behaviour, which is modelled as
 reaction rule (see below), which specify how the occurance of one
 bigraph (the redex) within another can be rewitten.</p>
 
+
 <p>This "occurance" of a bigraph within another is formally
 defined using bigraph composition - please refer to Milner (2009) for
 more details on this.</p>
+
 
 <p>It is sufficient as a starting point so simply think about
 finding an occurance of the redex (pattern) within the "target"
 bigraph, specifically that every node in the redex has a corresponding
 match in the target, such that:</p>
 
+
 <ul>
 
+
   <li>the controls are the same;</li>
+
 
   <li>no two nodes in the redex map to the same node in the
 target;</li>
 
+
   <li>any constant-valued port in the redex has the same constant
 value in the target;</li>
 
+
   <li>the parent node in the redex maps corresponds to the parent
 of the corresponding node in the target;</li>
+
 
   <li>if two ports are linked in the redex then the corresponding
 ports are also linked in the target (but note that ports which are not
 linked in the redex might be linked in the target).</li>
 
+
 </ul>
+
 
 Note that non-constant links in the redex need NOT have the same name
 in the target, and node "names" (support) need not match between the
@@ -639,51 +849,68 @@ root in the redex to a node or root in the target, and a correspondence
 of each site in the redex to zero or more sibling nodes (and their
 place sub-trees) in the target.</p>
 
+
 <p>It sould be relative easy to see that the example bigraph with
 a site:</p>
 
+
 <pre>	bigraph PhysicalRoom:v0 ( _0 )</pre>
+
 
 <p>matches the second example bigraph</p>
 
+
 <pre>	bigraph PhysicalRoom:v0{ wifi="e0" } ( PhysicalHandheld:v1{ wifi="e0" } )<br></pre>
+
 
 <p>by identifying the PhysicalRoom node "v0" in the pattern with
 the PhysicalRoom node "v0" in the target. This implies that:</p>
 
+
 <ul>
+
 
   <li>the (only) root of the pattern corresponds to the (only)
 root of the target;</li>
 
+
   <li>the (unspecifed) value of the "wifi" port of node "v0" in
 the pattern corresponds to non-constant link "e0" in the target; </li>
+
 
   <li>the site "0" corresponds to the node <span style="font-family: monospace;">PhysicalHandheld:v1{
 wifi="e0" }</span>&nbsp;</li>
 
+
 </ul>
+
 
 <h4>API Notes</h4>
 
+
 <p>A match (correspondence) between a two bigraphs is represented
 by the (abstract) class <a href="api/bigraphspace/model/Match.html">bigraphspace.model.Match</a>.&nbsp;</p>
+
 
 <p>NOTE: this abstract is not currently (2009-06-29) implemented
 - you have to cast down to the concrete implementation <a href="api/bigraphspace/model/xml/DomMatch.html">bigraphspace.model.xml.DomMatch</a>
 to access the match information (e.g. node and link value
 correspondences).&nbsp;</p>
 
+
 <p>For the XML implementation, the class <a href="api/bigraphspace/model/xml/DomMatcher.html">bigraphspace.model.xml.DomMatcher</a>
 provides the match method to (attempt to) match two&nbsp;bigraphs.
 It returns a list of matches (the maximum can be specified).&nbsp;</p>
+
 
 <p>Normally you would do this via the ReativeBigraph API (below).
 <a href="../src/bigraphspace/model/xml/TestMatch.java">src/bigraphspace/model/xml/TestMatch.java</a>
 and&nbsp;<a href="../src/bigraphspace/model/xml/RunMatchTests.java">src/bigraphspace/model/xml/RunMatchTests.java</a>
 give&nbsp;examples of using this directly.</p>
 
+
 <h3><a name="Inner_and_Outer_Names"></a>Inner and Outer Names</h3>
+
 
 <p>The formal definition of bigraphs and matching (by bigraph
 composition) also depends on a bigraph's <span style="font-style: italic;">inner</span> and <span style="font-style: italic;">outer</span> <span style="font-style: italic;">name</span>s. An <span style="font-style: italic;">outer name</span> is one
@@ -692,9 +919,11 @@ larger bigraph in which it is found. An <span style="font-style: italic;">inner 
 which a bigraph makes accessible to its <span style="font-style: italic;">parameter</span>, i.e. to
 a bigraph that is found "within" it.</p>
 
+
 <p>By default, bigraphspace assumes that all non-constant link
 values are both inner and outer names, i.e. they may also occur
 anywhere at all in the matched bigraph.</p>
+
 
 <p>If a (potential <span style="font-style: italic;">outer</span>)
 <span style="font-style: italic;">name</span> in a
@@ -706,6 +935,7 @@ value matched with a link that does NOT occur at all in the context of
 the match. Consequently, that link is in some sense local to the
 matched part of the bigraph (including its sites).</p>
 
+
 <p>If a (potential <span style="font-style: italic;">inner</span>)
 <span style="font-style: italic;">name</span> in a
 pattern is marked as <span style="font-style: italic;">hidden</span>
@@ -715,7 +945,9 @@ part(s) of the matched bigraph that correspond to the sites of the
 pattern. This might be used to prevent information/links "leaking"
 "inwards" into parts of the bigraph.</p>
 
+
 <h4>XML Notes</h4>
+
 
 <p>The XML encoding of bigraphs defined above including details
 of how to encode <span style="font-style: italic;">edge</span>s
@@ -723,12 +955,16 @@ and <span style="font-style: italic;">hidden</span>
 (<span style="font-style: italic;">inner</span>) <span style="font-style: italic;">name</span>s (as <span style="font-family: monospace;">edge</span> and <span style="font-family: monospace;">hide</span>
 elements).&nbsp;</p>
 
+
 <h4>API Notes</h4>
+
 
 <p>Programmatically this information is exposed in the <a href="api/bigraphspace/model/Bigraph.html">bigraphspace.model.Bigraph</a>
 interface.&nbsp; </p>
 
+
 <h3><a name="Reaction_Rules"></a>Reaction Rules</h3>
+
 
 <p>The behaviour of a bigraph is specified as a set of <span style="font-style: italic;">reaction rules</span>.
 Each <span style="font-style: italic;">reaction rule</span>
@@ -736,22 +972,26 @@ specifies that occurance(s) of one bigraph, the <span style="font-style: italic;
 replaced with (copies of) another bigraph, the <span style="font-style: italic;">reactum</span>, within the
 modelled system (the "target" bigraph).</p>
 
+
 <p>The details of the "replacement" are specified formally in
 terms of bigraph algebra and composition - see Milner (2009).&nbsp;</p>
+
 
 <p>Informally, the node(s) corresponding to the redex in the
 target are removed, and the copies of the nodes in the reactum are
 inserted into the target starting by mapping the Nth root of the
 reactum to the target node or root corresponding to the Nth root of the
-redex. Each occurance of a site in the redex is replaced with (a copy
+redex. Each occurance of a site in the reactum is replaced with (a copy
 of) the nodes corresponding to the site with the same index in the
 redex. Nodes copied from the reactum are subject to the same mapping of
 (non-constant) link values and node support that was inferred by the
 match of the redex.</p>
 
+
 <p>Note that (non-constant) link values in the reactum that do
 not occur in the redex are mapped to new globally unique link values
 (new links).</p>
+
 
 <p>It is also possible for a reaction rule to rewrite
 (non-constant) link values that occur within its parameter (i.e. the
@@ -759,7 +999,9 @@ nodes matched by the sites) but NOT within its context. This allows
 edge(s) in the parameter to be joined to other edge(s) in the
 paremeter, reactum and/or context.&nbsp;&nbsp;</p>
 
+
 <h4>XML Notes</h4>
+
 
 The XML encoding of bigraphs defined above including details of how to
 encode <span style="font-style: italic;">inner name</span>
@@ -767,8 +1009,10 @@ rewriting&nbsp;(as <span style="font-family: monospace;">innername
 </span>elements).&nbsp;
 <h4>API Notes</h4>
 
+
 <p>Programmatically inner name rewriting is exposed in the <a href="api/bigraphspace/model/Bigraph.html">bigraphspace.model.Bigraph</a>
 interface.&nbsp;</p>
+
 
 For the XML implementation, the class <a href="api/bigraphspace/model/xml/DomTransformer.html">bigraphspace.model.xml.DomTransformer</a>
 implements the replacement of a (already matched) redex with a reactum
@@ -777,99 +1021,144 @@ in a target bigraph.&nbsp;
 <a href="../src/bigraphspace/model/xml/RunTransformerTests.java">src/bigraphspace/model/xml/RunTransformerTests.java</a>
 gives an example of using this directly.</p>
 
+
 <h2><a name="The_bigraphspace_API"></a>The bigraphspace API</h2>
+
 
 This is the primary programming API for coordinating via a bigraph
 "space", i.e. a shared bigraph model. It can also be used to implement
 tools and applications that simply work with bigraphs.
 <h3><a name="Introduction_"></a>Introduction </h3>
+
 <p>A <a href="api/bigraphspace/api/ReactiveBigraph.html">bigraphspace.api.ReactiveBigraph</a>
 is a single bigraph (or possibly a fragment of a larger bigraph, but
 shouldn't be hiden by the system).</p>
+
 <p>There is an example of use in&nbsp;<a href="../src/bigraphspace/model/xml/RunReactiveBigraphTests.java">bigraphspace/model/xml/RunReactiveBigraphTests.java</a></p>
+
 
 <p>Depending on the approach adopted a single application might
 share a single reactive bigraph, or have several, each specialised for
 particular purposes.</p>
 
+
 <p>A reactive bigraph is obtained initial from the class <a href="api/bigraphspace/api/BigraphFinder.html">bigraphspace.api.BigraphFinder</a>:</p>
 
 
 
+
 <pre>package bigraphspace.api;<br>public class BigraphFinder {<br>&nbsp;&nbsp;&nbsp; public static ReactiveBigraph getDefaultBigraph() throws BigraphNotFoundException;<br>  &nbsp; public static void setDefaultBigraph(ReactiveBigraph defaultBigraph); <br>}<br></pre>
+
 <p>Note, at present this implementation is VERY limited and just
 returns a single default bigraph (if set). The reason for this
 indirection is to allow the same code to run in a deployed system and
 also in a simulated or emulated environment (e.g. for authoring or
 testing).</p>
+
 <h3><a name="BigraphSession"></a>BigraphSession</h3>
+
 <p>The reactive bigraph interface allows access to bigraph "sessions"
 via which synchronous operations (queries and updates) can be
 performed, and also to asychronous callbacks for event/change hanlding.
 We start with the synchronous API.</p>
+
 <pre>package bigraphspace.api;<br>public interface ReactiveBigraph {<br>&nbsp;&nbsp;&nbsp; public BigraphSession getSession();<br>    ....<br>}</pre>
+
 <p>A bigraph session is like a connection to the reactive bigraph.
 Actual access to the bigraph is bracketed by basic transaction boundary
 markers, <span style="font-family: monospace;">begin()</span> and <span style="font-family: monospace;">end()</span>/<span style="font-family: monospace;">abort()</span>:</p>
+
 <pre>package bigraphspace.api;<br>public abstract class BigraphSession {<br>	public abstract void begin();<br>	public static enum Mode { readonly, readwrite }; <br>	public abstract void begin(Mode mode);<br>	public abstract void end();<br>	public abstract void abort();<br>        ...<br>}</pre>
+
 <p>Note that a readonly sequence of operations can be started using <span style="font-family: monospace;">begin(Mode.readonly)</span>; read-write is the default.</p>
+
 <p>It is possible to read or replace the entire bigraph. The latter is probably only for use in initialising a bigraph space:</p>
+
 <pre>public abstract class BigraphSession {<br>	...<br>	public Bigraph getAll();<br>	public void setAll(Bigraph bigraph);<br>	...<br>}<br></pre>
+
 <p>Reading from a bigraph space is normally done by using a pattern
 match as a query operation (compare the use of patterns in tuple-spaces
 for in/rd):</p>
+
 <pre>public abstract class BigraphSession {<br>	...<br>	public List&lt;Match&gt; match(Bigraph pattern, int maxMatches);<br>	...<br>}<br></pre>
+
 <p>Updating a bigraph space is normally done by effectively applying a
 reaction rule, i.e. a reactum given a (particular) match for the redex.
 The match should be obtained using match (above) within the same transaction of the same session of the same reactive bigraph:</p>
+
 <pre>public abstract class BigraphSession {<br>	...<br>	public abstract void update(Match match, Bigraph reactum);<br>	...<br>}<br></pre>
+
 <h3><a name="Callbacks_and_Reaction_Rules"></a>Callbacks and Reaction Rules</h3>
+
 <p>It is still something of an open issue how the reactive bigraph
 should behave asynchronously interactively with processes/agents. The
 current starting point is as follows, but potentially subject to major
 revision/extension.</p>
+
 <p>The reactive bigraph API allows <a href="api/bigraphspace/api/BigraphChangedListener.html">bigraphspace.api.BigraphChangedListener</a>s
 to be registered with it. Every registered change listener is called
 (asynchronously, from a background thread) after every occasion on
 which the reactive bigraph is changed (i.e. by a bigraph session which
 commits after doing a <span style="font-family: monospace;">setAll</span> or <span style="font-family: monospace;">update</span> operation):</p>
+
 <pre>public interface ReactiveBigraph {<br>	...<br>	public void addBigraphChangedListener(BigraphChangedListener listener);<br>	public void removeBigraphChangedListener(BigraphChangedListener listener);<br>	...<br>}<br><br>package bigraphspace.api;<br>public interface BigraphChangedListener {<br>	public void bigraphChanged(BigraphChangedEvent bce);<br>}</pre>
+
 <p>So simple reactivity is supported by registering a listener, which
 when executed will use its own bigraph session to (re)check for any
 "relevant" matches within the reactive bigraph, which might then lead
 it to make update(s).</p>
+
 <p>There is basic support for a declarative version of this: the reactive bigraph API also allows <a href="api/bigraphspace/api/ReactionRule.html">bigraphspace.api.ReactionRule</a>s to be registered with it:</p>
+
 <pre>public interface ReactiveBigraph {<br>	...<br>	public void addReactionRule(ReactionRule rule);<br>	public void removeReactionRule(ReactionRule rule);<br>	...<br>}</pre>
+
 <p>These are checked (using the above mechanism) each time the bigraph space changes. A reaction rule comprises:</p>
+
 <ul>
+
   <li>zero or more preconditions (<a href="api/bigraphspace/api/RuleCondition.html">bigraphspace.api.RuleCondition</a>),
 each of which specifies how many times (including zero) a given pattern
 must match the bigraph space for the rule to progress;</li>
+
   <li>a redex, again in a <a href="api/bigraphspace/api/RuleCondition.html">bigraphspace.api.RuleCondition</a>, so with a specification of hom many time(s) it must be matched;</li>
-  <li>an optional reactum, which if specified is used to automatically perform an update on the bigraph space using the first redex match (i.e. to automatically perform a reaction); and</li>
+
+  <li>an optional reactum, which if specified is used to
+automatically perform an update on the bigraph space using the first
+redex match (i.e. to automatically perform a reaction); and</li>
+
   <li>an optional callback, which can do further processing or make
 further changes to the bigraph within the context of the same session.</li>
+
 </ul>
+
 <p>This facility can be used to implement simple bigraph execution/evolution.</p>
+
 <p>The test file <a href="../etc/rule_test.xml">etc/rule_test.xml</a> &nbsp;as used by <a href="../src/bigraphspace/model/xml/RunReactiveBigraphTests.java">bigraphspace/model/xml/RunReactiveBigraphTests.java</a> gives some examples of possible reaction rules (in an XML encoding). </p>
 
+
 <h2><a name="Issues_and_Future_Work"></a>Issues and Future Work</h2>
+
 See also <a href="ReleaseNotes.html">ReleaseNotes.html</a>
 <h2><a name="References"></a>References</h2>
+
 
 <p>Elsborg, E. (2006). <b>Bigraphical location models</b>.
 Technical Report&nbsp;94, IT University of Copenhagen, Rued
 Langgaards Vej 7, DK-2300 Copenhagen V. 87-7949-138-3.</p>
 
+
 <p>Elsborg, Ebbe, 2009: Bigraphs: Modelling, Simulation and Type
 Systems. PhD Disseration, ITU (<a href="http://www.itu.dk/%7Eelsborg/dissertation-elsborg.pdf">PDF</a>)</p>
+
 
 <p>Gelernter, David, 1985:<span class="external text">
 Generative communication in Linda</span>. <i>ACM
 Transactions on Programming Languages and Systems</i>, volume 7,
 number 1, January 1985<br>
 
+
 <br>
+
 
 Hildebrandt, T.&nbsp;T., Niss, H., and Olsen, M. (2006). <b>Formalising
 business process execution with bigraphs and Reactive XML</b>. In
@@ -878,22 +1167,31 @@ Ciancarini, P. and Wiklicky, H., editors, <em>Proceedings of the
 (COORDINATION)</em>, volume 4038 of <em>Lecture Notes in
 Computer Science</em>, pages 113-129. Springer-Verlag. (<a href="http://www.itu.dk/people/hniss/pubs/coordination2006.pdf">PDF</a>)</p>
 
+
 <p>Milner, Robin, 2009: The Space and Motion of Communicating
 Agents. Cambridge University Press.</p>
 
+
 <h2><a name="Changes_"></a>Changes<br>
+
 
 </h2>
 
+
 2009-06-29<br>
+
 
 <ul>
 
+
   <li>first version.</li>
+
 
 </ul>
 
+
 <h3></h3>
+
 
 </body>
 </html>
