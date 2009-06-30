@@ -1032,7 +1032,7 @@ tools and applications that simply work with bigraphs.
 
 <p>A <a href="api/bigraphspace/api/ReactiveBigraph.html">bigraphspace.api.ReactiveBigraph</a>
 is a single bigraph (or possibly a fragment of a larger bigraph, but
-shouldn't be hiden by the system).</p>
+that shouldn't be visible to application).</p>
 
 <p>There is an example of use in&nbsp;<a href="../src/bigraphspace/model/xml/RunReactiveBigraphTests.java">bigraphspace/model/xml/RunReactiveBigraphTests.java</a></p>
 
@@ -1042,7 +1042,7 @@ share a single reactive bigraph, or have several, each specialised for
 particular purposes.</p>
 
 
-<p>A reactive bigraph is obtained initial from the class <a href="api/bigraphspace/api/BigraphFinder.html">bigraphspace.api.BigraphFinder</a>:</p>
+<p>A reactive bigraph is obtained initially from the class <a href="api/bigraphspace/api/BigraphFinder.html">bigraphspace.api.BigraphFinder</a>:</p>
 
 
 
@@ -1059,7 +1059,7 @@ testing).</p>
 
 <p>The reactive bigraph interface allows access to bigraph "sessions"
 via which synchronous operations (queries and updates) can be
-performed, and also to asychronous callbacks for event/change hanlding.
+performed, and also to asychronous callbacks for event/change handling.
 We start with the synchronous API.</p>
 
 <pre>package bigraphspace.api;<br>public interface ReactiveBigraph {<br>&nbsp;&nbsp;&nbsp; public BigraphSession getSession();<br>    ....<br>}</pre>
