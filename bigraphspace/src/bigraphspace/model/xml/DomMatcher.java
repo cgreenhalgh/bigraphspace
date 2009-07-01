@@ -217,7 +217,6 @@ public class DomMatcher {
 					}
 				match.nodeMatches.add(nodeMatch);
 			}
-			// TODO 
 			// check links
 			// determine the link matches, checking as you go along...
 			for (DomMatch.ElementMatch nodeMatch : match.nodeMatches) {
@@ -263,6 +262,22 @@ public class DomMatcher {
 						}
 						else if (linkMatch.targetLink.equals(targetLink)) {
 							// merge
+							// Note: if this or any name in the merge set is an edge then
+							// merging could not be done by the context so this is not a 
+							// valid match
+							if (pattern.getEdgeNames().contains(patternLink)) {
+								// pattern link is edge
+								nextMatch(partMatch, targetIxs);
+								continue complete;
+							}
+							// (if it was an edge there should only be one)
+							for (String otherPatternLink : linkMatch.patternLinks) {
+								if (pattern.getEdgeNames().contains(otherPatternLink)) {
+									// pattern link is edge
+									nextMatch(partMatch, targetIxs);
+									continue complete;								
+								}
+							}
 							linkMatch.patternLinks.add(patternLink);
 							handled = true;
 						}
