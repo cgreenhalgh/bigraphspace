@@ -322,6 +322,30 @@
 			<!--  <linkmatch />  -->
 		</match>
 	</test>
+	<!-- edge non-merge non-match -->
+	<test>
+		<pattern>
+			<bigraph>
+				<!-- edge not outer name -->
+				<edge id="_identifiers1"/>
+				<root>
+					<DescriptionBluetooth _support="_DB1" associatedwith="_identifiers1"/>
+				</root>
+				<root>
+					<DescriptionBluetooth _support="_DB2" associatedwith="_identifiers2"/>
+				</root>
+			</bigraph>
+		</pattern>
+		<target>
+			<bigraph>
+				<root>
+					<DescriptionBluetooth _support="DB1" associatedwith="identifiers1"/>
+					<DescriptionBluetooth _support="DB2" associatedwith="identifiers1"/>
+				</root>
+			</bigraph>
+		</target>
+		<!--  shouldn't match because edge would be merge with outer name -->
+	</test>
 	<!-- non-inner name ("hidden") (non-)match -->
 	<test>
 		<pattern>
