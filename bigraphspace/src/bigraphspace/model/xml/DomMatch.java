@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
+import org.apache.log4j.Logger;
 
 /** Match between bigraph pattern (e.g. redex) and ground bigraph.
  * 
@@ -26,6 +27,8 @@ import java.util.Set;
  *
  */
 public class DomMatch implements Match {
+	/** logger */
+	static Logger logger = Logger.getLogger(DomMatch.class);
 	/** pattern */
 	DomBigraph pattern;
 	/** target */
@@ -122,9 +125,21 @@ public class DomMatch implements Match {
 		NodeList rootEls = this.pattern.getBigraphElement().getElementsByTagName(Constants.ROOT_ELEMENT_NAME);
 		for (int ri=0; ri<rootEls.getLength(); ri++) {
 			Element rootEl = (Element)rootEls.item(ri);
-			ElementMatch rootMatch = new ElementMatch();
+			// check if root matched directly
+			ElementMatch rootMatch = findNodeMatch(rootEl);
+			if (rootMatch!=null) {
+				// take out of node matches
+				rootMatch.index = ri;
+				this.nodeMatches.remove(rootMatch);
+				this.rootMatches.add(rootMatch);
+				logger.debug("Found root match "+rootMatch.patternEl+" -> "+rootMatch.toString());
+				continue;
+			}
+			// infer as usual
+			rootMatch = new ElementMatch();
 			rootMatch.patternEl = rootEl;
 			rootMatch.index = ri;
+			
 			// find a child that matched
 			NodeList childEls = rootEl.getChildNodes();
 			for (int ci=0; ci<childEls.getLength(); ci++) {
