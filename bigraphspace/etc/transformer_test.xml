@@ -305,4 +305,47 @@
 			</bigraph>
 		</result>
 	</test>
+	<!-- placing - swap roots -->
+	<test>
+			<redex>
+				<bigraph>
+					<root>
+						<site index="0" />
+					</root>
+					<root>
+						<site index="1" />
+					</root>
+				</bigraph>
+			</redex>
+			<reactum>
+				<bigraph>
+					<root>
+						<site index="1" />
+					</root>
+					<root>
+						<site index="0" />
+					</root>
+				</bigraph>
+			</reactum>
+		<target>
+			<bigraph>
+				<root>
+					<PhysicalHandheld _support="PH1"></PhysicalHandheld>
+				</root>
+				<root>
+					<PhysicalRoom _support="PR1"></PhysicalRoom>
+				</root>
+			</bigraph>
+		</target>
+		<result>
+			<bigraph>
+				<root>
+					<PhysicalRoom _support="PR1"></PhysicalRoom>
+				</root>
+				<root>
+					<PhysicalHandheld _support="PH1"></PhysicalHandheld>
+				</root>
+			</bigraph>
+		</result>
+	</test>
 </tests>

@@ -24,6 +24,8 @@ class DomPartMatch {
 		LinkedList<Element> targetEls = new LinkedList<Element>();
 		// depends on this... (if not null)
 		NodeMatch parentNodeMatch;
+		// direct root match
+		boolean directRootMatch = false;
 	}
 	/** part matches */
 	LinkedList<NodeMatch> nodeMatches = new LinkedList<NodeMatch>();

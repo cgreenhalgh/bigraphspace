@@ -38,22 +38,48 @@ public class DomMatcher {
 		NodeList patternRootEls = patternBigraphEl.getElementsByTagName(Constants.ROOT_ELEMENT_NAME);
 		for (int ri=0; ri<patternRootEls.getLength(); ri++)
 			partMatch.unmatchedPlaces.add((Element)patternRootEls.item(ri));
+		nextunmatched:
 		while(!partMatch.unmatchedPlaces.isEmpty()) {
 			Element patternEl = partMatch.unmatchedPlaces.removeFirst();
 			// add children to list
 			NodeList patternChildEls = patternEl.getChildNodes();
-			boolean hasNodeChildren = false;
+			boolean hasNodeChildren = false, hasSiteChild = false;
 			for (int pci=0; pci<patternChildEls.getLength(); pci++) {
 				Node patternChildEl = patternChildEls.item(pci);
 				if (patternChildEl instanceof Element) {
 					if (!Constants.SITE_ELEMENT_NAME.equals(patternChildEl.getNodeName()))
 						hasNodeChildren = true;
+					else
+						hasSiteChild = true;
 					partMatch.unmatchedPlaces.add((Element)patternChildEl);				
 				}
 			}
 			if (Constants.ROOT_ELEMENT_NAME.equals(patternEl.getNodeName()) && !hasNodeChildren) {
-				logger.error("Cannot match degenerate pattern with root containing no nodes");
-				return new LinkedList<DomMatch>();
+				if (hasSiteChild==false) {
+					logger.error("Cannot match degenerate pattern with root containing no nodes");
+					return new LinkedList<DomMatch>();
+				}
+				// special case (root with site, no nodes) which could/should match whole 
+				// of corresponding prime - for placings
+				// which root are we?
+				DomPartMatch.NodeMatch rootMatch = new DomPartMatch.NodeMatch();
+				rootMatch.directRootMatch = true;
+				rootMatch.patternEl = patternEl;
+				NodeList targetRootEls = targetBigraphEl.getElementsByTagName(Constants.ROOT_ELEMENT_NAME);
+				for (int ri=0; ri<patternRootEls.getLength(); ri++) 
+					if (patternRootEls.item(ri)==patternEl) {
+						if (ri>=targetRootEls.getLength()) {
+							logger.debug("Cannot match root/site "+ri+": no such root in target");
+							return new LinkedList<DomMatch>();							
+						}
+						rootMatch.targetEls.add((Element)targetRootEls.item(ri));
+						partMatch.nodeMatches.add(rootMatch);
+						
+						logger.debug("Adding possible part match of root/site "+ri+": "+patternEl+" -> "+rootMatch.targetEls.get(0));
+						continue nextunmatched;
+					}
+				logger.error("Did not find root "+patternEl+" in pattern roots");
+				return new LinkedList<DomMatch>();				
 			}
 			if (Constants.ROOT_ELEMENT_NAME.equals(patternEl.getNodeName()) ||
 					Constants.SITE_ELEMENT_NAME.equals(patternEl.getNodeName())) {
@@ -137,9 +163,10 @@ public class DomMatcher {
 			for (Element el : nodeMatch.targetEls)
 				logger.debug("- "+el+" "+el.getAttribute(Constants.NODE_SUPPORT_ATTRIBUTE_NAME));
 		}
-		// remove any root matches (generated as parent matches for siblings in root) 
+		// remove any root matches generated as parent matches for siblings in root
+		// (not direct root matches)
 		for (int ni=0; ni<partMatch.nodeMatches.size(); ) {
-			if (Constants.ROOT_ELEMENT_NAME.equals(partMatch.nodeMatches.get(ni).patternEl.getNodeName()))
+			if (!partMatch.nodeMatches.get(ni).directRootMatch && Constants.ROOT_ELEMENT_NAME.equals(partMatch.nodeMatches.get(ni).patternEl.getNodeName()))
 				partMatch.nodeMatches.remove(ni);
 			else
 				ni++;
@@ -162,9 +189,48 @@ public class DomMatcher {
 				nodeMatch.patternEl = partNodeMatch.patternEl;
 				nodeMatch.targetEl = partNodeMatch.targetEls.get(targetIxs[i]);
 				// check respects parent(s) (parent should be already done because
-				// of top-down generation)
+				// of top-down generation) (Not relevant for root matches)
 				Element parentPatternEl = (Element)nodeMatch.patternEl.getParentNode();
-				if (!Constants.ROOT_ELEMENT_NAME.equals(parentPatternEl.getNodeName())) {
+				logger.debug("Consider "+i+"th element "+nodeMatch.patternEl+" -> "+targetIxs[i]+"th match "+nodeMatch.targetEl);
+				if (Constants.ROOT_ELEMENT_NAME.equals(nodeMatch.patternEl.getNodeName())) {
+					// direct root match - special case
+					// check that the Root is not under the image of some other root of the pattern
+					// and vice versa
+					// (can just check the ones done so far). I.e. no ancestor of the new target node is
+					// already in the match target
+					logger.debug("Found direct root match");
+					Element targetAncestorEl = (Element)nodeMatch.targetEl;
+					while (targetAncestorEl!=null) {
+						for (int di=0; di<i; di++) {
+							DomMatch.ElementMatch ancestorMatch = match.nodeMatches.get(di);
+							if (ancestorMatch.targetEl==targetAncestorEl) {
+								// nope
+								nextMatch(partMatch, targetIxs);
+								continue complete;								
+							}
+						}
+						if (Constants.ROOT_ELEMENT_NAME.equals(targetAncestorEl.getNodeName())) 
+							break; // give up AFTER root
+						targetAncestorEl = (Element)targetAncestorEl.getParentNode();
+					}
+					for (int di=0; di<i; di++) {
+						DomMatch.ElementMatch otherMatch = match.nodeMatches.get(di);
+						targetAncestorEl = (Element)otherMatch.targetEl;
+						while (targetAncestorEl!=null) {
+							if (nodeMatch.targetEl==targetAncestorEl) {
+								// nope
+								nextMatch(partMatch, targetIxs);
+								continue complete;								
+							}
+							
+							if (Constants.ROOT_ELEMENT_NAME.equals(targetAncestorEl.getNodeName())) 
+								break; // give up AFTER root
+							targetAncestorEl = (Element)targetAncestorEl.getParentNode();
+						}
+					}
+					logger.debug("Allowing direct match of root/site "+nodeMatch.patternEl+" -> "+nodeMatch.targetEl);
+				}
+				else if (!Constants.ROOT_ELEMENT_NAME.equals(parentPatternEl.getNodeName())) {
 					boolean found = false;
 					for (int di=0; di<i && !found; di++) {
 						DomMatch.ElementMatch parentMatch = match.nodeMatches.get(di);
@@ -194,10 +260,11 @@ public class DomMatcher {
 						}
 					}	
 					// also check that the parent Root is not under the image of some other root of the pattern
+					// and vice versa
 					// (can just check the ones done so far). I.e. no ancestor of the new target node is
 					// already in the match target
 					Element targetAncestorEl = (Element)nodeMatch.targetEl.getParentNode();
-					while (targetAncestorEl!=null && !Constants.ROOT_ELEMENT_NAME.equals(targetAncestorEl.getNodeName())) {
+					while (targetAncestorEl!=null) {
 						for (int di=0; di<i; di++) {
 							DomMatch.ElementMatch ancestorMatch = match.nodeMatches.get(di);
 							if (ancestorMatch.targetEl==targetAncestorEl) {
@@ -206,8 +273,26 @@ public class DomMatcher {
 								continue complete;								
 							}
 						}
+						if (Constants.ROOT_ELEMENT_NAME.equals(targetAncestorEl.getNodeName())) 
+							break; // give up AFTER root
 						targetAncestorEl = (Element)targetAncestorEl.getParentNode();
 					}
+					for (int di=0; di<i; di++) {
+						DomMatch.ElementMatch otherMatch = match.nodeMatches.get(di);
+						targetAncestorEl = (Element)otherMatch.targetEl;
+						while (targetAncestorEl!=null) {
+							if (nodeMatch.targetEl==targetAncestorEl) {
+								// nope
+								nextMatch(partMatch, targetIxs);
+								continue complete;								
+							}
+							
+							if (Constants.ROOT_ELEMENT_NAME.equals(targetAncestorEl.getNodeName())) 
+								break; // give up AFTER root
+							targetAncestorEl = (Element)targetAncestorEl.getParentNode();
+						}
+					}
+					
 				}
 				// check non-duplicate
 				for (int di=0; di<i; di++) 

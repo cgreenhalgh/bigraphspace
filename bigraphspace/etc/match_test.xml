@@ -461,7 +461,40 @@
 			<!--  <linkmatch />  -->
 		</match>
 	</test>
-	<!-- no-nesting of roots edge case -->
+	<!-- 14. no-nesting of roots (2) -->
+	<test>
+		<pattern>
+			<bigraph>
+				<root>
+					<PhysicalHandheld _support="_PH1">
+						<site index="1" />
+					</PhysicalHandheld>
+				</root>
+				<root>
+					<PhysicalRoom _support="_PR1">
+						<site index="0" />
+					</PhysicalRoom>
+				</root>
+			</bigraph>
+		</pattern>
+		<target>
+			<bigraph>
+				<root>
+					<PhysicalHandheld _support="PH1"></PhysicalHandheld>
+					<PhysicalRoom _support="PR1">
+						<PhysicalHandheld _support="PH2"></PhysicalHandheld>
+						<PhysicalHandheld _support="PH3"></PhysicalHandheld>
+					</PhysicalRoom>
+				</root>
+			</bigraph>
+		</target>
+		<match>
+			<nodematch pattern="_PR1" target="PR1"/>
+			<nodematch pattern="_PH1" target="PH1"/>
+			<!--  <linkmatch />  -->
+		</match>
+	</test>
+	<!-- 15. no-nesting of roots edge case -->
 	<test>
 		<pattern>
 			<bigraph>
@@ -495,6 +528,32 @@
 		<match>
 			<nodematch pattern="_PH2" target="PH2"/>
 			<nodematch pattern="_PH1" target="PH1"/>
+			<!--  <linkmatch />  -->
+		</match>
+	</test>
+	<!-- 16. Matching of whole prime - for placing -->
+	<test>
+		<pattern>
+			<bigraph>
+				<root>
+					<site index="0" />
+				</root>
+				<root>
+					<site index="1" />
+				</root>
+			</bigraph>
+		</pattern>
+		<target>
+			<bigraph>
+				<root>
+					<PhysicalHandheld _support="PH1"></PhysicalHandheld>
+				</root>
+				<root>
+					<PhysicalHandheld _support="PH2"></PhysicalHandheld>
+				</root>
+			</bigraph>
+		</target>
+		<match>
 			<!--  <linkmatch />  -->
 		</match>
 	</test>
