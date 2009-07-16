@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<title>ARTECT Install Notes</title>
+</head>
+<body>
+
+<b>Required</b>
+<ul>
+	<li><a href="http://www.java.com/">Java 1.5 or higher</a></li>
+	<li><a href="http://java.sun.com/javase/technologies/desktop/media/jmf/2.1.1/download.html">Java
+	Media Framework 2.1</a> (JMF)</li>
+</ul>
+
+<p>You can check to see if Java and JMF are installed by going to Add or Remove Programs in the
+Control Panel. Java will appear in the list as either J2SE 5.0 Runtime Environment Update 14 or
+Java(TM) 6 Update 7, or similar. JMF will appear as Java Media Framework 2.1.1e. Java Media
+Framework 2.1.1e will also appear in the start menu.</p>
+<p><b>Note</b>: In Windows Vista and some versions of Windows XP, Microsoft's Java is not
+installed. Although ARTECT doesn't use Microsoft's Java, the Jave Media Framework uses the Java
+directory that is created by Microsoft's Java to store configuration information, and if this
+directory is missing then ARTECT will not be able to find any webcams. To fix, create a Java
+directory under C:/Windows (or the appropriate windows directory if it is elsewhere) before
+installing JMF.</p>
+
+<b>Installation</b>
+
+<ul>
+	<li><a href="http://www.cs.nott.ac.uk/~ktg/artect-editor-installer.exe">Download the ARTECT
+	Editor Installer</a></li>
+	<li>Run the installer</li>
+	<li>Select an install directory. Make sure you have permission to write to the location you
+	try to install to, or you will receive an error like "Error opening file for writing: C:\Program
+	Files\ARTECT\.eclipseproduct".</li>
+	<li><a href="http://www.cs.nott.ac.uk/~ktg/artect-components-installer.exe">Download the ARTECT
+	Components Installer</a></li>
+	<li>Run that installer</li>
+	<li>Select the same installation directory as for the ARTECT Editor.</li>		
+</ul>
+
+<b>Configuring a Webcam</b>
+<p>Before running ARTECT, you need to configure your webcams in the Java Media Framework (JMF).
+You'll need to do this any time you use a new webcam.</p>
+<ul>
+	<li>Connect the webcam</li>
+	<li>Start JMF Registry, this can be found in the start menu, under Java Media Framework
+	2.1.1e. The start menu link might not work, in which case it can be started from C:\Program
+	Files\JMF2.1.1e\bin\jmfregistry.exe</li>
+	<li>In the JMF Registry, select the 'Capture Devices' tab.</li>
+	<li>Click the 'Detect Capture Devices' button. The JMF Registry will spend a several minutes
+	detecting what capture devices you have installed, and their capabilities.</li>
+	<li>Click 'Commit' to save the detected web cams.</li>
+	<li>You can now close the JMF Registry, and you should be able to use your web cam in ARTECT.</li>
+</ul>
+
+<p>You should now be able to use ARTECT. Go to the directory you installed it to and run
+artect.exe to start it. A tutorial is available from within ARTECT. Just select Help Contents on the
+Help menu in order to find it.</p>
+</body>
+</html>

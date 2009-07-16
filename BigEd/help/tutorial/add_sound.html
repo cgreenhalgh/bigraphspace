@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Configuring a 3D Object with Sound</title>
+<link rel="stylesheet" type="text/css" href="help.css" />
+</head>
+<body>
+<p>The ARTECT editor can be used to associate a sound sample with either a marker or a 3D model.
+If associated with a marker, then the sound sample will play whenever the marker becomes visible in
+the associated webcam, regardless of whether there is a 3D model connected to that marker. If a
+sound is associated with a 3D model, then it will play only when that 3D model becomes visible -
+i.e. whenever a marker which has been associated with that 3D model is visible in the webcam. In
+both cases, the sound sample will only play once, and will fade out if the relevant marker is moved
+outside of the filed of view of the webcam.</p>
+To associate a sound with a 3D model:
+<ol>
+	<li>expand the <code>Sounds</code> section of the <code>Possible Things</code> panel</li>
+	<li>drag-and-drop the cello sound sample into the <code>ARTECT Editor</code> panel</li>
+	<li>create a connection between the cello sample icon and the icon representing the cello
+	model</li>
+</ol>
+At this point, the ARTECT editor should look as shown below:
+<img src="images/IMGAR011.png" />
+<p>Now whenever you place the <code>Hiro</code> marker in webcam view, you will see the 3D model of a cello and
+hear the sound of a cello playing.</p>
+</body>
+</html>

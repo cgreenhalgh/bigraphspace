@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Physical Configuration Editor Build Notes</title>
+</head>
+
+<body>
+Required:
+<a href="http://download.eclipse.org/eclipse/downloads/">Eclipse 3.3</a>
+<br>
+
+With Additional Plugins:
+<ul>
+	<li><a href="http://www.eclipse.org/gef/downloads/">Graphical Editor Framework 3.3</a></li>
+	<li><a href="http://download.eclipse.org/webtools/downloads/">Web Standard Tools 2.0</a></li>
+</ul>
+
+<ol>
+	<li>Import the Physical Configuration Project
+	<ol>
+		<li>File-&gt;Import...</li>
+		<li>Select 'Existing Projects into Workspace' in the General folder and click Next.</li>
+		<li>For the root directory, browse to a parent directory of the folder containing the
+		physical configuration manager.</li>
+		<li>'ect.equip.physconf' should appear in the Projects list. Make sure the checkbox next to
+		it is ticked, and click 'Finish'</li>
+
+	</ol>
+	</li>
+	<li>Build the generated files from the ontology:</li>
+	<li>
+	<ol>
+		<li>double click on 'buildWrappers.xml'</li>
+		<li>Set properties 'jena.home' to an installation of Jena 2.3 and 'java.tools.jar' to a
+		suitable JDK location</li>
+		<li>select the 'wrap' (default) task and 'Run as...' 'Ant Build'</li>
+	</ol>
+	</li>
+	<li>Select File-&gt;Export... from the menu</li>
+	<li>Select 'Eclipse Product' from the Plugin Delevopment folder, and click Next.</li>
+	<li>For the configuration, browse and select 'ect.equip.physconf/physconf.product'</li>
+	<li>Select directory you want the program exported</li>
+	<li>Finish! A fully built version of the Physical Configuration Manager should be in the
+	directory you specified.</li>
+</ol>
+</body>
+</html>

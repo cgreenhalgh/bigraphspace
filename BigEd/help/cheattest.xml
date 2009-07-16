@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cheatsheet title="ARTECT Tutorial">
+   <intro>
+      <description>
+         Augmented Reality experiences integrate computer generated data, such as 3D graphics, into the real world and allow real-time user interaction. As content can be actively manipulated and explored by participants is a physical setting, their engagement and motivation can be enhanced and complex ideas can be communicated more easily.<br/>
+The Augmented Reality Experiences Editor (ARTECT) has been developed to simplify the process of authoring AR interactive experiences. It makes use of optical markers as a means of linking virtual content to physical objects in the environment. ARTECT allows you to configure AR experiences by creating simple links between components which abstract complex data and devices. Resources such as 3D models, images, audio clips and visual markers are loaded into ARTECT and given iconic representations. You can then manipulate these components and draw graphical connections between them as a way of developing an AR application, the output of which you can concurrently see in an output window.
+      </description>
+   </intro>
+   <item title="Connecting a Webcam" >
+      <description>
+         The first step in configuring an AR experience with the editor involves specifying a webcam.<br/>
+You can find a representation of the webcam in the Possible Things pane. Drag and drop that into the ARTECT Editor pane, at which point an icon will appear representing the webcam.
+To indicate that you intend to use this webcam you need to make a visual connection between the computer icon and the webcam icon. Select Create Connection on the editor pane and then drag a connection from the webcam to the computer.
+      </description>
+   </item>
+   <item title="Configuring a Markers" >
+      <description>
+      With the web-cam connected, you can begin to configure the markers recognized in the video feed produced by this web-cam to be augmented with 3D models.
+      </description>
+   </item>
+   <item
+         title="Adding a 3D Object to a Marker">
+      <description>
+         <b>Body</b>
+      </description>
+   </item>
+   <item
+         title="Configuring a 3D Model with Sound">
+      <description>
+         The ARTECT editor can be used to associate a sound sample with either a marker or a 3D model. If associated with a marker, then the sound sample will play whenever the marker becomes visible in the associated webcam, regardless of whether there is a 3D model connected to that marker. If a sound is associated with a 3D model, then it will play only when that 3D model becomes visible – i.e. whenever a marker which has been associated with that 3D model is visible in the webcam. In both cases, the sound sample will only play once, and will fade out if the relevant marker is moved outside of the filed of view of the webcam. 
+To associate a sound with a 3D model:
+1.	expand the Sounds section of the Possible Things panel
+2.	drag-and-drop the cello sound sample into the ARTECT Editor panel
+3.	create a connection between the cello sample icon and the icon representing the cello model
+At this point, the ARTECT editor should look as shown below:
+IMGAR011.BMP
+Now whenever you place the “Hiro” marker in webcam view, you will see the 3D model of a cello and hear the sound of a cello playing.
+      </description>
+   </item>
+   <item
+         title="Item">
+      <description>
+         <b>Body</b>
+      </description>
+   </item>
+</cheatsheet>

@@ -1,0 +1,21 @@
+body {
+	font-family: Verdana, Arial, sans-serif;
+	font-size: 10pt;
+}
+
+h1 {
+	margin-top: 5px;
+	font-size: 12pt;
+}
+
+code {
+	font-family: Verdana, Arial, sans-serif;
+	font-size: 10pt;
+	color: #0040A0;
+}
+
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
