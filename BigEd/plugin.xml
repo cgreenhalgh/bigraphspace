@@ -11,6 +11,9 @@
              extensions="*.xml"
              id="bigraph.biged.editors.BigraphEditor"
              name="BigEd">
+          <contentTypeBinding
+                contentTypeId="org.eclipse.core.runtime.xml">
+          </contentTypeBinding>
        </editor>
     </extension>
 </plugin>
