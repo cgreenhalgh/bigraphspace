@@ -1,6 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
+<html><head>
 
 
 
@@ -11,9 +10,7 @@
 
   
   
-  <title>Desgin Notes</title>
-</head>
-
+  <title>Desgin Notes</title></head>
 
 <body>
 
@@ -437,7 +434,9 @@ can "soak up" any number of nodes in the mapping)</li>
 an unconnected port in the bigraph or to a port with a non-constrant
 link name that has no other occurance in the bigraph</li>
   <li>an edge (non-outer name) in the pattern maps to a non-constant link in the target which does not occur in the context</li>
-  <li>an edge (non-outer name) in the pattern maps to a non-constant link in the target that is not mapped to any other link in the pattern&nbsp; </li>
+  <li>an
+edge (non-outer name) in the pattern maps to a non-constant link in the
+target that is not mapped to any other link in the pattern&nbsp; </li>
 
   <li>a pattern root which is identified as "active" is only considered
 to&nbsp;matches a root or a node in the bigraph&nbsp;which is active
@@ -445,8 +444,62 @@ and all of whose ancestors are active</li>
 
   <li>no node in the bigraph is mapped to by more than one node, root or site in the pattern</li>
 
-</ul>
+</ul><h2>Predicates and Logic</h2><p>Conforti, Macedonio and Sassone
+propose BiLog, a spatial logic for bigraphs, which they show
+generalises various other spatial logics. There are various places
+where it would be useful to have predicates over bigraphs, for example
+to express sortings of bigraphs and to express more precise conditions
+on reactions. So I will try using BiLog for this, or least some
+fragment of it.</p><p>BiLog has a notion of selective "transparency"
+whereby certain constructors (e.g. controls) can be hidden with respect
+to the logic, allowing a class of selective generalisation. For now I
+will not consider this aspect of BiLog.</p><h3>BiLog Formulae</h3><p>The formulae of BiLog are built on:</p><ul><li>constant
+formulae corresponding to the primitive constructors of bigraphs, and
+which are satisfied exactly by the corresponding bigraphs:</li><ul><li>C<sub style="font-style: italic; font-weight: bold;">x</sub> (written with an arrow over the x), which is a node of control C with ports linked to the names in <span style="font-style: italic;">x</span> (which has ordered elements corresponding exactly to the number of ports). This has the (usual) signature 1 -&gt; &lt;1, X&gt;.</li><li>1,&nbsp;the empty root, with the (usual) signature 0-&gt;1.</li><li><span style="font-style: italic;">join</span>, with signature 2-&gt;1, the merging of (the contents of) two roots into one root.</li><li><span style="font-style: italic;">swap</span><sub>m,n</sub>, m+n -&gt; n+m, the exchange in order of the first m roots with the remaining n roots.</li><li>/a, signature {a}-&gt;{}, the closure of a (which removes a from the outer face).</li><li><sup>a</sup>/<sub>X</sub>,
+signature X -&gt; {a}, substituion (which associates the names in the
+set X in the inner face with the name a in the outer face).</li><li>a, which is short-hand for <sup>a</sup>/, {}-&gt;{a} </li></ul><li>id<sub>I</sub>, which is the identity on the interface I and therefore matches that interface.</li><li>F, false, which is not satisfied by any bigraph, and&nbsp;T, true, which <span style="font-style: italic;">is</span> satisfied by any bigraph.</li></ul><p>BiLog respects the axioms of bigraphs, for example equivalence under renaming and the non-significance of node order.</p><p>The main operators of bigraphs have BiLog equivalents:</p><ul><li>A <span style="font-style: italic;">tensor-product</span> B, which is satisfied if the bigraph can be decomposed into G' <span style="font-style: italic;">tensor-product</span> G'' where G' satisfies A and G'' satisfies B. Note that tensor-product strictly requires name distinct in G' and G''.&nbsp;</li><li>A <span style="font-style: italic;">compose</span> B, which is satisfied if the bigraph can be
+decomposed into G' <span style="font-style: italic;">compose</span> G'' where G' satisfies A and G''
+satisfies B.</li></ul>BiLog does not include the derived parallel composition operations (|
+or ||) because these are (apparently) undecidable as they range over
+the infinite set of names. However it does provide the following approximation:<ul><li>A  <span style="font-style: italic;">separation-up-to</span>
+B, written as a name vector above tensor-product, which is an explicit
+name-sharing parallel composition. It is satisfied if G = some G' ||
+G'', where G' satisfies A and G'' satisfies B and the only names shared
+between G' and G'' are in the name vector. &nbsp;</li></ul>BiLog includes common and classical operators:<br><ul><li>A =&gt; B, satistified if every bigraph satisfying A also satisfies B.</li><li>A <span style="font-style: italic;">and</span> B, (logical conjunction) satisfied if both A and B are satisfied.</li><li>A <span style="font-style: italic;">or</span> B, (logical disjunction), satisfied if A or B (or both) is satisfied.</li><li><span style="font-style: italic;">not</span> A, satisfied if A is not satisfied.</li><li>A &lt;= B, reverse implication, B =&gt; A.</li><li>A &lt;=&gt; B, two-way implication, A =&gt; B <span style="font-style: italic;">and</span> B =&gt; A.</li></ul>BiLog
+includes "adjuncts" of tensor-product and composition (category
+theorists like adjoints but I still don't understand them properly):<br><ul><li>A <span style="font-style: italic;">left-compose-adjunct</span> B, written o-, which is satisfied if for all G' satisying A and G' compose G defined, G' compose G satisfies B.</li><li>A <span style="font-style: italic;">right-compose-adjunct</span> B, written -o, which is satisfied if for all G' satisying A and G compose G' defined, G compose G' satisfies B.</li><li>A <span style="font-style: italic;">left-tensor-product-adjunct</span> B, written <span style="font-style: italic;">tensor-product</span>-, which is satisfied if for all G' satisfying A and G' tensor-product G defined, G' tensor-product G satisfies B.</li><li>A <span style="font-style: italic;">right-tensor-product-adjunct</span> B, written <span style="font-style: italic;">-tensor-product</span>, which is satisfied if for all G' satisfying A and G tensor-product G' defined, G tensor-product G' satisfies B.</li></ul>From these many more operators are derived:<br><ul><li>A<sub>I</sub> = A o id<sub>I</sub>, i.e. the bigraph satisfies A and has inner face I.</li><li>A<sub>-&gt;J</sub> = id<sub>J</sub> o A, i.e. the bigraph satisfies A and has outer face J.</li><li>A<sub>I-&gt;J</sub> = id<sub>J</sub> o A o id<sub>I</sub>, i.e. the bigraph satisfies A and has signature I -&gt; J.</li><li>A o<sub>I</sub> B = A o id<sub>I</sub>&nbsp;o
+B, i.e. there is a decomposition into a bigraph satisfying A and a
+&nbsp;bigraph satisfying B which has interface I at the composition
+point.</li><li>dual of tensor product = not ( not A tensor-product not
+B ), i.e. for all horizontal subdivisions, the left satisfies A or the
+right satisfies B</li><li>dual of composition = not ( not A compose not
+B ), i.e. for all vertical subdivisions, the context satisfies A or the
+parameter satisfies B</li><li>... (more for adjunts) ...</li><li>some horizontal term satisfies A (existential quantification on tensor product) = T tensor-product A tensor-product T.</li><li>every
+horizontal term satisfies A (universial quantification on tensor
+product) = not ( T tensor-product not A tensor-product T )</li><li>some vertical term satisfies A (existential qualification on composition) = T compose A compose T</li><li>every vertical term satisfies A (universal qualification on composition) = not ( T compose not A compose T )</li><li>somewhere A (on ground terms) = (T o A)<sub>unit</sub>. (the empty interface)</li><li>anywhere A (on ground terms) = not (somewhere not A)</li></ul><h3>Attempted Examples</h3><p>Let's try homomorphic place sorting...</p><p>C<sub>X</sub> - some control, interface 1 -&gt; &lt;1,X&gt;, so has no internal names, so cannot have any links into it.</p><p>C<sub>X</sub> o 1 =&nbsp;C<sub>X</sub> o<sub>1</sub> 1 - empty C control, 0 -&gt; &lt;1,X&gt;</p><p>C<sub>X</sub> o T =&nbsp;C<sub>X</sub> o<sub>1</sub> T - C control containing anything with outerface 1, i.e. no out names</p><p>( C<sub>X</sub> separation-up-to-X' id<sub>X'</sub>
+) o T where X subset of X', signature &lt;1,X'&gt; -&gt; ? - a control
+C containing a bigraph which may share names in X' (which includes
+ports of C)</p><p>Note that we may choose only to consider bigraphs
+with names drawn from X', so that separation-up-to-X' is effectively ||
+(wide parallel composition).</p><p>T o ( C<sub>X</sub> separation-up-to-X' id<sub>X'</sub> ) o T&nbsp; where X subset of X' -&nbsp;some bigraph containing a C<sub>X</sub> which in turn contains anything and which may share names in X' (including all ports of C)</p><p>( P<sub>X</sub> separation-up-to-X' id<sub>&lt;X'&gt;</sub> ) o join ( &nbsp;C<sub>Y</sub> separation-up-to-X' id<sub>&lt;1,X'&gt;</sub>
+) o T where X,Y subsets of X' - a node P containg a node C (implicitly
+containing a site) and a site, passing all names including ports of P
+and C, to an arbitrary parameter with two roots (one being placed in C,
+the other directly into P).</p><p>T o ditto - a bigraph in which the above occurs anywhere (need not be ground).</p><p>( C1<sub>Y1</sub> or C2<sub>Y2</sub> or ... ) - Control C1 (with port names Y1) or control C2 (with port names Y2) or ...</p><p>T o ( ( PX separation-up-to-X' id<sub>X'</sub> ) o T =&gt; not ( ( PX separation-up-to-X' id<sub>X'</sub> ) o join ( ( C1<sub>Y1</sub> or C2<sub>Y2 </sub>or ...) separation-up-to-X' id<sub>&lt;1,X'&gt;</sub> ) o T ) - every sub-bigraph by composition, if it starts with a P does not have a C1, C2, ... as a child.</p>There are various rewriting of this expression which allow the negation to be moved around. <br><h3>Initial reflections</h3><p>This seems rather unwieldy and not very intuitive. Some reasons for this seem to include:</p><ul><li>having
+to allow linking explicitly in order to express that you don't care
+about it (rather than as a default). (identities are not transparent)</li><li>the
+principled avoidance of | and ||, requiring explicit name sets and
+explicit joins. Perhaps effective correspondents could be defined using
+separation-up-to?&nbsp;</li><li>not using some of the possible derived
+expressions, partly because they are hard to write, and partly because
+they are not quite what we want, e.g. "somewhere" using
+separation-up-to rather than tensor-product, and/or not limited to
+ground terms. Presumably we should just define the varants we want.</li><li>not
+being used to writing/thinking like this, e.g. expecting to have
+variables to range over nodes and express further things about those
+nodes (e.g. for every node n of control C, c is a child of n implies
+that the control of c is C1, C2 or C3). Perhaps I'll get used to it, or
+perhaps other notations can be translated?</li></ul>
 
 
-</body>
-</html>
+</body></html>
