@@ -5,5 +5,5 @@ import java.io.InputStream;
 
 public interface ModelLoader
 {
-	public BigraphModel loadModel(final InputStream inputStream) throws IOException;
+	public Bigraph loadModel(final InputStream inputStream) throws IOException;
 }
