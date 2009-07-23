@@ -23,7 +23,7 @@ import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
-import bigraph.biged.model.BigraphModel;
+import bigraph.biged.model.Bigraph;
 import bigraph.biged.model.ModelLoader;
 import bigraph.biged.model.XMLModelLoader;
 import bigraph.biged.ui.graph.parts.BigraphEditPartFactory;
@@ -117,7 +117,7 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette
 		}
 	}
 
-	private BigraphModel bigraph;
+	private Bigraph bigraph;
 	private BigraphOutlinePage outlinePage;
 
 	public BigraphEditor()
@@ -207,7 +207,7 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette
 		}
 	}
 
-	BigraphModel getModel()
+	Bigraph getModel()
 	{
 		return bigraph;
 	}

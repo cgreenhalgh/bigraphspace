@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.eclipse.gef.editparts.AbstractTreeEditPart;
 
-import bigraphspace.model.Place;
+import bigraph.biged.model.Place;
 import bigraphspace.model.PlaceType;
 
 public class PlaceTreePart extends AbstractTreeEditPart

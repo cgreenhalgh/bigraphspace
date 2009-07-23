@@ -38,7 +38,7 @@ package bigraph.biged.ui;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-import bigraphspace.model.Place;
+import bigraph.biged.model.Place;
 import bigraphspace.model.PlaceType;
 
 public class BigraphLabelProvider extends LabelProvider

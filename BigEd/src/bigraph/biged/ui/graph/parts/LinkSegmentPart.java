@@ -35,9 +35,11 @@
  */
 package bigraph.biged.ui.graph.parts;
 
+import org.eclipse.draw2d.Ellipse;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.PolygonDecoration;
 import org.eclipse.draw2d.PolylineConnection;
+import org.eclipse.draw2d.RotatableDecoration;
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
@@ -45,24 +47,40 @@ import org.eclipse.gef.editpolicies.ConnectionEditPolicy;
 import org.eclipse.gef.requests.GroupRequest;
 import org.eclipse.swt.SWT;
 
-import bigraph.biged.model.Edge;
+import bigraph.biged.model.Link;
 
 /**
  * @author <a href="ktg@cs.nott.ac.uk">Kevin Glover</a>
  */
-public class EdgePart extends AbstractConnectionEditPart
+public class LinkSegmentPart extends AbstractConnectionEditPart
 {
-	//private final Port sourcePort;
-	//private final Port targetPort;
-	//private final List<Port> ports = new ArrayList<Port>();
+	class EllipseDecoration extends Ellipse implements RotatableDecoration
+	{
+		public EllipseDecoration()
+		{
+			setSize(10, 10);
+			setAntialias(SWT.ON);
+			setFill(true);
+		}
 
-	public EdgePart()
+		@Override
+		public void setReferencePoint(final Point ref)
+		{
+			final Point pt = Point.SINGLETON;
+			pt.setLocation(ref);
+			pt.negate().translate(getLocation());
+			// setRotation(Math.atan2(pt.y, pt.x));
+		}
+
+	}
+
+	public LinkSegmentPart()
 	{
 	}
-	
-	public Edge getEdge()
+
+	public Link getEdge()
 	{
-		return (Edge)getModel();
+		return (Link) getModel();
 	}
 
 	/*
@@ -96,11 +114,9 @@ public class EdgePart extends AbstractConnectionEditPart
 	{
 		final PolylineConnection connection = (PolylineConnection) super.createFigure();
 		connection.setAntialias(SWT.ON);
-		// Add arrow at endpoint
-		final PolygonDecoration decoration = new PolygonDecoration();
-		decoration.setTemplate(PolygonDecoration.INVERTED_TRIANGLE_TIP);
-		decoration.setAntialias(SWT.ON);
-		connection.setTargetDecoration(decoration);
+
+		connection.setTargetDecoration(new EllipseDecoration());
+		connection.setSourceDecoration(new EllipseDecoration());
 		// connection.setConnectionRouter(new ManhattanConnectionRouter());
 		return connection;
 	}

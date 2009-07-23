@@ -55,8 +55,8 @@ import org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.requests.CreateRequest;
 
-import bigraph.biged.model.BigraphModel;
-import bigraphspace.model.Place;
+import bigraph.biged.model.Bigraph;
+import bigraph.biged.model.Place;
 
 /**
  * @author <a href="ktg@cs.nott.ac.uk">Kevin Glover</a>
@@ -75,9 +75,9 @@ public class BigraphPart extends AbstractGraphicalEditPart
 		super.deactivate();
 	}
 
-	private BigraphModel getBigraph()
+	private Bigraph getBigraph()
 	{
-		return (BigraphModel) getModel();
+		return (Bigraph) getModel();
 	}
 
 	/*
