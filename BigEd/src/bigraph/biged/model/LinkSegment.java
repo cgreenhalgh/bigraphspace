@@ -26,7 +26,7 @@ public class LinkSegment
 		int depth ;
 		for(depth = 0; depth < minLength; depth++)
 		{
-			if(sourceParents.get(depth) != sourceParents.get(depth))
+			if(sourceParents.get(depth) != targetParents.get(depth))
 			{
 				break;
 			}

@@ -60,9 +60,9 @@ public class Place
 	{
 		if(parent != null)
 		{
-			parent.getParents(parents);
-			parents.add(this);
+			parent.getParents(parents);			
 		}
+		parents.add(this);		
 	}
 	
 	public List<Place> getChildren()

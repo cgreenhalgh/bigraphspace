@@ -7,6 +7,7 @@ import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.LineBorder;
+import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.geometry.Insets;
@@ -21,7 +22,7 @@ public class PlaceFigure extends Figure
 	private class RoundedLineBorder extends LineBorder
 	{
 		private int arcLength = 16;
-		private final int margin = 15;
+		private final int margin = 5;
 
 		public RoundedLineBorder(final int style, final boolean rounded)
 		{
@@ -40,7 +41,7 @@ public class PlaceFigure extends Figure
 		public Insets getInsets(final IFigure figure)
 		{
 			// TODO Auto-generated method stub
-			return new Insets(getWidth() + margin);
+			return new Insets(getWidth()+margin);
 		}
 
 		/**
@@ -97,6 +98,8 @@ public class PlaceFigure extends Figure
 			setBackgroundColor(null);			
 		}
 
+		
+		setBorder(new MarginBorder(10));
 		container.setLayoutManager(new ToolbarLayout());
 
 		final ToolbarLayout layout = new ToolbarLayout();
