@@ -47,7 +47,8 @@ import org.eclipse.gef.editpolicies.ConnectionEditPolicy;
 import org.eclipse.gef.requests.GroupRequest;
 import org.eclipse.swt.SWT;
 
-import bigraph.biged.model.Link;
+import bigraph.biged.model.LinkSegment;
+import bigraph.biged.ui.graph.figures.LinkSegmentConnection;
 
 /**
  * @author <a href="ktg@cs.nott.ac.uk">Kevin Glover</a>
@@ -78,9 +79,9 @@ public class LinkSegmentPart extends AbstractConnectionEditPart
 	{
 	}
 
-	public Link getEdge()
+	public LinkSegment getEdge()
 	{
-		return (Link) getModel();
+		return (LinkSegment) getModel();
 	}
 
 	/*
@@ -112,11 +113,11 @@ public class LinkSegmentPart extends AbstractConnectionEditPart
 	@Override
 	protected IFigure createFigure()
 	{
-		final PolylineConnection connection = (PolylineConnection) super.createFigure();
+		final PolylineConnection connection = new LinkSegmentConnection();
 		connection.setAntialias(SWT.ON);
 
-		connection.setTargetDecoration(new EllipseDecoration());
-		connection.setSourceDecoration(new EllipseDecoration());
+		//connection.setTargetDecoration(new EllipseDecoration());
+		//connection.setSourceDecoration(new EllipseDecoration());
 		// connection.setConnectionRouter(new ManhattanConnectionRouter());
 		return connection;
 	}

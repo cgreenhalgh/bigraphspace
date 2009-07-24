@@ -1,7 +1,0 @@
-<toc label="ARTECT Tutorial" topic="help/tutorial/overview.html">
-	<topic label="Configuring a Webcam" href="help/tutorial/add_webcam.html" />
-	<topic label="Configuring a Marker" href="help/tutorial/add_marker.html" />
-	<topic label="Configuring a Sound" href="help/tutorial/add_sound.html" />
-	<topic label="Configuring a Second Marker" href="help/tutorial/add_marker2.html" />
-	<topic label="Configuring an Interaction Point" href="help/tutorial/add_interaction.html" />
-</toc>
