@@ -1,0 +1,238 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+
+  
+  <title>Bigraph Cookbook</title>
+</head>
+
+
+<body>
+
+
+<h1>Bigraph Cookbook: modelling with bigraphs</h1>
+<p>
+
+Chris Greenhalgh, 2009-07-24</p>
+<p>Contents:</p>
+<ul>
+  <li>Introduction</li>
+  <li>General Principles and Heuristics</li>
+  <ul>
+    <li>Containment vs linking</li>
+    <li>One port vs multiple ports vs inner nodes</li>
+  </ul>
+  <li>Modelling Examples</li>
+  <ul>
+    <li>Numbers</li>
+    <li>Other simple values</li>
+    <li>Records and tuples</li>
+    <li>Cartesian space</li>
+    <li>Signals over space (todo)</li>
+  </ul>
+  <li>Sorting Examples (todo)</li>
+  <li>References</li>
+  <li>Changes</li>
+</ul>
+
+
+<h2>Introduction</h2>
+
+
+<p>This document aims to bring together some examples and
+strategies for modelling with bigraphs.</p>
+
+
+<h2>General Principles and Heuristics</h2>
+<h3>Containment vs Linking</h3>
+<p>The place graph component of bigraphs is less expressive than the
+link graph component. It's structure is simpler and "apparent". So one
+rule of thumb is: use the place graph whenever it is sufficiently
+expressive, and only use the link graph if that fails.</p>
+<p>This is comparable to the object/entity modelling choice of
+composition vs&nbsp;association. Composition (part of) relationships
+typically imply fate sharing, e.g. common life-cycle. This is also true
+in bigraphs: children of a node in a parameter get moved around, copied
+or deleted together with their parent.&nbsp;</p>
+<p>See for example records and tuples (below).</p>
+<h3>One Ports vs Multiple Ports vs Inner Nodes</h3>
+<p>A link connects any number of ports from any number of controls and
+is undirected. Consequently links between multiple ports have limitted
+expressiveness.&nbsp;</p>
+<p>If a link is directed then this can usually be expressed by
+splitting each port into two: one "outbound" port and one "inbound"
+port.</p>
+<p>If a port may be linked to from several other ports then there is no
+way to associate information with any one peer port in particular. For
+example consider a web server with one "server" port to which many
+browsers are connected; there is no place for information at the server
+end about an individual client. In such cases the single shared port on
+the parent control can be replaced (in modelling or perhaps even by a
+reaction) with a dedicate port on each of a set of new child
+controls.&nbsp;</p>
+<p><img style="width: 633px; height: 314px;" alt="shared ports and subcontrols" src="images/shared_ports_and_subcontrols.PNG"></p>
+<h2>Examples</h2>
+
+
+<h3>Numbers&nbsp;</h3>
+<h4>Numbers as a Set of Controls</h4>
+<p>Numbers (and other values) can be represented as instances from a (potentially infinite) set of controls, e.g. (0 and 1):</p>
+<pre>	N_0 | N_1 | ...<br></pre>
+<p><img style="width: 279px; height: 103px;" alt="numbers as controls" src="images/numbers_as_controls.PNG"></p>
+<p>If these controls are atomic and have arity 0 (no ports) then
+"having a value" can only be modelled by placing such a control in a
+"meaningful" site.</p>
+<p>This approach requires that the system support parameterised
+(families of) controls. It also suggests that reaction rules should be
+able to express such families and/or constrained subsets of them, e.g.
+"any number", or "any number between 5 and 10". </p>
+<h4>Numbers as Peano Numerals</h4>
+<p>There is an obvious&nbsp;encoding of natural numbers using controls
+(data constructors) Succ (with one site) and Zero (which is atomic):</p>
+<pre>	Zero | Succ(Zero) | Succ(Succ(Zero)) | ...<br><img style="width: 523px; height: 231px;" alt="peano numerals" src="images/peano_numerals.PNG"><br></pre>
+<p>Depending on the context, this might be substituted for the previous approach (numbers as a family of controls).</p>
+<h4>Numbers as Constant Links</h4>
+<p>Work at ITU-C on ReactiveXML (e.g.
+Hildebrandt and Winther, 2005) proposes the use of "constant" links to
+model numbers (and other constants such as strings). These correspond
+effectively to a set of "globally" accessible and constant outer
+names&nbsp;which are considered to be linked to a unique node that
+represents the corresponding value.&nbsp;</p>
+<p>So a Record with field "x" equal to "1" might be modelled as:</p>
+<pre>	Record { x="1" }</pre>
+<img style="width: 562px; height: 282px;" alt="number as constant link" src="images/number_as_constant_link.PNG">
+<p>This
+modelling approach gives a concise XML representation, and leaves open
+the door to changing the actual node(s) representing the number (or
+other constant) at the other end of the link.&nbsp;</p>
+<p>However it complicates the link graph and requires
+additional assumptions and constraints in the model, such as the
+constancy of these links, and the presence of the assumed context
+within thich they are found and defined. It also logically depends on
+one of the other number encodings to give the links their meaning.</p>
+<p>This approach also suggests that reaction rules should be
+able to express constrained subsets of such constant links for ports, e.g.
+"(links corresponding to) any number", or "(links corresponding to) any number between 5 and 10". </p>
+<h3>Other Simple Values</h3>
+<p>The same approaches can be used for other types of values as for numbers (above). Some examples are given below.</p>
+<p>In general, a data constructor can typically be modelled as a corresponding control.
+If it depends on multiple sub-values then these can distinguished as
+for fields in records (below) by means of dedicated child controls.</p>
+<h4>True and False</h4>
+<p>The obvious control-based model is two atomic controls:</p>
+<pre>	True | False<br><img style="width: 242px; height: 110px;" alt="true false" src="images/true_false.PNG"></pre>
+<h3>Records and Tuples</h3>
+<p>There are two main strategies, as for numbers: place-based and link-based. </p>
+<h4>Records with Fields as Places</h4>
+Milner (2009), p.64, shows how controls can modelled with arbitrary
+rank, i.e. distinguished subsites. This approach can be used to model
+Records with Fields, e.g. as in the previous example:<br>
+<pre>	Record( x( N_1 ) )<br><img style="width: 256px; height: 233px;" alt="field as place" src="images/record_field_as_place.PNG"></pre>
+<p>Note that a new set of controls (including "x") has been introduced
+to model the fields; the child(ren) of that control are the value(s)
+associated with that field.</p>
+<p>This modelling approach avoids the use of links entirely (assuming
+that values are copies) and ensures that values are copied/deleted with
+containing fields or records within the parameter of a reaction.</p>
+<h4>Tuples as Records with Standard Field Names</h4>
+<p>Tuples can be modelled as records (see above) using a standard set
+of ordered field "names", e.g. "_1", "_2", ... (compare the similar
+properties used in RDF to model the elements of a collection). For example, using the place modelling the tuple (1,2):</p>
+<pre>	Tuple( _1( N_1 ) | _2( N_2 ) )<br><img style="width: 469px; height: 224px;" alt="tuple" src="images/tuple.PNG"><br></pre>
+<p>Tuples of different length could&nbsp;have distinct controls (which should give more expressiveness), e.g.</p>
+<pre>	Tuple_2( _1( N_1 ) | _2( N_2 ) )<br><img style="width: 442px; height: 232px;" alt="fixed size tuple" src="images/fixed_size_tuple.PNG"><br></pre>
+<h4>Records with Fields as Ports</h4>
+If values are modelled as constant
+links (above), it is natural to model records as controls and fields as
+ports. Reproducing the example, above, a Record with field "x" equal to
+"1" might be modelled as:
+<pre>	Record { x="1" }</pre>
+<img style="width: 562px; height: 282px;" alt="number as constant link" src="images/number_as_constant_link.PNG">
+<p>This
+modelling approach gives a concise XML representation.&nbsp;However
+it complicates the link graph and requires
+additional assumptions and constraints in the model, such as the
+constancy of these links, and the presence of the assumed context
+within thich they are found and defined. It also generalises less well
+to other kinds of values, since they must all be linked to and their
+life-cycle and consistency maintained independently of the Record.</p>
+<h3>Cartesian Space</h3>
+<p>Modelling a cartesian space requires (a) modelling coordinates and
+(b) modelling the relationship between the coordinates and the space
+which they measure and (c) modelling the relationship between the
+objects in the space and their coordinates (and/or each other). These
+are considered in turn.</p>
+<h4>Coordinates as Records</h4>
+A single coordinate can be modelled as a record or tuple (see above), e.g. "12,10":<br>
+<pre>	Coordinate( x( N_12 ) | y( N_10 ) ) <br></pre>
+<p>or</p>
+<pre>	Coordinate( _1( N_12 ) | _2( N_10 ) ) )</pre>
+<h4>Coordinates as a Set of Controls</h4>
+<p>A single coordinate can be modelled as a control from a (parameterised) set of coordinate controls, e.g. "12,10":</p>
+<pre>	Coordinate_12_10<br></pre>
+<p>or</p>
+<pre>	[12,10]<br></pre>
+<p>The latter assumes a richer range of textual representations for parameterised controls.</p>
+<h4>Coordinates Independent from the Space</h4>
+<p>The coordinates may be independent of the space (control) that they describe (see later examples).</p>
+<h4>Coordinates Within the Space</h4>
+The coordinates may made children of the space that they describe. This
+approach is suggested by Milner's initial modelling of the Savannah
+game (Milner, 2009b), e.g. a spatial "locale" spanning part of a
+coordinate system (coordinate controls are written in this example as
+"[xy]"):<br>
+<pre>	locale( [1,4] | [2,4] | [3,4] | [2,5] | [3,5] )</pre>
+<img style="width: 236px; height: 195px;" alt="savannah locale" src="images/savannah_locale.PNG"><br>
+<p>This has the benefit of making clear which coordinates fall within each parent space.</p>
+<p>Note that the visual position of the coordinate controls within the
+locale is irrelevant to the bigraphical representation, but probably
+important for most visualisations. This implies that a graphical
+bigraph viewer/editor might have locally specific layout methods for
+particular kinds of models and modelling approaches.</p>
+<h4>Object Position as an "Internal" Value</h4>
+<p>The modelled object may be augmented with an internal control such
+as "Position" which contains the representation of its coordinate, e.g.:</p>
+<pre>	Person( Position( [12,10] ) | ... )</pre>
+Typically this implies that the coordinates are independent from the
+space, because for the normal tree-based place graphs this would
+otherwise prevent the representation of two objects at the same
+coordinates or overlapping (only one could be the parent of each
+coordinate).<br>
+<h4>Object Position as Linked Value</h4>
+<p>The modelled object may be augmented with a port that links to the representation of its coordinate, e.g.</p>
+<pre>	Person{ position=p } | [12,10]{position=p}</pre>
+<img style="width: 259px; height: 178px;" alt="position linked" src="images/position_linked.PNG"><br>
+Typically this implies that the coordinates within space approach is
+being used: the resort to linking then allows multiple objects to share
+the same position, while the links are likely to be (reasonably) local.
+This is the approach suggested in Milner (2009b):<br>
+<img style="width: 330px; height: 297px;" alt="position linked local" src="images/position_linked_local.PNG"><br>
+<p>This approach could be combined with coordinates independent of
+space, but would it this case the "internal value" approach would
+probably be preferred.&nbsp;</p>
+<h3>Signals over Space</h3>
+To do: non-overlapping controls; overlapping controls; links; levels as nested controls. 
+<h2>References</h2>
+<p>Hildebrandt, Thomas, Jacob W. Winther, 2005: Bigraphs and (Reactive) XML - an XML-centric model of computation.&nbsp;<a href="http://www1.itu.dk/sw29980.asp">ITU Technical report TR-2005-56</a>.</p>
+
+
+
+
+<p>Milner, Robin, 2009: The Space and Motion of Communicating
+Agents. Cambridge University Press.</p>
+<p>Milner, Robin, 2009b: Collaborative behaviour in the wild. (Exploratory note, February 2009.)</p>
+
+
+<h2>Changes</h2>
+2009-07-24<br>
+<ul>
+  <li>Created</li>
+</ul>
+
+
+</body>
+</html>
