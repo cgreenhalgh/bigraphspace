@@ -161,7 +161,18 @@ that the state can affect the ports and sorting of the node, for
 example a network device having a "connection" port only in an active state.</p><pre>	InterfaceDown{}( ) | InterfaceUp{connection=c1}( )<br><br><img style="width: 448px; height: 217px;" alt="" src="images/state_as_control_set.PNG"><br></pre><p>Milner
 (2009) uses this approach (without varying ports) when modelling petri
 nets (p.67), and also (2009b)&nbsp;with varying ports when modelling
-the savannah game. </p><h3>State as a Link</h3><p>Mainly for completeness, we note that the presence or absence of a link may indicate a&nbsp;state. </p><h2>Space</h2><h3>Topology</h3><h4>Topology as Ports and Links</h4><p>If
+the savannah game. </p><h3>State as a Link</h3><p>Mainly for completeness, we note that the presence or absence of a link may indicate a&nbsp;state. </p><h2>Digital resources</h2><h3>Database</h3><p>A
+database may be modelled as a place.&nbsp;It may not be necessary to
+model the database itself if the rows and/or tables will not be
+confused without it. &nbsp;</p><p>Each table may be modelled as a place. In this case each table might be identified by a unique control, a field-like name (in a child place or port) or a distinguishing link.&nbsp;Alternatively
+the table can be omitted from the model and each row of the table
+suitably distinguished from rows of other tables.</p><p>Each row can be
+modelled as a record (see above), either with a nested node for each
+column holding its value or a port for each column linking to its value
+or perhaps both (see below). If tables are not modelled explicitly then each row needs to indicate its table, e.g. by a table-specific row control.</p><p>TODO: examples...</p><p>A bigraph match can model a join if&nbsp;</p><p>(a) there are links between equal values,  for example if the constant link modelling approach is used for numbers&nbsp;</p><p>or if additional explicit links are added for this purpose&nbsp;</p><p>or
+(b) the control expression language supports control variables and
+existential quantification allowing the set of patterns with equal
+values (modelled as control sets) to be expressed directly. </p><p>TODO: examples...</p><h3>Media (linked to deployment) (todo)</h3><h2>Space</h2><h3>Topology</h3><h4>Topology as Ports and Links</h4><p>If
 there is a fixed and finite set of possible "directions" (or
 equivalent) by which places may be linked then "directions" can be
 modelled as ports and connectedness by links, e.g.</p><pre>	Square{east=s1e}() | Square(west=s1e,east=s2e}() | Square{west=s2e}<br><img style="width: 425px; height: 155px;" alt="" src="images/topology_as_ports.PNG"><br></pre><p>This approach is used by&nbsp;Søren and Damgaard (2005) when modelling the game of life.</p><h4>Topology as Child-nodes and Links</h4><p>If there is not fixed set of "directions" then the elaboration of ports to child nodes can be used to model a more general topology, e.g.</p><pre>	Locale( anchor{link=l1} ) | Locale( anchor{link=l1} | anchor{link=l2} ) | Locale( anchor{link=l2} )<br><img style="width: 386px; height: 124px;" alt="" src="images/topology_as_child_nodes.PNG"><br></pre><p>This
