@@ -1,15 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
+<html><head>
 
 
   
   <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
 
   
-  <title>Bigraph Cookbook</title>
-</head>
-
+  <title>Bigraph Cookbook</title></head>
 
 <body>
 
@@ -23,18 +20,14 @@ Chris Greenhalgh, 2009-07-24</p>
   <li>Introduction</li>
   <li>General Principles and Heuristics</li>
   <ul>
-    <li>Containment vs linking</li>
+    <li>Basic controls (todo)</li><ul><li>physical things, digital things, edge labels, place labels (todo)</li></ul><li>Containment vs linking</li>
     <li>One port vs multiple ports vs inner nodes</li>
-  </ul>
-  <li>Modelling Examples</li>
+  </ul><li>Numbers and other simple data types</li>
   <ul>
     <li>Numbers</li>
     <li>Other simple values</li>
     <li>Records and tuples</li>
-    <li>Cartesian space</li>
-    <li>Signals over space (todo)</li>
-  </ul>
-  <li>Sorting Examples (todo)</li>
+    </ul><li>State</li><li>Digital resources</li><ul><li>Database (todo)</li><ul><li>Foreign key/join on value - link or node existential expression (todo)</li></ul><li>Media (linked to deployment) (todo)</li></ul><li>Space</li><ul><li>Topology&nbsp;</li><li>Overlap (todo)</li><li>Cartesian space</li><li>Signals over space (todo)</li></ul><li>Physical world</li><ul><li>Built environment (todo)</li><li>Devices (configuration, authoring) (todo)</li><li>Biological systems (todo)</li><li>People (todo)</li></ul><li>Sensing (todo)</li><li>Computation</li><ul><li>Process calculi (todo)</li><li>Recursive processes (todo)</li><li>Calculation, recursive functions (todo)</li><li>Agents (todo)</li></ul><li>History (todo)</li><li>Permission/access control (todo)</li><li>Sorting Examples (todo)</li>
   <li>References</li>
   <li>Changes</li>
 </ul>
@@ -44,7 +37,9 @@ Chris Greenhalgh, 2009-07-24</p>
 
 
 <p>This document aims to bring together some examples and
-strategies for modelling with bigraphs.</p>
+strategies for modelling with bigraphs.</p><p>See also:</p><ul><li><a href="Tutorial.html">bigraphspace tutorial</a></li><li>Søren Debois and Troels C. Damgaard, 2005: Bigraphs by Example. Technical report TR-2005-61 in IT 
+University Technical Report Series,&nbsp;<a href="file:///exchweb/bin/redir.asp?URL=http://www1.itu.dk/sw40974.asp" target="_blank">http://www1.itu.dk/sw40974.asp</a>, which has examples of a network switch, finite automata, the game of "life'', combinatory logic, term 
+unification and an event-driven system. </li></ul>
 
 
 <h2>General Principles and Heuristics</h2>
@@ -75,10 +70,7 @@ the parent control can be replaced (in modelling or perhaps even by a
 reaction) with a dedicate port on each of a set of new child
 controls.&nbsp;</p>
 <p><img style="width: 633px; height: 314px;" alt="shared ports and subcontrols" src="images/shared_ports_and_subcontrols.PNG"></p>
-<h2>Examples</h2>
-
-
-<h3>Numbers&nbsp;</h3>
+<h2>Numbers and Other Simple Datatypes</h2><h3>Numbers&nbsp;</h3>
 <h4>Numbers as a Set of Controls</h4>
 <p>Numbers (and other values) can be represented as instances from a (potentially infinite) set of controls, e.g. (0 and 1):</p>
 <pre>	N_0 | N_1 | ...<br></pre>
@@ -100,12 +92,12 @@ able to express such families and/or constrained subsets of them, e.g.
 Hildebrandt and Winther, 2005) proposes the use of "constant" links to
 model numbers (and other constants such as strings). These correspond
 effectively to a set of "globally" accessible and constant outer
-names&nbsp;which are considered to be linked to a unique node that
-represents the corresponding value.&nbsp;</p>
+names&nbsp;which represent these values.&nbsp;</p>
 <p>So a Record with field "x" equal to "1" might be modelled as:</p>
 <pre>	Record { x="1" }</pre>
-<img style="width: 562px; height: 282px;" alt="number as constant link" src="images/number_as_constant_link.PNG">
-<p>This
+<img style="width: 363px; height: 278px;" alt="number as constant link" src="images/number_as_constant_link.PNG">
+<p>To ground this approach in the theory of bigraphs the constant link may optionally be considered to be linked to a unique node that
+represents the corresponding value (using one of the previous representations):</p><p><img style="width: 572px; height: 274px;" alt="numbers as constant link 2" src="images/number_as_constant_link2.PNG"></p><p>This
 modelling approach gives a concise XML representation, and leaves open
 the door to changing the actual node(s) representing the number (or
 other constant) at the other end of the link.&nbsp;</p>
@@ -151,7 +143,7 @@ links (above), it is natural to model records as controls and fields as
 ports. Reproducing the example, above, a Record with field "x" equal to
 "1" might be modelled as:
 <pre>	Record { x="1" }</pre>
-<img style="width: 562px; height: 282px;" alt="number as constant link" src="images/number_as_constant_link.PNG">
+<img style="width: 363px; height: 278px;" alt="number as constant link" src="images/number_as_constant_link.PNG">
 <p>This
 modelling approach gives a concise XML representation.&nbsp;However
 it complicates the link graph and requires
@@ -160,7 +152,22 @@ constancy of these links, and the presence of the assumed context
 within thich they are found and defined. It also generalises less well
 to other kinds of values, since they must all be linked to and their
 life-cycle and consistency maintained independently of the Record.</p>
-<h3>Cartesian Space</h3>
+<h2>State</h2><p>The state of an element of a system can modelled in a number of different ways.</p><h3>State as a Token</h3><p>A
+common description of finite state machines and petri nets is in terms
+of states as places which can hold a token representing their
+activation. E.g.</p><pre>	StateA{l1=a} ( Token ) | StateB{l1=a} ( ) <br><img style="width: 357px; height: 138px;" alt="state as token" src="images/state_as_token.PNG"><br></pre><p>For each site this approach is limited to states corresponding to&nbsp;boolean or (small) counts. </p><h3>State as a&nbsp;Field-like Value</h3><p>A more flexible representation of state uses one of the record/field models, described above.&nbsp;</p><pre>	Car( speed( N_10 ) | ignition( True ) )<br><img style="width: 464px; height: 231px;" alt="" src="images/state_as_fields.PNG"><br></pre><p>Another example of this is can be seen in the model of object position as an internal value (below).</p><h3>State as a Control Set</h3><p>State
+can be modelled by a change of control. This has the additional benefit
+that the state can affect the ports and sorting of the node, for
+example a network device having a "connection" port only in an active state.</p><pre>	InterfaceDown{}( ) | InterfaceUp{connection=c1}( )<br><br><img style="width: 448px; height: 217px;" alt="" src="images/state_as_control_set.PNG"><br></pre><p>Milner
+(2009) uses this approach (without varying ports) when modelling petri
+nets (p.67), and also (2009b)&nbsp;with varying ports when modelling
+the savannah game. </p><h3>State as a Link</h3><p>Mainly for completeness, we note that the presence or absence of a link may indicate a&nbsp;state. </p><h2>Space</h2><h3>Topology</h3><h4>Topology as Ports and Links</h4><p>If
+there is a fixed and finite set of possible "directions" (or
+equivalent) by which places may be linked then "directions" can be
+modelled as ports and connectedness by links, e.g.</p><pre>	Square{east=s1e}() | Square(west=s1e,east=s2e}() | Square{west=s2e}<br><img style="width: 425px; height: 155px;" alt="" src="images/topology_as_ports.PNG"><br></pre><p>This approach is used by&nbsp;Søren and Damgaard (2005) when modelling the game of life.</p><h4>Topology as Child-nodes and Links</h4><p>If there is not fixed set of "directions" then the elaboration of ports to child nodes can be used to model a more general topology, e.g.</p><pre>	Locale( anchor{link=l1} ) | Locale( anchor{link=l1} | anchor{link=l2} ) | Locale( anchor{link=l2} )<br><img style="width: 386px; height: 124px;" alt="" src="images/topology_as_child_nodes.PNG"><br></pre><p>This
+approach is used by Milner (2009b) modelling the locales in the
+savannah game, and by Krivine, Milner and Troina (2008) when modelling
+cell membrane budding. </p><h3>Cartesian Space</h3>
 <p>Modelling a cartesian space requires (a) modelling coordinates and
 (b) modelling the relationship between the coordinates and the space
 which they measure and (c) modelling the relationship between the
@@ -217,7 +224,12 @@ probably be preferred.&nbsp;</p>
 <h3>Signals over Space</h3>
 To do: non-overlapping controls; overlapping controls; links; levels as nested controls. 
 <h2>References</h2>
-<p>Hildebrandt, Thomas, Jacob W. Winther, 2005: Bigraphs and (Reactive) XML - an XML-centric model of computation.&nbsp;<a href="http://www1.itu.dk/sw29980.asp">ITU Technical report TR-2005-56</a>.</p>
+<p>Debois,&nbsp;Søren, and Troels C. Damgaard, 2005: Bigraphs by Example. Technical report TR-2005-61 in IT 
+University Technical Report Series,&nbsp;<a href="file:///exchweb/bin/redir.asp?URL=http://www1.itu.dk/sw40974.asp" target="_blank">http://www1.itu.dk/sw40974.asp</a>, which has examples of a network switch, finite automata, the game of "life'', combinatory logic, term 
+unification and an event-driven system.</p><p>Hildebrandt, Thomas, Jacob W. Winther, 2005: Bigraphs and (Reactive) XML - an XML-centric model of computation.&nbsp;<a href="http://www1.itu.dk/sw29980.asp">ITU Technical report TR-2005-56</a>.</p><p>Krivine, Jean, Robin Milner and Angelo Troina, 2008: Stochastic Bigraphs. <b>Electronic Notes in Theoretical Computer 
+Science</b>, Volume 
+218, 22 October 2008, Pages 73-96. Proceedings of the 24th Conference on 
+the Mathematical Foundations of Programming Semantics (MFPS XXIV) </p>
 
 
 
@@ -234,5 +246,4 @@ Agents. Cambridge University Press.</p>
 </ul>
 
 
-</body>
-</html>
+</body></html>
