@@ -35,11 +35,8 @@
  */
 package bigraph.biged.ui.graph.parts;
 
-import org.eclipse.draw2d.Ellipse;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PolylineConnection;
-import org.eclipse.draw2d.RotatableDecoration;
-import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
@@ -55,26 +52,6 @@ import bigraph.biged.ui.graph.figures.LinkSegmentConnection;
  */
 public class LinkSegmentPart extends AbstractConnectionEditPart
 {
-	class EllipseDecoration extends Ellipse implements RotatableDecoration
-	{
-		public EllipseDecoration()
-		{
-			setSize(10, 10);
-			setAntialias(SWT.ON);
-			setFill(true);
-		}
-
-		@Override
-		public void setReferencePoint(final Point ref)
-		{
-			final Point pt = Point.SINGLETON;
-			pt.setLocation(ref);
-			pt.negate().translate(getLocation());
-			// setRotation(Math.atan2(pt.y, pt.x));
-		}
-
-	}
-
 	public LinkSegmentPart()
 	{
 	}
@@ -115,10 +92,6 @@ public class LinkSegmentPart extends AbstractConnectionEditPart
 	{
 		final PolylineConnection connection = new LinkSegmentConnection();
 		connection.setAntialias(SWT.ON);
-
-		//connection.setTargetDecoration(new EllipseDecoration());
-		//connection.setSourceDecoration(new EllipseDecoration());
-		// connection.setConnectionRouter(new ManhattanConnectionRouter());
 		return connection;
 	}
 

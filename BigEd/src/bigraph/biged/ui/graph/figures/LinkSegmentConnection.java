@@ -50,8 +50,8 @@ import org.eclipse.swt.widgets.Display;
 public class LinkSegmentConnection extends PolylineConnection
 {
 	private Path path;
-	
-	//private final static int defaultControlOffsetX = 40;
+
+	// private final static int defaultControlOffsetX = 40;
 	// private final static int defaultControlOffsetY = 0;
 
 	@Override
@@ -66,9 +66,10 @@ public class LinkSegmentConnection extends PolylineConnection
 
 			final GeneralPath gp = new GeneralPath();
 			gp.moveTo(source.x, source.y);
-			//gp.lineTo(source.x + 10, source.y);
-			//gp.curveTo(source.x + defaultControlOffsetX, source.y, target.x - defaultControlOffsetX, target.y,
-			//		target.x - 10, target.y);
+			// gp.lineTo(source.x + 10, source.y);
+			// gp.curveTo(source.x + defaultControlOffsetX, source.y, target.x -
+			// defaultControlOffsetX, target.y,
+			// target.x - 10, target.y);
 			gp.lineTo(target.x, target.y);
 
 			bounds = new Rectangle(gp.getBounds().x, gp.getBounds().y, gp.getBounds().width, gp.getBounds().height);
@@ -85,7 +86,7 @@ public class LinkSegmentConnection extends PolylineConnection
 			}
 
 			bounds.union(source.x + 3, source.y + 3);
-			bounds.union(source.x - 3, source.y - 3);			
+			bounds.union(source.x - 3, source.y - 3);
 			bounds.union(target.x + 3, target.y + 3);
 			bounds.union(target.x - 3, target.y - 3);
 		}
@@ -102,9 +103,10 @@ public class LinkSegmentConnection extends PolylineConnection
 
 		path = new Path(Display.getCurrent());
 		path.moveTo(source.x, source.y);
-		//path.lineTo(source.x + 10, source.y);
-		//path.cubicTo(source.x + defaultControlOffsetX, source.y, target.x - defaultControlOffsetX, target.y,
-		//		target.x - 10, target.y);
+		// path.lineTo(source.x + 10, source.y);
+		// path.cubicTo(source.x + defaultControlOffsetX, source.y, target.x -
+		// defaultControlOffsetX, target.y,
+		// target.x - 10, target.y);
 		path.lineTo(target.x, target.y);
 		// }
 		return path;
@@ -120,7 +122,7 @@ public class LinkSegmentConnection extends PolylineConnection
 		g.setAntialias(SWT.ON);
 		g.drawPath(getPath());
 		g.setBackgroundColor(getForegroundColor());
-		g.fillOval(startPoint.x - 3, startPoint.y - 3, 6, 6);		
+		g.fillOval(startPoint.x - 3, startPoint.y - 3, 6, 6);
 		g.fillOval(endPoint.x - 3, endPoint.y - 3, 6, 6);
 	}
 
@@ -134,9 +136,10 @@ public class LinkSegmentConnection extends PolylineConnection
 
 		final GeneralPath gp = new GeneralPath();
 		gp.moveTo(source.x, source.y);
-		//gp.lineTo(source.x + 10, source.y);
-		//gp.curveTo(source.x + defaultControlOffsetX, source.y, target.x - defaultControlOffsetX, target.y,
-		//		target.x - 10, target.y);
+		// gp.lineTo(source.x + 10, source.y);
+		// gp.curveTo(source.x + defaultControlOffsetX, source.y, target.x - defaultControlOffsetX,
+		// target.y,
+		// target.x - 10, target.y);
 		gp.lineTo(target.x, target.y);
 
 		return gp.contains(x, y);

@@ -6,11 +6,12 @@ import org.eclipse.draw2d.FlowLayout;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.RectangleFigure;
+import org.eclipse.draw2d.RoundedRectangle;
 import org.eclipse.draw2d.ToolbarLayout;
-import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.swt.SWT;
 
 import bigraph.biged.model.Place;
@@ -19,59 +20,9 @@ import bigraphspace.model.PlaceType;
 
 public class PlaceFigure extends Figure
 {
-	private class RoundedLineBorder extends LineBorder
-	{
-		private int arcLength = 16;
-		private final int margin = 5;
-
-		public RoundedLineBorder(final int style, final boolean rounded)
-		{
-			super(null, 2, style);
-			if (rounded)
-			{
-				arcLength = 16;
-			}
-			else
-			{
-				arcLength = 0;
-			}
-		}
-
-		@Override
-		public Insets getInsets(final IFigure figure)
-		{
-			// TODO Auto-generated method stub
-			return new Insets(getWidth()+margin);
-		}
-
-		/**
-		 * @see org.eclipse.draw2d.Border#paint(IFigure, Graphics, Insets)
-		 */
-		@Override
-		public void paint(final IFigure figure, final Graphics graphics, final Insets insets)
-		{
-			tempRect.setBounds(getPaintRectangle(figure, insets));
-			if (getWidth() % 2 == 1)
-			{
-				tempRect.width--;
-				tempRect.height--;
-			}
-			tempRect.shrink(getWidth() / 2, getWidth() / 2);
-			graphics.setLineWidth(getWidth());
-			graphics.setLineStyle(getStyle());
-			if (getColor() != null)
-			{
-				graphics.setForegroundColor(getColor());
-			}
-			graphics.setAntialias(SWT.ON);
-			if(getBackgroundColor() != null)
-			{
-				graphics.setBackgroundColor(getBackgroundColor());
-				//graphics.fillRoundRectangle(tempRect, arcLength, arcLength);				
-			}
-			graphics.drawRoundRectangle(tempRect, arcLength, arcLength);
-		}
-	}
+	private static final int lineWidth = 2;
+	private static final int arcLength = 16;
+	private static final int margin = 15;
 
 	private final Label name;
 	private final IFigure container;
@@ -81,26 +32,44 @@ public class PlaceFigure extends Figure
 		name = new Label(BigraphLabelProvider.text(place));
 		name.setLabelAlignment(PositionConstants.LEFT);
 
-		container = new Figure();
+
 		if (place.getType() == PlaceType.root)
 		{
-			container.setBorder(new RoundedLineBorder(Graphics.LINE_DASH, true));
-			setBackgroundColor(null);				
+			RoundedRectangle rect = new RoundedRectangle();
+			rect.setAntialias(SWT.ON);
+			rect.setLineWidth(lineWidth);
+			rect.setLineStyle(Graphics.LINE_DASH);
+			rect.setCornerDimensions(new Dimension(arcLength, arcLength));
+			rect.setForegroundColor(ColorConstants.black);			
+			
+			container = rect;		
 		}
-		else if(place.getType() == PlaceType.site)
+		else if (place.getType() == PlaceType.site)
 		{
-			container.setBorder(new RoundedLineBorder(Graphics.LINE_DASH, true));			
-			setBackgroundColor(ColorConstants.gray);			
+			RoundedRectangle rect = new RoundedRectangle();
+			rect.setAntialias(SWT.ON);
+			//container.setBorder(new RoundedLineBorder(Graphics.LINE_DASH, true));
+			rect.setBackgroundColor(ColorConstants.gray);
+			rect.setLineWidth(lineWidth);
+			rect.setLineStyle(Graphics.LINE_DASH);
+			rect.setCornerDimensions(new Dimension(arcLength, arcLength));
+			rect.setForegroundColor(ColorConstants.black);			
+			container = rect;			
 		}
 		else
 		{
-			container.setBorder(new RoundedLineBorder(Graphics.LINE_SOLID, false));
-			setBackgroundColor(null);			
+			RectangleFigure rect = new RectangleFigure();
+			rect.setLineWidth(lineWidth);
+			rect.setForegroundColor(ColorConstants.black);						
+			container = rect;
 		}
 
-		
-		setBorder(new MarginBorder(10));
-		container.setLayoutManager(new ToolbarLayout());
+		final FlowLayout containerLayout = new FlowLayout();
+		containerLayout.setMajorSpacing(margin);
+		containerLayout.setMinorSpacing(margin);
+
+		container.setBorder(new MarginBorder(margin));
+		container.setLayoutManager(containerLayout);
 
 		final ToolbarLayout layout = new ToolbarLayout();
 		layout.setVertical(true);

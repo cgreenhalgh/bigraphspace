@@ -24,18 +24,6 @@ public class PortConnectionAnchor extends AbstractConnectionAnchor
 		this.registry = registry;
 	}
 
-	private Point getCenter(final IFigure figure)
-	{
-		if (figure instanceof PlaceFigure)
-		{
-			return ((PlaceFigure) figure).getContainer().getBounds().getCenter();
-		}
-		else
-		{
-			return figure.getBounds().getCenter();
-		}		
-	}
-	
 	@Override
 	public Point getLocation(final Point reference)
 	{
@@ -47,7 +35,7 @@ public class PortConnectionAnchor extends AbstractConnectionAnchor
 			IFigure figure = null;
 			if (segment.getSource() == port)
 			{
-				EditPart part = registry.get(segment.getTarget().getPlace());
+				final EditPart part = registry.get(segment.getTarget().getPlace());
 				if (part instanceof GraphicalEditPart)
 				{
 					figure = ((GraphicalEditPart) part).getFigure();
@@ -55,7 +43,7 @@ public class PortConnectionAnchor extends AbstractConnectionAnchor
 			}
 			else
 			{
-				EditPart part = registry.get(segment.getSource().getPlace());
+				final EditPart part = registry.get(segment.getSource().getPlace());
 				if (part instanceof GraphicalEditPart)
 				{
 					figure = ((GraphicalEditPart) part).getFigure();
@@ -72,7 +60,7 @@ public class PortConnectionAnchor extends AbstractConnectionAnchor
 		point.x /= count;
 		point.y /= count;
 
-		Rectangle r = Rectangle.SINGLETON;
+		final Rectangle r = Rectangle.SINGLETON;
 		r.setBounds(getOwner().getBounds());
 		r.translate(-1, -1);
 		r.resize(1, 1);
@@ -81,14 +69,15 @@ public class PortConnectionAnchor extends AbstractConnectionAnchor
 		float centerX = r.x + 0.5f * r.width;
 		float centerY = r.y + 0.5f * r.height;
 
-		if (r.isEmpty() || (point.x == (int) centerX && point.y == (int) centerY))
-			return new Point((int) centerX, (int) centerY); // This avoids divide-by-zero
+		if (r.isEmpty() || (point.x == (int) centerX && point.y == (int) centerY)) { return new Point((int) centerX,
+				(int) centerY); // This avoids divide-by-zero
+		}
 
 		float dx = point.x - centerX;
 		float dy = point.y - centerY;
 
 		// r.width, r.height, dx, and dy are guaranteed to be non-zero.
-		float scale = 0.5f / Math.max(Math.abs(dx) / r.width, Math.abs(dy) / r.height);
+		final float scale = 0.5f / Math.max(Math.abs(dx) / r.width, Math.abs(dy) / r.height);
 
 		dx *= scale;
 		dy *= scale;
@@ -96,6 +85,18 @@ public class PortConnectionAnchor extends AbstractConnectionAnchor
 		centerY += dy;
 
 		return new Point(Math.round(centerX), Math.round(centerY));
+	}
+
+	private Point getCenter(final IFigure figure)
+	{
+		if (figure instanceof PlaceFigure)
+		{
+			return ((PlaceFigure) figure).getContainer().getBounds().getCenter();
+		}
+		else
+		{
+			return figure.getBounds().getCenter();
+		}
 	}
 
 }
