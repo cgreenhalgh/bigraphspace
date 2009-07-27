@@ -714,6 +714,8 @@ or reaction rule; something else?).</p>
 <p> Since control expressions simply encode sets of controls a bigraph
 expression simple encodes a set of expression-free bigraphs.&nbsp;</p>
 <p>(Does it matter that the encoded set is potentially infinite? based on integers, arbitrary strings and/or real numbers?)</p>
-<p></p>
+<h3>XML Encoding</h3>
+Initial proposal/thoughts on the corresponding XML encoding:<br>
+<pre>&lt;bigraph&gt;<br>	&lt;variable name="N" type="control|support|integer|real|string"&gt;<br>		&lt;oneof&gt;<br>			&lt;value&gt;VALUE&lt;/value&gt; &lt;!-- or node/control element for a control variable?! --&gt;<br>			...<br>		&lt;/oneof&gt;<br>		&lt;min&gt;VALUE&lt;/min&gt;<br>		&lt;max&gt;VALUE&lt;/max&gt;<br>		&lt;regexp&gt;REGEX&lt;/regexp&gt;<br>		&lt;minlength&gt;LEN&lt;/minlength&gt; <br>		&lt;maxlength&gt;LEN&lt;/maxlength&gt; &lt;!-- e.g. for "chars" --&gt;<br>		&lt;difference variable="N"&gt;VALUE&lt;/difference&gt;<br>	&lt;/variable&gt;<br>	...<br>	&lt;root&gt;<br>		&lt;C [ports]&gt; &lt;!-- indexed control --&gt; <br>			&lt;index&gt;VALUE&lt;/index&gt;<br>			&lt;index variable="N"/&gt; &lt;!-- all restrictions should be packaged up in variable?! --&gt;<br>			...<br>		&lt;/C&gt;<br>		&lt;node _control="C" [ports]&gt;...&lt;/node&gt;<br>		&lt;node _variable="N" [ports]&gt;...&lt;/node&gt;<br>	&lt;/root&gt;<br>&lt;/bigraph&gt;</pre>
 </body>
 </html>
