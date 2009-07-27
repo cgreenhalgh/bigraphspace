@@ -68,14 +68,14 @@ Chris Greenhalgh, 2009-07-24</p>
     <ul>
       <li>Foreign key/join on value</li>
       <li>Object database (todo)</li>
-      <li>Tuple space (todo)</li>
+      <li>Tuple space</li>
     </ul>
     <li>Media (linked to deployment) (todo)</li>
   </ul>
   <li>Space</li>
   <ul>
     <li>Topology&nbsp;</li>
-    <li>Overlap (todo)</li>
+    <li>Overlap</li>
     <li>Cartesian space</li>
     <li>Signals over space (todo)</li>
   </ul>
@@ -383,7 +383,84 @@ place graph.&nbsp;</p>
 ) or in multi-dimensional classifications (e.g.&nbsp;the same object
 organised into both physical and policital or organisational
 classifications).&nbsp;</p>
-<p></p>
+<h4>Extending the Bigraph Model to DAGs</h4>
+<p>Michele <span style="" lang="EN-US">Sevegnani (University of
+Glasgow) has been using bigraphs to model element of 802.11 wireless
+protocols, and has been extending the model (and algebra) to
+place-graphs which are directed acyclic graphs.&nbsp;</span></p>
+<p><span style="" lang="EN-US">The key extension is that a site may be
+the child of two or more places. The existence of a node (or nodes)
+which is the child of two (or more) parent nodes is taken
+to&nbsp;precisely represent the overlap of those parent places. In
+particular, if two places have no common child (or descendent?) then
+they are considered not to overlap.</span></p>
+<p><span style="" lang="EN-US"><img style="width: 221px; height: 166px;" alt="" src="images/overlap.PNG">&nbsp;</span></p>
+<p><span style="" lang="EN-US">The graphical rendering of bigraphs is
+complicated by extension, since not all valid place graphs can be shown
+in the 2D box view. A new "stratified" graphical representation is
+proposed to resolve this in a general way (all be it with a loss of
+intuitive expression).</span></p>
+<p><span style="" lang="EN-US">This extension also complicates reaction
+rules, in that they must now distinguish between copying a root of the
+parameter and placing it in the (perhaps new) overlap of its parents in
+the reactum.</span></p>
+<p><span style="" lang="EN-US">Basic place sortings are presumably also complicated by this extension. </span></p>
+<p><span style="" lang="EN-US">More detail is currently beyond the scope of this cook-book.</span></p>
+<h4><span style="" lang="EN-US">Using Links to Model Additional Hierarchies&nbsp;</span></h4>
+<p>The hierarchical containment relationship of place graphs can
+modelled as a "parent" port on every control and a "child" port on
+every non-atomic control, and child nodes linked to their parent node
+by linking the child node's parent port to the parent node's child
+port.&nbsp;</p>
+<img style="width: 586px; height: 332px;" alt="" src="images/hierarchy_links.PNG"><br>
+<p>Note that the non-containment of (link-modelled) children means that
+children are (in general) not composed with their parents, and so
+parametric reaction rules which move, copy or delete sites do not
+automatically move, copy or delete (respectively) the (link-modelled) "child" nodes.</p>
+<p>However any number of additional hierarchies can modelled by the
+addition of hierarchy-specific parent and child ports and links.</p>
+<p>This seems like a plausible approach for modelling some abstract
+"overlay" classifications in which fate-sharing may be less relevant. </p>
+<h4>Using Links to Model Directed&nbsp;Graphs</h4>
+The above strategy cannot be used to model directed graphs (or equivalently multiple parents), for example:<br>
+<img style="width: 521px; height: 253px;" alt="" src="images/overlap_not_hierarchy.PNG"><br>
+<p>Note that there is only one edge that links A, B and D to C and E,
+i.e. it models C and E both being children of all of A, B and D.</p>
+<p>To cope with this at least one of the ports needs to be converted to
+a child node to maintain the separation of edges to (or from) a node
+(either is sufficient). For example:</p>
+<p><img style="width: 519px; height: 258px;" alt="" src="images/overlap_parent_links.PNG"></p>
+<p>Note that, as with the encoding of hierarchy, there is no
+containment and therefore no composition or default fate sharing
+between places and thenodes (nominally) in their overlap. </p>
+<h4> Modelling Overlap by "Intersection" Nodes</h4>
+<p>The extension of place-graphs to DAGs suggest an approach to
+modelling overlap by an explicit modelling of the intersection as a
+distinct sibling place:</p>
+<img style="width: 233px; height: 162px;" alt="" src="images/overlap_discrete.PNG">
+<p>In addition this requires that the containment of AB within both A
+and B be modelled. This cannot be done by as the hierarchy case (above)
+because this would lose the distinction between AB as a child of A and
+B and (say) AD, a separate child of A and D. This can be resolved by
+elaborating the "parent" node port to a child node:</p>
+<img style="width: 235px; height: 225px;" alt="" src="images/overlap_discrete_linked.PNG">
+<p>This is effectively a refinement of the previous approach, which
+groups children of intersections into maximal sets, modelled as new
+places. At least within these new intersection places there is
+composition and default fate sharing (movement, copying, etc.).&nbsp;</p>
+<p>This can also be viewed as the node AB "labelling" the link between A and B.</p>
+<p>This could be further elaborated to the child-node and link representation
+of topology (above), although there would need to be two different
+child nodes controls in order to distinguish the direction of
+containment (AB within A and B, not vice versa). It is not clear to me
+what if any benefit this further elaboration would give.&nbsp;</p>
+<h4>Modelling "Weak" or Asymmetric Overlap</h4>
+<p>If the overlapping places are strongly asymmetric then the previous
+scheme may be weakened to (effectively) merge the intersection with the
+"dominant" parent, leaving the overlap with the other parent to be
+modelled by a link.&nbsp;</p>
+<img style="width: 236px; height: 160px;" alt="" src="images/overlap_dominant_linked.PNG">
+<p>Essentially, the node(s) in the overlap are "labelled" with a link to (an anchor in) the other "parent(s)"/regions. </p>
 <h3>Cartesian Space</h3>
 
 <p>Modelling a cartesian space requires (a) modelling coordinates and
@@ -471,8 +548,14 @@ space, but would it this case the "internal value" approach would
 probably be preferred.&nbsp;</p>
 
 <h3>Signals over Space</h3>
-
-To do: non-overlapping controls; overlapping controls; links; levels as nested controls. 
+<p>As noted above (see Overlap) Michele <span style="" lang="EN-US">Sevegnani
+(University of Glasgow) is extending place graphs to DAGs, allowing
+overlap to be modelled directly in the place graph. From this basis,
+signals can be modelled directly a nodes which (through overlap) may
+contain the same device(s).</span></p>
+<p><span style="" lang="EN-US"><img style="width: 221px; height: 166px;" alt="" src="images/overlap.PNG"></span></p>
+<p>To do: non-overlapping controls; overlapping controls; links; levels as nested controls. 
+</p>
 <h2>References</h2>
 
 <p>Debois,&nbsp;S&oslash;ren, and Troels C. Damgaard, 2005: Bigraphs by Example. Technical report TR-2005-61 in IT 
@@ -503,6 +586,10 @@ Agents. Cambridge University Press.</p>
 
   <li>Created</li>
 
+</ul>
+2009-07-27<br>
+<ul>
+  <li>added databases, topology, overlap</li>
 </ul>
 
 
