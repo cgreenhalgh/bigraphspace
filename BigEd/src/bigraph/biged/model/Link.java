@@ -28,21 +28,21 @@ public class Link
 
 	public Collection<LinkSegment> getSegments(final Port port, final boolean source, final boolean target)
 	{
-		Collection<LinkSegment> result = new HashSet<LinkSegment>(); 
-		for(final LinkSegment linkSegment: segments)
+		final Collection<LinkSegment> result = new HashSet<LinkSegment>();
+		for (final LinkSegment linkSegment : segments)
 		{
-			if(source && linkSegment.getSource() == port)
+			if (source && linkSegment.getSource() == port)
 			{
 				result.add(linkSegment);
 			}
-			else if(target && linkSegment.getTarget() == port)
+			else if (target && linkSegment.getTarget() == port)
 			{
 				result.add(linkSegment);
 			}
 		}
 		return result;
 	}
-	
+
 	private boolean edgeExists(final Collection<LinkSegment> edges, final Port sourcePort, final Port targetPort)
 	{
 		for (final LinkSegment edge : edges)

@@ -15,7 +15,7 @@ public class XMLModelLoader implements ModelLoader
 {
 
 	@Override
-	public Bigraph loadModel(InputStream inputStream) throws IOException
+	public Bigraph loadModel(final InputStream inputStream) throws IOException
 	{
 		try
 		{
@@ -30,11 +30,11 @@ public class XMLModelLoader implements ModelLoader
 			factory.setIgnoringElementContentWhitespace(false);
 			final DocumentBuilder builder = factory.newDocumentBuilder();
 			final Document doc = builder.parse(inputStream);
-	
+
 			final DomBigraph bigraph = new DomBigraph(new BasicSignature(), doc);
 			return new Bigraph(bigraph);
 		}
-		catch(Exception e)
+		catch (final Exception e)
 		{
 			throw new IOException(e);
 		}

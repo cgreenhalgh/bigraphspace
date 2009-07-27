@@ -64,7 +64,7 @@ public class BigraphEditPartFactory implements EditPartFactory
 		{
 			part = new PlacePart();
 		}
-		else if(model instanceof LinkSegment)
+		else if (model instanceof LinkSegment)
 		{
 			part = new LinkSegmentPart();
 		}

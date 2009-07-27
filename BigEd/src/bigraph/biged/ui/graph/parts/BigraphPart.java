@@ -145,8 +145,11 @@ public class BigraphPart extends AbstractGraphicalEditPart
 	protected IFigure createFigure()
 	{
 		final Figure f = new FreeformLayer();
-		f.setLayoutManager(new FlowLayout());
-		f.setBorder(new MarginBorder(10));
+		final FlowLayout layout = new FlowLayout();
+		layout.setMajorSpacing(15);
+		layout.setMinorSpacing(15);
+		f.setLayoutManager(layout);
+		f.setBorder(new MarginBorder(15));
 
 		// Create the static router for the connection layer
 		final ConnectionLayer connLayer = (ConnectionLayer) getLayer(LayerConstants.CONNECTION_LAYER);
