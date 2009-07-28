@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.TreeSet;
 import java.util.List;
 
@@ -28,6 +29,7 @@ import bigraphspace.model.Bigraph;
 import bigraphspace.model.Control;
 import bigraphspace.model.Place;
 import bigraphspace.model.Port;
+import bigraphspace.model.VariableDefinition;
 import bigraphspace.model.signaturexml.ControlRef;
 import bigraphspace.model.signaturexml.ControlRefs;
 import bigraphspace.model.signaturexml.Definitions;
@@ -168,12 +170,12 @@ public class Sorting {
 		return createSorting(signature, defs);
 	}
 	/** validate a model against this Sorting (only) */
-	public void validate(Bigraph bigraph) throws UndefinedPortException, UndefinedControlException, AtomicControlException, PlaceTypeException, ChildSortException {
+	public void validate(Bigraph bigraph) throws UndefinedPortException, UndefinedControlException, AtomicControlException, PlaceTypeException, ChildSortException, ControlIndexException   {
 		signature.validate(bigraph);
 		validate(bigraph.getRoots(), null, null);
 	}
 	/** validate a set of Places against this signature - recurse */
-	protected void validate(List<Place> places, Place parent, Sort parentSort) throws UndefinedPortException, UndefinedControlException, AtomicControlException, PlaceTypeException, ChildSortException  {
+	protected void validate(List<Place> places, Place parent, Sort parentSort) throws UndefinedPortException, UndefinedControlException, AtomicControlException, PlaceTypeException, ChildSortException, ControlIndexException  {
 		for (Place place : places) {
 			// just check childSorts - atomic etc done by signature check
 			Sort sort = null;

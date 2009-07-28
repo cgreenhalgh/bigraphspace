@@ -22,6 +22,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.NamedNodeMap;
+import java.util.List;
+import java.util.LinkedList;
 
 /** Some XML utilities.
  * 
@@ -89,4 +91,38 @@ public class XmlUtils {
 	}
 	/** default indent text - 2 spaces */
 	public static final String INDENT_TEXT = "  ";
+	/** get child Elements of given tag name */
+	public static NodeList getChildElementsByTagName(Element el, String name) {
+		NodeList childEls = el.getChildNodes();
+		List<Node> childNodes = new LinkedList<Node>();
+		for (int i=0; i<childEls.getLength(); i++) {
+			Node n = childEls.item(i);
+			if (n instanceof Element && ((Element)n).getNodeName().equals(name))
+				childNodes.add(n);
+		}
+		return new ChildNodeList(childNodes);
+	}
+	static class ChildNodeList implements NodeList {
+		protected List<Node> children;
+		
+		ChildNodeList(List<Node> children) {
+			this.children = children;
+		}
+		/* (non-Javadoc)
+		 * @see org.w3c.dom.NodeList#getLength()
+		 */
+		//@Override
+		public int getLength() {
+			return children.size();
+		}
+
+		/* (non-Javadoc)
+		 * @see org.w3c.dom.NodeList#item(int)
+		 */
+		//@Override
+		public Node item(int index) {
+			return children.get(index);
+		}
+		
+	}
 }

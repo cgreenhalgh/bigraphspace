@@ -6,6 +6,7 @@ package bigraphspace.model;
 import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Map;
 
 import bigraphspace.model.xml.DomBigraph;
 
@@ -46,4 +47,6 @@ public interface Match {
 	 */
 	public List<LinkMatch> getLinkMatches();
 
+	/** bigraph expressions contain variables; in a match these will all have exact values */
+	public Map<String,Object> getVariableValues();
 }

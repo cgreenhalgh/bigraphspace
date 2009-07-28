@@ -81,7 +81,7 @@ public class RunReactiveBigraphTests {
 			Document testDoc = XmlUtils.readFile(new File(args[1]));
 			DomMatcher matcher = new DomMatcher();
 			DomTransformer transformer = new DomTransformer();
-			NodeList testEls = testDoc.getDocumentElement().getElementsByTagName(TEST_ELEMENT_NAME);
+			NodeList testEls = XmlUtils.getChildElementsByTagName(testDoc.getDocumentElement(),TEST_ELEMENT_NAME);
 			if (testEls.getLength()==0)
 				logger.warn("No tests found");
 			nexttest:
@@ -91,10 +91,10 @@ public class RunReactiveBigraphTests {
 				ReactiveBigraph reactiveBigraph = new DomReactiveBigraph(sorting.getSignature());
 				
 				Element testEl = (Element)testEls.item(ti);
-				NodeList ruleEls = testEl.getElementsByTagName(RULE_ELEMENT_NAME);
+				NodeList ruleEls = XmlUtils.getChildElementsByTagName(testEl,RULE_ELEMENT_NAME);
 				for (int ri=0; ri<ruleEls.getLength(); ri++) {
 					Element ruleEl = (Element)ruleEls.item(ri);
-					NodeList conditionEls = ruleEl.getElementsByTagName(CONDITION_ELEMENT_NAME);
+					NodeList conditionEls = XmlUtils.getChildElementsByTagName(ruleEl,CONDITION_ELEMENT_NAME);
 					Element redexConditionEl = RunTransformerTests.getOnlyElement(ruleEl, ti, REDEX_ELEMENT_NAME);
 					Element redexEl = RunTransformerTests.getOnlyBigraphElement(ruleEl, ti, REDEX_ELEMENT_NAME);
 					Element reactumEl = RunTransformerTests.getOnlyBigraphElement(ruleEl, ti, REACTUM_ELEMENT_NAME);

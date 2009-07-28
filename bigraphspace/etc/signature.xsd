@@ -49,12 +49,14 @@
     
     <complexType name="ControlIndex">
     	<sequence>
-    		<element name="description" type="string" maxOccurs="1" minOccurs="0"></element>
+    		<element name="description" type="string" maxOccurs="1"
+    			minOccurs="0">
+    		</element>
+    		<element name="constraint" type="tns:VariableConstraint" maxOccurs="unbounded" minOccurs="0"></element>
     	</sequence>
     	<attribute name="type">
     		<simpleType>
-    			<restriction base="string">
-    				<enumeration value="nonnegativeinteger"></enumeration>
+    			<restriction base="string">
     				<enumeration value="integer"></enumeration>
     				<enumeration value="real"></enumeration>
     				<enumeration value="string"></enumeration>
@@ -166,4 +168,31 @@
           </sequence>
        </complexType>
 
+
+	<complexType name="VariableConstraint">
+		<sequence>
+			<element name="value" type="string" maxOccurs="unbounded" minOccurs="0"></element>
+		</sequence>
+		<attribute name="type">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="oneof"></enumeration>
+					<enumeration value="notoneof"></enumeration>
+					<enumeration value="minvalue"></enumeration>
+					<enumeration value="maxvalue"></enumeration>
+					<enumeration value="minlength"></enumeration>
+					<enumeration value="maxlength"></enumeration>
+					<enumeration value="difference"></enumeration>
+					<enumeration value="regexp"></enumeration>
+				</restriction>
+			</simpleType>
+		</attribute>
+		<attribute name="variable" type="string">
+			<annotation>
+				<documentation>
+					name of variable to take difference from
+				</documentation>
+			</annotation>
+		</attribute>
+	</complexType>
 </schema>

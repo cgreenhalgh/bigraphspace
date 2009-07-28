@@ -15,6 +15,8 @@ import bigraphspace.sorting.Sorting;
 
 import java.io.File;
 import java.util.List;
+import java.util.LinkedList;
+import java.util.Map;
 /** Test DomMatch. RUn test matches: example test format:
  * <tests>
  * 	<test>
@@ -49,6 +51,8 @@ public class RunMatchTests {
 	static final String PATTERN_ATTRIBUTE_NAME = "pattern";
 	/** xml constant */
 	static final String TARGET_ATTRIBUTE_NAME = "target";
+	/** xml constant */
+	static final String VARIABLE_ELEMENT_NAME = "variable";
 	/**
 	 * @param args
 	 */
@@ -64,7 +68,7 @@ public class RunMatchTests {
 			logger.info("Read tests from "+args[1]);
 			Document testDoc = XmlUtils.readFile(new File(args[1]));
 			DomMatcher matcher = new DomMatcher();
-			NodeList testEls = testDoc.getDocumentElement().getElementsByTagName(TEST_ELEMENT_NAME);
+			NodeList testEls = XmlUtils.getChildElementsByTagName(testDoc.getDocumentElement(),TEST_ELEMENT_NAME);
 			if (testEls.getLength()==0)
 				logger.warn("No tests found");
 			for (int ti=0; ti<testEls.getLength(); ti++) {
@@ -77,19 +81,34 @@ public class RunMatchTests {
 					failed = true;
 					continue;					
 				}
-				NodeList matchEls = testEl.getElementsByTagName(MATCH_ELEMENT_NAME);
+				NodeList matchEls = XmlUtils.getChildElementsByTagName(testEl,MATCH_ELEMENT_NAME);
 				
 				DomBigraph pattern = new DomBigraph(sorting.getSignature(), testDoc, patternEl);
 				DomBigraph target = new DomBigraph(sorting.getSignature(), testDoc, targetEl);
+				logger.info("Validate");
+				try {
+					sorting.validate(pattern);
+				} catch (Exception e) {
+					pattern.dump(System.out);
+					throw e;
+				}
+				try {
+					sorting.validate(target);
+				} catch (Exception e) {
+					target.dump(System.out);
+					throw e;
+				}
 				logger.info("Try matching");
 				List<DomMatch> matches = matcher.match(pattern, target, DomMatcher.UNLIMITED);
 				logger.info("Get "+matches.size()+" matches (expected "+matchEls.getLength()+"):");
+				if (matches.size()!=matchEls.getLength())
+					failed = true;
 				int mi = 0;
 				for (DomMatch match : matches) {
 					match.dump(System.out);
 					if (mi<matchEls.getLength()) {
 						Element matchEl = (Element)matchEls.item(mi++);
-						NodeList nodematchEls = matchEl.getElementsByTagName(NODEMATCH_ELEMENT_NAME);
+						NodeList nodematchEls = XmlUtils.getChildElementsByTagName(matchEl,NODEMATCH_ELEMENT_NAME);
 						// remember which matches that were found are ok
 						boolean matched [] = new boolean[match.nodeMatches.size()];
 						for (int nmi=0; nmi<nodematchEls.getLength(); nmi++) {
@@ -134,7 +153,7 @@ public class RunMatchTests {
 						}
 						// ----------------
 						// links 
-						NodeList linkmatchEls = matchEl.getElementsByTagName(LINKMATCH_ELEMENT_NAME);
+						NodeList linkmatchEls = XmlUtils.getChildElementsByTagName(matchEl,LINKMATCH_ELEMENT_NAME);
 						for (int nmi=0; nmi<linkmatchEls.getLength(); nmi++) {
 							boolean linkmatchMatched = false;
 							Element linkmatchEl = (Element)linkmatchEls.item(nmi);
@@ -179,6 +198,38 @@ public class RunMatchTests {
 									failed = true;
 								}
 							}
+						}
+						// ----------------
+						// variables 
+						LinkedList<String> variableNames = new LinkedList<String>();
+						for (Map.Entry<String,Object> variableValue: match.getVariableValues().entrySet()) {
+							variableNames.add(variableValue.getKey());
+						}
+						NodeList variableEls = XmlUtils.getChildElementsByTagName(matchEl,VARIABLE_ELEMENT_NAME);
+						for (int nmi=0; nmi<variableEls.getLength(); nmi++) {
+							boolean variableMatched = false;
+							Element variableEl = (Element)variableEls.item(nmi);
+							String patternName = variableEl.getAttribute(PATTERN_ATTRIBUTE_NAME);
+							String targetValue = variableEl.getAttribute(TARGET_ATTRIBUTE_NAME);
+							if (patternName.equals("")) {
+								logger.error("Test "+ti+" variable "+nmi+" has no pattern attribute");
+								failed = true;
+								continue;
+							}
+							if (targetValue.equals("")) {
+								logger.error("Test "+ti+" variable "+nmi+" has no target attribute");
+								failed = true;
+								continue;
+							}
+							if (!targetValue.equals(match.getVariableValues().get(patternName)))
+							{
+								logger.error("No/incorrect value for variable "+patternName+": "+match.getVariableValues().get(patternName)+" vs "+targetValue);
+								failed = true;
+							}
+							variableNames.remove(patternName);
+						}
+						for (String variableName : variableNames) {
+							logger.warn("No test specified for variable "+variableName+", value "+match.getVariableValues().get(variableName));
 						}
 					}
 					else {

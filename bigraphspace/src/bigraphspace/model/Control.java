@@ -3,6 +3,9 @@
  */
 package bigraphspace.model;
 
+import java.util.List;
+import java.util.LinkedList;
+
 /** Description/definition of a Control.
  * Generalised for (infinite) families of indexed controls, e.g. corresponding to the integers, cartesian coordinates, etc.
  * Controls are assumed to be equal if their names are equal.
@@ -17,11 +20,7 @@ public class Control implements Comparable {
 	/** description (optional) */
 	protected String description;
 	/** index type(s), for Controls which are actually (potentially) infinitie families of controls, such as numbers or points */
-	public enum IndexType { nonnegativeinteger, integer, real, string };
-	/** index dimension types - null or [0] for simple control */
-	protected IndexType indexTypes[];
-	/** index descriptions (optional) */
-	protected String indexDescriptions[];
+	protected List<VariableDefinition> indexTypes = new LinkedList<VariableDefinition>();
 	/** status type. nonatomic is effectively unknown active/passive (or not relevant). */
 	public enum Status { active, passive, atomic };
 	/** status */
@@ -39,12 +38,11 @@ public class Control implements Comparable {
 	 * @param arity
 	 * @param portNames
 	 */
-	public Control(String name, String description, IndexType indexTypes[], String indexDescriptions[], Status status, int arity, String[] portNames) {
+	public Control(String name, String description, List<VariableDefinition> indexTypes, Status status, int arity, String[] portNames) {
 		super();
 		this.name = name;
 		this.description = description;
 		this.indexTypes = indexTypes;
-		this.indexDescriptions = indexDescriptions;
 		this.status = status;
 		this.arity = arity;
 		this.portNames = portNames;
@@ -67,12 +65,6 @@ public class Control implements Comparable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String[] getIndexDescriptions() {
-		return indexDescriptions;
-	}
-	public void setIndexDescriptions(String[] indexDescriptions) {
-		this.indexDescriptions = indexDescriptions;
-	}
 	/** indexed?
 	 */
 	public boolean isIndexed() {
@@ -81,20 +73,20 @@ public class Control implements Comparable {
 	/**
 	 * @return the indexTypes
 	 */
-	public IndexType[] getIndexTypes() {
+	public List<VariableDefinition> getIndexTypes() {
 		return indexTypes;
 	}
 	/**
 	 * @param indexTypes the indexTypes to set
 	 */
-	public void setIndexTypes(IndexType[] indexTypes) {
+	public void setIndexTypes(List<VariableDefinition> indexTypes) {
 		this.indexTypes = indexTypes;
 	}
 	/**
 	 * @return the indexCount
 	 */
 	public int getIndexCount() {
-		return (indexTypes!=null ? indexTypes.length : 0);
+		return (indexTypes!=null ? indexTypes.size() : 0);
 	}
 	/**
 	 * @return the status

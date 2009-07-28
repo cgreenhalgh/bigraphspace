@@ -44,7 +44,7 @@ public class DomTransformer {
 		//   performing link renaming in subtrees according to any inner name mapping.
 		
 		// the roots of the result are the same as the roots of the target
-		NodeList rootEls = target.getBigraphElement().getElementsByTagName(Constants.ROOT_ELEMENT_NAME);
+		NodeList rootEls = XmlUtils.getChildElementsByTagName(target.getBigraphElement(),Constants.ROOT_ELEMENT_NAME);
 		// new links (reactum name -> new name to use)
 		HashMap<String,String> newLinks = new HashMap<String,String>();
 		// the inner name mapping should be of the name in the target to the (new) name in the target
@@ -117,7 +117,7 @@ public class DomTransformer {
 			resultEl.appendChild(copyThenTransform(match, reactum, result, newLinks, innerNameMap, (Element)child));
 		}
 		// now put in the stuff in the corresponding reactum root...
-		NodeList reactumRoots = reactum.getBigraphElement().getElementsByTagName(Constants.ROOT_ELEMENT_NAME);
+		NodeList reactumRoots = XmlUtils.getChildElementsByTagName(reactum.getBigraphElement(),Constants.ROOT_ELEMENT_NAME);
 		Element reactumRootEl = (Element)reactumRoots.item(rootMatch.index);
 		// insert children of root, substituting sites with matched subtrees
 		insertMappedChildren(match, reactum, result, newLinks, innerNameMap, resultEl, reactumRootEl);
