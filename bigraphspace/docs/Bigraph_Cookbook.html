@@ -1,6 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
+<html><head>
 
 
 
@@ -11,8 +10,7 @@
 
   
   
-  <title>Bigraph Cookbook</title>
-</head>
+  <title>Bigraph Cookbook</title></head>
 
 <body>
 
@@ -22,7 +20,7 @@
 
 <p>
 
-Chris Greenhalgh, 2009-07-24</p>
+Chris Greenhalgh, 2009-07-24; last update 2009-07-28</p>
 
 <p>Contents:</p>
 
@@ -77,7 +75,7 @@ Chris Greenhalgh, 2009-07-24</p>
     <li>Topology&nbsp;</li>
     <li>Overlap</li>
     <li>Cartesian space</li>
-    <li>Signals over space (todo)</li>
+    <li>Signals over space</li>
   </ul>
   <li>Physical world</li>
   <ul>
@@ -115,7 +113,7 @@ strategies for modelling with bigraphs.</p>
 <p>See also:</p>
 <ul>
   <li><a href="Tutorial.html">bigraphspace tutorial</a></li>
-  <li>S&oslash;ren Debois and Troels C. Damgaard, 2005: Bigraphs by Example. Technical report TR-2005-61 in IT 
+  <li>Søren Debois and Troels C. Damgaard, 2005: Bigraphs by Example. Technical report TR-2005-61 in IT 
 University Technical Report Series,&nbsp;<a href="file:///exchweb/bin/redir.asp?URL=http://www1.itu.dk/sw40974.asp" target="_blank">http://www1.itu.dk/sw40974.asp</a>, which has examples of a network switch, finite automata, the game of "life'', combinatory logic, term 
 unification and an event-driven system. </li>
 </ul>
@@ -364,7 +362,7 @@ there is a fixed and finite set of possible "directions" (or
 equivalent) by which places may be linked then "directions" can be
 modelled as ports and connectedness by links, e.g.</p>
 <pre>	Square{east=s1e}() | Square(west=s1e,east=s2e}() | Square{west=s2e}<br><img style="width: 425px; height: 155px;" alt="" src="images/topology_as_ports.PNG"><br></pre>
-<p>This approach is used by&nbsp;S&oslash;ren and Damgaard (2005) when modelling the game of life.</p>
+<p>This approach is used by&nbsp;Søren and Damgaard (2005) when modelling the game of life.</p>
 <h4>Topology as Child-nodes and Links</h4>
 <p>If there is not fixed set of "directions" then the elaboration of
 ports to child nodes can be used to model a more general topology, e.g.</p>
@@ -379,7 +377,9 @@ cell membrane budding. </p>
 Consequently overlapping of places cannot be directly modelled in the
 place graph.&nbsp;</p>
 <p>It might be desirable to model overlap e.g. in physical space
-(overlapping radio signals, or signals overlapping physical object(s),buildings subdivided into floors with rooms but with some high "rooms" spanning multiple floors
+(overlapping radio signals, or signals overlapping physical
+object(s),buildings subdivided into floors with rooms but with some
+high "rooms" spanning multiple floors
 ) or in multi-dimensional classifications (e.g.&nbsp;the same object
 organised into both physical and policital or organisational
 classifications).&nbsp;</p>
@@ -458,7 +458,7 @@ what if any benefit this further elaboration would give.&nbsp;</p>
 <p>If the overlapping places are strongly asymmetric then the previous
 scheme may be weakened to (effectively) merge the intersection with the
 "dominant" parent, leaving the overlap with the other parent to be
-modelled by a link.&nbsp;</p>
+modelled by a link. The overlap may still be modelled as a distinct sub-place:</p><p><img style="width: 239px; height: 211px;" alt="" src="images/overlap_discrete_dominant_linked.PNG"></p><p>or the link may be directly to the nodes in the overlap:</p>
 <img style="width: 236px; height: 160px;" alt="" src="images/overlap_dominant_linked.PNG">
 <p>Essentially, the node(s) in the overlap are "labelled" with a link to (an anchor in) the other "parent(s)"/regions. </p>
 <h3>Cartesian Space</h3>
@@ -548,17 +548,64 @@ space, but would it this case the "internal value" approach would
 probably be preferred.&nbsp;</p>
 
 <h3>Signals over Space</h3>
-<p>As noted above (see Overlap) Michele <span style="" lang="EN-US">Sevegnani
+<p>Unguided (free space) radio and optical communication is very
+common. Radio waves in particular have complex propagation
+characteristics, passing through different materials to different
+extend, being reflected and refracted and experiencing interference
+(self- and other-). However they are also clearly spatially organised:
+it is natural to talk about regions of coverage, line of sight is often
+significant, and signal strength generally falls with distance.&nbsp;</p><h4>Signal Coverage as Containment</h4><p>One approach is model the coverage or maximum range of the signal - a (typical closed) region - directly by a node. A device control within the signal control is then considered to be in range.</p><p>However,
+if there are multiple near-by signals, and/or if other features of the
+physical setting are also be modelled (such as buildings and rooms)
+then this approach tends to require that signals overlap each other and
+parts of the modelled environment. For example C might be a device, and
+A and B proximate signals, or A a signal and B a room:</p><p><span style="" lang="EN-US"><img style="width: 221px; height: 166px;" alt="" src="images/overlap.PNG"></span></p>
+<p>Various approaches to modelling overlap can then be used - see sections above. For example, as noted above Michele <span style="" lang="EN-US">Sevegnani
 (University of Glasgow) is extending place graphs to DAGs, allowing
-overlap to be modelled directly in the place graph. From this basis,
-signals can be modelled directly a nodes which (through overlap) may
-contain the same device(s).</span></p>
-<p><span style="" lang="EN-US"><img style="width: 221px; height: 166px;" alt="" src="images/overlap.PNG"></span></p>
-<p>To do: non-overlapping controls; overlapping controls; links; levels as nested controls. 
-</p>
-<h2>References</h2>
+overlap to be modelled directly in the place graph, specifically in order to model overlapping signals.</span></p><p><span style="" lang="EN-US">This approach has the merit of making the place-fulness of signals very explicit.&nbsp;</span></p><p><span style="" lang="EN-US">However
+containment of a device within a signal does not correspond to the
+usual "part-of" or "contained-in" relationship that the place graph
+typically models. For example, movement of the signal source will
+result in movement of the signal, but this does not normally result in
+movement of any devices receiving the signal. Nor do such devices (or
+other "in range" entities) normally fate-share with the signal (e.g. if
+the signal is deleted, i.e. turned off, then they are not).</span></p><p><span style="" lang="EN-US">This
+suggests that signal overlap may be seen as a "weaker" relationship,
+and (in terms of overlap) an assymetric model may be more appropriate
+(if less intuitive).</span></p><h4>Signal Strength as Containment</h4><p>An extension of the previous approach models discrete levels of signal strength by nested nodes.&nbsp;</p><img style="width: 232px; height: 274px;" alt="" src="images/signal_levels.PNG"><p>This
+approach has the merit of making the place-fulness of signals very
+explicit, but also has the same issues as the previous one in relation
+to overlap and (non-) fate sharing.</p><h4>Signal Receipt as Linking</h4><p>A
+device being in range of a signal may be modelled by a link. If we
+assume that a device might be in range of several signals
+simultaneously then at least one end of this link will need to be a
+child node rather than a port (or a port will be needed for every
+signal, or the devices in range of different signals will become
+conflated).&nbsp;</p><p><img style="width: 847px; height: 169px;" alt="" src="images/signal_link.PNG"></p><p>It
+is useful to have an internal node rather than a port in any case if
+that end of the link needs to have explicit or additional information
+about the link. So, for example, a beacon signal would be most
+naturally modelled in the second way, since the device wants to "know"
+about the signal, but the not vice versa.</p><p>Clearly, this approach
+doesn't provide any obvious support for expressing the coverage: the
+rules must somehow create and destroy link(s) appropriately (but see
+extensions, below).</p><h4>Signal Strength with Link Anchor State</h4>In
+the above approach, the strength of the signal at the device (for
+example) can be modelled as a state of child node (anchor) that links
+to the signal (see state sections above). For example, there may be a
+family of signal "receipt" controls representing different strengths or
+a child node and child value modelling strength (like a field).<h4>Signal Coverage as Linking</h4><p>A
+partial solution to expressing signal coverage is to add controls to
+the spaces in which the signal is (or may be) available which link in
+turn to the signal.</p><p><img style="width: 382px; height: 178px;" alt="" src="images/signal_coverage_link.PNG"></p><p>The above state may then drive a reaction linking the device to the signal (and vice versa):</p><p><img style="width: 378px; height: 180px;" alt="" src="images/signal_coverage_and_connection_link.PNG"></p><p>If
+the modelled space can be further subdivided then the signal coverage
+can be more accurately defined (this is the dual of the asymmetric
+overlap model above).&nbsp;</p><p><img style="width: 372px; height: 210px;" alt="" src="images/signal_coverage_link_and_region.PNG"></p><p>Otherwise
+the coverage indicated in this way will be at best approximate, and
+additional modelling will be needed (e.g. strength as link anchor
+state).&nbsp; </p><h2>References</h2>
 
-<p>Debois,&nbsp;S&oslash;ren, and Troels C. Damgaard, 2005: Bigraphs by Example. Technical report TR-2005-61 in IT 
+<p>Debois,&nbsp;Søren, and Troels C. Damgaard, 2005: Bigraphs by Example. Technical report TR-2005-61 in IT 
 University Technical Report Series,&nbsp;<a href="file:///exchweb/bin/redir.asp?URL=http://www1.itu.dk/sw40974.asp" target="_blank">http://www1.itu.dk/sw40974.asp</a>, which has examples of a network switch, finite automata, the game of "life'', combinatory logic, term 
 unification and an event-driven system.</p>
 <p>Hildebrandt, Thomas, Jacob W. Winther, 2005: Bigraphs and (Reactive) XML - an XML-centric model of computation.&nbsp;<a href="http://www1.itu.dk/sw29980.asp">ITU Technical report TR-2005-56</a>.</p>
@@ -590,9 +637,8 @@ Agents. Cambridge University Press.</p>
 2009-07-27<br>
 <ul>
   <li>added databases, topology, overlap</li>
-</ul>
+</ul>2009-07-28<br><ul><li>added signals</li></ul>
 
 
 
-</body>
-</html>
+</body></html>
