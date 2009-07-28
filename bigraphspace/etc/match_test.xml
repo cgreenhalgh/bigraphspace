@@ -665,4 +665,35 @@
 			<variable pattern="x" target="11"/>
 		</match>
 	</test>
+	<!-- 20: for transform test -->
+	<test>
+		<pattern>
+				<bigraph>
+					<variable name="x" type="integer"/>
+					<root>
+						<integer _support="10"><index>10</index></integer>
+						<integer _support="11"><index variable="x"/></integer>
+						<PhysicalRoom _support="PR1">
+							<site index="0"/>
+						</PhysicalRoom>
+					</root>
+				</bigraph>
+		</pattern>
+		<target>
+			<bigraph>
+				<root>
+					<integer _support="10"><index>10</index></integer>
+					<integer _support="11"><index>11</index></integer>
+					<PhysicalRoom _support="PR1">
+					</PhysicalRoom>
+				</root>
+			</bigraph>
+		</target>
+		<match>
+			<nodematch pattern="10" target="10"/>
+			<nodematch pattern="11" target="11"/>
+			<nodematch pattern="PR1" target="PR1"/>
+			<variable pattern="x" target="11"/>
+		</match>
+	</test>
 </tests>
