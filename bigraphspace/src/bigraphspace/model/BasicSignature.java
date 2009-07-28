@@ -3,6 +3,7 @@
  */
 package bigraphspace.model;
 
+import java.util.Map;
 import java.util.TreeSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,6 +12,7 @@ import bigraphspace.sorting.AtomicControlException;
 import bigraphspace.sorting.PlaceTypeException;
 import bigraphspace.sorting.UndefinedControlException;
 import bigraphspace.sorting.UndefinedPortException;
+import bigraphspace.sorting.ControlIndexException;
 
 /** A basic signature is essentially just a set of Controls, each with its 
  * status and arity (as given in the Control itself).
@@ -48,11 +50,11 @@ public class BasicSignature  {
 		return null;
 	}
 	/** validate a model against this Signature (only) */
-	public void validate(Bigraph bigraph) throws UndefinedPortException, UndefinedControlException, AtomicControlException, PlaceTypeException {
-		validate(bigraph.getRoots(), true);
+	public void validate(Bigraph bigraph) throws UndefinedPortException, UndefinedControlException, AtomicControlException, PlaceTypeException, ControlIndexException {
+		validate(bigraph.getRoots(), true, bigraph.getVariables());
 	}
 	/** validate a set of Places against this signature - recurse */
-	protected void validate(List<Place> places, boolean rootFlag) throws UndefinedPortException, UndefinedControlException, AtomicControlException, PlaceTypeException  {
+	protected void validate(List<Place> places, boolean rootFlag, Map<String,VariableDefinition> environment) throws UndefinedPortException, UndefinedControlException, AtomicControlException, PlaceTypeException, ControlIndexException  {
 		for (Place place : places) {
 			// check for atomic Control later in code path
 			boolean atomic = place.isSite();
@@ -66,6 +68,34 @@ public class BasicSignature  {
 				control = getControl(controlName);
 				if (control==null)
 					throw new UndefinedControlException(controlName, place);
+				// indexes
+				List<VariableDefinition> controlIndexes = control.getIndexTypes();
+				List<Object> placeIndexValues = place.getControlIndexes();
+				if (controlIndexes.size()>placeIndexValues.size()) 
+					throw new ControlIndexException(place, control, placeIndexValues.size(), null);
+				else if (controlIndexes.size()<placeIndexValues.size()) 
+					throw new ControlIndexException(place, control, controlIndexes.size(), placeIndexValues.get(controlIndexes.size()));
+				// each index
+				for (int i=0; i<controlIndexes.size(); i++) {
+					Object value = placeIndexValues.get(i);
+					if (value instanceof Variable) {
+						// bigraph variable - check it is consistent, e.g. type
+						Variable ivariable = (Variable)value;
+						VariableDefinition definition = environment.get(ivariable.getName());
+						if (definition==null) {
+							throw new ControlIndexException(place, control, i, "undefined variable "+ivariable.getName());							
+						}
+						VariableDefinition cvariable = controlIndexes.get(i);
+						if (!definition.getBaseType().equals(cvariable.getBaseType()))
+							throw new ControlIndexException(place, control, controlIndexes.size(), definition.getBaseType()+" variable "+ivariable.getName());
+						// assume ok (for now?!)
+						// TODO further compatibility checks?
+						continue;
+					}
+					VariableDefinition variable = controlIndexes.get(i);
+					if (!variable.matches(value, environment))
+						throw new ControlIndexException(place, control, i, value);
+				}
 				atomic = control.isAtomic();
 				// TODO 
 				// ports
@@ -93,7 +123,7 @@ public class BasicSignature  {
 			}
 			else {
 				// recurse (not root)
-				validate(place.getChildren(), false);
+				validate(place.getChildren(), false, environment);
 			}
 		}
 	}

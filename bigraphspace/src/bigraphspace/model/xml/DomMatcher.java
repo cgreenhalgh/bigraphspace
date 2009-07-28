@@ -4,6 +4,7 @@
 package bigraphspace.model.xml;
 import java.util.List;
 import java.util.TreeSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.LinkedList;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.NamedNodeMap;
 import org.apache.log4j.Logger;
+import bigraphspace.model.VariableDefinition;
 
 /** Find match(es) between pattern and target bigraph.
  * 
@@ -34,8 +36,9 @@ public class DomMatcher {
 		DomPartMatch partMatch = new DomPartMatch();
 		Element patternBigraphEl = pattern.getBigraphElement();
 		Element targetBigraphEl = target.getBigraphElement();
+		Map<String,VariableDefinition> patternVariables = pattern.getVariables();
 		// add pattern roots
-		NodeList patternRootEls = patternBigraphEl.getElementsByTagName(Constants.ROOT_ELEMENT_NAME);
+		NodeList patternRootEls = XmlUtils.getChildElementsByTagName(patternBigraphEl,Constants.ROOT_ELEMENT_NAME);
 		for (int ri=0; ri<patternRootEls.getLength(); ri++)
 			partMatch.unmatchedPlaces.add((Element)patternRootEls.item(ri));
 		nextunmatched:
@@ -47,6 +50,8 @@ public class DomMatcher {
 			for (int pci=0; pci<patternChildEls.getLength(); pci++) {
 				Node patternChildEl = patternChildEls.item(pci);
 				if (patternChildEl instanceof Element) {
+					if (!DomPlace.isChildElementName(patternChildEl.getNodeName()))
+						continue;
 					if (!Constants.SITE_ELEMENT_NAME.equals(patternChildEl.getNodeName()))
 						hasNodeChildren = true;
 					else
@@ -139,7 +144,7 @@ public class DomMatcher {
 						if (!(targetNode instanceof Element))
 							continue;
 						Element targetEl = (Element)targetNode;
-						if (possibleMatch(patternEl, targetEl)) {
+						if (possibleMatch(patternEl, targetEl, patternVariables)) {
 							possible = true;
 							nodeMatch.targetEls.add(targetEl);
 						}
@@ -156,7 +161,7 @@ public class DomMatcher {
 				nodeMatch = new DomPartMatch.NodeMatch();
 				nodeMatch.patternEl = patternEl;
 				nodeMatch.parentNodeMatch = null;
-				addInitialMatches(nodeMatch, targetBigraphEl);
+				addInitialMatches(nodeMatch, targetBigraphEl, patternVariables);
 			}
 			partMatch.nodeMatches.add(nodeMatch);
 			logger.debug("Found "+nodeMatch.targetEls.size()+" possible matches for "+nodeMatch.patternEl+" "+nodeMatch.patternEl.getAttribute(Constants.NODE_SUPPORT_ATTRIBUTE_NAME));
@@ -302,9 +307,44 @@ public class DomMatcher {
 					}
 				match.nodeMatches.add(nodeMatch);
 			}
-			// check links
+			// check links and index/control variables
 			// determine the link matches, checking as you go along...
 			for (DomMatch.ElementMatch nodeMatch : match.nodeMatches) {
+				// indexes
+				NodeList patternIndexEls = XmlUtils.getChildElementsByTagName(nodeMatch.patternEl,Constants.INDEX_ELEMENT_NAME);
+				NodeList targetIndexEls = XmlUtils.getChildElementsByTagName(nodeMatch.targetEl,Constants.INDEX_ELEMENT_NAME);
+				if (patternIndexEls.getLength()!=targetIndexEls.getLength()) {
+					// different number - should happen :-/
+					nextMatch(partMatch, targetIxs);
+					continue complete;
+				}
+				for (int ii=0; ii<patternIndexEls.getLength(); ii++) {
+					Element patternIndexEl = (Element)patternIndexEls.item(ii);
+					Element targetIndexEl = (Element)targetIndexEls.item(ii);
+					String variableName = patternIndexEl.getAttribute(Constants.INDEX_VARIABLE_ATTRIBUTE_NAME);
+					if (variableName!=null && variableName.length()!=0) {
+						// matches should already have been checked
+						// exact match already?
+						Object value = match.variableValues.get(variableName);
+						if (value==null) {
+							// no - set now
+							match.variableValues.put(variableName, targetIndexEl.getTextContent());
+							continue;
+						}
+						// same?
+						if (!value.equals(targetIndexEl.getTextContent())) {
+							nextMatch(partMatch, targetIxs);
+							continue complete;							
+						}
+					}
+					else if (!(patternIndexEl.getTextContent().equals(targetIndexEl.getTextContent()))) {
+						// should have been done already!
+						logger.warn("Index exact match failed late");
+						nextMatch(partMatch, targetIxs);
+						continue complete;						
+					}
+				}
+				// links
 				NamedNodeMap patternAttributes = nodeMatch.patternEl.getAttributes();
 				for (int pai=0; pai<patternAttributes.getLength(); pai++) {
 					Attr patternAttr = (Attr)patternAttributes.item(pai);
@@ -528,21 +568,44 @@ public class DomMatcher {
 	}
 
 	/** add initial possible matches - recursive */
-	void addInitialMatches(DomPartMatch.NodeMatch nodeMatch, Element targetEl) {
-		if (possibleMatch(nodeMatch.patternEl, targetEl))
+	void addInitialMatches(DomPartMatch.NodeMatch nodeMatch, Element targetEl, Map<String,VariableDefinition> patternVariables) {
+		if (possibleMatch(nodeMatch.patternEl, targetEl, patternVariables))
 			nodeMatch.targetEls.add(targetEl);
 		// recurse
 		NodeList childNodes = targetEl.getChildNodes();
 		for (int ci=0; ci<childNodes.getLength(); ci++) {
 			Node childNode = childNodes.item(ci);
 			if (childNode instanceof Element) 
-				addInitialMatches(nodeMatch, (Element)childNode);
+				addInitialMatches(nodeMatch, (Element)childNode, patternVariables);
 		}
 	}
 	/** initial filter on pattern/node compatibility - control, constant ports */
-	boolean possibleMatch(Element patternEl, Element targetEl) {
+	boolean possibleMatch(Element patternEl, Element targetEl, Map<String,VariableDefinition> patternVariables) {
 		if (!patternEl.getNodeName().equals(targetEl.getNodeName()))
 			return false;
+		// indexes
+		NodeList patternIndexEls = XmlUtils.getChildElementsByTagName(patternEl,Constants.INDEX_ELEMENT_NAME);
+		NodeList targetIndexEls = XmlUtils.getChildElementsByTagName(targetEl,Constants.INDEX_ELEMENT_NAME);
+		if (patternIndexEls.getLength()!=targetIndexEls.getLength())
+			// different number
+			return false;
+		for (int ii=0; ii<patternIndexEls.getLength(); ii++) {
+			Element patternIndexEl = (Element)patternIndexEls.item(ii);
+			Element targetIndexEl = (Element)targetIndexEls.item(ii);
+			// exact match (string) only?!
+			String variableName = patternIndexEl.getAttribute(Constants.INDEX_VARIABLE_ATTRIBUTE_NAME);
+			if (variableName!=null && variableName.length()!=0) {
+				// variable - don't unify at this point, just check it could match
+				VariableDefinition definition = patternVariables.get(variableName);
+				if (definition==null)
+					// undefined - can't match
+					return false;
+				if (definition.matches(targetIndexEl.getTextContent(), patternVariables));
+			}
+			else if (!(patternIndexEl.getTextContent().equals(targetIndexEl.getTextContent())))
+				// failed exact match
+				return false;
+		}
 		NamedNodeMap attributes = patternEl.getAttributes();
 		for (int ai=0; ai<attributes.getLength(); ai++) {
 			Attr attribute = (Attr)attributes.item(ai);

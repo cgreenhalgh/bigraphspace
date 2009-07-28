@@ -13,11 +13,16 @@ import bigraphspace.model.signaturexml.Utils;
 import org.apache.log4j.Logger;
 
 import bigraphspace.model.BasicSignature;
+import bigraphspace.model.VariableDefinition;
+import bigraphspace.model.VariableType;
+import bigraphspace.model.VariableConstraint;
+import bigraphspace.model.VariableConstraintType;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.LinkedList;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -80,6 +85,31 @@ public class SignatureFactory {
 					portNames[pi] = bigraphspace.model.Port.DEFAULT_PORT_NAME_PREFIX+pi;				
 			}
 			control.setPortNames(portNames);
+			// indexes
+			List<ControlIndex> xindexes = xcontrol.getIndex();
+			List<VariableDefinition> indexes = control.getIndexTypes();
+			for (ControlIndex xindex : xindexes) {
+				VariableDefinition index = new VariableDefinition();
+				if (xindex.getType()==null) 
+					throw new DefinitionException("<index> with no type attribute");
+				index.setBaseType(VariableType.valueOf(xindex.getType()));
+				List<VariableConstraint> constraints = index.getConstraints();
+				List<bigraphspace.model.signaturexml.VariableConstraint> xconstraints = xindex.getConstraint();
+				for (bigraphspace.model.signaturexml.VariableConstraint xconstraint : xconstraints) {
+					VariableConstraint constraint = new VariableConstraint();
+					if (xconstraint.getType()==null)
+						throw new DefinitionException("<constraint> with no type attribute");
+					constraint.setConstraintType(VariableConstraintType.valueOf(xconstraint.getType()));
+					if (xconstraint.getVariable()!=null)
+						constraint.setVariableName(xconstraint.getVariable());
+					List<String> xvalues = xconstraint.getValue();
+					List<Object> values = constraint.getValues();
+					for (String xvalue : xvalues)
+						values.add(xvalue);
+					constraints.add(constraint);
+				}
+				indexes.add(index);
+			}
 			// done
 			bs.getControls().add(control);
 		}

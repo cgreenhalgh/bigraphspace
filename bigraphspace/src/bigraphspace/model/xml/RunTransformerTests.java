@@ -62,7 +62,7 @@ public class RunTransformerTests {
 			Document testDoc = XmlUtils.readFile(new File(args[1]));
 			DomMatcher matcher = new DomMatcher();
 			DomTransformer transformer = new DomTransformer();
-			NodeList testEls = testDoc.getDocumentElement().getElementsByTagName(TEST_ELEMENT_NAME);
+			NodeList testEls = XmlUtils.getChildElementsByTagName(testDoc.getDocumentElement(),TEST_ELEMENT_NAME);
 			if (testEls.getLength()==0)
 				logger.warn("No tests found");
 			for (int ti=0; ti<testEls.getLength(); ti++) {
@@ -150,7 +150,7 @@ public class RunTransformerTests {
 	static Element getOnlyBigraphElement(Element testEl, int ti, String name) {
 		if (testEl==null)
 			return null;
-		NodeList redexEls = testEl.getElementsByTagName(name);
+		NodeList redexEls = XmlUtils.getChildElementsByTagName(testEl,name);
 		if (redexEls.getLength()==0) {
 			logger.error("No "+name+"+ in test "+ti);
 			return null;					
@@ -158,7 +158,7 @@ public class RunTransformerTests {
 		Element redexEl = (Element)redexEls.item(0);
 		if (redexEls.getLength()>1)
 			logger.warn(redexEls.getLength()+" "+name+" in test "+ti+"; using first only");
-		NodeList bigraphEls = redexEl.getElementsByTagName(Constants.BIGRAPH_ELEMENT_NAME);
+		NodeList bigraphEls = XmlUtils.getChildElementsByTagName(redexEl,Constants.BIGRAPH_ELEMENT_NAME);
 		if (bigraphEls.getLength()==0) {
 			logger.error("No bigraph in "+name+"+ in test "+ti);
 			return null;					
@@ -173,7 +173,7 @@ public class RunTransformerTests {
 	static Element getOnlyElement(Element testEl, int ti, String name) {
 		if (testEl==null)
 			return null;
-		NodeList redexEls = testEl.getElementsByTagName(name);
+		NodeList redexEls = XmlUtils.getChildElementsByTagName(testEl,name);
 		if (redexEls.getLength()==0) {
 			logger.error("No "+name+"+ in test "+ti);
 			return null;					

@@ -55,6 +55,8 @@ public class DomMatch implements Match {
 	ArrayList<ElementMatch> rootMatches = new ArrayList<ElementMatch>();
 	/** all link matches */
 	ArrayList<LinkMatch> linkMatches = new ArrayList<LinkMatch>();
+	/** variable exact value matches */
+	Map<String,Object> variableValues = new HashMap<String,Object>();
 	/** cons
 	 */
 	public DomMatch() {
@@ -122,7 +124,7 @@ public class DomMatch implements Match {
 	/** fill in remaining correspondences: holes and sites given node and link mappings */
 	void inferHolesAndSites() {
 		// holes are matched to parent of a match of a child
-		NodeList rootEls = this.pattern.getBigraphElement().getElementsByTagName(Constants.ROOT_ELEMENT_NAME);
+		NodeList rootEls = XmlUtils.getChildElementsByTagName(this.pattern.getBigraphElement(), Constants.ROOT_ELEMENT_NAME);
 		for (int ri=0; ri<rootEls.getLength(); ri++) {
 			Element rootEl = (Element)rootEls.item(ri);
 			// check if root matched directly
@@ -218,6 +220,14 @@ public class DomMatch implements Match {
 				return nodeMatch;
 		return null;
 	}
+	/* (non-Javadoc)
+	 * @see bigraphspace.model.Match#getVariableValues()
+	 */
+	//@Override
+	public Map<String, Object> getVariableValues() {
+		return variableValues;
+	}
+
 	/** dump - debug */
 	public void dump(PrintStream ps) {
 		dump(ps, "Pattern", pattern);
@@ -229,6 +239,11 @@ public class DomMatch implements Match {
 				ps.print(patternLink+" ");
 			ps.println("} -> "+linkMatch.targetLink);
 		}
+		ps.print(variableValues.size()+" variable values:");
+		for(Map.Entry<String,Object> variableValue : variableValues.entrySet()) {
+			ps.print(" "+variableValue.getKey()+"="+variableValue.getValue());
+		}
+		ps.println();
 	}		
 	/** dump - debug */
 	protected void dump(PrintStream ps, String title, DomBigraph bigraph) {
@@ -249,6 +264,7 @@ public class DomMatch implements Match {
 		ps.println();
 		Map<String,String> innerNameMap = bigraph.getInnerNameMap();
 		ps.println(innerNameMap.size()+" inner name mappings: "+innerNameMap);
+		bigraph.dumpVariables(ps);
 	}
 	/** dump an element, recursively */
 	public void dump(PrintStream ps, Place place, int indent) {
@@ -282,8 +298,21 @@ public class DomMatch implements Match {
 			ps.println(XmlUtils.getIndent(indent)+support+"_"+tag);
 		else if (place.isRoot())
 			ps.println(XmlUtils.getIndent(indent)+support+"root"+tag);
-		else
-			ps.println(XmlUtils.getIndent(indent)+support+place.getControlName()+tag);
+		else {
+			ps.print(XmlUtils.getIndent(indent)+support+place.getControlName());
+			if (place.isIndexed()) {
+				ps.print("<");
+				List<Object> indexes = place.getControlIndexes();
+				for (int ix=0; ix<indexes.size(); ix++) {
+					if (ix>0)
+						ps.print(",");
+					ps.print(indexes.get(ix));
+				}
+				ps.print(">");
+			}
+			ps.println(tag);
+
+		}
 		List<Port> ports = place.getPorts();
 		if (ports.size()>0) {
 			ps.println(XmlUtils.getIndent(indent)+"{");

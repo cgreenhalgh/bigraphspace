@@ -27,6 +27,10 @@ import bigraphspace.model.Bigraph;
 import bigraphspace.model.Control;
 import bigraphspace.model.Place;
 import bigraphspace.model.Port;
+import bigraphspace.model.VariableDefinition;
+import bigraphspace.model.VariableConstraint;
+import bigraphspace.model.VariableConstraintType;
+import bigraphspace.model.VariableType;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
@@ -174,7 +178,7 @@ public class DomBigraph implements Bigraph {
 	 */
 	@Override
 	public List<Place> getRoots() {
-		NodeList rootEls = bigraphElement.getElementsByTagName(Constants.ROOT_ELEMENT_NAME);
+		NodeList rootEls = XmlUtils.getChildElementsByTagName(bigraphElement, Constants.ROOT_ELEMENT_NAME);
 		LinkedList<Place> roots = new LinkedList<Place>();
 		for (int i=0; i<rootEls.getLength(); i++) {
 			Element rootEl = (Element)rootEls.item(i);
@@ -207,7 +211,7 @@ public class DomBigraph implements Bigraph {
 			throw new IllegalArgumentException("insertRoot("+root+") - not root");
 		if (root instanceof DomPlace) {
 			DomPlace domPlace = (DomPlace)root;
-			NodeList rootEls = bigraphElement.getElementsByTagName(Constants.ROOT_ELEMENT_NAME);
+			NodeList rootEls = XmlUtils.getChildElementsByTagName(bigraphElement,Constants.ROOT_ELEMENT_NAME);
 			Node refChild = (atIndex>=0 && atIndex<rootEls.getLength()) ? rootEls.item(atIndex) : null;
 			bigraphElement.insertBefore(domPlace.getElement(), refChild);
 		}
@@ -239,7 +243,7 @@ public class DomBigraph implements Bigraph {
 	/** get edge/hidden names */
 	protected Set<String> getSpecialNames(String elementName) {
 		TreeSet<String> names = new TreeSet<String>();
-		NodeList nodes = this.bigraphElement.getElementsByTagName(elementName);
+		NodeList nodes = XmlUtils.getChildElementsByTagName(this.bigraphElement,elementName);
 		for (int i=0; i<nodes.getLength(); i++) {
 			Element node = (Element)nodes.item(i);
 			String id = node.getAttribute(Constants.LINK_NAME_ATTRIBUTE_NAME);
@@ -265,7 +269,7 @@ public class DomBigraph implements Bigraph {
 		addSpecialName(Constants.EDGE_ELEMENT_NAME, name);
 	}
 	protected void addSpecialName(String elementName, String name) {
-		NodeList nodes = this.bigraphElement.getElementsByTagName(elementName);
+		NodeList nodes = XmlUtils.getChildElementsByTagName(this.bigraphElement,elementName);
 		for (int i=0; i<nodes.getLength(); i++) {
 			Element node = (Element)nodes.item(i);
 			String id = node.getAttribute(Constants.LINK_NAME_ATTRIBUTE_NAME);
@@ -293,7 +297,7 @@ public class DomBigraph implements Bigraph {
 		removeSpecialName(Constants.EDGE_ELEMENT_NAME, name);
 	}
 	protected void removeSpecialName(String elementName, String name) {
-		NodeList nodes = this.bigraphElement.getElementsByTagName(elementName);
+		NodeList nodes = XmlUtils.getChildElementsByTagName(this.bigraphElement,elementName);
 		for (int i=0; i<nodes.getLength(); i++) {
 			Element node = (Element)nodes.item(i);
 			String id = node.getAttribute(Constants.LINK_NAME_ATTRIBUTE_NAME);
@@ -319,7 +323,7 @@ public class DomBigraph implements Bigraph {
 	//@Override
 	public void addInnerNameMapping(String innerName, String edge) {
 		// already here?
-		NodeList nodes = this.bigraphElement.getElementsByTagName(Constants.INNERNAME_ELEMENT_NAME);
+		NodeList nodes = XmlUtils.getChildElementsByTagName(this.bigraphElement, Constants.INNERNAME_ELEMENT_NAME);
 		for (int i=0; i<nodes.getLength(); i++) {
 			Element el = (Element)nodes.item(i);
 			String name = el.getAttribute(Constants.INNERNAME_NAME_ATTRIBUTE_NAME);
@@ -340,7 +344,7 @@ public class DomBigraph implements Bigraph {
 	//@Override
 	public Map<String, String> getInnerNameMap() {
 		HashMap<String,String> map = new HashMap<String,String>();
-		NodeList nodes = this.bigraphElement.getElementsByTagName(Constants.INNERNAME_ELEMENT_NAME);
+		NodeList nodes = XmlUtils.getChildElementsByTagName(this.bigraphElement, Constants.INNERNAME_ELEMENT_NAME);
 		for (int i=0; i<nodes.getLength(); i++) {
 			Element el = (Element)nodes.item(i);
 			String id = el.getAttribute(Constants.LINK_NAME_ATTRIBUTE_NAME);
@@ -358,7 +362,7 @@ public class DomBigraph implements Bigraph {
 	//@Override
 	public void removeInnerNameMapping(String innerName) {
 		// already here?
-		NodeList nodes = this.bigraphElement.getElementsByTagName(Constants.INNERNAME_ELEMENT_NAME);
+		NodeList nodes = XmlUtils.getChildElementsByTagName(this.bigraphElement, Constants.INNERNAME_ELEMENT_NAME);
 		for (int i=0; i<nodes.getLength(); i++) {
 			Element el = (Element)nodes.item(i);
 			String name = el.getAttribute(Constants.INNERNAME_NAME_ATTRIBUTE_NAME);
@@ -387,6 +391,104 @@ public class DomBigraph implements Bigraph {
 		ps.println();
 		Map<String,String> innerNameMap = this.getInnerNameMap();
 		ps.println(innerNameMap.size()+" inner name mappings: "+innerNameMap);
+		dumpVariables(ps);
+	}
+	/** dump debug */
+	public void dumpVariables(PrintStream ps) {
+		Map<String,VariableDefinition> variables = this.getVariables();
+		ps.println(variables.size()+" variables:");
+		if (variables.size()==0)
+			return;
+		for (String name : variables.keySet()) {
+			VariableDefinition definition = variables.get(name);
+			ps.print("where "+name+":"+definition.getBaseType());
+			List<VariableConstraint> constraints = definition.getConstraints();
+			for (VariableConstraint constraint : constraints) {
+				ps.print(" and "+name+" "+constraint.getConstraintType());
+				if (constraint.getVariableName()!=null)
+					ps.print(" "+constraint.getVariableName());
+				for (Object value : constraint.getValues()) {
+					ps.print(" "+value);
+				}
+			}
+			ps.println();
+		}
+	}
+	/* (non-Javadoc)
+	 * @see bigraphspace.model.Bigraph#addVariable(java.lang.String, bigraphspace.model.VariableDefinition)
+	 */
+	//@Override
+	public void addVariable(String name, VariableDefinition definition) {
+		// TODO Auto-generated method stub
+		
+	}
+	/* (non-Javadoc)
+	 * @see bigraphspace.model.Bigraph#getVariables()
+	 */
+	//@Override
+	public Map<String, VariableDefinition> getVariables() {
+		NodeList variableEls = XmlUtils.getChildElementsByTagName(this.bigraphElement, Constants.VARIABLE_ELEMENT_NAME);
+		//logger.debug(variableEls.getLength()+" <variable> elements");
+		Map<String, VariableDefinition> variables = new HashMap<String, VariableDefinition> ();
+		for (int i=0; i<variableEls.getLength(); i++) {
+			Element variableEl = (Element)variableEls.item(i);
+			String name = variableEl.getAttribute(Constants.VARIABLE_NAME_ATTRIBUTE_NAME);
+			if (name==null || name.length()==0) {
+				logger.warn("<variable> with no name");
+				continue;
+			}
+			VariableDefinition definition = new VariableDefinition();
+			String baseType = variableEl.getAttribute(Constants.VARIABLE_BASE_TYPE_ATTRIBUTE_NAME);
+			if (baseType==null || baseType.length()==0) {
+				logger.warn("<variable name=\""+name+"\"> with no "+Constants.VARIABLE_BASE_TYPE_ATTRIBUTE_NAME);
+				continue;
+			}
+			definition.setBaseType(VariableType.valueOf(baseType));
+			List<VariableConstraint> constraints = definition.getConstraints();
+			NodeList constraintEls = variableEl.getChildNodes();
+			for (int ci=0; ci<constraintEls.getLength(); ci++) {
+				if (constraintEls.item(ci) instanceof Element) {
+					Element constraintEl = (Element)constraintEls.item(ci);
+					String constraintName = constraintEl.getNodeName();
+					VariableConstraint constraint = new VariableConstraint();
+					constraint.setConstraintType(VariableConstraintType.valueOf(constraintName));
+					String variableName = constraintEl.getAttribute(Constants.DIFFERENCE_VARIABLE_ATTRIBUTE_NAME);
+					if (variableName!=null && variableName.length()>0)
+						constraint.setVariableName(variableName);
+					List<Object> values = constraint.getValues();
+					if (constraintName.equals(Constants.ONEOF_ELEMENT_NAME) || constraintName.equals(Constants.NOTONEOF_ELEMENT_NAME)) {
+						NodeList valueEls = XmlUtils.getChildElementsByTagName(constraintEl, Constants.VALUE_ELEMENT_NAME);
+						for (int vi=0; vi<valueEls.getLength(); vi++) {
+							Element valueEl = (Element)valueEls.item(vi);
+							values.add(valueEl.getTextContent());
+						}							
+					}
+					else {
+						// single valued
+						values.add(constraintEl.getTextContent().trim());
+					}
+					constraints.add(constraint);
+				}
+			}
+			variables.put(name, definition);
+		}
+		return variables;
+	}
+	/* (non-Javadoc)
+	 * @see bigraphspace.model.Bigraph#isExpression()
+	 */
+	//@Override
+	public boolean isExpression() {
+		NodeList variableEls = XmlUtils.getChildElementsByTagName(this.bigraphElement,Constants.VALUE_ELEMENT_NAME);
+		return variableEls.getLength()>0;
+	}
+	/* (non-Javadoc)
+	 * @see bigraphspace.model.Bigraph#removeVariable(java.lang.String)
+	 */
+	//@Override
+	public void removeVariable(String name) {
+		// TODO Auto-generated method stub
+		
 	}
 	/** dump an element, recursively */
 	public void dump(PrintStream ps, Place place, int indent) {
@@ -395,8 +497,20 @@ public class DomBigraph implements Bigraph {
 			ps.println(XmlUtils.getIndent(indent)+support+"_");
 		else if (place.isRoot())
 			ps.println(XmlUtils.getIndent(indent)+support+"root");
-		else
-			ps.println(XmlUtils.getIndent(indent)+support+place.getControlName());
+		else {
+			ps.print(XmlUtils.getIndent(indent)+support+place.getControlName());
+			if (place.isIndexed()) {
+				ps.print("<");
+				List<Object> indexes = place.getControlIndexes();
+				for (int i=0; i<indexes.size(); i++) {
+					if (i>0)
+						ps.print(",");
+					ps.print(indexes.get(i));
+				}
+				ps.print(">");
+			}
+			ps.println();
+		}
 		List<Port> ports = place.getPorts();
 		if (ports.size()>0) {
 			ps.println(XmlUtils.getIndent(indent)+"{");

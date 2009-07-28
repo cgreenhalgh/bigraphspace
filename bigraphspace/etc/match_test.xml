@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tests>
-	<!-- simple match -->
+	<!-- 0: simple match -->
 	<test>
 		<pattern>
 			<bigraph>
@@ -28,7 +28,7 @@
 			<!--  <linkmatch />  -->
 		</match>
 	</test>
-	<!-- 2x2 options match -->
+	<!-- 1: 2x2 options match -->
 	<test>
 		<pattern>
 			<bigraph>
@@ -73,7 +73,7 @@
 			<!--  <linkmatch />  -->
 		</match>
 	</test>
-	<!-- sibling constraint -->
+	<!-- 2: sibling constraint -->
 	<test>
 		<pattern>
 			<bigraph>
@@ -103,7 +103,7 @@
 			<!--  <linkmatch />  -->
 		</match>
 	</test>
-	<!-- parent constraint -->
+	<!-- 3: parent constraint -->
 	<test>
 		<pattern>
 			<bigraph>
@@ -133,7 +133,7 @@
 			<!--  <linkmatch />  -->
 		</match>
 	</test>
-	<!-- uniqueness constraint -->
+	<!-- 4: uniqueness constraint -->
 	<test>
 		<pattern>
 			<bigraph>
@@ -187,13 +187,12 @@
 			<!--  <linkmatch />  -->
 		</match>
 	</test>
-	<!-- constant match -->
+	<!-- 5: constant match -->
 	<test>
 		<pattern>
 			<bigraph>
 				<root>
 					<PhysicalBluetooth _support="_BT1" btaddress="&quot;00:00:00:00:00:01&quot;">
-						<site index="0" />
 					</PhysicalBluetooth>
 				</root>
 			</bigraph>
@@ -211,7 +210,7 @@
 			<!--  <linkmatch />  -->
 		</match>
 	</test>
-	<!-- simple link match -->
+	<!-- 6: simple link match -->
 	<test>
 		<pattern>
 			<bigraph>
@@ -246,13 +245,12 @@
 			<!--  <linkmatch />  -->
 		</match>
 	</test>
-	<!-- merge link match -->
+	<!-- 7: merge link match -->
 	<test>
 		<pattern>
 			<bigraph>
 				<root>
 					<DescriptionBluetooth _support="_PH1" associatedwith="_associatedwith">
-						<site index="0" />
 					</DescriptionBluetooth>
 					<DescriptionRoom _support="_PR1" identifier="_identifiers">
 						<site index="1" />
@@ -295,7 +293,7 @@
 			<linkmatch pattern="_identifiers" target="identifier2"/>
 		</match>
 	</test>
-	<!-- edge (non-)match -->
+	<!-- 8: edge (non-)match -->
 	<test>
 		<pattern>
 			<bigraph>
@@ -322,7 +320,7 @@
 			<!--  <linkmatch />  -->
 		</match>
 	</test>
-	<!-- edge non-merge non-match -->
+	<!-- 9: edge non-merge non-match -->
 	<test>
 		<pattern>
 			<bigraph>
@@ -346,7 +344,7 @@
 		</target>
 		<!--  shouldn't match because edge would be merge with outer name -->
 	</test>
-	<!-- non-inner name ("hidden") (non-)match -->
+	<!-- 10: non-inner name ("hidden") (non-)match -->
 	<test>
 		<pattern>
 			<bigraph>
@@ -374,7 +372,7 @@
 			<!--  <linkmatch />  -->
 		</match>
 	</test>
-	<!-- site debug -->
+	<!-- 11: site debug -->
 	<test>
 		<pattern>
 			<bigraph>
@@ -400,7 +398,7 @@
 			<!--  <linkmatch />  -->
 		</match>
 	</test>
-	<!-- site debug -->
+	<!-- 12: site debug -->
 	<test>
 		<pattern>
 			<bigraph>
@@ -428,7 +426,7 @@
 			<!--  <linkmatch />  -->
 		</match>
 	</test>
-	<!-- no-nesting of roots -->
+	<!-- 13: no-nesting of roots -->
 	<test>
 		<pattern>
 			<bigraph>
@@ -555,6 +553,116 @@
 		</target>
 		<match>
 			<!--  <linkmatch />  -->
+		</match>
+	</test>
+	<!-- 17. Integer exact match -->
+	<test>
+		<pattern>
+			<bigraph>
+				<root>
+					<integer _support="n">
+						<index>10</index>
+					</integer>
+				</root>
+			</bigraph>
+		</pattern>
+		<target>
+			<bigraph>
+				<root>
+					<integer _support="10">
+						<index>10</index>
+					</integer>
+					<integer _support="11">
+						<index>11</index>
+					</integer>
+				</root>
+			</bigraph>
+		</target>
+		<match>
+			<nodematch pattern="n" target="10"/>
+		</match>
+	</test>
+	<!-- 18. Integer variable match -->
+	<test>
+		<pattern>
+			<bigraph>
+				<variable name="x" type="integer"/>
+				<root>
+					<integer _support="n">
+						<index variable="x"/>
+					</integer>
+				</root>
+			</bigraph>
+		</pattern>
+		<target>
+			<bigraph>
+				<root>
+					<integer _support="10">
+						<index>10</index>
+					</integer>
+					<integer _support="11">
+						<index>11</index>
+					</integer>
+				</root>
+			</bigraph>
+		</target>
+		<match>
+			<nodematch pattern="n" target="10"/>
+			<variable pattern="x" target="10"/>
+		</match>
+		<match>
+			<nodematch pattern="n" target="11"/>
+			<variable pattern="x" target="11"/>
+		</match>
+	</test>
+	<!-- 19. Common value Integer variable match -->
+	<test>
+		<pattern>
+			<bigraph>
+				<variable name="x" type="integer"/>
+				<root>
+					<integer _support="n">
+						<index variable="x"/>
+					</integer>
+					<PhysicalRoom _support="PR1">
+						<integer _support="Rn">
+							<index variable="x"/>
+						</integer>
+					</PhysicalRoom>
+				</root>
+			</bigraph>
+		</pattern>
+		<target>
+			<bigraph>
+				<root>
+					<integer _support="10">
+						<index>10</index>
+					</integer>
+					<integer _support="11">
+						<index>11</index>
+					</integer>
+					<PhysicalRoom _support="PR1">
+						<integer _support="R10">
+							<index>10</index>
+						</integer>
+						<integer _support="R11">
+							<index>11</index>
+						</integer>
+					</PhysicalRoom>
+				</root>
+			</bigraph>
+		</target>
+		<match>
+			<nodematch pattern="n" target="10"/>
+			<nodematch pattern="Rn" target="R10"/>
+			<nodematch pattern="PR1" target="PR1"/>
+			<variable pattern="x" target="10"/>
+		</match>
+		<match>
+			<nodematch pattern="n" target="11"/>
+			<nodematch pattern="Rn" target="R11"/>
+			<nodematch pattern="PR1" target="PR1"/>
+			<variable pattern="x" target="11"/>
 		</match>
 	</test>
 </tests>

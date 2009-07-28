@@ -13,8 +13,11 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Attr;
 
 import bigraphspace.model.Place;
+import bigraphspace.model.Variable;
 import bigraphspace.model.PlaceType;
 import bigraphspace.model.Port;
+
+import org.apache.log4j.Logger;
 
 /** DOM implementation of abstract Place.
  * 
@@ -22,6 +25,8 @@ import bigraphspace.model.Port;
  *
  */
 public class DomPlace implements Place {
+	/** logger */
+	static Logger logger = Logger.getLogger(DomPlace.class);
 	/** element = place */
 	protected Element element;
 	/** cons - local */
@@ -72,14 +77,21 @@ public class DomPlace implements Place {
 	//@Override
 	public List<Port> getPorts() {
 		LinkedList<Port> ports = new LinkedList<Port>();
+		if (!this.isNode())
+			// roots and sites don't have ports!
+			return ports;
 		NamedNodeMap attributes = element.getAttributes();
 		for(int ai=0; ai<attributes.getLength(); ai++) {
 			Node attribute = attributes.item(ai);
 			// not _support
-			if (!attribute.getNodeName().equals(Constants.NODE_SUPPORT_ATTRIBUTE_NAME))
+			if (isPortAttributeName(attribute.getNodeName()))
 				ports.add(new DomPort((Attr)attribute));
 		}
 		return ports;
+	}
+	/** valid port attribute name */
+	public static boolean isPortAttributeName(String name) {
+		return !name.startsWith("_");
 	}
 
 	/* (non-Javadoc)
@@ -177,11 +189,15 @@ public class DomPlace implements Place {
 		LinkedList<Place> children = new LinkedList<Place>();
 		for (int i=0; i<childEls.getLength(); i++) {
 			Node node = childEls.item(i);
-			if (node instanceof Element) {
+			if (node instanceof Element && isChildElementName(node.getNodeName())) {
 				children.add(new DomPlace((Element)node));
 			}
 		}
 		return children;
+	}
+	/** is child element name */
+	public static boolean isChildElementName(String name) {
+		return !name.equals(Constants.INDEX_ELEMENT_NAME);
 	}
 	/* (non-Javadoc)
 	 * @see bigraphspace.model.Place#insertChild(bigraphspace.model.Place, int)
@@ -249,6 +265,95 @@ public class DomPlace implements Place {
 		}
 		else
 			element.setAttribute(Constants.NODE_SUPPORT_ATTRIBUTE_NAME, support);
+	}
+	/* (non-Javadoc)
+	 * @see bigraphspace.model.Place#getControlVariable()
+	 */
+	//@Override
+	public String getControlVariable() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	/* (non-Javadoc)
+	 * @see bigraphspace.model.Place#isControlVariable()
+	 */
+	//@Override
+	public boolean isControlVariable() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	/* (non-Javadoc)
+	 * @see bigraphspace.model.Place#setControlVariable(java.lang.String)
+	 */
+	//@Override
+	public void setControlVariable(String variableName) {
+		// TODO Auto-generated method stub
+		
+	}
+	/* (non-Javadoc)
+	 * @see bigraphspace.model.Place#addControlIndex(java.lang.Object)
+	 */
+	//@Override
+	public void addControlIndex(Object value) {
+		// TODO Auto-generated method stub
+		
+	}
+	/* (non-Javadoc)
+	 * @see bigraphspace.model.Place#getControlIndexes()
+	 */
+	//@Override
+	public List<Object> getControlIndexes() {
+		NodeList indexEls = XmlUtils.getChildElementsByTagName(element,Constants.INDEX_ELEMENT_NAME);
+		LinkedList<Object> indexes = new LinkedList<Object>();
+		for (int i=0; i<indexEls.getLength(); i++) {
+			Element indexEl = (Element)indexEls.item(i);
+			// variable?
+			String variable = indexEl.getAttribute(Constants.INDEX_VARIABLE_ATTRIBUTE_NAME);
+			if (variable!=null && variable.length()>0) {
+				Variable var = new Variable();
+				var.setName(variable);
+				indexes.add(var);
+				if (indexEl.getTextContent().trim().length()>0) 
+					logger.warn("<index> with variable attribute also has value "+indexEl.getTextContent().trim());
+			}
+			else {
+				// TODO: coerce types?
+				indexes.add(indexEl.getTextContent());
+			}
+		}
+		return indexes;
+	}
+	/* (non-Javadoc)
+	 * @see bigraphspace.model.Place#insertControlIndex(java.lang.Object, int)
+	 */
+	//@Override
+	public void insertControlIndex(Object value, int atIndex) {
+		// TODO Auto-generated method stub
+		
+	}
+	/* (non-Javadoc)
+	 * @see bigraphspace.model.Place#isIndexed()
+	 */
+	//@Override
+	public boolean isIndexed() {
+		NodeList indexEls = element.getElementsByTagName(Constants.INDEX_ELEMENT_NAME);
+		return (indexEls.getLength()>0);
+	}
+	/* (non-Javadoc)
+	 * @see bigraphspace.model.Place#removeControlIndex(java.lang.Object)
+	 */
+	//@Override
+	public void removeControlIndex(Object value) {
+		// TODO Auto-generated method stub
+		
+	}
+	/* (non-Javadoc)
+	 * @see bigraphspace.model.Place#setControlIndex(java.lang.Object, int)
+	 */
+	//@Override
+	public void setControlIndex(Object value, int atIndex) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

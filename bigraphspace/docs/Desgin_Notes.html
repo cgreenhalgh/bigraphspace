@@ -5,6 +5,8 @@
 
 
 
+
+  
   
   
   
@@ -12,13 +14,17 @@
 
 
 
+
+  
   
   
   
   <title>Desgin Notes</title>
 </head>
 
+
 <body>
+
 
 
 
@@ -28,12 +34,15 @@
 
 
 
+
 Chris Greenhalgh, 2009-06-17; last updated 2009-06-27<br>
 
 
 
 
+
 <h2>Introduction</h2>
+
 
 
 
@@ -45,6 +54,7 @@ representation(s) as a starting point, in particular both language-type
 scaffolding
 their two-way translation to/from the XML representation of the
 bigraph(s).</p>
+
 
 
 
@@ -62,8 +72,10 @@ the second round it is in constraining rule matching correctly.</p>
 
 
 
+
 <p>So I'll start by assuming that the XML model will be standard
 (Java) DOM.</p>
+
 
 
 
@@ -75,9 +87,11 @@ this
 
 
 
+
 <p>Package reacticexml.parser will be a (hopefully generalisable)
 parser/renderer for working with programming language views of the
 bigraphs (and vice versa).</p>
+
 
 
 
@@ -91,14 +105,17 @@ Standard ML syntax for some parts and others bits currently omitted).</p>
 
 
 
+
 <p>Package reactivexml.gui will be 2D GUI support/views for the
 core model.</p>
 
 
 
 
+
 <p> Package reactivexml.sorting will be for sortings and
 signatures.</p>
+
 
 
 
@@ -117,11 +134,13 @@ by composition and product" [Milner, 2009, p.59].</p>
 
 
 
+
 <p style="margin-left: 40px;">In a well-formed sorting the
 formation
 rule corresponds to a decomposable predicate - which is never false for
 a sub-bigraph if it can be true of the composition of that bigraph with
 another. </p>
+
 
 
 
@@ -134,10 +153,12 @@ from&nbsp; node sorts. </p>
 
 
 
+
 <p style="margin-left: 40px;">There are some special sorts
 which are
 infinite sets of controls, e.g. corresponding to the natural numbers,
 or the points in a cartesian space.</p>
+
 
 
 
@@ -148,13 +169,16 @@ rendering of a node is also keyed to its control (and perhaps sort).</p>
 
 
 
+
 <h2>Future directions</h2>
+
 
 
 
 
 <p>A bigraph workbench? E.g. based on Eclipse. Allowing modeling,
 simulation, authoring, development.</p>
+
 
 
 
@@ -169,6 +193,7 @@ reaction rules).</p>
 
 
 
+
 <p>A bigraph-based distributed infrastructure, for creating
 ubicomp
 systems, using the above, which are therefore more amenable to
@@ -179,8 +204,10 @@ for authoring, etc.?</p>
 
 
 
+
 <p style="margin-left: 40px;">How would this differ from
 EQUIP or Linda?</p>
+
 
 
 
@@ -194,9 +221,11 @@ support for changing fields, etc.).</p>
 
 
 
+
 <p style="margin-left: 40px;">Second, in that the
 dataspace(s) are themselves bigraph places/nodes, and might be
 manipulated as such.</p>
+
 
 
 
@@ -208,11 +237,13 @@ rule.</p>
 
 
 
+
 <p style="margin-left: 40px;">Fourth, in the the
 operations admitted on
 the dataspace might include the full range of "primitive" bigraph
 manipulations (e.g. movement, link formation), not just in/out (place
 introduction and removal).</p>
+
 
 
 
@@ -233,9 +264,11 @@ linked/briged by application-level agents (c.f. Limbo, EQUIP2).</p>
 
 
 
+
 <p style="margin-left: 40px;">How would you implement it
 (efficiently)?? E.g. partial updates, history, indexing/query
 performance, link following and link-based rules?</p>
+
 
 
 
@@ -247,14 +280,17 @@ naming service(s), GUID(s), ...?</p>
 
 
 
+
 <p>The same implementation could then form the basis of the
 workbench :-) </p>
 
 
 
 
+
 <p>What are the options/issues of using the XML mapping of
 bigraphs?</p>
+
 
 
 
@@ -269,9 +305,11 @@ realisation.</p>
 
 
 
+
 <p style="margin-left: 40px;">It is possible to leverage
 XML technologies to support the implementation of the system.
 Particular options include:</p>
+
 
 
 
@@ -281,10 +319,13 @@ Particular options include:</p>
 
 
 
+
+  
   
   
   
   <ul>
+
 
 
 
@@ -295,8 +336,10 @@ implementation, e.g. DOM, SAX, marshalling, unmarshalling, XSLT.</li>
 
 
 
+
     <li>The XML encoding might be used for inter-process
 communication of bigraphs and bigraph fragments.</li>
+
 
 
 
@@ -309,9 +352,11 @@ implementation of the dataspace API).</li>
 
 
 
+
     <li>An existing/standard XML database protocol might be used
 to interactive with the bigraph model, e.g. XPath, XQuery, XML:DB
 XUpdate.</li>
+
 
 
 
@@ -325,10 +370,12 @@ against such models (e.g. JAXB for object binding).</li>
 
 
 
+
     <li>XML ID/IDREF might be used to directly model
 DAG-structured place-graphs. (But note that ID should not be used for
 support as one XML document might contain multiple bigraphs (e.g. a
 reaction rule) each of which might contain nodes with the same support)</li>
+
 
 
 
@@ -340,6 +387,8 @@ format and the use of JAXB for reading/writing it.</li>
 
 
 
+
+  
   
   
   
@@ -348,7 +397,9 @@ format and the use of JAXB for reading/writing it.</li>
 
 
 
+
 </ul>
+
 
 
 
@@ -359,14 +410,18 @@ some complexities to consider:</p>
 
 
 
+
 <ul>
 
 
 
+
+  
   
   
   
   <ul>
+
 
 
 
@@ -377,8 +432,10 @@ those expressed by bigraph matching; some mapping would be required. </li>
 
 
 
+
     <li>There are some additional semantics not native to XML, e.g.
 holes and roots. </li>
+
 
 
 
@@ -386,6 +443,7 @@ holes and roots. </li>
     <li>Order of children is not generally significant in bigraphs,
 but can be in XML, and care has to be taken to correctly abstract this.
     </li>
+
 
 
 
@@ -399,6 +457,7 @@ specific attribute values).</li>
 
 
 
+
     <li>Different XML technologies and implementations have their
 own general context(s) and paradigms of use, which may or may not fit
 well. E.g. update behaviour, transaction support, history support.</li>
@@ -406,9 +465,11 @@ well. E.g. update behaviour, transaction support, history support.</li>
 
 
 
+
     <li>Only some strings are valid as XML element names or XML
 attribute names; in general control and port names might not respect
 these constraints.</li>
+
 
 
 
@@ -421,6 +482,7 @@ link renaming would be required.</li>
 
 
 
+
     <li>XML has a reputation for inefficiency, and support for XML
 is patchy on small devices (e.g. mobile phones, J2ME). Various other
 low-level semi-structured encodings are also used/suggested as
@@ -429,6 +491,8 @@ alternatives, e.g. JSON.&nbsp;</li>
 
 
 
+
+  
   
   
   
@@ -436,7 +500,9 @@ alternatives, e.g. JSON.&nbsp;</li>
 
 
 
+
 </ul>
+
 
 
 
@@ -449,41 +515,54 @@ inclination.</p>
 
 
 
+
 <h2>
 
 Matching</h2>
 
 
+
 I matching of a redex is (i think):<br>
+
 
 
 <ul>
 
 
+
   <li>a one-to-one mapping from nodes in the redex (pattern) to nodes in the bigraph&nbsp;</li>
 
+
 </ul>
+
 
 which in turn implies:
 <ul>
 
 
+
   <li>a one-to-zero-or-more mapping from sites in the redex to nodes in the bigraph</li>
+
 
 
   <li>a one-to-one mapping from roots in the redex to roots or nodes in the bigraph</li>
 
 
+
   <li>a one-to-one mapping from link names in the redex to link names in the bigraph, which is identity for constant link names</li>
+
 
 
 </ul>
 
 
+
 such that:<br>
 
 
+
 <ul>
+
 
 
   <li>for each node in the pattern, the control of the bigraph node
@@ -492,7 +571,9 @@ may be parameterised, in which case the mapping binds a value to the
 pattern control parameter);</li>
 
 
+
   <li>if two nodes (or a node and site) in the pattern are parent/child then this is true of the corresponding nodes in the bigraph</li>
+
 
 
   <li>if two nodes (or a node and a site or two sites) in the pattern
@@ -500,7 +581,9 @@ are juxtoposed (sublings) then the same is true of the corresponding
 nodes in the bigraph.</li>
 
 
+
   <li>the nodes mapped to in the bigraph by a a site in the pattern are siblings</li>
+
 
 
   <li>if a node in the pattern maps to a node in the bigraph then all
@@ -509,24 +592,31 @@ children of the pattern node (i.e. none are missed out - remember sites
 can "soak up" any number of nodes in the mapping)</li>
 
 
+
   <li>each constant link name in the pattern maps to exactly the same constant link name in the bigraph</li>
+
 
 
   <li>the ports on a node in the pattern map to the identically named ports on the corresponding node in the bigraph</li>
 
 
+
   <li>every port in the bigraph has a link value equal to the mapping of the link value of the corresponding port in the pattern </li>
+
 
 
   <li>a port in the pattern which is explicitly unconnected maps to
 an unconnected port in the bigraph or to a port with a non-constrant
 link name that has no other occurance in the bigraph</li>
 
+
   <li>an edge (non-outer name) in the pattern maps to a non-constant link in the target which does not occur in the context</li>
+
 
   <li>an
 edge (non-outer name) in the pattern maps to a non-constant link in the
 target that is not mapped to any other link in the pattern&nbsp; </li>
+
 
 
   <li>a pattern root which is identified as "active" is only considered
@@ -534,11 +624,15 @@ to&nbsp;matches a root or a node in the bigraph&nbsp;which is active
 and all of whose ancestors are active</li>
 
 
+
   <li>no node in the bigraph is mapped to by more than one node, root or site in the pattern</li>
 
 
+
 </ul>
+
 <h2>Predicates and Logic</h2>
+
 <p>Conforti, Macedonio and Sassone
 propose BiLog, a spatial logic for bigraphs, which they show
 generalises various other spatial logics. There are various places
@@ -546,146 +640,233 @@ where it would be useful to have predicates over bigraphs, for example
 to express sortings of bigraphs and to express more precise conditions
 on reactions. So I will try using BiLog for this, or least some
 fragment of it.</p>
+
 <p>BiLog has a notion of selective "transparency"
 whereby certain constructors (e.g. controls) can be hidden with respect
 to the logic, allowing a class of selective generalisation. For now I
 will not consider this aspect of BiLog.</p>
+
 <h3>BiLog Formulae</h3>
+
 <p>The formulae of BiLog are built on:</p>
+
 <ul>
+
   <li>constant
 formulae corresponding to the primitive constructors of bigraphs, and
 which are satisfied exactly by the corresponding bigraphs:</li>
+
+  
   <ul>
+
     <li>C<sub style="font-style: italic; font-weight: bold;">x</sub> (written with an arrow over the x), which is a node of control C with ports linked to the names in <span style="font-style: italic;">x</span> (which has ordered elements corresponding exactly to the number of ports). This has the (usual) signature 1 -&gt; &lt;1, X&gt;.</li>
+
     <li>1,&nbsp;the empty root, with the (usual) signature 0-&gt;1.</li>
+
     <li><span style="font-style: italic;">join</span>, with signature 2-&gt;1, the merging of (the contents of) two roots into one root.</li>
+
     <li><span style="font-style: italic;">swap</span><sub>m,n</sub>, m+n -&gt; n+m, the exchange in order of the first m roots with the remaining n roots.</li>
+
     <li>/a, signature {a}-&gt;{}, the closure of a (which removes a from the outer face).</li>
+
     <li><sup>a</sup>/<sub>X</sub>,
 signature X -&gt; {a}, substituion (which associates the names in the
 set X in the inner face with the name a in the outer face).</li>
+
     <li>a, which is short-hand for <sup>a</sup>/, {}-&gt;{a} </li>
+
+  
   </ul>
+
   <li>id<sub>I</sub>, which is the identity on the interface I and therefore matches that interface.</li>
+
   <li>F, false, which is not satisfied by any bigraph, and&nbsp;T, true, which <span style="font-style: italic;">is</span> satisfied by any bigraph.</li>
+
 </ul>
+
 <p>BiLog respects the axioms of bigraphs, for example equivalence under renaming and the non-significance of node order.</p>
+
 <p>The main operators of bigraphs have BiLog equivalents:</p>
+
 <ul>
+
   <li>A <span style="font-style: italic;">tensor-product</span> B, which is satisfied if the bigraph can be decomposed into G' <span style="font-style: italic;">tensor-product</span> G'' where G' satisfies A and G'' satisfies B. Note that tensor-product strictly requires name distinct in G' and G''.&nbsp;</li>
+
   <li>A <span style="font-style: italic;">compose</span> B, which is satisfied if the bigraph can be
 decomposed into G' <span style="font-style: italic;">compose</span> G'' where G' satisfies A and G''
 satisfies B.</li>
+
 </ul>
+
 BiLog does not include the derived parallel composition operations (|
 or ||) because these are (apparently) undecidable as they range over
 the infinite set of names. However it does provide the following approximation:
 <ul>
+
   <li>A  <span style="font-style: italic;">separation-up-to</span>
 B, written as a name vector above tensor-product, which is an explicit
 name-sharing parallel composition. It is satisfied if G = some G' ||
 G'', where G' satisfies A and G'' satisfies B and the only names shared
 between G' and G'' are in the name vector. &nbsp;</li>
+
 </ul>
+
 BiLog includes common and classical operators:<br>
+
 <ul>
+
   <li>A =&gt; B, satistified if every bigraph satisfying A also satisfies B.</li>
+
   <li>A <span style="font-style: italic;">and</span> B, (logical conjunction) satisfied if both A and B are satisfied.</li>
+
   <li>A <span style="font-style: italic;">or</span> B, (logical disjunction), satisfied if A or B (or both) is satisfied.</li>
+
   <li><span style="font-style: italic;">not</span> A, satisfied if A is not satisfied.</li>
+
   <li>A &lt;= B, reverse implication, B =&gt; A.</li>
+
   <li>A &lt;=&gt; B, two-way implication, A =&gt; B <span style="font-style: italic;">and</span> B =&gt; A.</li>
+
 </ul>
+
 BiLog
 includes "adjuncts" of tensor-product and composition (category
 theorists like adjoints but I still don't understand them properly):<br>
+
 <ul>
+
   <li>A <span style="font-style: italic;">left-compose-adjunct</span> B, written o-, which is satisfied if for all G' satisying A and G' compose G defined, G' compose G satisfies B.</li>
+
   <li>A <span style="font-style: italic;">right-compose-adjunct</span> B, written -o, which is satisfied if for all G' satisying A and G compose G' defined, G compose G' satisfies B.</li>
+
   <li>A <span style="font-style: italic;">left-tensor-product-adjunct</span> B, written <span style="font-style: italic;">tensor-product</span>-, which is satisfied if for all G' satisfying A and G' tensor-product G defined, G' tensor-product G satisfies B.</li>
+
   <li>A <span style="font-style: italic;">right-tensor-product-adjunct</span> B, written <span style="font-style: italic;">-tensor-product</span>, which is satisfied if for all G' satisfying A and G tensor-product G' defined, G tensor-product G' satisfies B.</li>
+
 </ul>
+
 From these many more operators are derived:<br>
+
 <ul>
+
   <li>A<sub>I</sub> = A o id<sub>I</sub>, i.e. the bigraph satisfies A and has inner face I.</li>
+
   <li>A<sub>-&gt;J</sub> = id<sub>J</sub> o A, i.e. the bigraph satisfies A and has outer face J.</li>
+
   <li>A<sub>I-&gt;J</sub> = id<sub>J</sub> o A o id<sub>I</sub>, i.e. the bigraph satisfies A and has signature I -&gt; J.</li>
+
   <li>A o<sub>I</sub> B = A o id<sub>I</sub>&nbsp;o
 B, i.e. there is a decomposition into a bigraph satisfying A and a
 &nbsp;bigraph satisfying B which has interface I at the composition
 point.</li>
+
   <li>dual of tensor product = not ( not A tensor-product not
 B ), i.e. for all horizontal subdivisions, the left satisfies A or the
 right satisfies B</li>
+
   <li>dual of composition = not ( not A compose not
 B ), i.e. for all vertical subdivisions, the context satisfies A or the
 parameter satisfies B</li>
+
   <li>... (more for adjunts) ...</li>
+
   <li>some horizontal term satisfies A (existential quantification on tensor product) = T tensor-product A tensor-product T.</li>
+
   <li>every
 horizontal term satisfies A (universial quantification on tensor
 product) = not ( T tensor-product not A tensor-product T )</li>
+
   <li>some vertical term satisfies A (existential qualification on composition) = T compose A compose T</li>
+
   <li>every vertical term satisfies A (universal qualification on composition) = not ( T compose not A compose T )</li>
+
   <li>somewhere A (on ground terms) = (T o A)<sub>unit</sub>. (the empty interface)</li>
+
   <li>anywhere A (on ground terms) = not (somewhere not A)</li>
+
 </ul>
+
 <h3>Attempted Examples</h3>
+
 <p>Let's try homomorphic place sorting...</p>
+
 <p>C<sub>X</sub> - some control, interface 1 -&gt; &lt;1,X&gt;, so has no internal names, so cannot have any links into it.</p>
+
 <p>C<sub>X</sub> o 1 =&nbsp;C<sub>X</sub> o<sub>1</sub> 1 - empty C control, 0 -&gt; &lt;1,X&gt;</p>
+
 <p>C<sub>X</sub> o T =&nbsp;C<sub>X</sub> o<sub>1</sub> T - C control containing anything with outerface 1, i.e. no out names</p>
+
 <p>( C<sub>X</sub> separation-up-to-X' id<sub>X'</sub>
 ) o T where X subset of X', signature &lt;1,X'&gt; -&gt; ? - a control
 C containing a bigraph which may share names in X' (which includes
 ports of C)</p>
+
 <p>Note that we may choose only to consider bigraphs
 with names drawn from X', so that separation-up-to-X' is effectively ||
 (wide parallel composition).</p>
+
 <p>T o ( C<sub>X</sub> separation-up-to-X' id<sub>X'</sub> ) o T&nbsp; where X subset of X' -&nbsp;some bigraph containing a C<sub>X</sub> which in turn contains anything and which may share names in X' (including all ports of C)</p>
+
 <p>( P<sub>X</sub> separation-up-to-X' id<sub>&lt;X'&gt;</sub> ) o join ( &nbsp;C<sub>Y</sub> separation-up-to-X' id<sub>&lt;1,X'&gt;</sub>
 ) o T where X,Y subsets of X' - a node P containg a node C (implicitly
 containing a site) and a site, passing all names including ports of P
 and C, to an arbitrary parameter with two roots (one being placed in C,
 the other directly into P).</p>
+
 <p>T o ditto - a bigraph in which the above occurs anywhere (need not be ground).</p>
+
 <p>( C1<sub>Y1</sub> or C2<sub>Y2</sub> or ... ) - Control C1 (with port names Y1) or control C2 (with port names Y2) or ...</p>
+
 <p>T o ( ( PX separation-up-to-X' id<sub>X'</sub> ) o T =&gt; not ( ( PX separation-up-to-X' id<sub>X'</sub> ) o join ( ( C1<sub>Y1</sub> or C2<sub>Y2 </sub>or ...) separation-up-to-X' id<sub>&lt;1,X'&gt;</sub> ) o T ) - every sub-bigraph by composition, if it starts with a P does not have a C1, C2, ... as a child.</p>
+
 There are various rewriting of this expression which allow the negation to be moved around. <br>
+
 <h3>Initial reflections</h3>
+
 <p>This seems rather unwieldy and not very intuitive. Some reasons for this seem to include:</p>
+
 <ul>
+
   <li>having
 to allow linking explicitly in order to express that you don't care
 about it (rather than as a default). (identities are not transparent)</li>
+
   <li>the
 principled avoidance of | and ||, requiring explicit name sets and
 explicit joins. Perhaps effective correspondents could be defined using
 separation-up-to?&nbsp;</li>
+
   <li>not using some of the possible derived
 expressions, partly because they are hard to write, and partly because
 they are not quite what we want, e.g. "somewhere" using
 separation-up-to rather than tensor-product, and/or not limited to
 ground terms. Presumably we should just define the varants we want.</li>
+
   <li>not
 being used to writing/thinking like this, e.g. expecting to have
 variables to range over nodes and express further things about those
 nodes (e.g. for every node n of control C, c is a child of n implies
 that the control of c is C1, C2 or C3). Perhaps I'll get used to it, or
 perhaps other notations can be translated?</li>
+
 </ul>
+
 <h2>Control expression language</h2>
+
 <p>If there are&nbsp;large or infinite families of controls (e.g.
 numbers, coordinates) then there must be some concise way to express
 these and to express reaction rules over them. Here are some proposals,
 taking integers modelled as a set of controls as a motivating example.</p>
+
 <p> "integer" is the "indexed control set" (?) whose elements are controls which model the integers.</p>
+
 <p>"integer[4]" (?) is the element of integer which is indexed by the
 number/integer 4, i.e. the control which represents the integer 4.</p>
+
 <p class="MsoPlainText"><span style="color: black;">(Note possible ambiguity with []
 representation of holes; other terms language options would be integer&lt;4&gt;
 c.f. C++/Java templates/generics/type variables (?))<o:p></o:p></span></p>
+
 
 
 <p class="MsoPlainText">"integer[x]" (?) is a "control expression" (?)
@@ -694,28 +875,39 @@ signature or perhaps as in-place annotation) such that the control is
 integer[x] (?). x is a "control index variable" (?)<span style="color: black;"> (could be "parameter"?
 but note use of parameter already in reaction rules)<o:p></o:p></span></p>
 
+
 <p class="MsoPlainText"><span style="color: black;">E.g. "person(id(integer[x]))
 | task(personid(integer[x]))" is intended to model a simple join on x as
 the primary key of a (modelled) person table.<o:p></o:p></span></p>
 
 
 
+
 <p>"y" (?) is also a control expression which corresponds to there exists y:control such that y. y is a "control variable" (?).</p>
+
 <p>Additional "constraints" (?) or "restrictions" (?) can be imposed on
 "variables" (?), e.g. "oneof" a set of "values", "min" value, "max"
 value, "difference" to another variable (simple addition/subtraction,
 to model n -&gt; n+1, for example).</p>
+
 <p>E.g. "coordinate[x,y] | coordinate[x',y] where x'=x+1" is any pair
 of coordinates from the coordinate set which are adjacent in the
 first&nbsp;index (dimension) (see Savannah model).</p>
+
 <p>A bigraph which contains control expressions and variables is called
 a "bigraph expression" (?) ("parameterised bigraph"? but cf "parameter"
 or reaction rule; something else?).</p>
+
 <p> Since control expressions simply encode sets of controls a bigraph
 expression simple encodes a set of expression-free bigraphs.&nbsp;</p>
+
 <p>(Does it matter that the encoded set is potentially infinite? based on integers, arbitrary strings and/or real numbers?)</p>
+
 <h3>XML Encoding</h3>
+
 Initial proposal/thoughts on the corresponding XML encoding:<br>
-<pre>&lt;bigraph&gt;<br>	&lt;variable name="N" type="control|support|integer|real|string"&gt;<br>		&lt;oneof&gt;<br>			&lt;value&gt;VALUE&lt;/value&gt; &lt;!-- or node/control element for a control variable?! --&gt;<br>			...<br>		&lt;/oneof&gt;<br>		&lt;min&gt;VALUE&lt;/min&gt;<br>		&lt;max&gt;VALUE&lt;/max&gt;<br>		&lt;regexp&gt;REGEX&lt;/regexp&gt;<br>		&lt;minlength&gt;LEN&lt;/minlength&gt; <br>		&lt;maxlength&gt;LEN&lt;/maxlength&gt; &lt;!-- e.g. for "chars" --&gt;<br>		&lt;difference variable="N"&gt;VALUE&lt;/difference&gt;<br>	&lt;/variable&gt;<br>	...<br>	&lt;root&gt;<br>		&lt;C [ports]&gt; &lt;!-- indexed control --&gt; <br>			&lt;index&gt;VALUE&lt;/index&gt;<br>			&lt;index variable="N"/&gt; &lt;!-- all restrictions should be packaged up in variable?! --&gt;<br>			...<br>		&lt;/C&gt;<br>		&lt;node _control="C" [ports]&gt;...&lt;/node&gt;<br>		&lt;node _variable="N" [ports]&gt;...&lt;/node&gt;<br>	&lt;/root&gt;<br>&lt;/bigraph&gt;</pre>
+
+<pre>&lt;bigraph&gt;<br>	&lt;variable name="N" type="control|support|integer|real|string"&gt;<br>		&lt;oneof&gt;<br>			&lt;value&gt;VALUE&lt;/value&gt; &lt;!-- or node/control element for a control variable?! --&gt;<br>			...<br>		&lt;/oneof&gt;<br>		&lt;notoneof&gt;<br>			&lt;value&gt;VALUE&lt;/value&gt; &lt;!-- or node/control element for a control variable?! --&gt;<br>			...<br>		&lt;/notoneof&gt;<br>		&lt;minvalue&gt;VALUE&lt;/minvalue&gt;<br>		&lt;maxvalue&gt;VALUE&lt;/maxvalue&gt;<br>		&lt;regexp&gt;REGEX&lt;/regexp&gt;<br>		&lt;minlength&gt;LEN&lt;/minlength&gt; <br>		&lt;maxlength&gt;LEN&lt;/maxlength&gt; &lt;!-- e.g. for "chars" --&gt;<br>		&lt;difference variable="N"&gt;VALUE&lt;/difference&gt;<br>	&lt;/variable&gt;<br>	...<br>	&lt;root&gt;<br>		&lt;C [ports]&gt; &lt;!-- indexed control --&gt; <br>			&lt;index&gt;VALUE&lt;/index&gt;<br>			&lt;index variable="N"/&gt; &lt;!-- all restrictions should be packaged up in variable?! --&gt;<br>			...<br>		&lt;/C&gt;<br>		&lt;node _control="C" [ports]&gt;...&lt;/node&gt;<br>		&lt;node _variable="N" [ports]&gt;...&lt;/node&gt;<br>	&lt;/root&gt;<br>&lt;/bigraph&gt;</pre>
+
 </body>
 </html>

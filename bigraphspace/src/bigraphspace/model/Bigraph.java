@@ -67,6 +67,18 @@ public interface Bigraph {
 	public void addInnerNameMapping(String innnerName, String edge);
 	/** remove name from innername mapping */
 	public void removeInnerNameMapping(String innnerName);
+
+	/** variables, used in control and bigraph expressions.
+	 * E.g. for pattern or reaction rules over place-encoded numbers or other
+	 * indexed control sets.
+	 */
+	public Map<String,VariableDefinition> getVariables();
+	/** add variable (if allowed) */
+	public void addVariable(String name, VariableDefinition definition);
+	/** remove variable (by name) (if allowed) */
+	public void removeVariable(String name);
+	/** is expression, i.e. has variables */
+	public boolean isExpression();
 	
 	/** dump - debug */
 	public void dump(PrintStream ps);

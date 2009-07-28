@@ -110,6 +110,20 @@
 				between a Room and a Document.</description>
 			</port>
 		</control>
+		<!--  a number! -->
+		<control name="integer" status="atomic">
+			<description>A control-set encoded integer</description>
+			<index type="integer">
+				<description>The number</description>
+			</index>
+		</control>
+		<!--  a string! -->
+		<control name="string" status="atomic">
+			<description>A control-set encoded string</description>
+			<index type="string">
+				<description>The string</description>
+			</index>
+		</control>
 	</controls>
 	<sorts>
 		<!-- implicit Sort corresponding to PhysicalRoom control (only) -->
@@ -118,6 +132,8 @@
 				<sort name="PhysicalHandheld"/>
 				<sort name="PhysicalBluetooth"/>
 				<sort name="PhysicalBluetoothSignal"/>
+				<!--  just testing -->
+				<sort name="integer"/>
 			</childsorts>
 		</sort>	
 		<!-- implicit sort for PhysicalHandheld -->
