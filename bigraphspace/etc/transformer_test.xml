@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tests>
-	<!-- first test - into a room -->
+	<!-- 0: first test - into a room -->
 	<test>
 		<redex>
 			<bigraph>
@@ -49,7 +49,7 @@
 			</bigraph>
 		</result>
 	</test>
-	<!-- copy test -->
+	<!-- 1: copy test -->
 	<test>
 		<redex>
 			<bigraph>
@@ -88,7 +88,7 @@
 			</bigraph>
 		</result>
 	</test>
-	<!-- first link-preserving test -->
+	<!-- 2: first link-preserving test -->
 	<test>
 		<redex>
 			<bigraph>
@@ -128,7 +128,7 @@
 			</bigraph>
 		</result>
 	</test>
-	<!-- link present in context and parameter -->
+	<!-- 3: link present in context and parameter -->
 	<test>
 		<redex>
 			<bigraph>
@@ -173,7 +173,7 @@
 			</bigraph>
 		</result>
 	</test>
-	<!-- break link in parameter -->
+	<!-- 4: break link in parameter -->
 	<test>
 		<redex>
 			<bigraph>
@@ -219,7 +219,7 @@
 			</bigraph>
 		</result>
 	</test>
-	<!-- join existing links -->
+	<!-- 5: join existing links -->
 	<test>
 		<redex>
 			<bigraph>
@@ -263,7 +263,7 @@
 			</bigraph>
 		</result>
 	</test>
-	<!-- make simple link -->
+	<!-- 6: make simple link -->
 	<test>
 		<redex>
 			<bigraph>
@@ -305,7 +305,7 @@
 			</bigraph>
 		</result>
 	</test>
-	<!-- placing - swap roots -->
+	<!-- 7: placing - swap roots -->
 	<test>
 			<redex>
 				<bigraph>
@@ -344,6 +344,53 @@
 				</root>
 				<root>
 					<PhysicalHandheld _support="PH1"></PhysicalHandheld>
+				</root>
+			</bigraph>
+		</result>
+	</test>
+	<!-- 8: control indexes - fixed and variable -->
+	<test>
+			<redex>
+				<bigraph>
+					<variable name="x" type="integer"/>
+					<root>
+						<integer><index>10</index></integer>
+						<integer><index variable="x"/></integer>
+						<PhysicalRoom _support="PR1">
+							<site index="0"/>
+						</PhysicalRoom>
+					</root>
+				</bigraph>
+			</redex>
+			<reactum>
+				<bigraph>
+					<varible name="x" type="integer"/>
+					<root>
+						<PhysicalRoom _support="PR1">
+							<integer><index>10</index></integer>
+							<integer><index variable="x"/></integer>
+							<site index="0"/>
+						</PhysicalRoom>
+					</root>
+				</bigraph>
+			</reactum>
+		<target>
+			<bigraph>
+				<root>
+					<integer><index>10</index></integer>
+					<integer><index>11</index></integer>
+					<PhysicalRoom _support="PR1">
+					</PhysicalRoom>
+				</root>
+			</bigraph>
+		</target>
+		<result>
+			<bigraph>
+				<root>
+					<PhysicalRoom _support="PR1">
+						<integer><index>10</index></integer>
+						<integer><index>11</index></integer>
+					</PhysicalRoom>
 				</root>
 			</bigraph>
 		</result>
