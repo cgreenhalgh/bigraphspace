@@ -395,4 +395,49 @@
 			</bigraph>
 		</result>
 	</test>
+	<!-- 8: control indexes - above and below redex -->
+	<test>
+			<redex>
+				<bigraph>
+					<root>
+						<integer><index>10</index></integer>
+						<PhysicalRoom _support="PR1">
+							<site index="0"/>
+						</PhysicalRoom>
+					</root>
+				</bigraph>
+			</redex>
+			<reactum>
+				<bigraph>
+					<root>
+						<PhysicalRoom _support="PR1">
+							<integer><index>10</index></integer>
+							<site index="0"/>
+						</PhysicalRoom>
+					</root>
+				</bigraph>
+			</reactum>
+		<target>
+			<bigraph>
+				<root>
+					<integer><index>10</index></integer>
+					<integer><index>11</index></integer>
+					<PhysicalRoom _support="PR1">
+						<integer><index>12</index></integer>
+					</PhysicalRoom>
+				</root>
+			</bigraph>
+		</target>
+		<result>
+			<bigraph>
+				<root>
+					<integer><index>11</index></integer>
+					<PhysicalRoom _support="PR1">
+						<integer><index>10</index></integer>
+						<integer><index>12</index></integer>
+					</PhysicalRoom>
+				</root>
+			</bigraph>
+		</result>
+	</test>
 </tests>

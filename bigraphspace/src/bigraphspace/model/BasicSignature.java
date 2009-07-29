@@ -93,7 +93,7 @@ public class BasicSignature  {
 						continue;
 					}
 					VariableDefinition variable = controlIndexes.get(i);
-					if (!variable.matches(value, environment))
+					if (!variable.matches(value, environment, null))
 						throw new ControlIndexException(place, control, i, value);
 				}
 				atomic = control.isAtomic();

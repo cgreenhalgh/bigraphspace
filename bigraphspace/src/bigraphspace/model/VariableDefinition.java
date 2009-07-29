@@ -47,8 +47,9 @@ public class VariableDefinition {
 	public void setConstraints(List<VariableConstraint> constraints) {
 		this.constraints = constraints;
 	}
-	/** matches a value? */
-	public boolean matches(Object value, Map<String,VariableDefinition> environment) {
+	/** matches a value? 
+	 * If a value which it depends on is undefined then it is considered to (possibly) match. */
+	public boolean matches(Object value, Map<String,VariableDefinition> variables, Map<String,Object> variableValues) {
 		switch(baseType) {
 		case control:
 			// TODO
@@ -60,16 +61,16 @@ public class VariableDefinition {
 			return false;
 		case integer:
 			if (value instanceof Integer)
-				return checkInteger((Integer)value, environment);
+				return checkInteger((Integer)value, variables, variableValues);
 			else if (value instanceof Short)
-				return checkInteger((Short)value, environment);
+				return checkInteger((Short)value, variables, variableValues);
 			else if (value instanceof Byte)
-				return checkInteger((Byte)value, environment);
+				return checkInteger((Byte)value, variables, variableValues);
 			else if (value instanceof Long)
-				return checkInteger((Long)value, environment);
+				return checkInteger((Long)value, variables, variableValues);
 			else if (value instanceof String) {				
 				try {
-					return checkInteger(Long.valueOf((String)value), environment);
+					return checkInteger(Long.valueOf((String)value), variables, variableValues);
 				}
 				catch (NumberFormatException nfe) {
 					logger.warn("matches integer failed against "+value, nfe);
@@ -83,20 +84,20 @@ public class VariableDefinition {
 			Double dvalue = getDoubleValue(value);
 			if (dvalue==null)
 				return false;
-			return checkReal(dvalue, environment);		
+			return checkReal(dvalue, variables, variableValues);		
 		}
 		case string:
 			if (value!=null)
-				return checkString(value.toString(), environment);
+				return checkString(value.toString(), variables, variableValues);
 			return false;
 		}
 		// not reached
 		return false;
 	}
 	/** check constraints on Integer */
-	protected boolean checkInteger(long value, Map<String,VariableDefinition> environment) {
+	protected boolean checkInteger(long value, Map<String,VariableDefinition> variables, Map<String,Object> variableValues) {
 		// TODO: long-only version?!
-		return checkReal((double)value, environment);
+		return checkReal((double)value, variables, variableValues);
 	}
 	protected Double getDoubleValue(Object value) {
 		if (value instanceof Number)
@@ -114,7 +115,7 @@ public class VariableDefinition {
 		return null;
 	}
 	/** check constraints on Real */
-	protected boolean checkReal(double value, Map<String,VariableDefinition> environment) {
+	protected boolean checkReal(double value, Map<String,VariableDefinition> variables, Map<String,Object> variableValues) {
 		for (VariableConstraint constraint : this.constraints) {
 			List<Object> values = constraint.getValues();
 			switch(constraint.getConstraintType()) {
@@ -186,9 +187,19 @@ public class VariableDefinition {
 				break;
 			}
 			case difference:
-				if (environment==null) {
-					logger.warn("difference constraint with no environment");
+				if(values.size()!=1) {
+					logger.warn("difference Constraint has "+values.size()+" values");
 					return false;
+				}
+				Double cvalue = getDoubleValue(values.get(0));
+				if (cvalue==null) {
+					logger.warn("difference constraint has non-number value "+values.get(0));
+					return false;
+				}
+				if (variableValues==null) {
+					// assume it could match
+					//logger.warn("difference constraint with no environment");
+					break;
 				}
 				String variableName = constraint.getVariableName();
 				if (variableName==null)
@@ -196,16 +207,29 @@ public class VariableDefinition {
 					logger.warn("difference constraint with no variable name");
 					return false;
 				}
-				VariableDefinition definition = environment.get(variableName);
-				logger.warn("difference constraint not implemented");
-				// TODO
-				return false;
+				//VariableDefinition definition = variables.get(variableName);
+				//logger.warn("difference constraint not implemented");
+				Object variableValue = variableValues.get(variableName);
+				if (variableValue==null) {
+					// assume it could match
+					break;
+				}
+				Double vvalue = getDoubleValue(variableValue);
+				if (vvalue==null) {
+					logger.warn("difference constraint variable "+variableName+" has non-number value "+variableValue);
+					return false;
+				}
+				if (!(value-vvalue == cvalue)) {
+					logger.debug("Failed difference constraint "+value+"-"+vvalue+"="+(value-vvalue)+" vs "+cvalue);
+					return false;
+				}
+				break;
 			}
 		}
 		return true;
 	}
 	/** check constraints on String */
-	protected boolean checkString(String value, Map<String,VariableDefinition> environment) {
+	protected boolean checkString(String value, Map<String,VariableDefinition> variables, Map<String,Object> variableValues) {
 		if (value==null)
 			return false;
 		for (VariableConstraint constraint : this.constraints) {

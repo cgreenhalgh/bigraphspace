@@ -318,17 +318,21 @@ public class DomMatcher {
 					nextMatch(partMatch, targetIxs);
 					continue complete;
 				}
+				boolean recheckVariableConstraints = false;
 				for (int ii=0; ii<patternIndexEls.getLength(); ii++) {
 					Element patternIndexEl = (Element)patternIndexEls.item(ii);
 					Element targetIndexEl = (Element)targetIndexEls.item(ii);
 					String variableName = patternIndexEl.getAttribute(Constants.INDEX_VARIABLE_ATTRIBUTE_NAME);
 					if (variableName!=null && variableName.length()!=0) {
-						// matches should already have been checked
+						// in general, matches should already have been checked, but some cannot be
+						// verified until now, e.g. difference
 						// exact match already?
 						Object value = match.variableValues.get(variableName);
 						if (value==null) {
 							// no - set now
 							match.variableValues.put(variableName, targetIndexEl.getTextContent());
+							// need to be sure that the newly bound value(s) satisfy all constraints, e.g. difference
+							recheckVariableConstraints = true;
 							continue;
 						}
 						// same?
@@ -342,6 +346,24 @@ public class DomMatcher {
 						logger.warn("Index exact match failed late");
 						nextMatch(partMatch, targetIxs);
 						continue complete;						
+					}
+				}
+				if (recheckVariableConstraints) {
+					// need to be sure that the newly bound value(s) satisfy all constraints, e.g. difference
+					for (Map.Entry<String, Object> value : match.getVariableValues().entrySet()) {
+						String variableName = value.getKey();
+						VariableDefinition definition = patternVariables.get(variableName);
+						if (definition==null) {
+							// undefined - can't match
+							logger.warn("Late discovery of undefined variable "+variableName);
+							nextMatch(partMatch, targetIxs);
+							continue complete;
+						}
+						// final (?!) check
+						if (!definition.matches(value.getValue(), patternVariables, match.getVariableValues())) {
+							nextMatch(partMatch, targetIxs);
+							continue complete;
+						}
 					}
 				}
 				// links
@@ -600,7 +622,9 @@ public class DomMatcher {
 				if (definition==null)
 					// undefined - can't match
 					return false;
-				if (definition.matches(targetIndexEl.getTextContent(), patternVariables));
+				// preliminary check
+				if (!definition.matches(targetIndexEl.getTextContent(), patternVariables, null))
+					return false;
 			}
 			else if (!(patternIndexEl.getTextContent().equals(targetIndexEl.getTextContent())))
 				// failed exact match

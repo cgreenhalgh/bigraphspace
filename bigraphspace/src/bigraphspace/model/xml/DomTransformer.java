@@ -83,11 +83,16 @@ public class DomTransformer {
 		}
 		// still here -> trivial copy
 		Element resultEl = (Element)result.getDocument().importNode(targetEl, false);
+		// indexes
+		NodeList indexes = XmlUtils.getChildElementsByTagName(targetEl, Constants.INDEX_ELEMENT_NAME);
+		for (int ii=0; ii<indexes.getLength(); ii++) {
+			resultEl.appendChild(result.getDocument().importNode(indexes.item(ii), true));
+		}
 		// trivial recurse
 		NodeList children = targetEl.getChildNodes();
 		for (int ci=0; ci<children.getLength(); ci++) {
 			Node child = children.item(ci);
-			if (child instanceof Element) {
+			if (child instanceof Element && DomPlace.isChildElementName(child.getNodeName())) {
 				Element resultChild = copyThenTransform(match, reactum, result, newLinks, innerNameMap, (Element)child);
 				if (resultChild!=null)
 					resultEl.appendChild(resultChild);
@@ -128,7 +133,7 @@ public class DomTransformer {
 		NodeList reactumChildren = reactumEl.getChildNodes();
 		for (int rci=0; rci<reactumChildren.getLength(); rci++) {
 			Node reactumChild = reactumChildren.item(rci);
-			if (!(reactumChild instanceof Element))
+			if (!(reactumChild instanceof Element) || !DomPlace.isChildElementName(reactumChild.getNodeName()))
 				continue;
 			Element reactumChildEl = (Element)reactumChild;
 			if (Constants.SITE_ELEMENT_NAME.equals(reactumChild.getNodeName())) {
@@ -156,6 +161,32 @@ public class DomTransformer {
 				// map node
 				Element resultChildEl = result.getDocument().createElement(reactumChildEl.getNodeName());
 				resultEl.appendChild(resultChildEl);
+				// indexes
+				NodeList indexEls = XmlUtils.getChildElementsByTagName(reactumChildEl, Constants.INDEX_ELEMENT_NAME);
+				for (int ii=0; ii<indexEls.getLength(); ii++) {
+					Element indexEl = (Element)indexEls.item(ii);
+					String variableName = indexEl.getAttribute(Constants.INDEX_VARIABLE_ATTRIBUTE_NAME);
+					if (variableName==null || variableName.length()==0) {
+						// value
+						Element resultIndexEl = (Element)result.getDocument().importNode(indexEl, true);
+						resultChildEl.appendChild(resultIndexEl);
+					} else {
+						// variable
+						Object value = match.getVariableValues().get(variableName);
+						if (value==null) {
+							// undefined variable
+							logger.warn("Variable "+variableName+" has no value in match");
+							Element resultIndexEl = (Element)result.getDocument().importNode(indexEl, true);
+							resultChildEl.appendChild(resultIndexEl);							
+						} else {
+							// defined variable
+							Element resultIndexEl = result.getDocument().createElement(Constants.INDEX_ELEMENT_NAME);
+							// TODO: other normalisation of text form??
+							resultIndexEl.appendChild(result.getDocument().createTextNode(value.toString()));
+							resultChildEl.appendChild(resultIndexEl);
+						}
+					}
+				}
 				// TODO map attributes
 				NamedNodeMap reactumAttributes = reactumChildEl.getAttributes();
 				nextattribute:
@@ -283,7 +314,11 @@ public class DomTransformer {
 			Node child = children.item(ci);
 			if (!(child instanceof Element))
 				continue;
-			resultEl.appendChild(mapSiteNode(result, newLinkMap, innerNameMap, (Element)child));
+			if (child.getNodeName().equals(Constants.INDEX_ELEMENT_NAME))
+				// index
+				resultEl.appendChild(result.getDocument().importNode(child, true));
+			else
+				resultEl.appendChild(mapSiteNode(result, newLinkMap, innerNameMap, (Element)child));
 		}
 		return resultEl;
 	}

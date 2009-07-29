@@ -696,4 +696,241 @@
 			<variable pattern="x" target="11"/>
 		</match>
 	</test>
+	<!-- 21. Integer minvalue, maxvalue constraints -->
+	<test>
+		<pattern>
+			<bigraph>
+				<variable name="x" type="integer">
+					<minvalue>11</minvalue>
+					<maxvalue>12</maxvalue>
+				</variable>
+				<root>
+					<integer _support="n">
+						<index variable="x"/>
+					</integer>
+				</root>
+			</bigraph>
+		</pattern>
+		<target>
+			<bigraph>
+				<root>
+					<integer _support="10">
+						<index>10</index>
+					</integer>
+					<integer _support="11">
+						<index>11</index>
+					</integer>
+					<integer _support="12">
+						<index>12</index>
+					</integer>
+					<integer _support="13">
+						<index>13</index>
+					</integer>
+				</root>
+			</bigraph>
+		</target>
+		<match>
+			<nodematch pattern="n" target="11"/>
+			<variable pattern="x" target="11"/>
+		</match>
+		<match>
+			<nodematch pattern="n" target="12"/>
+			<variable pattern="x" target="12"/>
+		</match>
+	</test>
+	<!-- 22. Integer oneof, notoneof constraints -->
+	<test>
+		<pattern>
+			<bigraph>
+				<variable name="x" type="integer">
+					<oneof><value>11</value><value>12</value></oneof>
+					<notoneof><value>12</value><value>13</value></notoneof>
+				</variable>
+				<root>
+					<integer _support="n">
+						<index variable="x"/>
+					</integer>
+				</root>
+			</bigraph>
+		</pattern>
+		<target>
+			<bigraph>
+				<root>
+					<integer _support="10">
+						<index>10</index>
+					</integer>
+					<integer _support="11">
+						<index>11</index>
+					</integer>
+					<integer _support="12">
+						<index>12</index>
+					</integer>
+					<integer _support="13">
+						<index>13</index>
+					</integer>
+				</root>
+			</bigraph>
+		</target>
+		<match>
+			<nodematch pattern="n" target="11"/>
+			<variable pattern="x" target="11"/>
+		</match>
+	</test>
+	<!-- 23. string oneof, notoneof constraints -->
+	<test>
+		<pattern>
+			<bigraph>
+				<variable name="x" type="string">
+					<oneof><value>b</value><value>c</value></oneof>
+					<notoneof><value>c</value><value>d</value></notoneof>
+				</variable>
+				<root>
+					<string _support="n">
+						<index variable="x"/>
+					</string>
+				</root>
+			</bigraph>
+		</pattern>
+		<target>
+			<bigraph>
+				<root>
+					<string _support="a"><index>a</index></string>
+					<string _support="b"><index>b</index></string>
+					<string _support="c"><index>c</index></string>
+					<string _support="d"><index>d</index></string>
+				</root>
+			</bigraph>
+		</target>
+		<match>
+			<nodematch pattern="n" target="b"/>
+			<variable pattern="x" target="b"/>
+		</match>
+	</test>
+	<!-- 24. string minlength, maxlength constraints -->
+	<test>
+		<pattern>
+			<bigraph>
+				<variable name="x" type="string">
+					<minlength>2</minlength>
+					<maxlength>3</maxlength>
+				</variable>
+				<root>
+					<string _support="n">
+						<index variable="x"/>
+					</string>
+				</root>
+			</bigraph>
+		</pattern>
+		<target>
+			<bigraph>
+				<root>
+					<string _support="a"><index>a</index></string>
+					<string _support="b"><index>bb</index></string>
+					<string _support="c"><index>ccc</index></string>
+					<string _support="d"><index>dddd</index></string>
+				</root>
+			</bigraph>
+		</target>
+		<match>
+			<nodematch pattern="n" target="b"/>
+			<variable pattern="x" target="bb"/>
+		</match>
+		<match>
+			<nodematch pattern="n" target="c"/>
+			<variable pattern="x" target="ccc"/>
+		</match>
+	</test>
+	<!-- 25. Integer difference constraints -->
+	<test>
+		<pattern>
+			<bigraph>
+				<variable name="x" type="integer"></variable>
+				<variable name="y" type="integer">
+					<difference variable="x">1</difference>
+				</variable>
+				<root>
+					<integer _support="x">
+						<index variable="x"/>
+					</integer>
+					<integer _support="y">
+						<index variable="y"/>
+					</integer>
+				</root>
+			</bigraph>
+		</pattern>
+		<target>
+			<bigraph>
+				<root>
+					<integer _support="10">
+						<index>10</index>
+					</integer>
+					<integer _support="11">
+						<index>11</index>
+					</integer>
+					<integer _support="12">
+						<index>12</index>
+					</integer>
+				</root>
+			</bigraph>
+		</target>
+		<match>
+			<nodematch pattern="x" target="10"/>
+			<variable pattern="x" target="10"/>
+			<nodematch pattern="y" target="11"/>
+			<variable pattern="y" target="11"/>
+		</match>
+		<match>
+			<nodematch pattern="x" target="11"/>
+			<variable pattern="x" target="11"/>
+			<nodematch pattern="y" target="12"/>
+			<variable pattern="y" target="12"/>
+		</match>
+	</test>
+	<!-- 26. Integer difference constraints, reverse order -->
+	<test>
+		<pattern>
+			<bigraph>
+				<variable name="x" type="integer">
+					<difference variable="y">-1</difference>
+				</variable>
+				<variable name="y" type="integer">
+				</variable>
+				<root>
+					<integer _support="x">
+						<index variable="x"/>
+					</integer>
+					<integer _support="y">
+						<index variable="y"/>
+					</integer>
+				</root>
+			</bigraph>
+		</pattern>
+		<target>
+			<bigraph>
+				<root>
+					<integer _support="10">
+						<index>10</index>
+					</integer>
+					<integer _support="11">
+						<index>11</index>
+					</integer>
+					<integer _support="12">
+						<index>12</index>
+					</integer>
+				</root>
+			</bigraph>
+		</target>
+		<match>
+			<nodematch pattern="x" target="10"/>
+			<variable pattern="x" target="10"/>
+			<nodematch pattern="y" target="11"/>
+			<variable pattern="y" target="11"/>
+		</match>
+		<match>
+			<nodematch pattern="x" target="11"/>
+			<variable pattern="x" target="11"/>
+			<nodematch pattern="y" target="12"/>
+			<variable pattern="y" target="12"/>
+		</match>
+	</test>
 </tests>
