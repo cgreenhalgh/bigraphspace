@@ -1,8 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
+<html>
+<head>
 
 
 
+
+  
   
   
   
@@ -10,12 +13,16 @@
 
 
 
+
   
   
   
-  <title>ReleaseNotes</title></head>
+  
+  <title>ReleaseNotes</title>
+</head>
 
 <body>
+
 
 
 
@@ -23,7 +30,9 @@
 
 
 
+
 Chris Greenhalgh<br>
+
 
 
 
@@ -31,17 +40,21 @@ Chris Greenhalgh<br>
 
 
 
+
 <ul>
+
 
 
 
   <li>The&nbsp;abstraction for Match is massively incomplete, and there
 is no abstract access to&nbsp;Matcher/Transformer (c.f. Bigraph vs
 DomBigraph)</li>
+
   <li>Matcher
 (and Bigraph/Place) does not distinguish between support names and
 support variable names - needed to match to allow matching to specific
 individuals.</li>
+
 
 
 
@@ -51,7 +64,9 @@ to specify that a rule applies only if the context of the match is
 
 
 
+
   <li>BigraphFinder has only a single &nbsp;global default - should allow (e.g. class-loader specific default for use in simulator)</li>
+
 
 
 
@@ -59,17 +74,28 @@ to specify that a rule applies only if the context of the match is
 
 
 
+
   <li>RuleCondition evaluation does not do active test.</li>
+
 
   <li>The Place API has methods for indexed controls but no
 implementation behind it (in practice ports with constant values will
 do the same job (except for nominally anchoring those constant value
-links)).</li><li>Control index matching in the DomMatcher is by string equality,
+links)).</li>
+  <li>Control index matching in the DomMatcher is by string equality,
 so will not be correct if string representation is not normalised for
-type.</li><li>DomMatch variable values are all strings.</li></ul><h2>Possible enhancements</h2>
+type.</li>
+  <li>DomMatch variable values are all strings.</li>
+  <li>Not all bigraph variable and control index methods are currently
+implemented (in the programmatic manipulation parts of the API).</li>
+  <li>Control and support-type bigraph variables are not currently implemented/supported.&nbsp; </li>
+</ul>
+<h2>Possible enhancements</h2>
+
 
 
 <ul>
+
 
 
   <li>Some ReactionRule conditions would be easier to specify if
@@ -80,37 +106,59 @@ preconditions after the redex using that match as a basis)</li>
 
 
 
+
 </ul>
 
 
 
-<h2>Changes</h2>2009-07-29<br><ul><li>support for control indexes in DomTransformer; implement difference constraint; update tutorial accordingly.</li></ul>2009-07-28<br>
+
+<h2>Changes</h2>
+2009-07-29<br>
 <ul>
+  <li>support for control indexes in DomTransformer; implement difference constraint; update tutorial accordingly.</li>
+</ul>
+2009-07-28<br>
+
+<ul>
+
   <li>initial (partial) implementation of control and bigraph
 expressions, i.e. rewrite of control indexes, add bigraph variables and
 initial support in matching. </li>
+
 </ul>
+
 2009-07-02<br>
+
 <ul>
+
   <li>fixed (?!) DomMatcher bug with
 root match found outside another root match; add support for root/site
 match to DomMatcher to support Placings </li>
+
 </ul>
+
 2009-07-01<br>
+
 
 <ul>
 
+
   <li>fixed DomMatcher to keep edges (non-outer names) in pattern disjoint.</li>
 
+
 </ul>
+
 
 2009-06-29<br>
 
 
+
 <ul>
 
 
+
   <li>Pulled link match up to Match abstraction from DomMatch.</li>
+
 
 
   <li>Made transform copy unbound link values by default where a
@@ -118,14 +166,18 @@ support match exists between redex and reactum (allows more concise
 signature-independent rules) </li>
 
 
+
 </ul>
+
 
 
 2009-06-26<br>
 
 
 
+
 <ul>
+
 
 
 
@@ -135,7 +187,9 @@ rule_test</li>
 
 
 
+
   <li>Starting point of abstracted Match interface.</li>
+
 
 
 
@@ -143,11 +197,14 @@ rule_test</li>
 
 
 
+
 2009-06-25<br>
 
 
 
+
 <ul>
+
 
 
 
@@ -157,8 +214,11 @@ layer).</li>
 
 
 
+
 </ul>
 
 
 
-</body></html>
+
+</body>
+</html>
