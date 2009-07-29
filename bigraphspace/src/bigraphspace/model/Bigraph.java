@@ -80,6 +80,17 @@ public interface Bigraph {
 	/** is expression, i.e. has variables */
 	public boolean isExpression();
 	
+	/** Control index operation had to be moved here as Place doesn't have 
+	 * document handle in order to create new (index) element. */
+	/** add control index (at end) (if allowed) */
+	public void addControlIndex(Place place, Object value);	
+	/** remove control index (if allowed) */
+	public void removeControlIndex(Place place, Object value);
+	/** set control index (if allowed) */
+	public void setControlIndex(Place place, Object value, int atIndex);
+	/** insert control index (if allowed) */
+	public void insertControlIndex(Place place, Object value, int atIndex);
+
 	/** dump - debug */
 	public void dump(PrintStream ps);
 }
