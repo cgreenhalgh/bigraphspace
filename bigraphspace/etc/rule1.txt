@@ -1,2 +1,2 @@
 rule
-room(agent(_1)|_2) -> room(_2)|agent(_1)
+room(agent([1])|[2]) -> room([2])|agent([1])

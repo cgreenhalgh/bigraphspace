@@ -11,6 +11,8 @@ tokens {
 	CHILDREN = 'children';
 	ROOT = 'root';
 	UNNAMED = 'unnamed';
+	CONTROL = 'control';
+	NODE = 'node';
 }
 
 @parser::header { package bigraphspace.parser.antlr; }
@@ -35,28 +37,29 @@ wide1
 
 prime
 : -> ^( EMPTY )
-| UNDERSCORE NUMERAL? -> ^( UNDERSCORE NUMERAL? )
+| LSQUARE NUMERAL? RSQUARE -> ^( UNDERSCORE NUMERAL? )
 | node ( PIPE node )* -> node+ 
 ;
 
 /*-> ^( PIPE node* )*/
-/* : control ports? children? -> ^( control ^( PORTS ports? ) ^( CHILDREN children? ) ) */
 node
-: IDENTIFIER ports? children? -> ^( IDENTIFIER ^( PORTS ports? ) ^( CHILDREN children? ) )
+: control ports? children? -> ^( NODE control ^( PORTS ports? ) ^( CHILDREN children? ) )
 ;
 
 control
-: tuple COLON type -> ^( type tuple )
-| IDENTIFIER indexes? -> ^( IDENTIFIER indexes? )
+: tuple COLON type -> ^( CONTROL type tuple )
+| IDENTIFIER indexes? -> ^( CONTROL IDENTIFIER indexes? )
 ;
 
 indexes
 : LANGLE ( index ( COMMA index )* )? RANGLE -> index*
 ;
 
+/* can't seem to get number to work */
 index
-: constant
-| IDENTIFIER
+: NUMERAL 
+| STRING 
+| IDENTIFIER 
 ;
 
 tuple
@@ -65,7 +68,7 @@ tuple
 
 /* only simple for now */
 type
-: IDENTIFIER
+: IDENTIFIER -> IDENTIFIER
 ;
 
 ports
@@ -110,6 +113,8 @@ COMMA : ',';
 EQUALS : '=';
 ARROW : '->';
 COLON : ':';
+LSQUARE: '[';
+RSQUARE: ']';
 
 NUMERAL	: '~'? (DIGIT)+ ;
 

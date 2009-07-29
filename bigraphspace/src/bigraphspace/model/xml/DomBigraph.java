@@ -27,6 +27,7 @@ import bigraphspace.model.Bigraph;
 import bigraphspace.model.Control;
 import bigraphspace.model.Place;
 import bigraphspace.model.Port;
+import bigraphspace.model.IndexValue;
 import bigraphspace.model.VariableDefinition;
 import bigraphspace.model.VariableConstraint;
 import bigraphspace.model.VariableConstraintType;
@@ -165,6 +166,25 @@ public class DomBigraph implements Bigraph {
 		return createNode(Constants.SITE_ELEMENT_NAME);
 	}
 
+	/* (non-Javadoc)
+	 * @see bigraphspace.model.Bigraph#createIndexValue(java.lang.Object)
+	 */
+	//@Override
+	public IndexValue createIndexValue(Object value) {
+		String svalue = DomBigraph.normalizeControlIndexValue(value);
+		Element indexEl = this.document.createElement(Constants.INDEX_ELEMENT_NAME);
+		indexEl.appendChild(document.createTextNode(svalue));
+		return new DomIndexValue(indexEl);
+	}
+	/* (non-Javadoc)
+	 * @see bigraphspace.model.Bigraph#createIndexVariable(java.lang.String)
+	 */
+	//@Override
+	public IndexValue createIndexVariable(String variableName) {
+		Element indexEl = this.document.createElement(Constants.INDEX_ELEMENT_NAME);
+		indexEl.setAttribute(Constants.INDEX_VARIABLE_ATTRIBUTE_NAME, variableName);
+		return new DomIndexValue(indexEl);
+	}
 	/* (non-Javadoc)
 	 * @see bigraphspace.model.Bigraph#getControl(bigraphspace.model.Place)
 	 */
@@ -491,20 +511,6 @@ public class DomBigraph implements Bigraph {
 		// TODO Auto-generated method stub
 		
 	}
-	/* (non-Javadoc)
-	 * @see bigraphspace.model.Place#addControlIndex(java.lang.Object)
-	 */
-	//@Override
-	public void addControlIndex(Place place, Object value) {
-		if (place instanceof DomPlace) {
-			DomPlace domPlace = (DomPlace)place;
-			Element indexEl = this.document.createElement(Constants.INDEX_ELEMENT_NAME);
-			indexEl.appendChild(document.createTextNode(normalizeControlIndexValue(value)));			
-			domPlace.element.appendChild(indexEl);
-		}
-		else
-			throw new IllegalArgumentException("addControlIndex("+place+") - not DomPlace");
-	}
 	/** coerce value object to XML representation - just tostring for now.
 	 */
 	public static String normalizeControlIndexValue(Object value) {
@@ -513,90 +519,28 @@ public class DomBigraph implements Bigraph {
 		// TODO normalise 
 		return value.toString();
 	}
-	/* (non-Javadoc)
-	 * @see bigraphspace.model.Place#insertControlIndex(java.lang.Object, int)
-	 */
-	//@Override
-	public void insertControlIndex(Place place, Object value, int atIndex) {
-		if (place instanceof DomPlace) {
-			DomPlace domPlace = (DomPlace)place;
-			Element indexEl = this.document.createElement(Constants.INDEX_ELEMENT_NAME);
-			indexEl.appendChild(document.createTextNode(normalizeControlIndexValue(value)));			
-			NodeList indexEls = XmlUtils.getChildElementsByTagName(domPlace.element, Constants.INDEX_ELEMENT_NAME);
-			if (atIndex<indexEls.getLength())
-				domPlace.element.insertBefore(indexEl, indexEls.item(atIndex));
-			else
-				domPlace.element.appendChild(indexEl);
-		}
-		else
-			throw new IllegalArgumentException("insertControlIndex("+place+") - not DomPlace");
-	}
-	/* (non-Javadoc)
-	 * @see bigraphspace.model.Place#removeControlIndex(java.lang.Object)
-	 */
-	//@Override
-	public void removeControlIndex(Place place, Object value) {
-		if (place instanceof DomPlace) {
-			DomPlace domPlace = (DomPlace)place;
-			// hope the same thing happens
-			String svalue = normalizeControlIndexValue(value);
-			NodeList indexEls = XmlUtils.getChildElementsByTagName(domPlace.element, Constants.INDEX_ELEMENT_NAME);
-			for (int ii=0; ii<indexEls.getLength(); ii++) {
-				Element indexEl = (Element)indexEls.item(ii);
-				String ival = indexEl.getTextContent();
-				if (ival.equals(svalue)) {
-					// found
-					domPlace.element.removeChild(indexEl);
-					return;
-				}
-			}
-			logger.warn("removeControlIndex could not find index="+value);
-		}
-		else
-			throw new IllegalArgumentException("removeControlIndex("+place+") - not DomPlace");		
-	}
-	/* (non-Javadoc)
-	 * @see bigraphspace.model.Place#setControlIndex(java.lang.Object, int)
-	 */
-	//@Override
-	public void setControlIndex(Place place, Object value, int atIndex) {
-		if (place instanceof DomPlace) {
-			DomPlace domPlace = (DomPlace)place;
-			Element newIndexEl = this.document.createElement(Constants.INDEX_ELEMENT_NAME);
-			newIndexEl.appendChild(document.createTextNode(normalizeControlIndexValue(value)));			
-			NodeList indexEls = XmlUtils.getChildElementsByTagName(domPlace.element, Constants.INDEX_ELEMENT_NAME);
-			if (atIndex<indexEls.getLength()) {
-				Element indexEl = (Element)indexEls.item(atIndex);
-				domPlace.element.replaceChild(newIndexEl, indexEl);
-			}
-			else if (atIndex==indexEls.getLength())
-				domPlace.element.appendChild(newIndexEl);
-			else
-				throw new IllegalArgumentException("setControlIndex("+place+","+value+","+atIndex+") with only "+indexEls.getLength()+" indexes so far");
-		}
-		else
-			throw new IllegalArgumentException("setControlIndex("+place+") - not DomPlace");
-	}
 	/** dump an element, recursively */
 	public void dump(PrintStream ps, Place place, int indent) {
-		String support = place.getSupport()!=null ? place.getSupport()+":" : "";
+		String support = place.getSupport()!=null ? "/"+place.getSupport() : "";
 		if (place.isSite())
-			ps.println(XmlUtils.getIndent(indent)+support+"_");
+			ps.println(XmlUtils.getIndent(indent)+support+"[]");
 		else if (place.isRoot())
 			ps.println(XmlUtils.getIndent(indent)+support+"root");
 		else {
-			ps.print(XmlUtils.getIndent(indent)+support+place.getControlName());
 			if (place.isIndexed()) {
-				ps.print("<");
+				ps.print(XmlUtils.getIndent(indent));
+				//ps.print("<");
 				List<Object> indexes = place.getControlIndexes();
 				for (int i=0; i<indexes.size(); i++) {
 					if (i>0)
 						ps.print(",");
 					ps.print(indexes.get(i));
 				}
-				ps.print(">");
+				//ps.print(">");
+				ps.println(":"+place.getControlName()+support);
 			}
-			ps.println();
+			else 
+				ps.println(XmlUtils.getIndent(indent)+place.getControlName()+support);
 		}
 		List<Port> ports = place.getPorts();
 		if (ports.size()>0) {

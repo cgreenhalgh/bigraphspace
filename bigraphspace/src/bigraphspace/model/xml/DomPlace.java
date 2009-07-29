@@ -12,6 +12,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Attr;
 
+import bigraphspace.model.IndexValue;
 import bigraphspace.model.Place;
 import bigraphspace.model.Variable;
 import bigraphspace.model.PlaceType;
@@ -323,8 +324,68 @@ public class DomPlace implements Place {
 	 */
 	//@Override
 	public boolean isIndexed() {
-		NodeList indexEls = element.getElementsByTagName(Constants.INDEX_ELEMENT_NAME);
+		NodeList indexEls = XmlUtils.getChildElementsByTagName(element,Constants.INDEX_ELEMENT_NAME);
 		return (indexEls.getLength()>0);
 	}
-
+	/* (non-Javadoc)
+	 * @see bigraphspace.model.Place#addControlIndex(bigraphspace.model.IndexValue)
+	 */
+	//@Override
+	public void addControlIndex(IndexValue value) {
+		if (value instanceof DomIndexValue) {
+			DomIndexValue domValue = (DomIndexValue)value;
+			element.appendChild(domValue.element);
+		}
+		else
+			throw new IllegalArgumentException("addControlIndex("+value+") - not DomIndexValue");
+	}
+	/* (non-Javadoc)
+	 * @see bigraphspace.model.Place#insertControlIndex(bigraphspace.model.IndexValue, int)
+	 */
+	//@Override
+	public void insertControlIndex(IndexValue value, int atIndex) {
+		if (value instanceof DomIndexValue) {
+			DomIndexValue domValue = (DomIndexValue)value;
+			NodeList indexEls = XmlUtils.getChildElementsByTagName(element, Constants.INDEX_ELEMENT_NAME);
+			if (atIndex<indexEls.getLength())
+				element.insertBefore(domValue.element, indexEls.item(atIndex));
+			else
+				element.appendChild(domValue.element);
+		}
+		else
+			throw new IllegalArgumentException("insertControlIndex("+value+") - not DomIndexValue");
+	}
+	/* (non-Javadoc)
+	 * @see bigraphspace.model.Place#removeControlIndex(bigraphspace.model.IndexValue)
+	 */
+	//@Override
+	public void removeControlIndex(IndexValue value) {
+		if (value instanceof DomIndexValue) {
+			DomIndexValue domValue = (DomIndexValue)value;
+			element.removeChild(domValue.element);
+			return;
+		}
+		else
+			throw new IllegalArgumentException("removeControlIndex("+value+") - not DomIndexValue");		
+	}
+	/* (non-Javadoc)
+	 * @see bigraphspace.model.Place#setControlIndex(bigraphspace.model.IndexValue, int)
+	 */
+	//@Override
+	public void setControlIndex(IndexValue value, int atIndex) {
+		if (value instanceof DomIndexValue) {
+			DomIndexValue domValue = (DomIndexValue)value;
+			NodeList indexEls = XmlUtils.getChildElementsByTagName(element, Constants.INDEX_ELEMENT_NAME);
+			if (atIndex<indexEls.getLength()) {
+				Element indexEl = (Element)indexEls.item(atIndex);
+				element.replaceChild(domValue.element, indexEl);
+			}
+			else if (atIndex==indexEls.getLength())
+				element.appendChild(domValue.element);
+			else
+				throw new IllegalArgumentException("setControlIndex("+value+","+atIndex+") with only "+indexEls.getLength()+" indexes so far");
+		}
+		else
+			throw new IllegalArgumentException("setControlIndex("+value+") - not DomIndexValue");
+	}
 }
