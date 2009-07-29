@@ -420,7 +420,7 @@ public class DomBigraph implements Bigraph {
 	//@Override
 	public void addVariable(String name, VariableDefinition definition) {
 		// TODO Auto-generated method stub
-		
+		throw new RuntimeException("Unimplemented: DomBigraph.addVariable");
 	}
 	/* (non-Javadoc)
 	 * @see bigraphspace.model.Bigraph#getVariables()
@@ -487,6 +487,7 @@ public class DomBigraph implements Bigraph {
 	 */
 	//@Override
 	public void removeVariable(String name) {
+		throw new RuntimeException("Unimplemented: DomBigraph.removeVariable");
 		// TODO Auto-generated method stub
 		
 	}
