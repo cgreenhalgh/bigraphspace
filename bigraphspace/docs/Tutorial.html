@@ -11,7 +11,6 @@
   
   
   <title>Tutorial</title></head>
-
 <body>
 
 
@@ -20,7 +19,7 @@
 
 
 
-<p>Chris Greenhalgh, 2009-06-29</p>
+<p>Chris Greenhalgh, 2009-06-29; updatd 2009-07-29</p>
 
 
 
@@ -93,7 +92,7 @@ relatively quickly. Still, better than nothing?!</p>
 
 
 
-    <li><a href="#Overview">Overview</a></li>
+    <li><a href="#Overview">Overview</a></li><li><a href="#Indexed_Controls">Indexed Controls</a></li>
 
 
 
@@ -113,7 +112,7 @@ relatively quickly. Still, better than nothing?!</p>
 
 
 
-    <li><a href="#Patterns_Redexes">Patterns (Redexes)</a></li>
+    <li><a href="#Patterns_Redexes">Patterns (Redexes)</a></li><li><a href="#Variables_and_Bigraph_Expressions">Variables and Bigraph Expressions</a> </li>
 
 
 
@@ -464,20 +463,10 @@ unique name). </p>
 specifies how the <span style="font-style: italic;">port</span>s
 of the <span style="font-style: italic;">node</span>s
 are connected. In general any set of <span style="font-style: italic;">port</span>s can be
-connected by the one <span style="font-style: italic;">link</span>.
-While not part of the pure bigraph model, it is very useful (and
-standard in bigraphspace) to have distinguished <span style="font-style: italic;">link</span>s which are <span style="font-style: italic;">constant</span>. In
-particular, a constant value such as a number or string literal are
-modelled in bigraphspace (as in ReactiveXML) by a <span style="font-style: italic;">link</span> whose name is
-the constant value and which is considered to connect to a univerally
-accessible that represents the constant value explicitly. Non-constant <span style="font-style: italic;">link</span>s simply
+connected by the one <span style="font-style: italic;">link</span>.&nbsp;Non-constant <span style="font-style: italic;">link</span>s simply
 represent connections between <span style="font-style: italic;">node</span>s
 (specifically between <span style="font-style: italic;">port</span>s
-of those <span style="font-style: italic;">node</span>s).&nbsp;</p>
-
-
-
-<p>For example, the PhysicalRoom <span style="font-style: italic;">control</span> in the
+of those <span style="font-style: italic;">node</span>s).</p><p>For example, the PhysicalRoom <span style="font-style: italic;">control</span> in the
 previous example might have one <span style="font-style: italic;">port</span>
 "wifi" which represents its provision of local WiFi networking, while
 the PhysicalHandheld <span style="font-style: italic;">control
@@ -495,6 +484,17 @@ graph</span> from the first figure to describe the complete <span style="font-st
 
 
 <p> <img style="width: 594px; height: 350px;" alt="link graph 1" src="images/Tutorial_link_graph1.PNG"></p>
+
+
+
+<p>While not part of the pure bigraph model, it is very useful (and
+standard in bigraphspace) to have distinguished <span style="font-style: italic;">link</span>s which are <span style="font-style: italic;">constant</span>. In
+particular, a constant value such as a number or string literal are
+modelled in bigraphspace (as in ReactiveXML) by a <span style="font-style: italic;">link</span> whose name is
+the constant value and which is considered to connect to a univerally
+accessible that represents the constant value explicitly. As an alternative to constant links, <a href="#Indexed_Controls">indexed controls</a>
+(see below) can be used to model primitive constant values such as
+numbers and string literals without using links at all. &nbsp; &nbsp;</p>
 
 
 
@@ -581,8 +581,21 @@ model - see package <a href="api/bigraphspace/model/xml/package-frame.html">bigr
 
 
 (Note that the links depend on the Javadocs being generated - see ant
-target "javadoc")
-<h3><a name="XML_encoding"></a>XML encoding</h3>
+target "javadoc")<br><h3><a name="Indexed_Controls"></a>Indexed Controls</h3><p>Sometimes
+it is helpful or necessary to define very large "families" of related
+controls. For example, one representation of integers in bigraphs is to
+define a controlto represent each number (similarly for strings and
+real numbers). Bigraphspace supports this through an "indexed control",
+i.e. a control which has both a name (e.g. "integer") and one or more
+"index" values (e.g. "4") which together uniquely define the specific
+control (e.g. "integer&lt;4&gt;" or "4:integer").</p><p><img style="width: 376px; height: 144px;" alt="" src="images/Tutorial_indexed_control.PNG"></p><p>In
+many ways, an indexed control is similar to a control with one or more
+ports or children encoding the indexes. However it is more "primitive"
+than this - since a control is essentially atomic - and is necessary
+for "boot-strapping" other representations (e.g. giving a "meaning" to
+constant links).&nbsp;</p><p>An indexed control can have one or more
+index values. Each index can have a base type of integer, real or
+string, and can be further constrained, e.g. minimum and/or maximum value (for numbers) or choice from a set of value or a regular expression (for strings). </p><h4>API Notes</h4><p>The <a href="api/bigraphspace/model/Place.html">bigraphspace.model.Place</a> has methods <span style="font-family: monospace;">isIndexed():boolean</span>, <span style="font-family: monospace;">getControlIndexes():List&lt;Object&gt;</span> and related methods to identify and work with places with indexed controls.</p><p>The&nbsp;<a href="api/bigraphspace/model/Control.html">bigraphspace.model.Control</a> class exposes any indexes as&nbsp;<a href="api/bigraphspace/model/VariableDefinition.html">bigraphspace.model.VariableDefinition</a>s and any additional constraints (<a href="api/bigraphspace/model/VariableConstraint.html">bigraphspace.model.VariableConstraint</a>). &nbsp; </p><h3><a name="XML_encoding"></a>XML encoding</h3>
 
 
 
@@ -625,11 +638,16 @@ as follows:</p>
 
 
   <li>B:=<span style="font-family: monospace;">
-&lt;bigraph&gt;</span> E* H* I* R* <span style="font-family: monospace;">&lt;/bigraph&gt;</span></li>
-
-
-
-  <li>E:= <span style="font-family: monospace;">&lt;edge
+&lt;bigraph&gt;</span> V* E* H* I* R* <span style="font-family: monospace;">&lt;/bigraph&gt;</span></li><li>V:= <span style="font-family: monospace;">&lt;variable name="</span><span style="font-style: italic;">NAME</span><span style="font-family: monospace;">" type="</span><span style="font-style: italic;">BASETYPE</span><span style="font-family: monospace;">"&gt;</span> C* <span style="font-family: monospace;">&lt;/variable&gt;</span><br><span style="font-style: italic;">Only in bigraph expressions: a bigraph expression variable called NAME, with base type BASETYPE (</span><span style="font-family: monospace;">integer</span><span style="font-style: italic;">, </span><span style="font-family: monospace;">real</span><span style="font-style: italic;"> or </span><span style="font-family: monospace;">string</span><span style="font-style: italic;">), and zero or more constraints.</span></li><li>C:=
+<span style="font-family: monospace;">&lt;minvalue&gt;</span><span style="font-style: italic;">VALUE</span><span style="font-family: monospace;">&lt;/minvalue&gt;</span> |
+<span style="font-family: monospace;">&lt;maxvalue&gt;</span><span style="font-style: italic;">VALUE</span><span style="font-family: monospace;">&lt;/maxvalue&gt;</span> |
+<span style="font-family: monospace;">&lt;minlength&gt;</span><span style="font-style: italic;">VALUE</span><span style="font-family: monospace;">&lt;/minlength&gt;</span> |
+<span style="font-family: monospace;">&lt;maxlength&gt;</span><span style="font-style: italic;">VALUE</span><span style="font-family: monospace;">&lt;/maxlength&gt;</span><br style="font-family: monospace;">|
+<span style="font-family: monospace;">&lt;oneof&gt; &lt;value&gt;</span><span style="font-style: italic;">VALUE</span><span style="font-family: monospace;">&lt;/value&gt;</span>* <span style="font-family: monospace;">&lt;/oneof&gt;</span> |
+<span style="font-family: monospace;">&lt;notoneof&gt; &lt;value&gt;</span><span style="font-style: italic;">VALUE</span><span style="font-family: monospace;">&lt;/value&gt;*</span> <span style="font-family: monospace;">&lt;/notoneof&gt;</span>&nbsp;<br>| <span style="font-family: monospace;">&lt;difference variable="</span><span style="font-style: italic;">NAME2</span><span style="font-family: monospace;">"&gt;</span><span style="font-style: italic;">VALUE</span><span style="font-family: monospace;">&lt;/difference&gt;</span><br><span style="font-style: italic;">Only used in bigraph expressions: a possible
+constraints on a bigraph expression variable; hopefully
+self-explanatory in most cases. Difference means value of NAME minus
+value of variable NAME2 is VALUE.</span></li><li>E:= <span style="font-family: monospace;">&lt;edge
 id="</span><span style="font-style: italic;">EDGE</span><span style="font-family: monospace;">"/&gt;</span><br>
 
 
@@ -686,7 +704,7 @@ P <span style="font-family: monospace;">&lt;/root&gt;</span><br style="font-fami
 
 
 
-  <li>N:= <span style="font-family: monospace;">&lt;</span><span style="font-style: italic;">K</span> <span style="font-family: monospace;">_support="</span>S<span style="font-family: monospace;">"</span> <span style="font-style: italic;">a1</span><span style="font-family: monospace;">="</span><span style="font-style: italic;">v1</span><span style="font-family: monospace;">"</span> ... <span style="font-family: monospace;"><span style="font-style: italic;">ai</span>="</span><span style="font-style: italic;">vi</span><span style="font-family: monospace;">"&gt;</span> P <span style="font-family: monospace;">&lt;/</span><span style="font-style: italic;">K</span><span style="font-family: monospace;">&gt;</span>&nbsp;&nbsp;<br>
+  <li>N:= <span style="font-family: monospace;">&lt;</span><span style="font-style: italic;">K</span> <span style="font-family: monospace;">_support="</span>S<span style="font-family: monospace;">"</span> <span style="font-style: italic;">a1</span><span style="font-family: monospace;">="</span><span style="font-style: italic;">v1</span><span style="font-family: monospace;">"</span> ... <span style="font-family: monospace;"><span style="font-style: italic;">ai</span>="</span><span style="font-style: italic;">vi</span><span style="font-family: monospace;">"&gt;</span> X* P <span style="font-family: monospace;">&lt;/</span><span style="font-style: italic;">K</span><span style="font-family: monospace;">&gt;</span>&nbsp;&nbsp;<br>
 
 
 
@@ -713,7 +731,11 @@ the corresponding constant value: numbers, double-quoted strings.</span></li>
 
 
 
-  <li>S:= <span style="font-family: monospace;">&lt;
+  <li>X:= <span style="font-family: monospace;">&lt;index&gt;</span><span style="font-style: italic;">VALUE</span><span style="font-family: monospace;">&lt;/index&gt;</span>&nbsp;<br>&nbsp; &nbsp; | <span style="font-family: monospace;">&lt;index variable="</span><span style="font-style: italic;">NAME</span><span style="font-family: monospace;">"/&gt;</span><br><span style="font-style: italic;">An
+index value for an indexed control. The first form specifies a value
+for that index for the containing control element. The second form is
+for use only in bigraph expressions where NAME identifies an
+already-define bigraph expression variable (see term V). </span></li><li>S:= <span style="font-family: monospace;">&lt;
 site index="</span>N<span style="font-family: monospace;">"
 /&gt;</span><br>
 
@@ -721,15 +743,7 @@ site index="</span>N<span style="font-family: monospace;">"
 
     <span style="font-style: italic;">A site (hole); N is
 optional, but should uniquely identify the site within this bigraph
-(usually an ordinal).</span></li>
-
-
-
-</ul>
-
-
-
-<p> For example the three previous diagrams are represented in
+(usually an ordinal).</span></li></ul><p>For example the four previous diagrams are represented in
 the XML encoding as follows:</p>
 
 
@@ -738,7 +752,7 @@ the XML encoding as follows:</p>
 
 
 
-<pre>&lt;bigraph&gt;<br>	&lt;root&gt;<br>	&lt;PhysicalRoom _support="v0"&gt;<br>	&lt;PhysicalHandheld _support="v1"&gt;&lt;/PhysicalHandheld&gt;<br>	&lt;/PhysicalRoom&gt;<br>	&lt;/root&gt;<br>&lt;/bigraph&gt;<br></pre>
+<pre>&lt;bigraph&gt;<br>	&lt;root&gt;<br>		&lt;PhysicalRoom _support="v0"&gt;<br>			&lt;PhysicalHandheld _support="v1"&gt;&lt;/PhysicalHandheld&gt;<br>		&lt;/PhysicalRoom&gt;<br>	&lt;/root&gt;<br>&lt;/bigraph&gt;<br></pre>
 
 
 
@@ -746,7 +760,7 @@ the XML encoding as follows:</p>
 
 
 
-<pre>&lt;bigraph&gt;<br>	&lt;root&gt;<br>	&lt;PhysicalRoom _support="v0" wifi="e0"&gt;<br>	&lt;PhysicalHandheld _support="v1" wifi="e0"&gt;&lt;/PhysicalHandheld&gt;<br>	&lt;/PhysicalRoom&gt;<br>	&lt;/root&gt;<br>&lt;/bigraph&gt;<br></pre>
+<pre>&lt;bigraph&gt;<br>	&lt;root&gt;<br>		&lt;PhysicalRoom _support="v0" wifi="e0"&gt;<br>			&lt;PhysicalHandheld _support="v1" wifi="e0"&gt;&lt;/PhysicalHandheld&gt;<br>		&lt;/PhysicalRoom&gt;<br>	&lt;/root&gt;<br>&lt;/bigraph&gt;<br></pre>
 
 
 
@@ -754,7 +768,11 @@ the XML encoding as follows:</p>
 
 
 
-<pre>&lt;bigraph&gt;<br>	&lt;root&gt;<br>	&lt;PhysicalRoom _support="v0"&gt;<br>	&lt;site index="0" /&gt;<br>	&lt;/PhysicalRoom&gt;<br>	&lt;/root&gt;<br>&lt;/bigraph&gt;<br></pre>
+<pre>&lt;bigraph&gt;<br>	&lt;root&gt;<br>		&lt;PhysicalRoom _support="v0"&gt;<br>			&lt;site index="0" /&gt;<br>		&lt;/PhysicalRoom&gt;<br>	&lt;/root&gt;<br>&lt;/bigraph&gt;<br></pre>
+
+
+
+<p>Example 4: an indexed control.</p><pre>&lt;bigraph&gt;<br>	&lt;root&gt;<br>		&lt;integer _support="v0"&gt;<br>			&lt;index&gt;4&lt;/index&gt;<br>		&lt;/integer&gt;<br>	&lt;/root&gt;<br>&lt;/bigraph&gt;<br></pre>
 
 
 
@@ -787,11 +805,14 @@ for the ANTLR grammer:</p>
 
 
 
-<pre>bigraph PhysicalRoom:v0 ( PhysicalHandheld:v1 )<br><br>bigraph PhysicalRoom:v0{ wifi="e0" } ( PhysicalHandheld:v1{ wifi="e0" } )<br><br>bigraph PhysicalRoom:v0 ( _0 )</pre>
+<pre>bigraph PhysicalRoom:v0 ( PhysicalHandheld:v1 )<br><br>bigraph PhysicalRoom:v0{ wifi="e0" } ( PhysicalHandheld:v1{ wifi="e0" } )<br><br>bigraph PhysicalRoom:v0 ( _0 )</pre><p>
 
 
 
-Note that the support (e.g. ":v0") is optional.<br>
+Note that the support (e.g. ":v0") is optional.</p><p>The
+text encoding does not support the full expressiveness of bigraphs, for
+example it does not (currently, at least) allow the following to be
+expressed:</p><ul><li>edges or hidden names</li><li>indexed controls, but initially may support the form <span style="font-family: monospace;">integer&lt;4&gt;</span></li><li>bigraph expressions or variables<br></li></ul>
 
 
 
@@ -871,7 +892,10 @@ number of ports.</li>
 
   
   
-  </ul>
+  </ul><li><span style="font-style: italic;">indexes</span>, i.e. the number, base types and ranges of any indexes.</li><ul><li>supported base types are <span style="font-style: italic;">integer</span>, <span style="font-style: italic;">real</span> and <span style="font-style: italic;">string</span>.</li><li>supported
+index constraints are, for numbers, min value, max value, one-of, and
+not-one-of, and&nbsp;for strings, min length, max length, regular
+expression, one-of and not-one-of.&nbsp;</li><li>every control with that name must have exactly those indexes.</li></ul>
 
 
 
@@ -898,7 +922,7 @@ The signature for the above example could be (see <a href="../etc/signature_blue
 
 
 
-<pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br>&lt;definitions xmlns="http://www.mrl.nott.ac.uk/bigraphs/signature/1.0"&gt;<br>	&lt;controls&gt;<br>	&lt;!-- physical world model --&gt;<br>	&lt;control name="PhysicalRoom" status="active"&gt;<br>	&lt;description&gt;A physical room (no, really).&lt;/description&gt;<br>	&lt;port name="wifi"&gt;<br>	&lt;description&gt;The availability of WiFi within the room&lt;/description&gt;<br>	&lt;/port&gt;<br>	&lt;/control&gt;<br>	&lt;control name="PhysicalHandheld" status="active"&gt;<br>	&lt;description&gt;A PDA-type device presenting local information&lt;/description&gt;<br>	&lt;port name="wifi"&gt;<br>	&lt;description&gt;Connection to a WiFi network (e.g. from room)&lt;/description&gt;<br>	&lt;/port&gt;<br>	&lt;/control&gt;<br>	&lt;/controls&gt;<br>&lt;/definitions&gt;</pre>
+<pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br>&lt;definitions xmlns="http://www.mrl.nott.ac.uk/bigraphs/signature/1.0"&gt;<br>	&lt;controls&gt;<br>	&lt;!-- physical world model --&gt;<br>	&lt;control name="PhysicalRoom" status="active"&gt;<br>	&lt;description&gt;A physical room (no, really).&lt;/description&gt;<br>	&lt;port name="wifi"&gt;<br>	&lt;description&gt;The availability of WiFi within the room&lt;/description&gt;<br>	&lt;/port&gt;<br>	&lt;/control&gt;<br>	&lt;control name="PhysicalHandheld" status="active"&gt;<br>	&lt;description&gt;A PDA-type device presenting local information&lt;/description&gt;<br>	&lt;port name="wifi"&gt;<br>	&lt;description&gt;Connection to a WiFi network (e.g. from room)&lt;/description&gt;<br>	&lt;/port&gt;<br>		&lt;control name="integer" status="atomic"&gt;<br>			&lt;description&gt;A control-set encoded integer&lt;/description&gt;<br>			&lt;index type="integer"&gt;<br>				&lt;description&gt;The number&lt;/description&gt;<br>			&lt;/index&gt;<br>		&lt;/control&gt;<br>	&lt;/control&gt;<br>	&lt;/controls&gt;<br>&lt;/definitions&gt;</pre>
 
 
 
@@ -946,7 +970,11 @@ is assumed to be the only member of a <span style="font-style: italic;">sort</sp
 name. (<span style="font-style: italic;">Sorting</span>s
 are specified in terms of <span style="font-style: italic;">sort</span>s
 &nbsp;rather than <span style="font-style: italic;">control</span>s
-directly to allow an additional level of abstraction where required.)</p>
+directly to allow an additional level of abstraction where required.)</p><p>At
+present sortings do not distinguish between indexed controls with the
+same control name (e.g. between "integer&lt;4&gt;" and
+"integer&lt;5&gt;"), i.e. the sort for an indexed control includes all
+members of that indexed control set.</p>
 
 
 
@@ -1017,7 +1045,7 @@ match in the target, such that:</p>
 
 
 
-  <li>the controls are the same;</li>
+  <li>the controls are the same;</li><li>if the controls are indexed then the indexes are all the same (but see <a href="#Variables_and_Bigraph_Expressions">bigraph expressions</a>, below);</li>
 
 
 
@@ -1131,7 +1159,39 @@ It returns a list of matches (the maximum can be specified).&nbsp;</p>
 <p>Normally you would do this via the ReativeBigraph API (below).
 <a href="../src/bigraphspace/model/xml/TestMatch.java">src/bigraphspace/model/xml/TestMatch.java</a>
 and&nbsp;<a href="../src/bigraphspace/model/xml/RunMatchTests.java">src/bigraphspace/model/xml/RunMatchTests.java</a>
-give&nbsp;examples of using this directly.</p>
+give&nbsp;examples of using this directly.</p><h3><a name="Variables_and_Bigraph_Expressions"></a>Variables and Bigraph Expressions</h3><p>Recall
+that each indexed control is strictly a different control, for example
+"integer&lt;4&gt;" and "integer&lt;5&gt;" are different controls.
+Consequently standard bigraph matching cannot express a match with
+(e.g.) "any integer control". To address this problem bigraphspace
+allows bigraph patterns to be extended to "bigraph expressions", which
+is a bigraph with (certain) variables and constraints.&nbsp;A bigraph
+expression gives a concise way to specify a (possibly infinite) set of
+bigraphs to be matched, much like a (limited) regular expression does
+for strings.</p><p>A bigraph expression is a standard bigraph with two extensions:</p><ul><li>it
+has a set of variables associated with it, which can range over control
+index values (and are defined in the same way as control indexes) and</li><li>an index of an indexed control can be a reference to one of these variables rather than a specific index value. &nbsp;&nbsp;</li></ul><p>For example, in a bigraph expression with variable "x" defined with base type integer,&nbsp;the following control "<span style="font-family: monospace;">integer&lt;x&gt;</span>" would match any integer control (and the particular value matched would be bound to "x").</p><p>The
+variable's base type must match the base type of the index(es) where it
+is used. But the variable can also have additional constraints specified over and above the index, currently for
+numbers, min value, max value, one-of, not-one-of and difference,
+and&nbsp;for
+strings, min length, max length, regular expression, one-of and
+not-one-of. So it is possible, for example, to use bigraph expressions
+to match numbers in a range or strings matching a particular regular
+expression.</p><h4>XML Notes</h4>
+
+
+
+<p>The XML encoding of bigraphs defined above including details
+of how to encode <span style="font-style: italic;">variables</span>, <span style="font-style: italic;">constraints</span>
+and <span style="font-style: italic;">indexed controls </span>(as <span style="font-family: monospace;">variable</span>, various constraint-specific and <span style="font-family: monospace;">index</span>
+elements, respectively).&nbsp;</p>
+
+
+
+<h4>API Notes</h4><p>The <a href="api/bigraphspace/model/Bigraph.html">bigraphspace.model.Bigraph</a> interface has methods <span style="font-family: monospace;">isExpression():boolean</span> and <span style="font-family: monospace;">getVariables():Map&lt;String,VariableDefinition&gt;</span>
+plus others to access and manipulate the variables associated with the
+pattern bigraph. This uses the same classes as for index types,&nbsp;<a href="api/bigraphspace/model/VariableDefinition.html">bigraphspace.model.VariableDefinition</a>s and&nbsp;<a href="api/bigraphspace/model/VariableConstraint.html">bigraphspace.model.VariableConstraint</a>. </p><p>The <a href="api/bigraphspace/model/Match.html">bigraphspace.model.Match</a> interface has method <span style="font-family: monospace;">getVariableValues():Map&lt;String,Object&gt;</span> to get the value bound to each expression variables in a match. &nbsp;</p>
 
 
 
@@ -1465,11 +1525,7 @@ Agents. Cambridge University Press.</p>
 
 
 
-</h2>
-
-
-
-2009-06-29<br>
+</h2>2009-07-29<br><ul><li>added sections on indexed controls and variables and bigraph expressions, and extended the XML encoding accordingly.</li></ul>2009-06-29<br>
 
 
 
