@@ -40,8 +40,32 @@ prime
 ;
 
 /*-> ^( PIPE node* )*/
+/* : control ports? children? -> ^( control ^( PORTS ports? ) ^( CHILDREN children? ) ) */
 node
 : IDENTIFIER ports? children? -> ^( IDENTIFIER ^( PORTS ports? ) ^( CHILDREN children? ) )
+;
+
+control
+: tuple COLON type -> ^( type tuple )
+| IDENTIFIER indexes? -> ^( IDENTIFIER indexes? )
+;
+
+indexes
+: LANGLE ( index ( COMMA index )* )? RANGLE -> index*
+;
+
+index
+: constant
+| IDENTIFIER
+;
+
+tuple
+: index ( COMMA index )* -> index*
+;
+
+/* only simple for now */
+type
+: IDENTIFIER
 ;
 
 ports
@@ -78,11 +102,14 @@ LPAREN : '(';
 RPAREN : ')';
 LBRACE : '{';
 RBRACE : '}';
+LANGLE : '<';
+RANGLE : '>';
 UNDERSCORE : '_';
 SLASH : '/';
 COMMA : ',';
 EQUALS : '=';
 ARROW : '->';
+COLON : ':';
 
 NUMERAL	: '~'? (DIGIT)+ ;
 
