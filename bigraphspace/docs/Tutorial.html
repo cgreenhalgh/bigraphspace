@@ -593,9 +593,12 @@ many ways, an indexed control is similar to a control with one or more
 ports or children encoding the indexes. However it is more "primitive"
 than this - since a control is essentially atomic - and is necessary
 for "boot-strapping" other representations (e.g. giving a "meaning" to
-constant links).&nbsp;</p><p>An indexed control can have one or more
+constant links).&nbsp;</p><p>An
+indexed control can have one or more
 index values. Each index can have a base type of integer, real or
-string, and can be further constrained, e.g. minimum and/or maximum value (for numbers) or choice from a set of value or a regular expression (for strings). </p><h4>API Notes</h4><p>The <a href="api/bigraphspace/model/Place.html">bigraphspace.model.Place</a> has methods <span style="font-family: monospace;">isIndexed():boolean</span>, <span style="font-family: monospace;">getControlIndexes():List&lt;Object&gt;</span> and related methods to identify and work with places with indexed controls.</p><p>The&nbsp;<a href="api/bigraphspace/model/Control.html">bigraphspace.model.Control</a> class exposes any indexes as&nbsp;<a href="api/bigraphspace/model/VariableDefinition.html">bigraphspace.model.VariableDefinition</a>s and any additional constraints (<a href="api/bigraphspace/model/VariableConstraint.html">bigraphspace.model.VariableConstraint</a>). &nbsp; </p><h3><a name="XML_encoding"></a>XML encoding</h3>
+string, and can be further constrained, e.g. minimum and/or maximum
+value (for numbers) or choice from a set of value or a regular
+expression (for strings). </p><h4>API Notes</h4><p>The <a href="api/bigraphspace/model/Place.html">bigraphspace.model.Place</a> has methods <span style="font-family: monospace;">isIndexed():boolean</span>, <span style="font-family: monospace;">getControlIndexes():List&lt;Object&gt;</span> and related methods to identify and work with places with indexed controls.</p><p>The&nbsp;<a href="api/bigraphspace/model/Control.html">bigraphspace.model.Control</a> class exposes any indexes as&nbsp;<a href="api/bigraphspace/model/VariableDefinition.html">bigraphspace.model.VariableDefinition</a>s and any additional constraints (<a href="api/bigraphspace/model/VariableConstraint.html">bigraphspace.model.VariableConstraint</a>). &nbsp; </p><h3><a name="XML_encoding"></a>XML encoding</h3>
 
 
 
@@ -805,14 +808,14 @@ for the ANTLR grammer:</p>
 
 
 
-<pre>bigraph PhysicalRoom:v0 ( PhysicalHandheld:v1 )<br><br>bigraph PhysicalRoom:v0{ wifi="e0" } ( PhysicalHandheld:v1{ wifi="e0" } )<br><br>bigraph PhysicalRoom:v0 ( _0 )</pre><p>
+<pre>bigraph PhysicalRoom/v0 ( PhysicalHandheld:v1 )<br><br>bigraph PhysicalRoom/v0{ wifi="e0" } ( PhysicalHandheld:v1{ wifi="e0" } )<br><br>bigraph PhysicalRoom/v0 ( [0] )<br><br>bigraph integer&lt;4&gt; <br></pre>or<br><pre>bigraph 4:integer</pre><p>
 
 
 
-Note that the support (e.g. ":v0") is optional.</p><p>The
+Note that the support (e.g. "/v0") is optional.</p><p>The
 text encoding does not support the full expressiveness of bigraphs, for
 example it does not (currently, at least) allow the following to be
-expressed:</p><ul><li>edges or hidden names</li><li>indexed controls, but initially may support the form <span style="font-family: monospace;">integer&lt;4&gt;</span></li><li>bigraph expressions or variables<br></li></ul>
+expressed:</p><ul><li>edges or hidden names</li><li>bigraph expressions or variables<br></li></ul>
 
 
 
