@@ -1,6 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
+<html><head>
 
 
 
@@ -14,8 +13,7 @@
   
   
   
-  <title>ReleaseNotes</title>
-</head>
+  <title>ReleaseNotes</title></head>
 
 <body>
 
@@ -66,19 +64,9 @@ to specify that a rule applies only if the context of the match is
   <li>The Place API has methods for indexed controls but no
 implementation behind it (in practice ports with constant values will
 do the same job (except for nominally anchoring those constant value
-links)).</li>
-  <li>VariableDefinition.matches does not support difference constraint.</li>
-  <li>Control index matching in the DomMatcher is by string equality,
+links)).</li><li>Control index matching in the DomMatcher is by string equality,
 so will not be correct if string representation is not normalised for
-type.</li>
-  <li>DomMatcher match for index variables doesn't ensure that same value in multiple places.&nbsp;</li>
-  <li>DomMatch variable values are all strings.</li>
-  <li>Variable constraints are untested.</li>
-  <li>DomTransformer does not clone index values properly (at all?!) </li>
-
-</ul>
-
-<h2>Possible enhancements</h2>
+type.</li><li>DomMatch variable values are all strings.</li></ul><h2>Possible enhancements</h2>
 
 
 <ul>
@@ -96,8 +84,7 @@ preconditions after the redex using that match as a basis)</li>
 
 
 
-<h2>Changes</h2>
-2009-07-28<br>
+<h2>Changes</h2>2009-07-29<br><ul><li>support for control indexes in DomTransformer; implement difference constraint.</li></ul>2009-07-28<br>
 <ul>
   <li>initial (partial) implementation of control and bigraph
 expressions, i.e. rewrite of control indexes, add bigraph variables and
@@ -174,5 +161,4 @@ layer).</li>
 
 
 
-</body>
-</html>
+</body></html>
