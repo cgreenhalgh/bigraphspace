@@ -272,7 +272,8 @@ public class DomPlace implements Place {
 	//@Override
 	public String getControlVariable() {
 		// TODO Auto-generated method stub
-		return null;
+		throw new RuntimeException("Unimplemented: DomPlace.getControlVariable");
+		//return null;
 	}
 	/* (non-Javadoc)
 	 * @see bigraphspace.model.Place#isControlVariable()
@@ -280,7 +281,8 @@ public class DomPlace implements Place {
 	//@Override
 	public boolean isControlVariable() {
 		// TODO Auto-generated method stub
-		return false;
+		throw new RuntimeException("Unimplemented: DomPlace.isControlVariable");
+		//return false;
 	}
 	/* (non-Javadoc)
 	 * @see bigraphspace.model.Place#setControlVariable(java.lang.String)
@@ -288,6 +290,7 @@ public class DomPlace implements Place {
 	//@Override
 	public void setControlVariable(String variableName) {
 		// TODO Auto-generated method stub
+		throw new RuntimeException("Unimplemented: DomPlace.setControlVariable");
 		
 	}
 	/* (non-Javadoc)
@@ -296,7 +299,8 @@ public class DomPlace implements Place {
 	//@Override
 	public void addControlIndex(Object value) {
 		// TODO Auto-generated method stub
-		
+		throw new RuntimeException("Unimplemented: DomPlace.addControlIndex");
+
 	}
 	/* (non-Javadoc)
 	 * @see bigraphspace.model.Place#getControlIndexes()
@@ -329,7 +333,8 @@ public class DomPlace implements Place {
 	//@Override
 	public void insertControlIndex(Object value, int atIndex) {
 		// TODO Auto-generated method stub
-		
+		throw new RuntimeException("Unimplemented: DomPlace.insertControlIndex");
+
 	}
 	/* (non-Javadoc)
 	 * @see bigraphspace.model.Place#isIndexed()
@@ -345,6 +350,7 @@ public class DomPlace implements Place {
 	//@Override
 	public void removeControlIndex(Object value) {
 		// TODO Auto-generated method stub
+		throw new RuntimeException("Unimplemented: DomPlace.removeControlIndex");
 		
 	}
 	/* (non-Javadoc)
@@ -353,6 +359,7 @@ public class DomPlace implements Place {
 	//@Override
 	public void setControlIndex(Object value, int atIndex) {
 		// TODO Auto-generated method stub
+		throw new RuntimeException("Unimplemented: DomPlace.setControlIndex");
 		
 	}
 
