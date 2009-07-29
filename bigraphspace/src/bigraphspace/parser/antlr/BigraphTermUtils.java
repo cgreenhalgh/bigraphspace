@@ -74,12 +74,33 @@ public class BigraphTermUtils {
 					throw new ParseException("Hole had "+child.getChildCount()+" children; should be 0 or 1 (optional index)");				
 				continue;
 			}
-			// should be identifier (node control)
-			if (child.getType()!=BigraphTermParser.IDENTIFIER)
-				throw new ParseException("Expected node IDENTIFIER ("+child.getType()+"/"+child.getText()+")");
-			Element nodeEl = doc.createElement(child.getText());
+			// should be node (node control)
+			if (child.getType()!=BigraphTermParser.NODE)
+				throw new ParseException("Expected node NODE ("+child.getType()+"/"+child.getText()+")");
+			// first child should be CONTROL
+			if (child.getChildCount()<1) 
+				throw new ParseException("Node NODE had no children");
+			Tree control = child.getChild(0);
+			if (control.getType()!=BigraphTermParser.CONTROL)
+				throw new ParseException("Expected node CONTROL ("+control.getType()+"/"+control.getText()+")");
+			// first child should control name; any further children should be index values/variables
+			if (control.getChildCount()<1)
+				throw new ParseException("Node CONTROL had no children");
+			
+			Element nodeEl = doc.createElement(control.getChild(0).getText());
 			el.appendChild(nodeEl);
-			for (int si=0; si<child.getChildCount(); si++) {
+			for (int ii=1; ii<control.getChildCount(); ii++) {
+				Tree indexnode = control.getChild(ii);
+				String index = indexnode.getText();
+				Element indexEl = doc.createElement(Constants.INDEX_ELEMENT_NAME);
+				if (index.startsWith("$"))
+					indexEl.setAttribute(Constants.INDEX_VARIABLE_ATTRIBUTE_NAME, index);
+				else
+					indexEl.appendChild(doc.createTextNode(index));
+				nodeEl.appendChild(indexEl);
+			}
+			
+			for (int si=1; si<child.getChildCount(); si++) {
 				Tree subnode = child.getChild(si);
 				if (subnode.getType()==BigraphTermParser.PORTS) {
 					// ports => attributes...

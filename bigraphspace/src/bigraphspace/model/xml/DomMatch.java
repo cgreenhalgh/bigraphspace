@@ -293,25 +293,26 @@ public class DomMatch implements Match {
 				break;
 			}
 		}
-		String support = place.getSupport()!=null ? place.getSupport()+":" : "";
+		String support = place.getSupport()!=null ? "/"+place.getSupport() : "";
 		if (place.isSite())
-			ps.println(XmlUtils.getIndent(indent)+support+"_"+tag);
+			ps.println(XmlUtils.getIndent(indent)+support+"[]"+tag);
 		else if (place.isRoot())
 			ps.println(XmlUtils.getIndent(indent)+support+"root"+tag);
 		else {
-			ps.print(XmlUtils.getIndent(indent)+support+place.getControlName());
 			if (place.isIndexed()) {
-				ps.print("<");
+				ps.print(XmlUtils.getIndent(indent));
+				//ps.print("<");
 				List<Object> indexes = place.getControlIndexes();
-				for (int ix=0; ix<indexes.size(); ix++) {
-					if (ix>0)
+				for (int ii=0; ii<indexes.size(); ii++) {
+					if (ii>0)
 						ps.print(",");
-					ps.print(indexes.get(ix));
+					ps.print(indexes.get(ii));
 				}
-				ps.print(">");
+				//ps.print(">");
+				ps.println(":"+place.getControlName()+support+tag);
 			}
-			ps.println(tag);
-
+			else 
+				ps.println(XmlUtils.getIndent(indent)+place.getControlName()+support+tag);
 		}
 		List<Port> ports = place.getPorts();
 		if (ports.size()>0) {

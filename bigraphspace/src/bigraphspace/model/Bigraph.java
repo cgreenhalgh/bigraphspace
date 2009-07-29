@@ -37,6 +37,10 @@ public interface Bigraph {
 	public Place createNode(Control control);
 	/** create a new site to be used with this bigraph */
 	public Place createSite();
+	/** create a new index value to be used with this bigraph */
+	public IndexValue createIndexValue(Object value);
+	/** create a new index variable value to be used with this bigraph */
+	public IndexValue createIndexVariable(String variableName);
 	/** convenience getter for Control (via Signature).
 	 * 
 	 * @return null for root or site.
@@ -80,17 +84,6 @@ public interface Bigraph {
 	/** is expression, i.e. has variables */
 	public boolean isExpression();
 	
-	/** Control index operation had to be moved here as Place doesn't have 
-	 * document handle in order to create new (index) element. */
-	/** add control index (at end) (if allowed) */
-	public void addControlIndex(Place place, Object value);	
-	/** remove control index (if allowed) */
-	public void removeControlIndex(Place place, Object value);
-	/** set control index (if allowed) */
-	public void setControlIndex(Place place, Object value, int atIndex);
-	/** insert control index (if allowed) */
-	public void insertControlIndex(Place place, Object value, int atIndex);
-
 	/** dump - debug */
 	public void dump(PrintStream ps);
 }

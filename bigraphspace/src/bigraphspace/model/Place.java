@@ -60,4 +60,13 @@ public interface Place {
 	public boolean isIndexed();
 	/** index values for indexed Controls */
 	public List<Object> getControlIndexes();
+	/** add control index (at end) (if allowed) */
+	public void addControlIndex(IndexValue value);	
+	/** remove control index (if allowed) */
+	public void removeControlIndex(IndexValue value);
+	/** set control index (if allowed) */
+	public void setControlIndex(IndexValue value, int atIndex);
+	/** insert control index (if allowed) */
+	public void insertControlIndex(IndexValue value, int atIndex);
+
 }

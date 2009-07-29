@@ -1,8 +1,8 @@
 bigraph
 building(
 	room(
-		computer1{network=x}(_) |
-		computer2{x}(_1) |
+		computer1{network=x}([]) |
+		computer2{x}([1]) |
 		computer3{x}()
 	)
 )

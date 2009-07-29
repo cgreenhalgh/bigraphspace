@@ -107,6 +107,11 @@
 			<classpath refid="classpath"/>
 			<arg value="etc\bigraph2.txt"/>
 	    </java>
+		<echo>read indexed1.btl</echo>
+	    <java fork="true" classname="bigraphspace.parser.antlr.TestBigraphTerm" failonerror="true">
+			<classpath refid="classpath"/>
+			<arg value="etc\indexed1.btl"/>
+	    </java>
 		<echo>read rule1.txt</echo>
 	    <java fork="true" classname="bigraphspace.parser.antlr.TestBigraphTerm" failonerror="true">
 			<classpath refid="classpath"/>
