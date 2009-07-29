@@ -294,15 +294,6 @@ public class DomPlace implements Place {
 		
 	}
 	/* (non-Javadoc)
-	 * @see bigraphspace.model.Place#addControlIndex(java.lang.Object)
-	 */
-	//@Override
-	public void addControlIndex(Object value) {
-		// TODO Auto-generated method stub
-		throw new RuntimeException("Unimplemented: DomPlace.addControlIndex");
-
-	}
-	/* (non-Javadoc)
 	 * @see bigraphspace.model.Place#getControlIndexes()
 	 */
 	//@Override
@@ -328,39 +319,12 @@ public class DomPlace implements Place {
 		return indexes;
 	}
 	/* (non-Javadoc)
-	 * @see bigraphspace.model.Place#insertControlIndex(java.lang.Object, int)
-	 */
-	//@Override
-	public void insertControlIndex(Object value, int atIndex) {
-		// TODO Auto-generated method stub
-		throw new RuntimeException("Unimplemented: DomPlace.insertControlIndex");
-
-	}
-	/* (non-Javadoc)
 	 * @see bigraphspace.model.Place#isIndexed()
 	 */
 	//@Override
 	public boolean isIndexed() {
 		NodeList indexEls = element.getElementsByTagName(Constants.INDEX_ELEMENT_NAME);
 		return (indexEls.getLength()>0);
-	}
-	/* (non-Javadoc)
-	 * @see bigraphspace.model.Place#removeControlIndex(java.lang.Object)
-	 */
-	//@Override
-	public void removeControlIndex(Object value) {
-		// TODO Auto-generated method stub
-		throw new RuntimeException("Unimplemented: DomPlace.removeControlIndex");
-		
-	}
-	/* (non-Javadoc)
-	 * @see bigraphspace.model.Place#setControlIndex(java.lang.Object, int)
-	 */
-	//@Override
-	public void setControlIndex(Object value, int atIndex) {
-		// TODO Auto-generated method stub
-		throw new RuntimeException("Unimplemented: DomPlace.setControlIndex");
-		
 	}
 
 }
