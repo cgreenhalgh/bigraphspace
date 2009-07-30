@@ -530,11 +530,15 @@ public class DomBigraph implements Bigraph {
 			if (place.isIndexed()) {
 				ps.print(XmlUtils.getIndent(indent));
 				//ps.print("<");
-				List<Object> indexes = place.getControlIndexes();
+				List<IndexValue> indexes = place.getControlIndexes();
 				for (int i=0; i<indexes.size(); i++) {
 					if (i>0)
 						ps.print(",");
-					ps.print(indexes.get(i));
+					IndexValue index = indexes.get(i);
+					if (index.isVariable())
+						ps.print("$"+index.getVariableName());
+					else
+						ps.print(index.getValue());
 				}
 				//ps.print(">");
 				ps.println(":"+place.getControlName()+support);
