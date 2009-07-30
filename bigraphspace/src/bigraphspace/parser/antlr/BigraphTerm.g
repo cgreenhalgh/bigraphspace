@@ -5,6 +5,13 @@ options { output=AST; }
 tokens {
 	BIGRAPH = 'bigraph';
 	RULE = 'rule';
+	WHERE = 'where';
+	AND = 'and';
+	IN = 'in';
+	NOT = 'not';
+	LENGTH = 'length';
+	MATCHES = 'matches';
+	
 	/* abstract */
 	EMPTY = 'empty';
 	PORTS = 'ports';
@@ -13,6 +20,15 @@ tokens {
 	UNNAMED = 'unnamed';
 	CONTROL = 'control';
 	NODE = 'node';
+	ONEOF = 'oneof';
+	NOTONEOF = 'notoneof';
+//	VARIABLE = 'variable';
+	CONSTRAINT = 'constraint';
+	MINLENGTH = 'minlength';
+	MAXLENGTH = 'maxlength';
+	MINVALUE = 'minvalue';
+	MAXVALUE = 'maxvalue';
+	REGEXP = 'regexp';
 }
 
 @parser::header { package bigraphspace.parser.antlr; }
@@ -23,7 +39,7 @@ tokens {
  *------------------------------------------------------------------*/
 
 start 
-: BIGRAPH^ wide EOF
+: BIGRAPH^ wide where? EOF
 | RULE^ wide ARROW! wide EOF
 ;
     
@@ -37,7 +53,7 @@ wide1
 
 prime
 : -> ^( EMPTY )
-| LSQUARE NUMERAL? RSQUARE -> ^( UNDERSCORE NUMERAL? )
+| LSQUARE NUMBER? RSQUARE -> ^( UNDERSCORE NUMBER? )
 | node ( PIPE node )* -> node+ 
 ;
 
@@ -56,8 +72,9 @@ indexes
 ;
 
 /* can't seem to get number to work */
+/* | DOLLAR IDENTIFIER -> ^( VARIABLE IDENTIFIER ) */
 index
-: NUMERAL 
+: NUMBER 
 | STRING 
 | IDENTIFIER 
 ;
@@ -94,6 +111,23 @@ children
 : LPAREN prime RPAREN -> prime
 ;
 
+where
+: WHERE whereclause ( AND whereclause )* -> ^( WHERE whereclause+ )
+;
+
+whereclause
+: IDENTIFIER COLON type -> ^( CONSTRAINT IDENTIFIER COLON type )
+| IDENTIFIER NOT IN LBRACE ( index ( COMMA index )* )? RBRACE -> ^( CONSTRAINT IDENTIFIER NOTONEOF index* )
+| IDENTIFIER IN LBRACE ( index ( COMMA index )* )? RBRACE -> ^( CONSTRAINT IDENTIFIER ONEOF index* )
+| IDENTIFIER LESSTHANOREQUAL NUMBER -> ^( CONSTRAINT IDENTIFIER MAXVALUE NUMBER )
+| IDENTIFIER GREATERTHANOREQUAL NUMBER -> ^( CONSTRAINT IDENTIFIER MINVALUE NUMBER )
+| LENGTH LPAREN IDENTIFIER RPAREN LESSTHANOREQUAL NUMBER -> ^( CONSTRAINT IDENTIFIER MAXLENGTH NUMBER )
+| LENGTH LPAREN IDENTIFIER RPAREN GREATERTHANOREQUAL NUMBER -> ^( CONSTRAINT IDENTIFIER MINLENGTH NUMBER )
+| IDENTIFIER MATCHES STRING -> ^( CONSTRAINT IDENTIFIER REGEXP STRING )
+| i=IDENTIFIER EQUALS j=IDENTIFIER PLUS NUMBER -> ^( CONSTRAINT $i PLUS $j NUMBER )
+| i=IDENTIFIER EQUALS j=IDENTIFIER MINUS NUMBER -> ^( CONSTRAINT $i MINUS $j NUMBER )
+;
+
 
 /*------------------------------------------------------------------
  * LEXER RULES
@@ -115,16 +149,21 @@ ARROW : '->';
 COLON : ':';
 LSQUARE: '[';
 RSQUARE: ']';
+DOLLAR: '$';
+LESSTHANOREQUAL: '<=';
+GREATERTHANOREQUAL: '>=';
+PLUS: '+';
+MINUS: '-';
 
-NUMERAL	: '~'? (DIGIT)+ ;
+fragment NUMERAL	: '~'? (DIGIT)+ ;
 
-NUMBER : NUMERAL ( '.' DIGIT+ )? ( 'E' NUMERAL )? ;
+NUMBER : NUMERAL ( '.' DIGIT+ )? ;
 
 STRING : '"' ( ~('\\'|'"') | '\\' STRING_ESCAPE )* '"';
 
 fragment STRING_ESCAPE: 'n' | 't' | '\\';
 
-IDENTIFIER : LETTER ( LETTER | DIGIT )* ;
+IDENTIFIER : DOLLAR? LETTER ( LETTER | DIGIT )* ;
 
 WHITESPACE : ( '\t' | ' ' | '\r' | '\n'| '\u000C' )+ 	{ $channel = HIDDEN; } ;
 

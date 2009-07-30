@@ -809,14 +809,10 @@ for the ANTLR grammer:</p>
 
 
 
-Note that the support (e.g. "/v0") is optional.</p><p>The
+Note that the support (e.g. "/v0") is optional.</p><p>Bigraph expression variables are specified as in the following example (from&nbsp;<a href="../etc/indexed2.btl">etc/indexed2.btl</a>:</p><pre>bigraph<br>	$i:integer | $s:string <br>where<br>	$i:integer and $i&lt;=10 and $i&gt;=4 and $i in { 5,6,7 } and $i not in { 7, 8 }<br>and 	$j:integer and $i=$j+1<br>and	$s:string and length($s)&lt;=4 and length($s)&gt;=2 and $s in { "a","b","c" } and $s not in { "c","d" } and $s matches "a*b*" </pre><p>The
 text encoding does not support the full expressiveness of bigraphs, for
 example it does not (currently, at least) allow the following to be
-expressed:</p><ul><li>edges or hidden names</li><li>bigraph expressions or variables<br></li></ul>
-
-
-
-<h4>API Notes</h4>
+expressed:</p><ul><li>edges or hidden names</li></ul><h4>API Notes</h4>
 
 
 
@@ -1525,7 +1521,7 @@ Agents. Cambridge University Press.</p>
 
 
 
-</h2>2009-07-29<br><ul><li>added sections on indexed controls and variables and bigraph expressions, and extended the XML encoding accordingly.</li></ul>2009-06-29<br>
+</h2>2009-07-30<br><ul><li>added note on bigraph term language expressions/variable notation</li></ul>2009-07-29<br><ul><li>added sections on indexed controls and variables and bigraph expressions, and extended the XML encoding accordingly.</li></ul>2009-06-29<br>
 
 
 

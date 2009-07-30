@@ -1,0 +1,6 @@
+bigraph
+	$i:integer | $s:string 
+where
+	$i:integer and $i<=10 and $i>=4 and $i in { 5,6,7 } and $i not in { 7, 8 }
+and $j:integer and $i=$j+1
+and $s:string and length($s)<=4 and length($s)>=2 and $s in { "a","b","c" } and $s not in { "c","d" } and $s matches "a*b*"
