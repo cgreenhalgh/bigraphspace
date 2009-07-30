@@ -185,6 +185,46 @@ public class DomBigraph implements Bigraph {
 		indexEl.setAttribute(Constants.INDEX_VARIABLE_ATTRIBUTE_NAME, variableName);
 		return new DomIndexValue(indexEl);
 	}
+	
+	/* (non-Javadoc)
+	 * @see bigraphspace.model.Bigraph#createVariableConstraint(java.lang.String, bigraphspace.model.VariableConstraintType, java.util.List)
+	 */
+	//@Override
+	public VariableConstraint createVariableConstraint(String otherVariable,
+			VariableConstraintType constraintType, List<Object> values) {
+		Element constraintEl= document.createElement(Constants.CONSTRAINT_ELEMENT_NAME);
+		if (otherVariable!=null)
+			constraintEl.setAttribute(Constants.CONSTRAINT_VARIABLE_ATTRIBUTE_NAME, otherVariable);
+		constraintEl.setAttribute(Constants.CONSTRAINT_TYPE_ATTRIBUTE_NAME, constraintType.name());
+		switch (constraintType) {
+		case oneof:
+		case notoneof:
+			for (Object value : values) {
+				Element valueEl = document.createElement(Constants.VALUE_ELEMENT_NAME);
+				valueEl.appendChild(document.createTextNode(DomBigraph.normalizeControlIndexValue(value)));
+				constraintEl.appendChild(valueEl);
+			}
+			break;
+		default:
+			// one value
+			if (values.size()>1)
+				throw new IllegalArgumentException("VariableConstraint "+constraintType+" cannot have "+values.size()+" values");
+			constraintEl.appendChild(document.createTextNode(DomBigraph.normalizeControlIndexValue(values.get(0))));
+			break;
+		}
+		return new DomVariableConstraint(constraintEl);
+	}
+	/* (non-Javadoc)
+	 * @see bigraphspace.model.Bigraph#createVariableDefinition(java.lang.String, bigraphspace.model.VariableType)
+	 */
+	//@Override
+	public VariableDefinition createVariableDefinition(String variableName,
+			VariableType baseType) {
+		Element definitionEl = document.createElement(Constants.VARIABLE_ELEMENT_NAME);
+		definitionEl.setAttribute(Constants.VARIABLE_NAME_ATTRIBUTE_NAME, variableName);
+		definitionEl.setAttribute(Constants.VARIABLE_BASE_TYPE_ATTRIBUTE_NAME, baseType.name());
+		return new DomVariableDefinition(definitionEl);
+	}
 	/* (non-Javadoc)
 	 * @see bigraphspace.model.Bigraph#getControl(bigraphspace.model.Place)
 	 */
@@ -457,39 +497,7 @@ public class DomBigraph implements Bigraph {
 				logger.warn("<variable> with no name");
 				continue;
 			}
-			VariableDefinition definition = new VariableDefinition();
-			String baseType = variableEl.getAttribute(Constants.VARIABLE_BASE_TYPE_ATTRIBUTE_NAME);
-			if (baseType==null || baseType.length()==0) {
-				logger.warn("<variable name=\""+name+"\"> with no "+Constants.VARIABLE_BASE_TYPE_ATTRIBUTE_NAME);
-				continue;
-			}
-			definition.setBaseType(VariableType.valueOf(baseType));
-			List<VariableConstraint> constraints = definition.getConstraints();
-			NodeList constraintEls = variableEl.getChildNodes();
-			for (int ci=0; ci<constraintEls.getLength(); ci++) {
-				if (constraintEls.item(ci) instanceof Element) {
-					Element constraintEl = (Element)constraintEls.item(ci);
-					String constraintName = constraintEl.getNodeName();
-					VariableConstraint constraint = new VariableConstraint();
-					constraint.setConstraintType(VariableConstraintType.valueOf(constraintName));
-					String variableName = constraintEl.getAttribute(Constants.DIFFERENCE_VARIABLE_ATTRIBUTE_NAME);
-					if (variableName!=null && variableName.length()>0)
-						constraint.setVariableName(variableName);
-					List<Object> values = constraint.getValues();
-					if (constraintName.equals(Constants.ONEOF_ELEMENT_NAME) || constraintName.equals(Constants.NOTONEOF_ELEMENT_NAME)) {
-						NodeList valueEls = XmlUtils.getChildElementsByTagName(constraintEl, Constants.VALUE_ELEMENT_NAME);
-						for (int vi=0; vi<valueEls.getLength(); vi++) {
-							Element valueEl = (Element)valueEls.item(vi);
-							values.add(valueEl.getTextContent());
-						}							
-					}
-					else {
-						// single valued
-						values.add(constraintEl.getTextContent().trim());
-					}
-					constraints.add(constraint);
-				}
-			}
+			VariableDefinition definition = new DomVariableDefinition(variableEl);
 			variables.put(name, definition);
 		}
 		return variables;

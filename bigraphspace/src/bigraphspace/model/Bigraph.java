@@ -37,6 +37,10 @@ public interface Bigraph {
 	public Place createNode(Control control);
 	/** create a new site to be used with this bigraph */
 	public Place createSite();
+	/** create variable definition */
+	public VariableDefinition createVariableDefinition(String variableName, VariableType baseType);
+	/** create variable constraint */
+	public VariableConstraint createVariableConstraint(String otherVariable, VariableConstraintType constraintType, List<Object> values);
 	/** create a new index value to be used with this bigraph */
 	public IndexValue createIndexValue(Object value);
 	/** create a new index variable value to be used with this bigraph */

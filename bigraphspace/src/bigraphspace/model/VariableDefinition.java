@@ -8,49 +8,33 @@ import java.util.Map;
 import java.util.LinkedList;
 import org.apache.log4j.Logger;
 
+import bigraphspace.model.signaturexml.SigVariableDefinition;
+import org.apache.log4j.Logger;
+
 /** The definition of a control/bigraph expression variable, including any constraints.
  * 
  * @author cmg
  *
  */
-public class VariableDefinition {
+public abstract class VariableDefinition {
 	/** logger */
 	static Logger logger = Logger.getLogger(VariableDefinition.class);
-	/** Base type */
-	protected VariableType baseType;
-	/** constraints */
-	protected List<VariableConstraint> constraints = new LinkedList<VariableConstraint>();
-	/** cons */
-	public VariableDefinition() {
-	}
 	/**
 	 * @return the baseType
 	 */
-	public VariableType getBaseType() {
-		return baseType;
-	}
-	/**
-	 * @param baseType the baseType to set
-	 */
-	public void setBaseType(VariableType baseType) {
-		this.baseType = baseType;
-	}
+	public abstract VariableType getBaseType();
 	/**
 	 * @return the constraints
 	 */
-	public List<VariableConstraint> getConstraints() {
-		return constraints;
-	}
+	public abstract List<VariableConstraint> getConstraints();
 	/**
 	 * @param constraints the constraints to set
 	 */
-	public void setConstraints(List<VariableConstraint> constraints) {
-		this.constraints = constraints;
-	}
+	public abstract void setConstraints(List<VariableConstraint> constraints);
 	/** matches a value? 
 	 * If a value which it depends on is undefined then it is considered to (possibly) match. */
 	public boolean matches(Object value, Map<String,VariableDefinition> variables, Map<String,Object> variableValues) {
-		switch(baseType) {
+		switch(this.getBaseType()) {
 		case control:
 			// TODO
 			logger.warn("matches not implemented for control variable");
@@ -116,7 +100,7 @@ public class VariableDefinition {
 	}
 	/** check constraints on Real */
 	protected boolean checkReal(double value, Map<String,VariableDefinition> variables, Map<String,Object> variableValues) {
-		for (VariableConstraint constraint : this.constraints) {
+		for (VariableConstraint constraint : this.getConstraints()) {
 			List<Object> values = constraint.getValues();
 			switch(constraint.getConstraintType()) {
 			case minvalue: {
@@ -232,7 +216,7 @@ public class VariableDefinition {
 	protected boolean checkString(String value, Map<String,VariableDefinition> variables, Map<String,Object> variableValues) {
 		if (value==null)
 			return false;
-		for (VariableConstraint constraint : this.constraints) {
+		for (VariableConstraint constraint : this.getConstraints()) {
 			List<Object> values = constraint.getValues();
 			switch(constraint.getConstraintType()) {
 			case minvalue:
@@ -320,4 +304,5 @@ public class VariableDefinition {
 		}
 		return true;
 	}
+	
 }

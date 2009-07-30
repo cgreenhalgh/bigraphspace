@@ -1,0 +1,2 @@
+bigraph
+	integer<a> | i:integer | 123:integer | integer<123> | "abc":string | string<"abc">
