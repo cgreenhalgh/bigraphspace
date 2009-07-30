@@ -435,34 +435,67 @@ public class DomBigraph implements Bigraph {
 	/** dump - debug */
 	public void dump(PrintStream ps) {
 		List<Place> roots = this.getRoots();
-		ps.println("XML Bigraph, "+roots.size()+" roots:");
+		ps.println("bigraph");
+		dumpEdges(ps);
+		boolean first = true;
 		for (Place root : roots) {
-			dump(ps, root, 1);
+			if (first) {
+				first = false;
+				ps.print("  ");
+			}
+			else
+				ps.print("||");
+			dump(ps, root, 0);
 		}
-		Set<String> edges = this.getEdgeNames();
-		Set<String> hiddens = this.getHiddenNames();
-		ps.print(edges.size()+" edges: ");
-		for (String edge : edges)
-			ps.print(edge+" ");
-		ps.println();
-		ps.print(hiddens.size()+" hidden names (non-inner names): ");
-		for (String hidden: hiddens)
-			ps.print(hidden+" ");
-		ps.println();
-		Map<String,String> innerNameMap = this.getInnerNameMap();
-		ps.println(innerNameMap.size()+" inner name mappings: "+innerNameMap);
+		dumpHiddenAndInnerNames(ps);
 		dumpVariables(ps);
+	}
+	public void dumpEdges(PrintStream ps) {
+		Set<String> edges = this.getEdgeNames();
+		if (edges.size()==0)
+			return;
+		ps.print("  ");
+		for (String edge : edges)
+			ps.print("/"+edge+" . ");
+		ps.println();
+	}
+	public void dumpHiddenAndInnerNames(PrintStream ps) {
+		Set<String> hiddens = this.getHiddenNames();
+		Set<String> names = new TreeSet<String>();
+		names.addAll(hiddens);
+		Map<String,String> innerNameMap = this.getInnerNameMap();
+		names.addAll(innerNameMap.values());
+		if (names.size()==0)
+			return;
+		ps.print(" ");
+		for (String name : names) {
+			ps.print(" . "+name+"/");
+			boolean needsComma = false;
+			for (Map.Entry<String, String> innerName : innerNameMap.entrySet()) {
+				if (innerName.getValue().equals(name)) {
+					if (needsComma)
+						ps.print(",");
+					else
+						needsComma = true;
+					ps.print(innerName.getKey());					
+				}
+			}
+			if (!hiddens.contains(name)) {
+				if (needsComma)
+					ps.print(",");				
+				ps.print(name);
+			}
+		}
 	}
 	/** dump debug */
 	public void dumpVariables(PrintStream ps) {
 		Map<String,VariableDefinition> variables = this.getVariables();
-		ps.println(variables.size()+" variables:");
 		if (variables.size()==0)
 			return;
 		boolean first = true;
 		for (String name : variables.keySet()) {
 			VariableDefinition definition = variables.get(name);
-			ps.print((first ? "where" : "and")+" $"+name+":"+definition.getBaseType());
+			ps.print((first ? "where" : "  and")+" $"+name+":"+definition.getBaseType());
 			first = false;
 			List<VariableConstraint> constraints = definition.getConstraints();
 			for (VariableConstraint constraint : constraints) {
@@ -566,51 +599,72 @@ public class DomBigraph implements Bigraph {
 	}
 	/** dump an element, recursively */
 	public void dump(PrintStream ps, Place place, int indent) {
-		String support = place.getSupport()!=null ? "/"+place.getSupport() : "";
+		//ps.print("*");
+		String support = place.getSupport()!=null ? "@"+place.getSupport() : "";
 		if (place.isSite()) {
 			Integer index = place.getSiteIndex();
-			ps.println(XmlUtils.getIndent(indent)+support+"["+(index!=null ? ""+index : "")+"]");
+			ps.println("["+(index!=null ? ""+index : "")+"]");
+			return;
 		}
 		else if (place.isRoot())
-			ps.println(XmlUtils.getIndent(indent)+support+"root");
+			; //ps.println(XmlUtils.getIndent(indent)+support+"root");
 		else {
 			if (place.isIndexed()) {
-				ps.print(XmlUtils.getIndent(indent));
+				//ps.print(XmlUtils.getIndent(indent));
 				//ps.print("<");
 				List<IndexValue> indexes = place.getControlIndexes();
-				for (int i=0; i<indexes.size(); i++) {
-					if (i>0)
+				for (int ii=0; ii<indexes.size(); ii++) {
+					if (ii>0)
 						ps.print(",");
-					IndexValue index = indexes.get(i);
+					IndexValue index = indexes.get(ii);
 					if (index.isVariable())
 						ps.print("$"+index.getVariableName());
 					else
 						ps.print(index.getValue());
 				}
 				//ps.print(">");
-				ps.println(":"+place.getControlName()+support);
+				ps.print(":"+place.getControlName()+support);
 			}
 			else 
-				ps.println(XmlUtils.getIndent(indent)+place.getControlName()+support);
+				ps.print(place.getControlName()+support);
 		}
 		List<Port> ports = place.getPorts();
 		if (ports.size()>0) {
-			ps.println(XmlUtils.getIndent(indent)+"{");
+			//ps.println(XmlUtils.getIndent(indent)+"{");
+			ps.print(" {");
+			boolean first = true;
 			for (Port port : ports) {
+				if (first)
+					first = false;
+				else
+					ps.print(",");
 				String portName = port.getName();
 				String value = port.getLinkName();
-				ps.println(XmlUtils.getIndent(indent+1)+portName+"="+value);
+				ps.print(portName+"="+value);
 			}
-			ps.println(XmlUtils.getIndent(indent)+"}");
+			ps.print("}");
 		}
 		List<Place> children = place.getChildren();
 		if (children.size()>0) {
-			ps.println(XmlUtils.getIndent(indent)+"(");
+			if (!place.isRoot())
+				ps.println(" (");
+			boolean first = true;
 			for (Place child : children) {
+				if (first) {
+					ps.print(XmlUtils.getIndent(indent+(!place.isRoot() ? 1 : 0)));
+					first = false;
+				}
+				else
+				{
+					ps.print(XmlUtils.getIndent(indent)+"| ");
+				}
 				dump(ps, child, indent+1);
 			}
-			ps.println(XmlUtils.getIndent(indent)+")");
+			if (!place.isRoot())
+				ps.println(XmlUtils.getIndent(indent)+")");
 		}
+		else 
+			ps.println();
 	}
 
 }

@@ -249,22 +249,13 @@ public class DomMatch implements Match {
 	/** dump - debug */
 	protected void dump(PrintStream ps, String title, DomBigraph bigraph) {
 		List<Place> roots = bigraph.getRoots();
-		ps.println("XML Bigraph "+title+", "+roots.size()+" roots:");
+		ps.println("XML Bigraph "+title+":");
+		ps.println("bigraph");
+		bigraph.dumpEdges(ps);
 		for (Place root : roots) {
 			dump(ps, root, 1);
 		}
-		Set<String> edges = bigraph.getEdgeNames();
-		Set<String> hiddens = bigraph.getHiddenNames();
-		ps.print(edges.size()+" edges: ");
-		for (String edge : edges)
-			ps.print(edge+" ");
-		ps.println();
-		ps.print(hiddens.size()+" hidden names (non-inner names): ");
-		for (String hidden: hiddens)
-			ps.print(hidden+" ");
-		ps.println();
-		Map<String,String> innerNameMap = bigraph.getInnerNameMap();
-		ps.println(innerNameMap.size()+" inner name mappings: "+innerNameMap);
+		bigraph.dumpHiddenAndInnerNames(ps);
 		bigraph.dumpVariables(ps);
 	}
 	/** dump an element, recursively */
@@ -294,16 +285,20 @@ public class DomMatch implements Match {
 				break;
 			}
 		}
-		String support = place.getSupport()!=null ? "/"+place.getSupport() : "";
+		//ps.print("*");
+		String support = place.getSupport()!=null ? "@"+place.getSupport() : "";
 		if (place.isSite()) {
 			Integer index = place.getSiteIndex();
-			ps.println(XmlUtils.getIndent(indent)+support+"["+(index!=null ? ""+index : "")+"]"+tag);
+			ps.println("["+(index!=null ? ""+index : "")+"]"+tag);
+			return;
 		}
-		else if (place.isRoot())
-			ps.println(XmlUtils.getIndent(indent)+support+"root"+tag);
+		else if (place.isRoot()) {
+			ps.println(tag);
+			ps.print(XmlUtils.getIndent(indent));
+		}
 		else {
 			if (place.isIndexed()) {
-				ps.print(XmlUtils.getIndent(indent));
+				//ps.print(XmlUtils.getIndent(indent));
 				//ps.print("<");
 				List<IndexValue> indexes = place.getControlIndexes();
 				for (int ii=0; ii<indexes.size(); ii++) {
@@ -316,29 +311,48 @@ public class DomMatch implements Match {
 						ps.print(index.getValue());
 				}
 				//ps.print(">");
-				ps.println(":"+place.getControlName()+support+tag);
+				ps.print(":"+place.getControlName()+support);
 			}
 			else 
-				ps.println(XmlUtils.getIndent(indent)+place.getControlName()+support+tag);
+				ps.print(place.getControlName()+support);
 		}
 		List<Port> ports = place.getPorts();
 		if (ports.size()>0) {
-			ps.println(XmlUtils.getIndent(indent)+"{");
+			//ps.println(XmlUtils.getIndent(indent)+"{");
+			ps.print(" {");
+			boolean first = true;
 			for (Port port : ports) {
+				if (first)
+					first = false;
+				else
+					ps.print(",");
 				String portName = port.getName();
 				String value = port.getLinkName();
-				ps.println(XmlUtils.getIndent(indent+1)+portName+"="+value);
+				ps.print(portName+"="+value);
 			}
-			ps.println(XmlUtils.getIndent(indent)+"}");
+			ps.print("}");
 		}
 		List<Place> children = place.getChildren();
 		if (children.size()>0) {
-			ps.println(XmlUtils.getIndent(indent)+"(");
+			if (!place.isRoot())
+				ps.println(" ("+tag);
+			boolean first = true;
 			for (Place child : children) {
+				if (first) {
+					ps.print(XmlUtils.getIndent(indent+(!place.isRoot() ? 1 : 0)));
+					first = false;
+				}
+				else
+				{
+					ps.print(XmlUtils.getIndent(indent)+"| ");
+				}
 				dump(ps, child, indent+1);
 			}
-			ps.println(XmlUtils.getIndent(indent)+")");
+			if (!place.isRoot())
+				ps.println(XmlUtils.getIndent(indent)+")");
 		}
+		else 
+			ps.println(tag);
 	}
 
 }

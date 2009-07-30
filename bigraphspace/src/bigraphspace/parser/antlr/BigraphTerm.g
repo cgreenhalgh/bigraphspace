@@ -29,6 +29,9 @@ tokens {
 	MINVALUE = 'minvalue';
 	MAXVALUE = 'maxvalue';
 	REGEXP = 'regexp';
+	SUPPORT = 'support';
+	CLOSURES = 'closures';
+	SUBSTITUTIONS = 'substitutions';
 }
 
 @parser::header { package bigraphspace.parser.antlr; }
@@ -39,10 +42,27 @@ tokens {
  *------------------------------------------------------------------*/
 
 start 
-: BIGRAPH^ wide where? EOF
+: BIGRAPH^ closures wide substitutions where? EOF
 | RULE^ wide ARROW! wide EOF
 ;
     
+closures
+: ( closure DOT )* -> ^( CLOSURES closure* )
+;
+
+substitutions
+: ( DOT substitution )* -> ^( SUBSTITUTIONS substitution* )
+;
+
+closure
+: SLASH IDENTIFIER ( COMMA IDENTIFIER )* -> ^( SLASH UNDERSCORE IDENTIFIER+ )
+;
+
+substitution
+: l=IDENTIFIER SLASH ( r+=IDENTIFIER ( COMMA r+=IDENTIFIER )* )? -> ^( SLASH $l $r* )
+;
+
+
 wide
 : wide1 ( PIPE2 wide1 )* -> wide1+
 ;
@@ -53,13 +73,17 @@ wide1
 
 prime
 : -> ^( EMPTY )
-| LSQUARE NUMBER? RSQUARE -> ^( UNDERSCORE NUMBER? )
-| node ( PIPE node )* -> node+ 
+| prime1 ( PIPE prime1 )* -> prime1+
+;
+
+prime1
+: LSQUARE NUMBER? RSQUARE -> ^( UNDERSCORE NUMBER? )
+| node -> node+ 
 ;
 
 /*-> ^( PIPE node* )*/
 node
-: control ports? children? -> ^( NODE control ^( PORTS ports? ) ^( CHILDREN children? ) )
+: control support? ports? children? -> ^( NODE control ^( SUPPORT support? ) ^( PORTS ports? ) ^( CHILDREN children? ) )
 ;
 
 control
@@ -86,6 +110,10 @@ tuple
 /* only simple for now */
 type
 : IDENTIFIER -> IDENTIFIER
+;
+
+support
+: AT IDENTIFIER -> IDENTIFIER
 ;
 
 ports
@@ -154,6 +182,8 @@ LESSTHANOREQUAL: '<=';
 GREATERTHANOREQUAL: '>=';
 PLUS: '+';
 MINUS: '-';
+AT: '@';
+DOT: '.';
 
 fragment NUMERAL	: '~'? (DIGIT)+ ;
 

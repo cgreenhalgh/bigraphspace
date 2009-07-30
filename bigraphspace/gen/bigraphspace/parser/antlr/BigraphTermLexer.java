@@ -1,4 +1,4 @@
-// $ANTLR 3.1.3 Mar 18, 2009 10:09:25 src/bigraphspace/parser/antlr/BigraphTerm.g 2009-07-30 11:06:31
+// $ANTLR 3.1.3 Mar 18, 2009 10:09:25 src/bigraphspace/parser/antlr/BigraphTerm.g 2009-07-30 16:45:22
  package bigraphspace.parser.antlr; 
 
 import org.antlr.runtime.*;
@@ -7,60 +7,65 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class BigraphTermLexer extends Lexer {
-    public static final int DOLLAR=50;
+    public static final int DOLLAR=55;
     public static final int WHERE=6;
-    public static final int LSQUARE=29;
-    public static final int STRING_ESCAPE=53;
+    public static final int LSQUARE=37;
+    public static final int STRING_ESCAPE=58;
     public static final int CHILDREN=14;
-    public static final int LETTER=54;
-    public static final int LANGLE=35;
-    public static final int LBRACE=39;
-    public static final int EQUALS=41;
+    public static final int LETTER=59;
+    public static final int LANGLE=41;
+    public static final int LBRACE=45;
+    public static final int EQUALS=47;
     public static final int NOT=9;
-    public static final int LINECOMMENT=56;
+    public static final int LINECOMMENT=61;
     public static final int AND=7;
     public static final int BIGRAPH=4;
     public static final int EOF=-1;
-    public static final int LPAREN=42;
     public static final int LENGTH=10;
-    public static final int RPAREN=43;
-    public static final int SLASH=49;
+    public static final int LPAREN=48;
+    public static final int AT=44;
+    public static final int RPAREN=49;
+    public static final int SLASH=32;
     public static final int IN=8;
+    public static final int CLOSURES=28;
     public static final int MINVALUE=24;
     public static final int MATCHES=11;
     public static final int MAXVALUE=25;
-    public static final int COMMA=36;
-    public static final int IDENTIFIER=34;
-    public static final int LESSTHANOREQUAL=44;
+    public static final int COMMA=34;
+    public static final int IDENTIFIER=33;
+    public static final int LESSTHANOREQUAL=50;
     public static final int REGEXP=26;
-    public static final int PLUS=46;
-    public static final int PIPE=32;
+    public static final int PLUS=52;
+    public static final int SUPPORT=27;
+    public static final int PIPE=36;
     public static final int NOTONEOF=20;
-    public static final int DIGIT=51;
-    public static final int PIPE2=28;
-    public static final int RANGLE=37;
-    public static final int GREATERTHANOREQUAL=45;
+    public static final int DIGIT=56;
+    public static final int PIPE2=35;
+    public static final int RANGLE=42;
+    public static final int DOT=31;
+    public static final int GREATERTHANOREQUAL=51;
+    public static final int SUBSTITUTIONS=29;
+    public static final int RULE=5;
+    public static final int RBRACE=46;
     public static final int NODE=18;
     public static final int CONTROL=17;
-    public static final int RULE=5;
-    public static final int RBRACE=40;
     public static final int MINLENGTH=22;
-    public static final int NUMBER=30;
-    public static final int WHITESPACE=55;
-    public static final int UNDERSCORE=48;
-    public static final int RSQUARE=31;
-    public static final int MINUS=47;
+    public static final int NUMBER=38;
+    public static final int WHITESPACE=60;
+    public static final int UNDERSCORE=54;
+    public static final int RSQUARE=39;
+    public static final int MINUS=53;
     public static final int ROOT=15;
     public static final int ONEOF=19;
     public static final int EMPTY=12;
-    public static final int COLON=33;
+    public static final int COLON=40;
     public static final int PORTS=13;
     public static final int UNNAMED=16;
     public static final int MAXLENGTH=23;
-    public static final int ARROW=27;
-    public static final int NUMERAL=52;
+    public static final int ARROW=30;
+    public static final int NUMERAL=57;
     public static final int CONSTRAINT=21;
-    public static final int STRING=38;
+    public static final int STRING=43;
 
     // delegates
     // delegators
@@ -558,13 +563,76 @@ public class BigraphTermLexer extends Lexer {
     }
     // $ANTLR end "REGEXP"
 
+    // $ANTLR start "SUPPORT"
+    public final void mSUPPORT() throws RecognitionException {
+        try {
+            int _type = SUPPORT;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:28:9: ( 'support' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:28:11: 'support'
+            {
+            match("support"); 
+
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "SUPPORT"
+
+    // $ANTLR start "CLOSURES"
+    public final void mCLOSURES() throws RecognitionException {
+        try {
+            int _type = CLOSURES;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:29:10: ( 'closures' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:29:12: 'closures'
+            {
+            match("closures"); 
+
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "CLOSURES"
+
+    // $ANTLR start "SUBSTITUTIONS"
+    public final void mSUBSTITUTIONS() throws RecognitionException {
+        try {
+            int _type = SUBSTITUTIONS;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:30:15: ( 'substitutions' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:30:17: 'substitutions'
+            {
+            match("substitutions"); 
+
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "SUBSTITUTIONS"
+
     // $ANTLR start "PIPE2"
     public final void mPIPE2() throws RecognitionException {
         try {
             int _type = PIPE2;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:136:7: ( '|' '|' )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:136:9: '|' '|'
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:164:7: ( '|' '|' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:164:9: '|' '|'
             {
             match('|'); 
             match('|'); 
@@ -584,8 +652,8 @@ public class BigraphTermLexer extends Lexer {
         try {
             int _type = PIPE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:137:6: ( '|' )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:137:8: '|'
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:165:6: ( '|' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:165:8: '|'
             {
             match('|'); 
 
@@ -604,8 +672,8 @@ public class BigraphTermLexer extends Lexer {
         try {
             int _type = LPAREN;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:138:8: ( '(' )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:138:10: '('
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:166:8: ( '(' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:166:10: '('
             {
             match('('); 
 
@@ -624,8 +692,8 @@ public class BigraphTermLexer extends Lexer {
         try {
             int _type = RPAREN;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:139:8: ( ')' )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:139:10: ')'
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:167:8: ( ')' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:167:10: ')'
             {
             match(')'); 
 
@@ -644,8 +712,8 @@ public class BigraphTermLexer extends Lexer {
         try {
             int _type = LBRACE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:140:8: ( '{' )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:140:10: '{'
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:168:8: ( '{' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:168:10: '{'
             {
             match('{'); 
 
@@ -664,8 +732,8 @@ public class BigraphTermLexer extends Lexer {
         try {
             int _type = RBRACE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:141:8: ( '}' )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:141:10: '}'
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:169:8: ( '}' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:169:10: '}'
             {
             match('}'); 
 
@@ -684,8 +752,8 @@ public class BigraphTermLexer extends Lexer {
         try {
             int _type = LANGLE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:142:8: ( '<' )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:142:10: '<'
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:170:8: ( '<' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:170:10: '<'
             {
             match('<'); 
 
@@ -704,8 +772,8 @@ public class BigraphTermLexer extends Lexer {
         try {
             int _type = RANGLE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:143:8: ( '>' )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:143:10: '>'
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:171:8: ( '>' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:171:10: '>'
             {
             match('>'); 
 
@@ -724,8 +792,8 @@ public class BigraphTermLexer extends Lexer {
         try {
             int _type = UNDERSCORE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:144:12: ( '_' )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:144:14: '_'
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:172:12: ( '_' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:172:14: '_'
             {
             match('_'); 
 
@@ -744,8 +812,8 @@ public class BigraphTermLexer extends Lexer {
         try {
             int _type = SLASH;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:145:7: ( '/' )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:145:9: '/'
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:173:7: ( '/' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:173:9: '/'
             {
             match('/'); 
 
@@ -764,8 +832,8 @@ public class BigraphTermLexer extends Lexer {
         try {
             int _type = COMMA;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:146:7: ( ',' )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:146:9: ','
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:174:7: ( ',' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:174:9: ','
             {
             match(','); 
 
@@ -784,8 +852,8 @@ public class BigraphTermLexer extends Lexer {
         try {
             int _type = EQUALS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:147:8: ( '=' )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:147:10: '='
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:175:8: ( '=' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:175:10: '='
             {
             match('='); 
 
@@ -804,8 +872,8 @@ public class BigraphTermLexer extends Lexer {
         try {
             int _type = ARROW;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:148:7: ( '->' )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:148:9: '->'
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:176:7: ( '->' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:176:9: '->'
             {
             match("->"); 
 
@@ -825,8 +893,8 @@ public class BigraphTermLexer extends Lexer {
         try {
             int _type = COLON;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:149:7: ( ':' )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:149:9: ':'
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:177:7: ( ':' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:177:9: ':'
             {
             match(':'); 
 
@@ -845,8 +913,8 @@ public class BigraphTermLexer extends Lexer {
         try {
             int _type = LSQUARE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:150:8: ( '[' )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:150:10: '['
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:178:8: ( '[' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:178:10: '['
             {
             match('['); 
 
@@ -865,8 +933,8 @@ public class BigraphTermLexer extends Lexer {
         try {
             int _type = RSQUARE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:151:8: ( ']' )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:151:10: ']'
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:179:8: ( ']' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:179:10: ']'
             {
             match(']'); 
 
@@ -885,8 +953,8 @@ public class BigraphTermLexer extends Lexer {
         try {
             int _type = DOLLAR;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:152:7: ( '$' )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:152:9: '$'
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:180:7: ( '$' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:180:9: '$'
             {
             match('$'); 
 
@@ -905,8 +973,8 @@ public class BigraphTermLexer extends Lexer {
         try {
             int _type = LESSTHANOREQUAL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:153:16: ( '<=' )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:153:18: '<='
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:181:16: ( '<=' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:181:18: '<='
             {
             match("<="); 
 
@@ -926,8 +994,8 @@ public class BigraphTermLexer extends Lexer {
         try {
             int _type = GREATERTHANOREQUAL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:154:19: ( '>=' )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:154:21: '>='
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:182:19: ( '>=' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:182:21: '>='
             {
             match(">="); 
 
@@ -947,8 +1015,8 @@ public class BigraphTermLexer extends Lexer {
         try {
             int _type = PLUS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:155:5: ( '+' )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:155:7: '+'
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:183:5: ( '+' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:183:7: '+'
             {
             match('+'); 
 
@@ -967,8 +1035,8 @@ public class BigraphTermLexer extends Lexer {
         try {
             int _type = MINUS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:156:6: ( '-' )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:156:8: '-'
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:184:6: ( '-' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:184:8: '-'
             {
             match('-'); 
 
@@ -982,13 +1050,53 @@ public class BigraphTermLexer extends Lexer {
     }
     // $ANTLR end "MINUS"
 
+    // $ANTLR start "AT"
+    public final void mAT() throws RecognitionException {
+        try {
+            int _type = AT;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:185:3: ( '@' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:185:5: '@'
+            {
+            match('@'); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "AT"
+
+    // $ANTLR start "DOT"
+    public final void mDOT() throws RecognitionException {
+        try {
+            int _type = DOT;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:186:4: ( '.' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:186:6: '.'
+            {
+            match('.'); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "DOT"
+
     // $ANTLR start "NUMERAL"
     public final void mNUMERAL() throws RecognitionException {
         try {
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:158:18: ( ( '~' )? ( DIGIT )+ )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:158:20: ( '~' )? ( DIGIT )+
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:188:18: ( ( '~' )? ( DIGIT )+ )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:188:20: ( '~' )? ( DIGIT )+
             {
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:158:20: ( '~' )?
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:188:20: ( '~' )?
             int alt1=2;
             int LA1_0 = input.LA(1);
 
@@ -997,7 +1105,7 @@ public class BigraphTermLexer extends Lexer {
             }
             switch (alt1) {
                 case 1 :
-                    // src/bigraphspace/parser/antlr/BigraphTerm.g:158:20: '~'
+                    // src/bigraphspace/parser/antlr/BigraphTerm.g:188:20: '~'
                     {
                     match('~'); 
 
@@ -1006,7 +1114,7 @@ public class BigraphTermLexer extends Lexer {
 
             }
 
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:158:25: ( DIGIT )+
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:188:25: ( DIGIT )+
             int cnt2=0;
             loop2:
             do {
@@ -1020,7 +1128,7 @@ public class BigraphTermLexer extends Lexer {
 
                 switch (alt2) {
             	case 1 :
-            	    // src/bigraphspace/parser/antlr/BigraphTerm.g:158:26: DIGIT
+            	    // src/bigraphspace/parser/antlr/BigraphTerm.g:188:26: DIGIT
             	    {
             	    mDIGIT(); 
 
@@ -1050,11 +1158,11 @@ public class BigraphTermLexer extends Lexer {
         try {
             int _type = NUMBER;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:160:8: ( NUMERAL ( '.' ( DIGIT )+ )? )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:160:10: NUMERAL ( '.' ( DIGIT )+ )?
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:190:8: ( NUMERAL ( '.' ( DIGIT )+ )? )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:190:10: NUMERAL ( '.' ( DIGIT )+ )?
             {
             mNUMERAL(); 
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:160:18: ( '.' ( DIGIT )+ )?
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:190:18: ( '.' ( DIGIT )+ )?
             int alt4=2;
             int LA4_0 = input.LA(1);
 
@@ -1063,10 +1171,10 @@ public class BigraphTermLexer extends Lexer {
             }
             switch (alt4) {
                 case 1 :
-                    // src/bigraphspace/parser/antlr/BigraphTerm.g:160:20: '.' ( DIGIT )+
+                    // src/bigraphspace/parser/antlr/BigraphTerm.g:190:20: '.' ( DIGIT )+
                     {
                     match('.'); 
-                    // src/bigraphspace/parser/antlr/BigraphTerm.g:160:24: ( DIGIT )+
+                    // src/bigraphspace/parser/antlr/BigraphTerm.g:190:24: ( DIGIT )+
                     int cnt3=0;
                     loop3:
                     do {
@@ -1080,7 +1188,7 @@ public class BigraphTermLexer extends Lexer {
 
                         switch (alt3) {
                     	case 1 :
-                    	    // src/bigraphspace/parser/antlr/BigraphTerm.g:160:24: DIGIT
+                    	    // src/bigraphspace/parser/antlr/BigraphTerm.g:190:24: DIGIT
                     	    {
                     	    mDIGIT(); 
 
@@ -1118,11 +1226,11 @@ public class BigraphTermLexer extends Lexer {
         try {
             int _type = STRING;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:162:8: ( '\"' (~ ( '\\\\' | '\"' ) | '\\\\' STRING_ESCAPE )* '\"' )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:162:10: '\"' (~ ( '\\\\' | '\"' ) | '\\\\' STRING_ESCAPE )* '\"'
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:192:8: ( '\"' (~ ( '\\\\' | '\"' ) | '\\\\' STRING_ESCAPE )* '\"' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:192:10: '\"' (~ ( '\\\\' | '\"' ) | '\\\\' STRING_ESCAPE )* '\"'
             {
             match('\"'); 
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:162:14: (~ ( '\\\\' | '\"' ) | '\\\\' STRING_ESCAPE )*
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:192:14: (~ ( '\\\\' | '\"' ) | '\\\\' STRING_ESCAPE )*
             loop5:
             do {
                 int alt5=3;
@@ -1138,7 +1246,7 @@ public class BigraphTermLexer extends Lexer {
 
                 switch (alt5) {
             	case 1 :
-            	    // src/bigraphspace/parser/antlr/BigraphTerm.g:162:16: ~ ( '\\\\' | '\"' )
+            	    // src/bigraphspace/parser/antlr/BigraphTerm.g:192:16: ~ ( '\\\\' | '\"' )
             	    {
             	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
             	        input.consume();
@@ -1153,7 +1261,7 @@ public class BigraphTermLexer extends Lexer {
             	    }
             	    break;
             	case 2 :
-            	    // src/bigraphspace/parser/antlr/BigraphTerm.g:162:30: '\\\\' STRING_ESCAPE
+            	    // src/bigraphspace/parser/antlr/BigraphTerm.g:192:30: '\\\\' STRING_ESCAPE
             	    {
             	    match('\\'); 
             	    mSTRING_ESCAPE(); 
@@ -1181,7 +1289,7 @@ public class BigraphTermLexer extends Lexer {
     // $ANTLR start "STRING_ESCAPE"
     public final void mSTRING_ESCAPE() throws RecognitionException {
         try {
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:164:23: ( 'n' | 't' | '\\\\' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:194:23: ( 'n' | 't' | '\\\\' )
             // src/bigraphspace/parser/antlr/BigraphTerm.g:
             {
             if ( input.LA(1)=='\\'||input.LA(1)=='n'||input.LA(1)=='t' ) {
@@ -1207,10 +1315,10 @@ public class BigraphTermLexer extends Lexer {
         try {
             int _type = IDENTIFIER;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:166:12: ( ( DOLLAR )? LETTER ( LETTER | DIGIT )* )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:166:14: ( DOLLAR )? LETTER ( LETTER | DIGIT )*
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:196:12: ( ( DOLLAR )? LETTER ( LETTER | DIGIT )* )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:196:14: ( DOLLAR )? LETTER ( LETTER | DIGIT )*
             {
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:166:14: ( DOLLAR )?
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:196:14: ( DOLLAR )?
             int alt6=2;
             int LA6_0 = input.LA(1);
 
@@ -1219,7 +1327,7 @@ public class BigraphTermLexer extends Lexer {
             }
             switch (alt6) {
                 case 1 :
-                    // src/bigraphspace/parser/antlr/BigraphTerm.g:166:14: DOLLAR
+                    // src/bigraphspace/parser/antlr/BigraphTerm.g:196:14: DOLLAR
                     {
                     mDOLLAR(); 
 
@@ -1229,7 +1337,7 @@ public class BigraphTermLexer extends Lexer {
             }
 
             mLETTER(); 
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:166:29: ( LETTER | DIGIT )*
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:196:29: ( LETTER | DIGIT )*
             loop7:
             do {
                 int alt7=2;
@@ -1278,10 +1386,10 @@ public class BigraphTermLexer extends Lexer {
         try {
             int _type = WHITESPACE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:168:12: ( ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+ )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:168:14: ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:198:12: ( ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+ )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:198:14: ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+
             {
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:168:14: ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:198:14: ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+
             int cnt8=0;
             loop8:
             do {
@@ -1336,10 +1444,10 @@ public class BigraphTermLexer extends Lexer {
         try {
             int _type = LINECOMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:170:13: ( ( '/' '/' | '#' ) (~ '\\n' )* )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:170:15: ( '/' '/' | '#' ) (~ '\\n' )*
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:200:13: ( ( '/' '/' | '#' ) (~ '\\n' )* )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:200:15: ( '/' '/' | '#' ) (~ '\\n' )*
             {
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:170:15: ( '/' '/' | '#' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:200:15: ( '/' '/' | '#' )
             int alt9=2;
             int LA9_0 = input.LA(1);
 
@@ -1357,7 +1465,7 @@ public class BigraphTermLexer extends Lexer {
             }
             switch (alt9) {
                 case 1 :
-                    // src/bigraphspace/parser/antlr/BigraphTerm.g:170:17: '/' '/'
+                    // src/bigraphspace/parser/antlr/BigraphTerm.g:200:17: '/' '/'
                     {
                     match('/'); 
                     match('/'); 
@@ -1365,7 +1473,7 @@ public class BigraphTermLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // src/bigraphspace/parser/antlr/BigraphTerm.g:170:27: '#'
+                    // src/bigraphspace/parser/antlr/BigraphTerm.g:200:27: '#'
                     {
                     match('#'); 
 
@@ -1374,7 +1482,7 @@ public class BigraphTermLexer extends Lexer {
 
             }
 
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:170:33: (~ '\\n' )*
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:200:33: (~ '\\n' )*
             loop10:
             do {
                 int alt10=2;
@@ -1387,7 +1495,7 @@ public class BigraphTermLexer extends Lexer {
 
                 switch (alt10) {
             	case 1 :
-            	    // src/bigraphspace/parser/antlr/BigraphTerm.g:170:35: ~ '\\n'
+            	    // src/bigraphspace/parser/antlr/BigraphTerm.g:200:35: ~ '\\n'
             	    {
             	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='\uFFFF') ) {
             	        input.consume();
@@ -1422,8 +1530,8 @@ public class BigraphTermLexer extends Lexer {
     // $ANTLR start "DIGIT"
     public final void mDIGIT() throws RecognitionException {
         try {
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:172:16: ( '0' .. '9' )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:172:18: '0' .. '9'
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:202:16: ( '0' .. '9' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:202:18: '0' .. '9'
             {
             matchRange('0','9'); 
 
@@ -1438,8 +1546,8 @@ public class BigraphTermLexer extends Lexer {
     // $ANTLR start "LETTER"
     public final void mLETTER() throws RecognitionException {
         try {
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:174:17: ( ( 'A' .. 'Z' | 'a' .. 'z' ) )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:174:19: ( 'A' .. 'Z' | 'a' .. 'z' )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:204:17: ( ( 'A' .. 'Z' | 'a' .. 'z' ) )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:204:19: ( 'A' .. 'Z' | 'a' .. 'z' )
             {
             if ( (input.LA(1)>='A' && input.LA(1)<='Z')||(input.LA(1)>='a' && input.LA(1)<='z') ) {
                 input.consume();
@@ -1460,8 +1568,8 @@ public class BigraphTermLexer extends Lexer {
     // $ANTLR end "LETTER"
 
     public void mTokens() throws RecognitionException {
-        // src/bigraphspace/parser/antlr/BigraphTerm.g:1:8: ( BIGRAPH | RULE | WHERE | AND | IN | NOT | LENGTH | MATCHES | EMPTY | PORTS | CHILDREN | ROOT | UNNAMED | CONTROL | NODE | ONEOF | NOTONEOF | CONSTRAINT | MINLENGTH | MAXLENGTH | MINVALUE | MAXVALUE | REGEXP | PIPE2 | PIPE | LPAREN | RPAREN | LBRACE | RBRACE | LANGLE | RANGLE | UNDERSCORE | SLASH | COMMA | EQUALS | ARROW | COLON | LSQUARE | RSQUARE | DOLLAR | LESSTHANOREQUAL | GREATERTHANOREQUAL | PLUS | MINUS | NUMBER | STRING | IDENTIFIER | WHITESPACE | LINECOMMENT )
-        int alt11=49;
+        // src/bigraphspace/parser/antlr/BigraphTerm.g:1:8: ( BIGRAPH | RULE | WHERE | AND | IN | NOT | LENGTH | MATCHES | EMPTY | PORTS | CHILDREN | ROOT | UNNAMED | CONTROL | NODE | ONEOF | NOTONEOF | CONSTRAINT | MINLENGTH | MAXLENGTH | MINVALUE | MAXVALUE | REGEXP | SUPPORT | CLOSURES | SUBSTITUTIONS | PIPE2 | PIPE | LPAREN | RPAREN | LBRACE | RBRACE | LANGLE | RANGLE | UNDERSCORE | SLASH | COMMA | EQUALS | ARROW | COLON | LSQUARE | RSQUARE | DOLLAR | LESSTHANOREQUAL | GREATERTHANOREQUAL | PLUS | MINUS | AT | DOT | NUMBER | STRING | IDENTIFIER | WHITESPACE | LINECOMMENT )
+        int alt11=54;
         alt11 = dfa11.predict(input);
         switch (alt11) {
             case 1 :
@@ -1626,182 +1734,217 @@ public class BigraphTermLexer extends Lexer {
                 }
                 break;
             case 24 :
-                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:173: PIPE2
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:173: SUPPORT
+                {
+                mSUPPORT(); 
+
+                }
+                break;
+            case 25 :
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:181: CLOSURES
+                {
+                mCLOSURES(); 
+
+                }
+                break;
+            case 26 :
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:190: SUBSTITUTIONS
+                {
+                mSUBSTITUTIONS(); 
+
+                }
+                break;
+            case 27 :
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:204: PIPE2
                 {
                 mPIPE2(); 
 
                 }
                 break;
-            case 25 :
-                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:179: PIPE
+            case 28 :
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:210: PIPE
                 {
                 mPIPE(); 
 
                 }
                 break;
-            case 26 :
-                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:184: LPAREN
+            case 29 :
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:215: LPAREN
                 {
                 mLPAREN(); 
 
                 }
                 break;
-            case 27 :
-                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:191: RPAREN
+            case 30 :
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:222: RPAREN
                 {
                 mRPAREN(); 
 
                 }
                 break;
-            case 28 :
-                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:198: LBRACE
+            case 31 :
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:229: LBRACE
                 {
                 mLBRACE(); 
 
                 }
                 break;
-            case 29 :
-                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:205: RBRACE
+            case 32 :
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:236: RBRACE
                 {
                 mRBRACE(); 
 
                 }
                 break;
-            case 30 :
-                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:212: LANGLE
+            case 33 :
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:243: LANGLE
                 {
                 mLANGLE(); 
 
                 }
                 break;
-            case 31 :
-                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:219: RANGLE
+            case 34 :
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:250: RANGLE
                 {
                 mRANGLE(); 
 
                 }
                 break;
-            case 32 :
-                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:226: UNDERSCORE
+            case 35 :
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:257: UNDERSCORE
                 {
                 mUNDERSCORE(); 
 
                 }
                 break;
-            case 33 :
-                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:237: SLASH
+            case 36 :
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:268: SLASH
                 {
                 mSLASH(); 
 
                 }
                 break;
-            case 34 :
-                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:243: COMMA
+            case 37 :
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:274: COMMA
                 {
                 mCOMMA(); 
 
                 }
                 break;
-            case 35 :
-                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:249: EQUALS
+            case 38 :
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:280: EQUALS
                 {
                 mEQUALS(); 
 
                 }
                 break;
-            case 36 :
-                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:256: ARROW
+            case 39 :
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:287: ARROW
                 {
                 mARROW(); 
 
                 }
                 break;
-            case 37 :
-                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:262: COLON
+            case 40 :
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:293: COLON
                 {
                 mCOLON(); 
 
                 }
                 break;
-            case 38 :
-                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:268: LSQUARE
+            case 41 :
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:299: LSQUARE
                 {
                 mLSQUARE(); 
 
                 }
                 break;
-            case 39 :
-                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:276: RSQUARE
+            case 42 :
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:307: RSQUARE
                 {
                 mRSQUARE(); 
 
                 }
                 break;
-            case 40 :
-                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:284: DOLLAR
+            case 43 :
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:315: DOLLAR
                 {
                 mDOLLAR(); 
 
                 }
                 break;
-            case 41 :
-                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:291: LESSTHANOREQUAL
+            case 44 :
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:322: LESSTHANOREQUAL
                 {
                 mLESSTHANOREQUAL(); 
 
                 }
                 break;
-            case 42 :
-                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:307: GREATERTHANOREQUAL
+            case 45 :
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:338: GREATERTHANOREQUAL
                 {
                 mGREATERTHANOREQUAL(); 
 
                 }
                 break;
-            case 43 :
-                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:326: PLUS
+            case 46 :
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:357: PLUS
                 {
                 mPLUS(); 
 
                 }
                 break;
-            case 44 :
-                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:331: MINUS
+            case 47 :
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:362: MINUS
                 {
                 mMINUS(); 
 
                 }
                 break;
-            case 45 :
-                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:337: NUMBER
+            case 48 :
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:368: AT
+                {
+                mAT(); 
+
+                }
+                break;
+            case 49 :
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:371: DOT
+                {
+                mDOT(); 
+
+                }
+                break;
+            case 50 :
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:375: NUMBER
                 {
                 mNUMBER(); 
 
                 }
                 break;
-            case 46 :
-                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:344: STRING
+            case 51 :
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:382: STRING
                 {
                 mSTRING(); 
 
                 }
                 break;
-            case 47 :
-                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:351: IDENTIFIER
+            case 52 :
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:389: IDENTIFIER
                 {
                 mIDENTIFIER(); 
 
                 }
                 break;
-            case 48 :
-                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:362: WHITESPACE
+            case 53 :
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:400: WHITESPACE
                 {
                 mWHITESPACE(); 
 
                 }
                 break;
-            case 49 :
-                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:373: LINECOMMENT
+            case 54 :
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:1:411: LINECOMMENT
                 {
                 mLINECOMMENT(); 
 
@@ -1815,238 +1958,275 @@ public class BigraphTermLexer extends Lexer {
 
     protected DFA11 dfa11 = new DFA11(this);
     static final String DFA11_eotS =
-        "\1\uffff\15\41\1\66\4\uffff\1\70\1\72\1\uffff\1\73\2\uffff\1\75"+
-        "\3\uffff\1\76\6\uffff\6\41\1\105\12\41\12\uffff\5\41\1\127\1\uffff"+
-        "\1\131\14\41\1\151\1\152\2\41\1\uffff\1\41\1\uffff\1\156\16\41\2"+
-        "\uffff\1\41\1\176\1\41\1\uffff\6\41\1\u0086\1\u0087\4\41\1\u008c"+
-        "\1\41\1\u008e\1\uffff\1\41\1\u0090\5\41\2\uffff\4\41\1\uffff\1\u009a"+
-        "\1\uffff\1\41\1\uffff\1\u009c\5\41\1\u00a2\1\41\1\u00a4\1\uffff"+
-        "\1\u00a5\1\uffff\1\41\1\u00a7\1\41\1\u00a9\1\u00aa\1\uffff\1\41"+
-        "\2\uffff\1\u00ac\1\uffff\1\u00ad\2\uffff\1\41\2\uffff\1\u00af\1"+
-        "\uffff";
+        "\1\uffff\16\44\1\73\4\uffff\1\75\1\77\1\uffff\1\100\2\uffff\1\102"+
+        "\3\uffff\1\103\10\uffff\6\44\1\112\14\44\12\uffff\5\44\1\137\1\uffff"+
+        "\1\141\17\44\1\164\1\165\2\44\1\uffff\1\44\1\uffff\1\171\21\44\2"+
+        "\uffff\1\44\1\u008c\1\44\1\uffff\6\44\1\u0094\1\u0095\5\44\1\u009b"+
+        "\3\44\1\u009f\1\uffff\1\44\1\u00a1\5\44\2\uffff\5\44\1\uffff\2\44"+
+        "\1\u00ae\1\uffff\1\44\1\uffff\1\u00b0\5\44\1\u00b6\2\44\1\u00b9"+
+        "\1\u00ba\1\44\1\uffff\1\u00bc\1\uffff\1\44\1\u00be\1\44\1\u00c0"+
+        "\1\u00c1\1\uffff\1\44\1\u00c3\2\uffff\1\44\1\uffff\1\u00c5\1\uffff"+
+        "\1\u00c6\2\uffff\1\44\1\uffff\1\44\2\uffff\1\u00c9\1\44\1\uffff"+
+        "\2\44\1\u00cd\1\uffff";
     static final String DFA11_eofS =
-        "\u00b0\uffff";
+        "\u00ce\uffff";
     static final String DFA11_minS =
         "\1\11\1\151\1\145\1\150\2\156\1\157\1\145\1\141\1\155\1\157\1\150"+
-        "\2\156\1\174\4\uffff\2\75\1\uffff\1\57\2\uffff\1\76\3\uffff\1\101"+
-        "\6\uffff\1\147\1\154\1\157\1\147\1\145\1\144\1\60\1\144\1\156\1"+
-        "\164\1\156\1\160\1\162\1\151\2\156\1\145\12\uffff\1\162\1\145\1"+
-        "\164\1\145\1\162\1\60\1\uffff\1\60\1\145\1\147\1\143\2\154\2\164"+
-        "\1\154\1\163\1\141\1\157\1\141\2\60\1\170\1\145\1\uffff\1\156\1"+
-        "\uffff\1\60\1\164\1\150\1\145\1\141\1\145\1\141\1\171\1\163\1\144"+
-        "\1\162\1\164\1\155\1\146\1\160\2\uffff\1\160\1\60\1\145\1\uffff"+
-        "\1\150\1\145\1\156\1\154\1\156\1\154\2\60\1\162\1\157\1\162\1\145"+
-        "\1\60\1\150\1\60\1\uffff\1\157\1\60\1\163\1\147\1\165\1\147\1\165"+
-        "\2\uffff\1\145\1\154\1\141\1\144\1\uffff\1\60\1\uffff\1\146\1\uffff"+
-        "\1\60\1\164\1\145\1\164\1\145\1\156\1\60\1\151\1\60\1\uffff\1\60"+
-        "\1\uffff\1\150\1\60\1\150\2\60\1\uffff\1\156\2\uffff\1\60\1\uffff"+
-        "\1\60\2\uffff\1\164\2\uffff\1\60\1\uffff";
+        "\2\156\1\165\1\174\4\uffff\2\75\1\uffff\1\57\2\uffff\1\76\3\uffff"+
+        "\1\101\10\uffff\1\147\1\154\1\157\1\147\1\145\1\144\1\60\1\144\1"+
+        "\156\1\164\1\156\1\160\1\162\1\151\1\156\1\157\1\156\1\145\1\142"+
+        "\12\uffff\1\162\1\145\1\164\1\145\1\162\1\60\1\uffff\1\60\1\145"+
+        "\1\147\1\143\2\154\2\164\1\154\2\163\1\141\1\157\1\160\1\163\1\141"+
+        "\2\60\1\170\1\145\1\uffff\1\156\1\uffff\1\60\1\164\1\150\1\145\1"+
+        "\141\1\145\1\141\1\171\1\163\1\144\1\162\1\164\1\165\1\155\1\146"+
+        "\1\157\1\164\1\160\2\uffff\1\160\1\60\1\145\1\uffff\1\150\1\145"+
+        "\1\156\1\154\1\156\1\154\2\60\1\162\1\157\2\162\1\145\1\60\1\162"+
+        "\1\151\1\150\1\60\1\uffff\1\157\1\60\1\163\1\147\1\165\1\147\1\165"+
+        "\2\uffff\1\145\1\154\1\141\1\145\1\144\1\uffff\2\164\1\60\1\uffff"+
+        "\1\146\1\uffff\1\60\1\164\1\145\1\164\1\145\1\156\1\60\1\151\1\163"+
+        "\2\60\1\165\1\uffff\1\60\1\uffff\1\150\1\60\1\150\2\60\1\uffff\1"+
+        "\156\1\60\2\uffff\1\164\1\uffff\1\60\1\uffff\1\60\2\uffff\1\164"+
+        "\1\uffff\1\151\2\uffff\1\60\1\157\1\uffff\1\156\1\163\1\60\1\uffff";
     static final String DFA11_maxS =
         "\1\176\1\151\1\165\1\150\2\156\1\157\1\145\1\151\1\155\2\157\2"+
-        "\156\1\174\4\uffff\2\75\1\uffff\1\57\2\uffff\1\76\3\uffff\1\172"+
-        "\6\uffff\1\147\1\154\1\157\1\147\1\145\1\144\1\172\1\164\1\156\1"+
-        "\170\1\156\1\160\1\162\1\151\2\156\1\145\12\uffff\1\162\1\145\1"+
-        "\164\1\145\1\162\1\172\1\uffff\1\172\1\145\1\147\1\143\2\166\2\164"+
-        "\1\154\1\164\1\141\1\157\1\141\2\172\1\170\1\145\1\uffff\1\156\1"+
-        "\uffff\1\172\1\164\1\150\1\145\1\141\1\145\1\141\1\171\1\163\1\144"+
-        "\1\162\1\164\1\155\1\146\1\160\2\uffff\1\160\1\172\1\145\1\uffff"+
-        "\1\150\1\145\1\156\1\154\1\156\1\154\2\172\1\162\1\157\1\162\1\145"+
-        "\1\172\1\150\1\172\1\uffff\1\157\1\172\1\163\1\147\1\165\1\147\1"+
-        "\165\2\uffff\1\145\1\154\1\141\1\144\1\uffff\1\172\1\uffff\1\146"+
-        "\1\uffff\1\172\1\164\1\145\1\164\1\145\1\156\1\172\1\151\1\172\1"+
-        "\uffff\1\172\1\uffff\1\150\1\172\1\150\2\172\1\uffff\1\156\2\uffff"+
-        "\1\172\1\uffff\1\172\2\uffff\1\164\2\uffff\1\172\1\uffff";
+        "\156\1\165\1\174\4\uffff\2\75\1\uffff\1\57\2\uffff\1\76\3\uffff"+
+        "\1\172\10\uffff\1\147\1\154\1\157\1\147\1\145\1\144\1\172\1\164"+
+        "\1\156\1\170\1\156\1\160\1\162\1\151\1\156\1\157\1\156\1\145\1\160"+
+        "\12\uffff\1\162\1\145\1\164\1\145\1\162\1\172\1\uffff\1\172\1\145"+
+        "\1\147\1\143\2\166\2\164\1\154\1\164\1\163\1\141\1\157\1\160\1\163"+
+        "\1\141\2\172\1\170\1\145\1\uffff\1\156\1\uffff\1\172\1\164\1\150"+
+        "\1\145\1\141\1\145\1\141\1\171\1\163\1\144\1\162\1\164\1\165\1\155"+
+        "\1\146\1\157\1\164\1\160\2\uffff\1\160\1\172\1\145\1\uffff\1\150"+
+        "\1\145\1\156\1\154\1\156\1\154\2\172\1\162\1\157\2\162\1\145\1\172"+
+        "\1\162\1\151\1\150\1\172\1\uffff\1\157\1\172\1\163\1\147\1\165\1"+
+        "\147\1\165\2\uffff\1\145\1\154\1\141\1\145\1\144\1\uffff\2\164\1"+
+        "\172\1\uffff\1\146\1\uffff\1\172\1\164\1\145\1\164\1\145\1\156\1"+
+        "\172\1\151\1\163\2\172\1\165\1\uffff\1\172\1\uffff\1\150\1\172\1"+
+        "\150\2\172\1\uffff\1\156\1\172\2\uffff\1\164\1\uffff\1\172\1\uffff"+
+        "\1\172\2\uffff\1\164\1\uffff\1\151\2\uffff\1\172\1\157\1\uffff\1"+
+        "\156\1\163\1\172\1\uffff";
     static final String DFA11_acceptS =
-        "\17\uffff\1\32\1\33\1\34\1\35\2\uffff\1\40\1\uffff\1\42\1\43\1"+
-        "\uffff\1\45\1\46\1\47\1\uffff\1\53\1\55\1\56\1\57\1\60\1\61\21\uffff"+
-        "\1\30\1\31\1\51\1\36\1\52\1\37\1\41\1\44\1\54\1\50\6\uffff\1\5\21"+
-        "\uffff\1\4\1\uffff\1\6\17\uffff\1\2\1\14\3\uffff\1\17\17\uffff\1"+
-        "\3\7\uffff\1\11\1\12\4\uffff\1\20\1\uffff\1\27\1\uffff\1\7\11\uffff"+
-        "\1\1\1\uffff\1\10\5\uffff\1\16\1\uffff\1\15\1\21\1\uffff\1\26\1"+
-        "\uffff\1\25\1\13\1\uffff\1\24\1\23\1\uffff\1\22";
+        "\20\uffff\1\35\1\36\1\37\1\40\2\uffff\1\43\1\uffff\1\45\1\46\1"+
+        "\uffff\1\50\1\51\1\52\1\uffff\1\56\1\60\1\61\1\62\1\63\1\64\1\65"+
+        "\1\66\23\uffff\1\33\1\34\1\54\1\41\1\55\1\42\1\44\1\47\1\57\1\53"+
+        "\6\uffff\1\5\24\uffff\1\4\1\uffff\1\6\22\uffff\1\2\1\14\3\uffff"+
+        "\1\17\22\uffff\1\3\7\uffff\1\11\1\12\5\uffff\1\20\3\uffff\1\27\1"+
+        "\uffff\1\7\14\uffff\1\1\1\uffff\1\10\5\uffff\1\16\2\uffff\1\15\1"+
+        "\30\1\uffff\1\21\1\uffff\1\26\1\uffff\1\25\1\13\1\uffff\1\31\1\uffff"+
+        "\1\24\1\23\2\uffff\1\22\3\uffff\1\32";
     static final String DFA11_specialS =
-        "\u00b0\uffff}>";
+        "\u00ce\uffff}>";
     static final String[] DFA11_transitionS = {
-            "\2\42\1\uffff\2\42\22\uffff\1\42\1\uffff\1\40\1\43\1\35\3\uffff"+
-            "\1\17\1\20\1\uffff\1\36\1\27\1\31\1\uffff\1\26\12\37\1\32\1"+
-            "\uffff\1\23\1\30\1\24\2\uffff\32\41\1\33\1\uffff\1\34\1\uffff"+
-            "\1\25\1\uffff\1\4\1\1\1\13\1\41\1\11\3\41\1\5\2\41\1\7\1\10"+
-            "\1\6\1\15\1\12\1\41\1\2\2\41\1\14\1\41\1\3\3\41\1\21\1\16\1"+
-            "\22\1\37",
-            "\1\44",
-            "\1\47\11\uffff\1\46\5\uffff\1\45",
-            "\1\50",
-            "\1\51",
-            "\1\52",
+            "\2\45\1\uffff\2\45\22\uffff\1\45\1\uffff\1\43\1\46\1\36\3\uffff"+
+            "\1\20\1\21\1\uffff\1\37\1\30\1\32\1\41\1\27\12\42\1\33\1\uffff"+
+            "\1\24\1\31\1\25\1\uffff\1\40\32\44\1\34\1\uffff\1\35\1\uffff"+
+            "\1\26\1\uffff\1\4\1\1\1\13\1\44\1\11\3\44\1\5\2\44\1\7\1\10"+
+            "\1\6\1\15\1\12\1\44\1\2\1\16\1\44\1\14\1\44\1\3\3\44\1\22\1"+
+            "\17\1\23\1\42",
+            "\1\47",
+            "\1\52\11\uffff\1\51\5\uffff\1\50",
             "\1\53",
             "\1\54",
-            "\1\55\7\uffff\1\56",
+            "\1\55",
+            "\1\56",
             "\1\57",
-            "\1\60",
-            "\1\61\6\uffff\1\62",
+            "\1\60\7\uffff\1\61",
+            "\1\62",
             "\1\63",
-            "\1\64",
-            "\1\65",
-            "",
-            "",
-            "",
-            "",
+            "\1\64\3\uffff\1\66\2\uffff\1\65",
             "\1\67",
+            "\1\70",
             "\1\71",
+            "\1\72",
             "",
-            "\1\43",
+            "",
             "",
             "",
             "\1\74",
+            "\1\76",
+            "",
+            "\1\46",
             "",
             "",
-            "",
-            "\32\41\6\uffff\32\41",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "\1\77",
-            "\1\100",
             "\1\101",
-            "\1\102",
-            "\1\103",
+            "",
+            "",
+            "",
+            "\32\44\6\uffff\32\44",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
             "\1\104",
-            "\12\41\7\uffff\32\41\6\uffff\32\41",
-            "\1\107\17\uffff\1\106",
+            "\1\105",
+            "\1\106",
+            "\1\107",
             "\1\110",
-            "\1\111\3\uffff\1\112",
-            "\1\113",
-            "\1\114",
+            "\1\111",
+            "\12\44\7\uffff\32\44\6\uffff\32\44",
+            "\1\114\17\uffff\1\113",
             "\1\115",
-            "\1\116",
-            "\1\117",
+            "\1\116\3\uffff\1\117",
             "\1\120",
             "\1\121",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
             "\1\122",
             "\1\123",
             "\1\124",
             "\1\125",
             "\1\126",
-            "\12\41\7\uffff\32\41\6\uffff\32\41",
+            "\1\127",
+            "\1\131\15\uffff\1\130",
             "",
-            "\12\41\7\uffff\32\41\6\uffff\16\41\1\130\13\41",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
             "\1\132",
             "\1\133",
             "\1\134",
-            "\1\135\11\uffff\1\136",
-            "\1\137\11\uffff\1\140",
-            "\1\141",
+            "\1\135",
+            "\1\136",
+            "\12\44\7\uffff\32\44\6\uffff\32\44",
+            "",
+            "\12\44\7\uffff\32\44\6\uffff\16\44\1\140\13\44",
             "\1\142",
             "\1\143",
-            "\1\145\1\144",
-            "\1\146",
-            "\1\147",
-            "\1\150",
-            "\12\41\7\uffff\32\41\6\uffff\32\41",
-            "\12\41\7\uffff\32\41\6\uffff\32\41",
+            "\1\144",
+            "\1\145\11\uffff\1\146",
+            "\1\147\11\uffff\1\150",
+            "\1\151",
+            "\1\152",
             "\1\153",
-            "\1\154",
-            "",
-            "\1\155",
-            "",
-            "\12\41\7\uffff\32\41\6\uffff\32\41",
+            "\1\155\1\154",
+            "\1\156",
             "\1\157",
             "\1\160",
             "\1\161",
             "\1\162",
             "\1\163",
-            "\1\164",
-            "\1\165",
+            "\12\44\7\uffff\32\44\6\uffff\32\44",
+            "\12\44\7\uffff\32\44\6\uffff\32\44",
             "\1\166",
             "\1\167",
+            "",
             "\1\170",
-            "\1\171",
+            "",
+            "\12\44\7\uffff\32\44\6\uffff\32\44",
             "\1\172",
             "\1\173",
             "\1\174",
-            "",
-            "",
             "\1\175",
-            "\12\41\7\uffff\32\41\6\uffff\32\41",
+            "\1\176",
             "\1\177",
-            "",
             "\1\u0080",
             "\1\u0081",
             "\1\u0082",
             "\1\u0083",
             "\1\u0084",
             "\1\u0085",
-            "\12\41\7\uffff\32\41\6\uffff\32\41",
-            "\12\41\7\uffff\32\41\6\uffff\32\41",
+            "\1\u0086",
+            "\1\u0087",
             "\1\u0088",
             "\1\u0089",
             "\1\u008a",
-            "\1\u008b",
-            "\12\41\7\uffff\32\41\6\uffff\32\41",
-            "\1\u008d",
-            "\12\41\7\uffff\32\41\6\uffff\32\41",
             "",
+            "",
+            "\1\u008b",
+            "\12\44\7\uffff\32\44\6\uffff\32\44",
+            "\1\u008d",
+            "",
+            "\1\u008e",
             "\1\u008f",
-            "\12\41\7\uffff\32\41\6\uffff\32\41",
+            "\1\u0090",
             "\1\u0091",
             "\1\u0092",
             "\1\u0093",
-            "\1\u0094",
-            "\1\u0095",
-            "",
-            "",
+            "\12\44\7\uffff\32\44\6\uffff\32\44",
+            "\12\44\7\uffff\32\44\6\uffff\32\44",
             "\1\u0096",
             "\1\u0097",
             "\1\u0098",
             "\1\u0099",
-            "",
-            "\12\41\7\uffff\32\41\6\uffff\32\41",
-            "",
-            "\1\u009b",
-            "",
-            "\12\41\7\uffff\32\41\6\uffff\32\41",
+            "\1\u009a",
+            "\12\44\7\uffff\32\44\6\uffff\32\44",
+            "\1\u009c",
             "\1\u009d",
             "\1\u009e",
-            "\1\u009f",
+            "\12\44\7\uffff\32\44\6\uffff\32\44",
+            "",
             "\1\u00a0",
-            "\1\u00a1",
-            "\12\41\7\uffff\32\41\6\uffff\32\41",
+            "\12\44\7\uffff\32\44\6\uffff\32\44",
+            "\1\u00a2",
             "\1\u00a3",
-            "\12\41\7\uffff\32\41\6\uffff\32\41",
-            "",
-            "\12\41\7\uffff\32\41\6\uffff\32\41",
-            "",
+            "\1\u00a4",
+            "\1\u00a5",
             "\1\u00a6",
-            "\12\41\7\uffff\32\41\6\uffff\32\41",
-            "\1\u00a8",
-            "\12\41\7\uffff\32\41\6\uffff\32\41",
-            "\12\41\7\uffff\32\41\6\uffff\32\41",
             "",
+            "",
+            "\1\u00a7",
+            "\1\u00a8",
+            "\1\u00a9",
+            "\1\u00aa",
             "\1\u00ab",
             "",
+            "\1\u00ac",
+            "\1\u00ad",
+            "\12\44\7\uffff\32\44\6\uffff\32\44",
             "",
-            "\12\41\7\uffff\32\41\6\uffff\32\41",
+            "\1\u00af",
             "",
-            "\12\41\7\uffff\32\41\6\uffff\32\41",
+            "\12\44\7\uffff\32\44\6\uffff\32\44",
+            "\1\u00b1",
+            "\1\u00b2",
+            "\1\u00b3",
+            "\1\u00b4",
+            "\1\u00b5",
+            "\12\44\7\uffff\32\44\6\uffff\32\44",
+            "\1\u00b7",
+            "\1\u00b8",
+            "\12\44\7\uffff\32\44\6\uffff\32\44",
+            "\12\44\7\uffff\32\44\6\uffff\32\44",
+            "\1\u00bb",
+            "",
+            "\12\44\7\uffff\32\44\6\uffff\32\44",
+            "",
+            "\1\u00bd",
+            "\12\44\7\uffff\32\44\6\uffff\32\44",
+            "\1\u00bf",
+            "\12\44\7\uffff\32\44\6\uffff\32\44",
+            "\12\44\7\uffff\32\44\6\uffff\32\44",
+            "",
+            "\1\u00c2",
+            "\12\44\7\uffff\32\44\6\uffff\32\44",
             "",
             "",
-            "\1\u00ae",
+            "\1\u00c4",
+            "",
+            "\12\44\7\uffff\32\44\6\uffff\32\44",
+            "",
+            "\12\44\7\uffff\32\44\6\uffff\32\44",
             "",
             "",
-            "\12\41\7\uffff\32\41\6\uffff\32\41",
+            "\1\u00c7",
+            "",
+            "\1\u00c8",
+            "",
+            "",
+            "\12\44\7\uffff\32\44\6\uffff\32\44",
+            "\1\u00ca",
+            "",
+            "\1\u00cb",
+            "\1\u00cc",
+            "\12\44\7\uffff\32\44\6\uffff\32\44",
             ""
     };
 
@@ -2080,7 +2260,7 @@ public class BigraphTermLexer extends Lexer {
             this.transition = DFA11_transition;
         }
         public String getDescription() {
-            return "1:1: Tokens : ( BIGRAPH | RULE | WHERE | AND | IN | NOT | LENGTH | MATCHES | EMPTY | PORTS | CHILDREN | ROOT | UNNAMED | CONTROL | NODE | ONEOF | NOTONEOF | CONSTRAINT | MINLENGTH | MAXLENGTH | MINVALUE | MAXVALUE | REGEXP | PIPE2 | PIPE | LPAREN | RPAREN | LBRACE | RBRACE | LANGLE | RANGLE | UNDERSCORE | SLASH | COMMA | EQUALS | ARROW | COLON | LSQUARE | RSQUARE | DOLLAR | LESSTHANOREQUAL | GREATERTHANOREQUAL | PLUS | MINUS | NUMBER | STRING | IDENTIFIER | WHITESPACE | LINECOMMENT );";
+            return "1:1: Tokens : ( BIGRAPH | RULE | WHERE | AND | IN | NOT | LENGTH | MATCHES | EMPTY | PORTS | CHILDREN | ROOT | UNNAMED | CONTROL | NODE | ONEOF | NOTONEOF | CONSTRAINT | MINLENGTH | MAXLENGTH | MINVALUE | MAXVALUE | REGEXP | SUPPORT | CLOSURES | SUBSTITUTIONS | PIPE2 | PIPE | LPAREN | RPAREN | LBRACE | RBRACE | LANGLE | RANGLE | UNDERSCORE | SLASH | COMMA | EQUALS | ARROW | COLON | LSQUARE | RSQUARE | DOLLAR | LESSTHANOREQUAL | GREATERTHANOREQUAL | PLUS | MINUS | AT | DOT | NUMBER | STRING | IDENTIFIER | WHITESPACE | LINECOMMENT );";
         }
     }
  

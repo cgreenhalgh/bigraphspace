@@ -27,7 +27,7 @@ public class Constants {
 	public static final String INNERNAME_ELEMENT_NAME = "innername";
 	/** edge/hide/innername link name attribute, id */
 	public static final String LINK_NAME_ATTRIBUTE_NAME = "id";
-	/** innername link name attribute, id */
+	/** innername link name attribute, name */
 	public static final String INNERNAME_NAME_ATTRIBUTE_NAME = "name";
 	/** index element name */
 	public static final String INDEX_ELEMENT_NAME = "index";
