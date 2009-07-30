@@ -42,16 +42,16 @@ tokens {
  *------------------------------------------------------------------*/
 
 start 
-: BIGRAPH^ closures wide substitutions where? EOF
+: BIGRAPH^ closures? wide substitutions? where? EOF
 | RULE^ wide ARROW! wide EOF
 ;
     
 closures
-: ( closure DOT )* -> ^( CLOSURES closure* )
+: ( closure STAR )* closure DOT -> ^( CLOSURES closure+ )
 ;
 
 substitutions
-: ( DOT substitution )* -> ^( SUBSTITUTIONS substitution* )
+: DOT substitution ( STAR substitution )* -> ^( SUBSTITUTIONS substitution+ )
 ;
 
 closure
@@ -184,6 +184,8 @@ PLUS: '+';
 MINUS: '-';
 AT: '@';
 DOT: '.';
+AMPERSAND: '&';
+STAR: '*';
 
 fragment NUMERAL	: '~'? (DIGIT)+ ;
 

@@ -252,7 +252,14 @@ public class DomMatch implements Match {
 		ps.println("XML Bigraph "+title+":");
 		ps.println("bigraph");
 		bigraph.dumpEdges(ps);
+		boolean first = true;
 		for (Place root : roots) {
+			if (first) {
+				first = false;
+				ps.print("    ");
+			} 
+			else
+				ps.print(" || ");
 			dump(ps, root, 1);
 		}
 		bigraph.dumpHiddenAndInnerNames(ps);
@@ -294,7 +301,7 @@ public class DomMatch implements Match {
 		}
 		else if (place.isRoot()) {
 			ps.println(tag);
-			ps.print(XmlUtils.getIndent(indent));
+			ps.print(XmlUtils.getIndent(indent+1));
 		}
 		else {
 			if (place.isIndexed()) {
@@ -335,11 +342,11 @@ public class DomMatch implements Match {
 		List<Place> children = place.getChildren();
 		if (children.size()>0) {
 			if (!place.isRoot())
-				ps.println(" ("+tag);
+				ps.println();//" (");
 			boolean first = true;
 			for (Place child : children) {
 				if (first) {
-					ps.print(XmlUtils.getIndent(indent+(!place.isRoot() ? 1 : 0)));
+					ps.print(XmlUtils.getIndent(indent+(!place.isRoot() ? 0 : -1))+(!place.isRoot() ? "( " : ""));
 					first = false;
 				}
 				else
@@ -352,7 +359,7 @@ public class DomMatch implements Match {
 				ps.println(XmlUtils.getIndent(indent)+")");
 		}
 		else 
-			ps.println(tag);
+			ps.println();
 	}
 
 }

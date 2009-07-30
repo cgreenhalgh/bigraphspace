@@ -441,11 +441,11 @@ public class DomBigraph implements Bigraph {
 		for (Place root : roots) {
 			if (first) {
 				first = false;
-				ps.print("  ");
-			}
+				ps.print("    ");
+			} 
 			else
-				ps.print("||");
-			dump(ps, root, 0);
+				ps.print(" || ");
+			dump(ps, root, 1);
 		}
 		dumpHiddenAndInnerNames(ps);
 		dumpVariables(ps);
@@ -454,10 +454,17 @@ public class DomBigraph implements Bigraph {
 		Set<String> edges = this.getEdgeNames();
 		if (edges.size()==0)
 			return;
-		ps.print("  ");
+		ps.print(" ");
+		boolean first = true;
 		for (String edge : edges)
-			ps.print("/"+edge+" . ");
-		ps.println();
+		{
+			if (first)
+				first = false;
+			else
+				ps.print(" * ");
+			ps.print("/"+edge);
+		}
+		ps.println(" .");
 	}
 	public void dumpHiddenAndInnerNames(PrintStream ps) {
 		Set<String> hiddens = this.getHiddenNames();
@@ -467,9 +474,14 @@ public class DomBigraph implements Bigraph {
 		names.addAll(innerNameMap.values());
 		if (names.size()==0)
 			return;
-		ps.print(" ");
+		ps.print(" .  ");
+		boolean first = true;
 		for (String name : names) {
-			ps.print(" . "+name+"/");
+			if (first)
+				first = false;
+			else
+				ps.print(" * ");
+			ps.print(name+"/");
 			boolean needsComma = false;
 			for (Map.Entry<String, String> innerName : innerNameMap.entrySet()) {
 				if (innerName.getValue().equals(name)) {
@@ -486,6 +498,7 @@ public class DomBigraph implements Bigraph {
 				ps.print(name);
 			}
 		}
+		ps.println();
 	}
 	/** dump debug */
 	public void dumpVariables(PrintStream ps) {
@@ -647,11 +660,11 @@ public class DomBigraph implements Bigraph {
 		List<Place> children = place.getChildren();
 		if (children.size()>0) {
 			if (!place.isRoot())
-				ps.println(" (");
+				ps.println();//" (");
 			boolean first = true;
 			for (Place child : children) {
 				if (first) {
-					ps.print(XmlUtils.getIndent(indent+(!place.isRoot() ? 1 : 0)));
+					ps.print(XmlUtils.getIndent(indent+(!place.isRoot() ? 0 : -1))+(!place.isRoot() ? "( " : ""));
 					first = false;
 				}
 				else
