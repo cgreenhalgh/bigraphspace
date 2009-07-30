@@ -701,8 +701,8 @@
 		<pattern>
 			<bigraph>
 				<variable name="x" type="integer">
-					<minvalue>11</minvalue>
-					<maxvalue>12</maxvalue>
+					<constraint type="minvalue">11</constraint>
+					<constraint type="maxvalue">12</constraint>
 				</variable>
 				<root>
 					<integer _support="n">
@@ -743,8 +743,8 @@
 		<pattern>
 			<bigraph>
 				<variable name="x" type="integer">
-					<oneof><value>11</value><value>12</value></oneof>
-					<notoneof><value>12</value><value>13</value></notoneof>
+					<constraint type="oneof"><value>11</value><value>12</value></constraint>
+					<constraint type="notoneof"><value>12</value><value>13</value></constraint>
 				</variable>
 				<root>
 					<integer _support="n">
@@ -781,8 +781,8 @@
 		<pattern>
 			<bigraph>
 				<variable name="x" type="string">
-					<oneof><value>b</value><value>c</value></oneof>
-					<notoneof><value>c</value><value>d</value></notoneof>
+					<constraint type="oneof"><value>b</value><value>c</value></constraint>
+					<constraint type="notoneof"><value>c</value><value>d</value></constraint>
 				</variable>
 				<root>
 					<string _support="n">
@@ -811,8 +811,8 @@
 		<pattern>
 			<bigraph>
 				<variable name="x" type="string">
-					<minlength>2</minlength>
-					<maxlength>3</maxlength>
+					<constraint type="minlength">2</constraint>
+					<constraint type="maxlength">3</constraint>
 				</variable>
 				<root>
 					<string _support="n">
@@ -846,7 +846,7 @@
 			<bigraph>
 				<variable name="x" type="integer"></variable>
 				<variable name="y" type="integer">
-					<difference variable="x">1</difference>
+					<constraint type="difference" variable="x">1</constraint>
 				</variable>
 				<root>
 					<integer _support="x">
@@ -891,7 +891,7 @@
 		<pattern>
 			<bigraph>
 				<variable name="x" type="integer">
-					<difference variable="y">-1</difference>
+					<constraint type="difference" variable="y">-1</constraint>
 				</variable>
 				<variable name="y" type="integer">
 				</variable>

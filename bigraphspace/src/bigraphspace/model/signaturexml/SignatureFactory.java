@@ -89,14 +89,14 @@ public class SignatureFactory {
 			List<ControlIndex> xindexes = xcontrol.getIndex();
 			List<VariableDefinition> indexes = control.getIndexTypes();
 			for (ControlIndex xindex : xindexes) {
-				VariableDefinition index = new VariableDefinition();
+				SigVariableDefinition index = new SigVariableDefinition();
 				if (xindex.getType()==null) 
 					throw new DefinitionException("<index> with no type attribute");
 				index.setBaseType(VariableType.valueOf(xindex.getType()));
 				List<VariableConstraint> constraints = index.getConstraints();
 				List<bigraphspace.model.signaturexml.VariableConstraint> xconstraints = xindex.getConstraint();
 				for (bigraphspace.model.signaturexml.VariableConstraint xconstraint : xconstraints) {
-					VariableConstraint constraint = new VariableConstraint();
+					SigVariableConstraint constraint = new SigVariableConstraint();
 					if (xconstraint.getType()==null)
 						throw new DefinitionException("<constraint> with no type attribute");
 					constraint.setConstraintType(VariableConstraintType.valueOf(xconstraint.getType()));
