@@ -127,6 +127,11 @@
 			<classpath refid="classpath"/>
 			<arg value="etc\indexed2.btl"/>
 	    </java>
+		<echo>read extension.btl</echo>
+	    <java fork="true" classname="bigraphspace.parser.antlr.TestBigraphTerm" failonerror="true">
+			<classpath refid="classpath"/>
+			<arg value="etc\extension.btl"/>
+	    </java>
 	</target>
 		
 	<target name="bluetoothex" depends="compile">

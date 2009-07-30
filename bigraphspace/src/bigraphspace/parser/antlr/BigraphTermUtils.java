@@ -8,6 +8,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.antlr.runtime.tree.Tree;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 
@@ -55,6 +56,12 @@ public class BigraphTermUtils {
 			}
 			else if (root.getType()==BigraphTermParser.WHERE) {
 				processVariables(doc, docEl, root);
+			}
+			else if (root.getType()==BigraphTermParser.CLOSURES) {
+				processWiring(doc, docEl, root);
+			}
+			else if (root.getType()==BigraphTermParser.SUBSTITUTIONS) {
+				processWiring(doc, docEl, root);
 			}
 			else
 				throw new ParseException("tree child node "+ri+" is not ROOT or WHERE ("+root.getType()+"/"+root.getText()+")");
@@ -148,6 +155,10 @@ public class BigraphTermUtils {
 					// children => recurse...
 					processPrimeChildren(doc, nodeEl, subnode);
 				}
+				else if (subnode.getType()==BigraphTermParser.SUPPORT) {
+					if (subnode.getChildCount()>0)
+						nodeEl.setAttribute(Constants.NODE_SUPPORT_ATTRIBUTE_NAME, subnode.getChild(0).getText());
+				}
 				else 
 					throw new ParseException("Unexpected node child (not PORTS or CHILDREN) ("+subnode.getType()+"/"+subnode.getText()+")");
 			}
@@ -229,6 +240,56 @@ public class BigraphTermUtils {
 			}
 			else
 				throw new ParseException("Found unknown CONSTRAINT type "+constraintType);
+		}
+	}
+	/** handle a closure or substitution list */
+	static void processWiring(Document doc, Element el, Tree parent) throws ParseException {
+		NodeList roots = XmlUtils.getChildElementsByTagName(el, Constants.ROOT_ELEMENT_NAME);
+		Node firstRoot = roots.getLength()>0 ? roots.item(0) : null;
+		for (int ci=0; ci<parent.getChildCount(); ci++) {
+			Tree tslash = parent.getChild(ci);
+			if (tslash.getType()!=BigraphTermParser.SLASH) 
+				throw new ParseException("Unexpected wiring node child (not SLASH) ("+tslash.getType()+"/"+tslash.getText()+")");
+			if (tslash.getChildCount()<1)
+				throw new ParseException("Wiring SLASH node with 0 children");
+			if (tslash.getChild(0).getType()==BigraphTermParser.UNDERSCORE) {
+				// edge(s)
+				for (int ei=1; ei<tslash.getChildCount(); ei++) {
+					Tree tedge = tslash.getChild(ei);
+					Element edgeEl = doc.createElement(Constants.EDGE_ELEMENT_NAME);
+					edgeEl.setAttribute(Constants.LINK_NAME_ATTRIBUTE_NAME, tedge.getText());
+					if (firstRoot==null)
+						el.appendChild(edgeEl);
+					else
+						el.insertBefore(edgeEl, firstRoot);
+				}
+			}
+			else {
+				// hidden/innername
+				String leftName = tslash.getChild(0).getText();
+				boolean hidden = true;// default unless names
+				for (int ei=1; ei<tslash.getChildCount(); ei++) {
+					Tree tedge = tslash.getChild(ei);
+					String rightName = tedge.getText();
+					if (leftName.equals(rightName))
+						hidden = false;
+					Element edgeEl = doc.createElement(Constants.INNERNAME_ELEMENT_NAME);
+					edgeEl.setAttribute(Constants.LINK_NAME_ATTRIBUTE_NAME, leftName);
+					edgeEl.setAttribute(Constants.INNERNAME_NAME_ATTRIBUTE_NAME, rightName);
+					if (firstRoot==null)
+						el.appendChild(edgeEl);
+					else
+						el.insertBefore(edgeEl, firstRoot);
+				}
+				if (hidden) {
+					Element edgeEl = doc.createElement(Constants.HIDE_ELEMENT_NAME);
+					edgeEl.setAttribute(Constants.LINK_NAME_ATTRIBUTE_NAME, leftName);
+					if (firstRoot==null)
+						el.appendChild(edgeEl);
+					else
+						el.insertBefore(edgeEl, firstRoot);
+				}	
+			}
 		}
 	}
 }
