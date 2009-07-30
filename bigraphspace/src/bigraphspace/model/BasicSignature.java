@@ -70,29 +70,29 @@ public class BasicSignature  {
 					throw new UndefinedControlException(controlName, place);
 				// indexes
 				List<VariableDefinition> controlIndexes = control.getIndexTypes();
-				List<Object> placeIndexValues = place.getControlIndexes();
+				List<IndexValue> placeIndexValues = place.getControlIndexes();
 				if (controlIndexes.size()>placeIndexValues.size()) 
 					throw new ControlIndexException(place, control, placeIndexValues.size(), null);
 				else if (controlIndexes.size()<placeIndexValues.size()) 
 					throw new ControlIndexException(place, control, controlIndexes.size(), placeIndexValues.get(controlIndexes.size()));
 				// each index
 				for (int i=0; i<controlIndexes.size(); i++) {
-					Object value = placeIndexValues.get(i);
-					if (value instanceof Variable) {
+					IndexValue ivalue = placeIndexValues.get(i);
+					if (ivalue.isVariable()) {
 						// bigraph variable - check it is consistent, e.g. type
-						Variable ivariable = (Variable)value;
-						VariableDefinition definition = environment.get(ivariable.getName());
+						VariableDefinition definition = environment.get(ivalue.getVariableName());
 						if (definition==null) {
-							throw new ControlIndexException(place, control, i, "undefined variable "+ivariable.getName());							
+							throw new ControlIndexException(place, control, i, "undefined variable "+ivalue.getVariableName());							
 						}
 						VariableDefinition cvariable = controlIndexes.get(i);
 						if (!definition.getBaseType().equals(cvariable.getBaseType()))
-							throw new ControlIndexException(place, control, controlIndexes.size(), definition.getBaseType()+" variable "+ivariable.getName());
+							throw new ControlIndexException(place, control, controlIndexes.size(), definition.getBaseType()+" variable "+ivalue.getVariableName());
 						// assume ok (for now?!)
 						// TODO further compatibility checks?
 						continue;
 					}
 					VariableDefinition variable = controlIndexes.get(i);
+					Object value = ivalue.getValue();
 					if (!variable.matches(value, environment, null))
 						throw new ControlIndexException(place, control, i, value);
 				}

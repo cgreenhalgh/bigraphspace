@@ -8,6 +8,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import bigraphspace.model.Bigraph;
+import bigraphspace.model.IndexValue;
 import bigraphspace.model.Match;
 import bigraphspace.model.Place;
 import bigraphspace.model.Port;
@@ -302,11 +303,15 @@ public class DomMatch implements Match {
 			if (place.isIndexed()) {
 				ps.print(XmlUtils.getIndent(indent));
 				//ps.print("<");
-				List<Object> indexes = place.getControlIndexes();
+				List<IndexValue> indexes = place.getControlIndexes();
 				for (int ii=0; ii<indexes.size(); ii++) {
 					if (ii>0)
 						ps.print(",");
-					ps.print(indexes.get(ii));
+					IndexValue index = indexes.get(ii);
+					if (index.isVariable())
+						ps.print("$"+index.getVariableName());
+					else
+						ps.print(index.getValue());
 				}
 				//ps.print(">");
 				ps.println(":"+place.getControlName()+support+tag);

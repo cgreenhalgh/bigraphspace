@@ -59,7 +59,7 @@ public interface Place {
 	/** has index values? */
 	public boolean isIndexed();
 	/** index values for indexed Controls */
-	public List<Object> getControlIndexes();
+	public List<IndexValue> getControlIndexes();
 	/** add control index (at end) (if allowed) */
 	public void addControlIndex(IndexValue value);	
 	/** remove control index (if allowed) */

@@ -14,7 +14,6 @@ import org.w3c.dom.Attr;
 
 import bigraphspace.model.IndexValue;
 import bigraphspace.model.Place;
-import bigraphspace.model.Variable;
 import bigraphspace.model.PlaceType;
 import bigraphspace.model.Port;
 
@@ -298,24 +297,12 @@ public class DomPlace implements Place {
 	 * @see bigraphspace.model.Place#getControlIndexes()
 	 */
 	//@Override
-	public List<Object> getControlIndexes() {
+	public List<IndexValue> getControlIndexes() {
 		NodeList indexEls = XmlUtils.getChildElementsByTagName(element,Constants.INDEX_ELEMENT_NAME);
-		LinkedList<Object> indexes = new LinkedList<Object>();
+		LinkedList<IndexValue> indexes = new LinkedList<IndexValue>();
 		for (int i=0; i<indexEls.getLength(); i++) {
 			Element indexEl = (Element)indexEls.item(i);
-			// variable?
-			String variable = indexEl.getAttribute(Constants.INDEX_VARIABLE_ATTRIBUTE_NAME);
-			if (variable!=null && variable.length()>0) {
-				Variable var = new Variable();
-				var.setName(variable);
-				indexes.add(var);
-				if (indexEl.getTextContent().trim().length()>0) 
-					logger.warn("<index> with variable attribute also has value "+indexEl.getTextContent().trim());
-			}
-			else {
-				// TODO: coerce types?
-				indexes.add(indexEl.getTextContent());
-			}
+			indexes.add(new DomIndexValue(indexEl));
 		}
 		return indexes;
 	}
