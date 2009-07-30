@@ -68,5 +68,8 @@ public interface Place {
 	public void setControlIndex(IndexValue value, int atIndex);
 	/** insert control index (if allowed) */
 	public void insertControlIndex(IndexValue value, int atIndex);
-
+	/** get site index (if specified) */
+	public Integer getSiteIndex();
+	/** set site index (if allwoed) */
+	public void setSiteIndex(int index);
 }

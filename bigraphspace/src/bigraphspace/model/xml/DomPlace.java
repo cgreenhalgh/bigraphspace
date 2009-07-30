@@ -375,4 +375,31 @@ public class DomPlace implements Place {
 		else
 			throw new IllegalArgumentException("setControlIndex("+value+") - not DomIndexValue");
 	}
+	/* (non-Javadoc)
+	 * @see bigraphspace.model.Place#getSiteIndex()
+	 */
+	//@Override
+	public Integer getSiteIndex() {
+		if(!isSite())
+			return null;
+		String index = element.getAttribute(Constants.SITE_INDEX_ATTRIBUTE_NAME);
+		if (index==null || index.length()==0)
+			return null;
+		try {
+			return Integer.parseInt(index);
+		}
+		catch (NumberFormatException nfe) {
+			logger.error("Site with non-integer index "+index+", "+this);
+			return null;
+		}
+	}
+	/* (non-Javadoc)
+	 * @see bigraphspace.model.Place#setSiteIndex(int)
+	 */
+	//@Override
+	public void setSiteIndex(int index) {
+		if(!isSite())
+			throw new IllegalArgumentException("setSiteIndex on non-site "+this);
+		element.setAttribute(Constants.SITE_INDEX_ATTRIBUTE_NAME, ""+index);
+	}
 }

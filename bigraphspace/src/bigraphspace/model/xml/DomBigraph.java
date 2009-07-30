@@ -459,17 +459,54 @@ public class DomBigraph implements Bigraph {
 		ps.println(variables.size()+" variables:");
 		if (variables.size()==0)
 			return;
+		boolean first = true;
 		for (String name : variables.keySet()) {
 			VariableDefinition definition = variables.get(name);
-			ps.print("where "+name+":"+definition.getBaseType());
+			ps.print((first ? "where" : "and")+" $"+name+":"+definition.getBaseType());
+			first = false;
 			List<VariableConstraint> constraints = definition.getConstraints();
 			for (VariableConstraint constraint : constraints) {
-				ps.print(" and "+name+" "+constraint.getConstraintType());
-				if (constraint.getVariableName()!=null)
-					ps.print(" "+constraint.getVariableName());
-				for (Object value : constraint.getValues()) {
-					ps.print(" "+value);
+				List<Object> values = constraint.getValues();
+				ps.print(" and ");
+				if (constraint.getConstraintType()==VariableConstraintType.minlength ||
+						constraint.getConstraintType()==VariableConstraintType.maxlength) 
+					ps.print("length($"+name+")");
+				else
+					ps.print("$"+name);
+				switch(constraint.getConstraintType()) {
+				case notoneof:
+					ps.print(" not");
+				case oneof:
+					ps.print(" in ");
+					break;
+				case minvalue:
+				case minlength:
+					ps.print(">=");
+					break;
+				case maxvalue:
+				case maxlength:
+					ps.print("<=");
+					break;
+				case regexp:
+					ps.print("matches ");
+					break;
+				case difference:
+					ps.print("=$"+constraint.getVariableName()+"+");
+					break;
+				default:
+					ps.print(constraint.getConstraintType().name());
 				}
+				if (constraint.getConstraintType()==VariableConstraintType.oneof ||
+						constraint.getConstraintType()==VariableConstraintType.notoneof) 
+					ps.print("{");	
+				for (int vi=0; vi<values.size(); vi++) {
+					if (vi>0)
+						ps.print(",");
+					ps.print(DomBigraph.normalizeControlIndexValue(values.get(vi)));
+				}
+				if (constraint.getConstraintType()==VariableConstraintType.oneof ||
+						constraint.getConstraintType()==VariableConstraintType.notoneof) 
+					ps.print("}");	
 			}
 			ps.println();
 		}
@@ -530,8 +567,10 @@ public class DomBigraph implements Bigraph {
 	/** dump an element, recursively */
 	public void dump(PrintStream ps, Place place, int indent) {
 		String support = place.getSupport()!=null ? "/"+place.getSupport() : "";
-		if (place.isSite())
-			ps.println(XmlUtils.getIndent(indent)+support+"[]");
+		if (place.isSite()) {
+			Integer index = place.getSiteIndex();
+			ps.println(XmlUtils.getIndent(indent)+support+"["+(index!=null ? ""+index : "")+"]");
+		}
 		else if (place.isRoot())
 			ps.println(XmlUtils.getIndent(indent)+support+"root");
 		else {

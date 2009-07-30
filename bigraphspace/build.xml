@@ -122,6 +122,11 @@
 			<classpath refid="classpath"/>
 			<arg value="etc\signature_buildingex.xml"/>
 	    </java>
+		<echo>read indexed2.btl</echo>
+	    <java fork="true" classname="bigraphspace.parser.antlr.TestBigraphTerm" failonerror="true">
+			<classpath refid="classpath"/>
+			<arg value="etc\indexed2.btl"/>
+	    </java>
 	</target>
 		
 	<target name="bluetoothex" depends="compile">

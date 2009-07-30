@@ -275,7 +275,7 @@ public class DomMatch implements Match {
 		int i=0;
 		for (ElementMatch elm : this.rootMatches) {
 			if (elm.patternEl==domPlace.getElement() || elm.targetEl==domPlace.getElement()) {
-				tag = " [root:"+i+"]";
+				tag = " <= root:"+i+"";
 				break;
 			}
 			i++;
@@ -283,20 +283,22 @@ public class DomMatch implements Match {
 		i=0;
 		for (ElementMatch elm : this.nodeMatches) {
 			if (elm.patternEl==domPlace.getElement() || elm.targetEl==domPlace.getElement()) {
-				tag = " ["+i+"]";
+				tag = " <= "+i+"";
 				break;
 			}
 			i++;
 		}
 		for (ElementsMatch elm : this.siteMatches) {
 			if (elm.patternEl==domPlace.getElement() || elm.targetEls.contains(domPlace.getElement())) {
-				tag = " [_"+elm.patternEl.getAttribute(Constants.SITE_INDEX_ATTRIBUTE_NAME)+"]";
+				tag = " <= ["+elm.patternEl.getAttribute(Constants.SITE_INDEX_ATTRIBUTE_NAME)+"]";
 				break;
 			}
 		}
 		String support = place.getSupport()!=null ? "/"+place.getSupport() : "";
-		if (place.isSite())
-			ps.println(XmlUtils.getIndent(indent)+support+"[]"+tag);
+		if (place.isSite()) {
+			Integer index = place.getSiteIndex();
+			ps.println(XmlUtils.getIndent(indent)+support+"["+(index!=null ? ""+index : "")+"]"+tag);
+		}
 		else if (place.isRoot())
 			ps.println(XmlUtils.getIndent(indent)+support+"root"+tag);
 		else {
