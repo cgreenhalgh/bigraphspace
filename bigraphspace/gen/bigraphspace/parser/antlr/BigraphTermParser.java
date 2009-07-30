@@ -1,4 +1,4 @@
-// $ANTLR 3.1.3 Mar 18, 2009 10:09:25 src/bigraphspace/parser/antlr/BigraphTerm.g 2009-07-30 16:45:21
+// $ANTLR 3.1.3 Mar 18, 2009 10:09:25 src/bigraphspace/parser/antlr/BigraphTerm.g 2009-07-30 19:57:12
  package bigraphspace.parser.antlr; 
 
 import org.antlr.runtime.*;
@@ -11,67 +11,69 @@ import org.antlr.runtime.tree.*;
 
 public class BigraphTermParser extends Parser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "BIGRAPH", "RULE", "WHERE", "AND", "IN", "NOT", "LENGTH", "MATCHES", "EMPTY", "PORTS", "CHILDREN", "ROOT", "UNNAMED", "CONTROL", "NODE", "ONEOF", "NOTONEOF", "CONSTRAINT", "MINLENGTH", "MAXLENGTH", "MINVALUE", "MAXVALUE", "REGEXP", "SUPPORT", "CLOSURES", "SUBSTITUTIONS", "ARROW", "DOT", "SLASH", "IDENTIFIER", "COMMA", "PIPE2", "PIPE", "LSQUARE", "NUMBER", "RSQUARE", "COLON", "LANGLE", "RANGLE", "STRING", "AT", "LBRACE", "RBRACE", "EQUALS", "LPAREN", "RPAREN", "LESSTHANOREQUAL", "GREATERTHANOREQUAL", "PLUS", "MINUS", "UNDERSCORE", "DOLLAR", "DIGIT", "NUMERAL", "STRING_ESCAPE", "LETTER", "WHITESPACE", "LINECOMMENT"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "BIGRAPH", "RULE", "WHERE", "AND", "IN", "NOT", "LENGTH", "MATCHES", "EMPTY", "PORTS", "CHILDREN", "ROOT", "UNNAMED", "CONTROL", "NODE", "ONEOF", "NOTONEOF", "CONSTRAINT", "MINLENGTH", "MAXLENGTH", "MINVALUE", "MAXVALUE", "REGEXP", "SUPPORT", "CLOSURES", "SUBSTITUTIONS", "ARROW", "STAR", "DOT", "SLASH", "IDENTIFIER", "COMMA", "PIPE2", "PIPE", "LSQUARE", "NUMBER", "RSQUARE", "COLON", "LANGLE", "RANGLE", "STRING", "AT", "LBRACE", "RBRACE", "EQUALS", "LPAREN", "RPAREN", "LESSTHANOREQUAL", "GREATERTHANOREQUAL", "PLUS", "MINUS", "UNDERSCORE", "DOLLAR", "AMPERSAND", "DIGIT", "NUMERAL", "STRING_ESCAPE", "LETTER", "WHITESPACE", "LINECOMMENT"
     };
-    public static final int DOLLAR=55;
+    public static final int DOLLAR=56;
     public static final int WHERE=6;
-    public static final int LSQUARE=37;
-    public static final int STRING_ESCAPE=58;
+    public static final int STAR=31;
+    public static final int LSQUARE=38;
+    public static final int STRING_ESCAPE=60;
     public static final int CHILDREN=14;
-    public static final int LETTER=59;
-    public static final int LANGLE=41;
-    public static final int LBRACE=45;
-    public static final int EQUALS=47;
+    public static final int LETTER=61;
+    public static final int LANGLE=42;
+    public static final int LBRACE=46;
+    public static final int EQUALS=48;
     public static final int NOT=9;
-    public static final int LINECOMMENT=61;
+    public static final int LINECOMMENT=63;
     public static final int BIGRAPH=4;
     public static final int AND=7;
     public static final int EOF=-1;
-    public static final int LPAREN=48;
+    public static final int LPAREN=49;
     public static final int LENGTH=10;
-    public static final int AT=44;
-    public static final int RPAREN=49;
-    public static final int SLASH=32;
+    public static final int AT=45;
+    public static final int RPAREN=50;
+    public static final int SLASH=33;
     public static final int IN=8;
     public static final int CLOSURES=28;
     public static final int MINVALUE=24;
     public static final int MATCHES=11;
     public static final int MAXVALUE=25;
-    public static final int COMMA=34;
-    public static final int IDENTIFIER=33;
-    public static final int LESSTHANOREQUAL=50;
+    public static final int COMMA=35;
+    public static final int IDENTIFIER=34;
+    public static final int LESSTHANOREQUAL=51;
     public static final int REGEXP=26;
-    public static final int PLUS=52;
+    public static final int PLUS=53;
     public static final int SUPPORT=27;
-    public static final int PIPE=36;
+    public static final int PIPE=37;
     public static final int NOTONEOF=20;
-    public static final int DIGIT=56;
-    public static final int PIPE2=35;
-    public static final int RANGLE=42;
-    public static final int DOT=31;
-    public static final int GREATERTHANOREQUAL=51;
+    public static final int DIGIT=58;
+    public static final int PIPE2=36;
+    public static final int RANGLE=43;
+    public static final int DOT=32;
+    public static final int GREATERTHANOREQUAL=52;
     public static final int SUBSTITUTIONS=29;
-    public static final int RBRACE=46;
+    public static final int RBRACE=47;
     public static final int NODE=18;
     public static final int CONTROL=17;
     public static final int RULE=5;
     public static final int MINLENGTH=22;
-    public static final int NUMBER=38;
-    public static final int WHITESPACE=60;
-    public static final int UNDERSCORE=54;
-    public static final int MINUS=53;
-    public static final int RSQUARE=39;
+    public static final int NUMBER=39;
+    public static final int AMPERSAND=57;
+    public static final int WHITESPACE=62;
+    public static final int UNDERSCORE=55;
+    public static final int MINUS=54;
+    public static final int RSQUARE=40;
     public static final int ROOT=15;
     public static final int ONEOF=19;
     public static final int EMPTY=12;
-    public static final int COLON=40;
+    public static final int COLON=41;
     public static final int PORTS=13;
     public static final int UNNAMED=16;
     public static final int MAXLENGTH=23;
     public static final int ARROW=30;
-    public static final int NUMERAL=57;
+    public static final int NUMERAL=59;
     public static final int CONSTRAINT=21;
-    public static final int STRING=43;
+    public static final int STRING=44;
 
     // delegates
     // delegators
@@ -104,7 +106,7 @@ public class BigraphTermParser extends Parser {
     };
 
     // $ANTLR start "start"
-    // src/bigraphspace/parser/antlr/BigraphTerm.g:44:1: start : ( BIGRAPH closures wide substitutions ( where )? EOF | RULE wide ARROW wide EOF );
+    // src/bigraphspace/parser/antlr/BigraphTerm.g:44:1: start : ( BIGRAPH ( closures )? wide ( substitutions )? ( where )? EOF | RULE wide ARROW wide EOF );
     public final BigraphTermParser.start_return start() throws RecognitionException {
         BigraphTermParser.start_return retval = new BigraphTermParser.start_return();
         retval.start = input.LT(1);
@@ -136,25 +138,25 @@ public class BigraphTermParser extends Parser {
         Object EOF11_tree=null;
 
         try {
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:45:1: ( BIGRAPH closures wide substitutions ( where )? EOF | RULE wide ARROW wide EOF )
-            int alt2=2;
-            int LA2_0 = input.LA(1);
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:45:1: ( BIGRAPH ( closures )? wide ( substitutions )? ( where )? EOF | RULE wide ARROW wide EOF )
+            int alt4=2;
+            int LA4_0 = input.LA(1);
 
-            if ( (LA2_0==BIGRAPH) ) {
-                alt2=1;
+            if ( (LA4_0==BIGRAPH) ) {
+                alt4=1;
             }
-            else if ( (LA2_0==RULE) ) {
-                alt2=2;
+            else if ( (LA4_0==RULE) ) {
+                alt4=2;
             }
             else {
                 NoViableAltException nvae =
-                    new NoViableAltException("", 2, 0, input);
+                    new NoViableAltException("", 4, 0, input);
 
                 throw nvae;
             }
-            switch (alt2) {
+            switch (alt4) {
                 case 1 :
-                    // src/bigraphspace/parser/antlr/BigraphTerm.g:45:3: BIGRAPH closures wide substitutions ( where )? EOF
+                    // src/bigraphspace/parser/antlr/BigraphTerm.g:45:3: BIGRAPH ( closures )? wide ( substitutions )? ( where )? EOF
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -162,36 +164,70 @@ public class BigraphTermParser extends Parser {
                     BIGRAPH1_tree = (Object)adaptor.create(BIGRAPH1);
                     root_0 = (Object)adaptor.becomeRoot(BIGRAPH1_tree, root_0);
 
-                    pushFollow(FOLLOW_closures_in_start263);
-                    closures2=closures();
+                    // src/bigraphspace/parser/antlr/BigraphTerm.g:45:12: ( closures )?
+                    int alt1=2;
+                    int LA1_0 = input.LA(1);
 
-                    state._fsp--;
+                    if ( (LA1_0==SLASH) ) {
+                        alt1=1;
+                    }
+                    switch (alt1) {
+                        case 1 :
+                            // src/bigraphspace/parser/antlr/BigraphTerm.g:45:12: closures
+                            {
+                            pushFollow(FOLLOW_closures_in_start263);
+                            closures2=closures();
 
-                    adaptor.addChild(root_0, closures2.getTree());
-                    pushFollow(FOLLOW_wide_in_start265);
+                            state._fsp--;
+
+                            adaptor.addChild(root_0, closures2.getTree());
+
+                            }
+                            break;
+
+                    }
+
+                    pushFollow(FOLLOW_wide_in_start266);
                     wide3=wide();
 
                     state._fsp--;
 
                     adaptor.addChild(root_0, wide3.getTree());
-                    pushFollow(FOLLOW_substitutions_in_start267);
-                    substitutions4=substitutions();
+                    // src/bigraphspace/parser/antlr/BigraphTerm.g:45:27: ( substitutions )?
+                    int alt2=2;
+                    int LA2_0 = input.LA(1);
 
-                    state._fsp--;
-
-                    adaptor.addChild(root_0, substitutions4.getTree());
-                    // src/bigraphspace/parser/antlr/BigraphTerm.g:45:40: ( where )?
-                    int alt1=2;
-                    int LA1_0 = input.LA(1);
-
-                    if ( (LA1_0==WHERE) ) {
-                        alt1=1;
+                    if ( (LA2_0==DOT) ) {
+                        alt2=1;
                     }
-                    switch (alt1) {
+                    switch (alt2) {
                         case 1 :
-                            // src/bigraphspace/parser/antlr/BigraphTerm.g:45:40: where
+                            // src/bigraphspace/parser/antlr/BigraphTerm.g:45:27: substitutions
                             {
-                            pushFollow(FOLLOW_where_in_start269);
+                            pushFollow(FOLLOW_substitutions_in_start268);
+                            substitutions4=substitutions();
+
+                            state._fsp--;
+
+                            adaptor.addChild(root_0, substitutions4.getTree());
+
+                            }
+                            break;
+
+                    }
+
+                    // src/bigraphspace/parser/antlr/BigraphTerm.g:45:42: ( where )?
+                    int alt3=2;
+                    int LA3_0 = input.LA(1);
+
+                    if ( (LA3_0==WHERE) ) {
+                        alt3=1;
+                    }
+                    switch (alt3) {
+                        case 1 :
+                            // src/bigraphspace/parser/antlr/BigraphTerm.g:45:42: where
+                            {
+                            pushFollow(FOLLOW_where_in_start271);
                             where5=where();
 
                             state._fsp--;
@@ -203,7 +239,7 @@ public class BigraphTermParser extends Parser {
 
                     }
 
-                    EOF6=(Token)match(input,EOF,FOLLOW_EOF_in_start272); 
+                    EOF6=(Token)match(input,EOF,FOLLOW_EOF_in_start274); 
                     EOF6_tree = (Object)adaptor.create(EOF6);
                     adaptor.addChild(root_0, EOF6_tree);
 
@@ -215,24 +251,24 @@ public class BigraphTermParser extends Parser {
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    RULE7=(Token)match(input,RULE,FOLLOW_RULE_in_start276); 
+                    RULE7=(Token)match(input,RULE,FOLLOW_RULE_in_start278); 
                     RULE7_tree = (Object)adaptor.create(RULE7);
                     root_0 = (Object)adaptor.becomeRoot(RULE7_tree, root_0);
 
-                    pushFollow(FOLLOW_wide_in_start279);
+                    pushFollow(FOLLOW_wide_in_start281);
                     wide8=wide();
 
                     state._fsp--;
 
                     adaptor.addChild(root_0, wide8.getTree());
-                    ARROW9=(Token)match(input,ARROW,FOLLOW_ARROW_in_start281); 
-                    pushFollow(FOLLOW_wide_in_start284);
+                    ARROW9=(Token)match(input,ARROW,FOLLOW_ARROW_in_start283); 
+                    pushFollow(FOLLOW_wide_in_start286);
                     wide10=wide();
 
                     state._fsp--;
 
                     adaptor.addChild(root_0, wide10.getTree());
-                    EOF11=(Token)match(input,EOF,FOLLOW_EOF_in_start286); 
+                    EOF11=(Token)match(input,EOF,FOLLOW_EOF_in_start288); 
                     EOF11_tree = (Object)adaptor.create(EOF11);
                     adaptor.addChild(root_0, EOF11_tree);
 
@@ -265,56 +301,64 @@ public class BigraphTermParser extends Parser {
     };
 
     // $ANTLR start "closures"
-    // src/bigraphspace/parser/antlr/BigraphTerm.g:49:1: closures : ( closure DOT )* -> ^( CLOSURES ( closure )* ) ;
+    // src/bigraphspace/parser/antlr/BigraphTerm.g:49:1: closures : ( closure STAR )* closure DOT -> ^( CLOSURES ( closure )+ ) ;
     public final BigraphTermParser.closures_return closures() throws RecognitionException {
         BigraphTermParser.closures_return retval = new BigraphTermParser.closures_return();
         retval.start = input.LT(1);
 
         Object root_0 = null;
 
-        Token DOT13=null;
+        Token STAR13=null;
+        Token DOT15=null;
         BigraphTermParser.closure_return closure12 = null;
 
+        BigraphTermParser.closure_return closure14 = null;
 
-        Object DOT13_tree=null;
+
+        Object STAR13_tree=null;
+        Object DOT15_tree=null;
+        RewriteRuleTokenStream stream_STAR=new RewriteRuleTokenStream(adaptor,"token STAR");
         RewriteRuleTokenStream stream_DOT=new RewriteRuleTokenStream(adaptor,"token DOT");
         RewriteRuleSubtreeStream stream_closure=new RewriteRuleSubtreeStream(adaptor,"rule closure");
         try {
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:50:1: ( ( closure DOT )* -> ^( CLOSURES ( closure )* ) )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:50:3: ( closure DOT )*
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:50:1: ( ( closure STAR )* closure DOT -> ^( CLOSURES ( closure )+ ) )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:50:3: ( closure STAR )* closure DOT
             {
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:50:3: ( closure DOT )*
-            loop3:
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:50:3: ( closure STAR )*
+            loop5:
             do {
-                int alt3=2;
-                int LA3_0 = input.LA(1);
-
-                if ( (LA3_0==SLASH) ) {
-                    alt3=1;
-                }
-
-
-                switch (alt3) {
+                int alt5=2;
+                alt5 = dfa5.predict(input);
+                switch (alt5) {
             	case 1 :
-            	    // src/bigraphspace/parser/antlr/BigraphTerm.g:50:5: closure DOT
+            	    // src/bigraphspace/parser/antlr/BigraphTerm.g:50:5: closure STAR
             	    {
-            	    pushFollow(FOLLOW_closure_in_closures301);
+            	    pushFollow(FOLLOW_closure_in_closures303);
             	    closure12=closure();
 
             	    state._fsp--;
 
             	    stream_closure.add(closure12.getTree());
-            	    DOT13=(Token)match(input,DOT,FOLLOW_DOT_in_closures303);  
-            	    stream_DOT.add(DOT13);
+            	    STAR13=(Token)match(input,STAR,FOLLOW_STAR_in_closures305);  
+            	    stream_STAR.add(STAR13);
 
 
             	    }
             	    break;
 
             	default :
-            	    break loop3;
+            	    break loop5;
                 }
             } while (true);
+
+            pushFollow(FOLLOW_closure_in_closures310);
+            closure14=closure();
+
+            state._fsp--;
+
+            stream_closure.add(closure14.getTree());
+            DOT15=(Token)match(input,DOT,FOLLOW_DOT_in_closures312);  
+            stream_DOT.add(DOT15);
 
 
 
@@ -329,14 +373,16 @@ public class BigraphTermParser extends Parser {
             RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
             root_0 = (Object)adaptor.nil();
-            // 50:20: -> ^( CLOSURES ( closure )* )
+            // 50:33: -> ^( CLOSURES ( closure )+ )
             {
-                // src/bigraphspace/parser/antlr/BigraphTerm.g:50:23: ^( CLOSURES ( closure )* )
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:50:36: ^( CLOSURES ( closure )+ )
                 {
                 Object root_1 = (Object)adaptor.nil();
                 root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(CLOSURES, "CLOSURES"), root_1);
 
-                // src/bigraphspace/parser/antlr/BigraphTerm.g:50:35: ( closure )*
+                if ( !(stream_closure.hasNext()) ) {
+                    throw new RewriteEarlyExitException();
+                }
                 while ( stream_closure.hasNext() ) {
                     adaptor.addChild(root_1, stream_closure.nextTree());
 
@@ -375,54 +421,68 @@ public class BigraphTermParser extends Parser {
     };
 
     // $ANTLR start "substitutions"
-    // src/bigraphspace/parser/antlr/BigraphTerm.g:53:1: substitutions : ( DOT substitution )* -> ^( SUBSTITUTIONS ( substitution )* ) ;
+    // src/bigraphspace/parser/antlr/BigraphTerm.g:53:1: substitutions : DOT substitution ( STAR substitution )* -> ^( SUBSTITUTIONS ( substitution )+ ) ;
     public final BigraphTermParser.substitutions_return substitutions() throws RecognitionException {
         BigraphTermParser.substitutions_return retval = new BigraphTermParser.substitutions_return();
         retval.start = input.LT(1);
 
         Object root_0 = null;
 
-        Token DOT14=null;
-        BigraphTermParser.substitution_return substitution15 = null;
+        Token DOT16=null;
+        Token STAR18=null;
+        BigraphTermParser.substitution_return substitution17 = null;
+
+        BigraphTermParser.substitution_return substitution19 = null;
 
 
-        Object DOT14_tree=null;
+        Object DOT16_tree=null;
+        Object STAR18_tree=null;
+        RewriteRuleTokenStream stream_STAR=new RewriteRuleTokenStream(adaptor,"token STAR");
         RewriteRuleTokenStream stream_DOT=new RewriteRuleTokenStream(adaptor,"token DOT");
         RewriteRuleSubtreeStream stream_substitution=new RewriteRuleSubtreeStream(adaptor,"rule substitution");
         try {
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:54:1: ( ( DOT substitution )* -> ^( SUBSTITUTIONS ( substitution )* ) )
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:54:3: ( DOT substitution )*
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:54:1: ( DOT substitution ( STAR substitution )* -> ^( SUBSTITUTIONS ( substitution )+ ) )
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:54:3: DOT substitution ( STAR substitution )*
             {
-            // src/bigraphspace/parser/antlr/BigraphTerm.g:54:3: ( DOT substitution )*
-            loop4:
-            do {
-                int alt4=2;
-                int LA4_0 = input.LA(1);
+            DOT16=(Token)match(input,DOT,FOLLOW_DOT_in_substitutions332);  
+            stream_DOT.add(DOT16);
 
-                if ( (LA4_0==DOT) ) {
-                    alt4=1;
+            pushFollow(FOLLOW_substitution_in_substitutions334);
+            substitution17=substitution();
+
+            state._fsp--;
+
+            stream_substitution.add(substitution17.getTree());
+            // src/bigraphspace/parser/antlr/BigraphTerm.g:54:20: ( STAR substitution )*
+            loop6:
+            do {
+                int alt6=2;
+                int LA6_0 = input.LA(1);
+
+                if ( (LA6_0==STAR) ) {
+                    alt6=1;
                 }
 
 
-                switch (alt4) {
+                switch (alt6) {
             	case 1 :
-            	    // src/bigraphspace/parser/antlr/BigraphTerm.g:54:5: DOT substitution
+            	    // src/bigraphspace/parser/antlr/BigraphTerm.g:54:22: STAR substitution
             	    {
-            	    DOT14=(Token)match(input,DOT,FOLLOW_DOT_in_substitutions328);  
-            	    stream_DOT.add(DOT14);
+            	    STAR18=(Token)match(input,STAR,FOLLOW_STAR_in_substitutions338);  
+            	    stream_STAR.add(STAR18);
 
-            	    pushFollow(FOLLOW_substitution_in_substitutions330);
-            	    substitution15=substitution();
+            	    pushFollow(FOLLOW_substitution_in_substitutions340);
+            	    substitution19=substitution();
 
             	    state._fsp--;
 
-            	    stream_substitution.add(substitution15.getTree());
+            	    stream_substitution.add(substitution19.getTree());
 
             	    }
             	    break;
 
             	default :
-            	    break loop4;
+            	    break loop6;
                 }
             } while (true);
 
@@ -439,14 +499,16 @@ public class BigraphTermParser extends Parser {
             RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
             root_0 = (Object)adaptor.nil();
-            // 54:25: -> ^( SUBSTITUTIONS ( substitution )* )
+            // 54:43: -> ^( SUBSTITUTIONS ( substitution )+ )
             {
-                // src/bigraphspace/parser/antlr/BigraphTerm.g:54:28: ^( SUBSTITUTIONS ( substitution )* )
+                // src/bigraphspace/parser/antlr/BigraphTerm.g:54:46: ^( SUBSTITUTIONS ( substitution )+ )
                 {
                 Object root_1 = (Object)adaptor.nil();
                 root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(SUBSTITUTIONS, "SUBSTITUTIONS"), root_1);
 
-                // src/bigraphspace/parser/antlr/BigraphTerm.g:54:45: ( substitution )*
+                if ( !(stream_substitution.hasNext()) ) {
+                    throw new RewriteEarlyExitException();
+                }
                 while ( stream_substitution.hasNext() ) {
                     adaptor.addChild(root_1, stream_substitution.nextTree());
 
@@ -492,15 +554,15 @@ public class BigraphTermParser extends Parser {
 
         Object root_0 = null;
 
-        Token SLASH16=null;
-        Token IDENTIFIER17=null;
-        Token COMMA18=null;
-        Token IDENTIFIER19=null;
+        Token SLASH20=null;
+        Token IDENTIFIER21=null;
+        Token COMMA22=null;
+        Token IDENTIFIER23=null;
 
-        Object SLASH16_tree=null;
-        Object IDENTIFIER17_tree=null;
-        Object COMMA18_tree=null;
-        Object IDENTIFIER19_tree=null;
+        Object SLASH20_tree=null;
+        Object IDENTIFIER21_tree=null;
+        Object COMMA22_tree=null;
+        Object IDENTIFIER23_tree=null;
         RewriteRuleTokenStream stream_SLASH=new RewriteRuleTokenStream(adaptor,"token SLASH");
         RewriteRuleTokenStream stream_COMMA=new RewriteRuleTokenStream(adaptor,"token COMMA");
         RewriteRuleTokenStream stream_IDENTIFIER=new RewriteRuleTokenStream(adaptor,"token IDENTIFIER");
@@ -509,39 +571,39 @@ public class BigraphTermParser extends Parser {
             // src/bigraphspace/parser/antlr/BigraphTerm.g:58:1: ( SLASH IDENTIFIER ( COMMA IDENTIFIER )* -> ^( SLASH UNDERSCORE ( IDENTIFIER )+ ) )
             // src/bigraphspace/parser/antlr/BigraphTerm.g:58:3: SLASH IDENTIFIER ( COMMA IDENTIFIER )*
             {
-            SLASH16=(Token)match(input,SLASH,FOLLOW_SLASH_in_closure353);  
-            stream_SLASH.add(SLASH16);
+            SLASH20=(Token)match(input,SLASH,FOLLOW_SLASH_in_closure363);  
+            stream_SLASH.add(SLASH20);
 
-            IDENTIFIER17=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_closure355);  
-            stream_IDENTIFIER.add(IDENTIFIER17);
+            IDENTIFIER21=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_closure365);  
+            stream_IDENTIFIER.add(IDENTIFIER21);
 
             // src/bigraphspace/parser/antlr/BigraphTerm.g:58:20: ( COMMA IDENTIFIER )*
-            loop5:
+            loop7:
             do {
-                int alt5=2;
-                int LA5_0 = input.LA(1);
+                int alt7=2;
+                int LA7_0 = input.LA(1);
 
-                if ( (LA5_0==COMMA) ) {
-                    alt5=1;
+                if ( (LA7_0==COMMA) ) {
+                    alt7=1;
                 }
 
 
-                switch (alt5) {
+                switch (alt7) {
             	case 1 :
             	    // src/bigraphspace/parser/antlr/BigraphTerm.g:58:22: COMMA IDENTIFIER
             	    {
-            	    COMMA18=(Token)match(input,COMMA,FOLLOW_COMMA_in_closure359);  
-            	    stream_COMMA.add(COMMA18);
+            	    COMMA22=(Token)match(input,COMMA,FOLLOW_COMMA_in_closure369);  
+            	    stream_COMMA.add(COMMA22);
 
-            	    IDENTIFIER19=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_closure361);  
-            	    stream_IDENTIFIER.add(IDENTIFIER19);
+            	    IDENTIFIER23=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_closure371);  
+            	    stream_IDENTIFIER.add(IDENTIFIER23);
 
 
             	    }
             	    break;
 
             	default :
-            	    break loop5;
+            	    break loop7;
                 }
             } while (true);
 
@@ -615,14 +677,14 @@ public class BigraphTermParser extends Parser {
         Object root_0 = null;
 
         Token l=null;
-        Token SLASH20=null;
-        Token COMMA21=null;
+        Token SLASH24=null;
+        Token COMMA25=null;
         Token r=null;
         List list_r=null;
 
         Object l_tree=null;
-        Object SLASH20_tree=null;
-        Object COMMA21_tree=null;
+        Object SLASH24_tree=null;
+        Object COMMA25_tree=null;
         Object r_tree=null;
         RewriteRuleTokenStream stream_SLASH=new RewriteRuleTokenStream(adaptor,"token SLASH");
         RewriteRuleTokenStream stream_COMMA=new RewriteRuleTokenStream(adaptor,"token COMMA");
@@ -632,48 +694,48 @@ public class BigraphTermParser extends Parser {
             // src/bigraphspace/parser/antlr/BigraphTerm.g:62:1: (l= IDENTIFIER SLASH (r+= IDENTIFIER ( COMMA r+= IDENTIFIER )* )? -> ^( SLASH $l ( $r)* ) )
             // src/bigraphspace/parser/antlr/BigraphTerm.g:62:3: l= IDENTIFIER SLASH (r+= IDENTIFIER ( COMMA r+= IDENTIFIER )* )?
             {
-            l=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_substitution388);  
+            l=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_substitution398);  
             stream_IDENTIFIER.add(l);
 
-            SLASH20=(Token)match(input,SLASH,FOLLOW_SLASH_in_substitution390);  
-            stream_SLASH.add(SLASH20);
+            SLASH24=(Token)match(input,SLASH,FOLLOW_SLASH_in_substitution400);  
+            stream_SLASH.add(SLASH24);
 
             // src/bigraphspace/parser/antlr/BigraphTerm.g:62:22: (r+= IDENTIFIER ( COMMA r+= IDENTIFIER )* )?
-            int alt7=2;
-            int LA7_0 = input.LA(1);
+            int alt9=2;
+            int LA9_0 = input.LA(1);
 
-            if ( (LA7_0==IDENTIFIER) ) {
-                alt7=1;
+            if ( (LA9_0==IDENTIFIER) ) {
+                alt9=1;
             }
-            switch (alt7) {
+            switch (alt9) {
                 case 1 :
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:62:24: r+= IDENTIFIER ( COMMA r+= IDENTIFIER )*
                     {
-                    r=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_substitution396);  
+                    r=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_substitution406);  
                     stream_IDENTIFIER.add(r);
 
                     if (list_r==null) list_r=new ArrayList();
                     list_r.add(r);
 
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:62:38: ( COMMA r+= IDENTIFIER )*
-                    loop6:
+                    loop8:
                     do {
-                        int alt6=2;
-                        int LA6_0 = input.LA(1);
+                        int alt8=2;
+                        int LA8_0 = input.LA(1);
 
-                        if ( (LA6_0==COMMA) ) {
-                            alt6=1;
+                        if ( (LA8_0==COMMA) ) {
+                            alt8=1;
                         }
 
 
-                        switch (alt6) {
+                        switch (alt8) {
                     	case 1 :
                     	    // src/bigraphspace/parser/antlr/BigraphTerm.g:62:40: COMMA r+= IDENTIFIER
                     	    {
-                    	    COMMA21=(Token)match(input,COMMA,FOLLOW_COMMA_in_substitution400);  
-                    	    stream_COMMA.add(COMMA21);
+                    	    COMMA25=(Token)match(input,COMMA,FOLLOW_COMMA_in_substitution410);  
+                    	    stream_COMMA.add(COMMA25);
 
-                    	    r=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_substitution404);  
+                    	    r=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_substitution414);  
                     	    stream_IDENTIFIER.add(r);
 
                     	    if (list_r==null) list_r=new ArrayList();
@@ -684,7 +746,7 @@ public class BigraphTermParser extends Parser {
                     	    break;
 
                     	default :
-                    	    break loop6;
+                    	    break loop8;
                         }
                     } while (true);
 
@@ -697,7 +759,7 @@ public class BigraphTermParser extends Parser {
 
 
             // AST REWRITE
-            // elements: l, SLASH, r
+            // elements: r, l, SLASH
             // token labels: l
             // rule labels: retval
             // token list labels: r
@@ -763,55 +825,55 @@ public class BigraphTermParser extends Parser {
 
         Object root_0 = null;
 
-        Token PIPE223=null;
-        BigraphTermParser.wide1_return wide122 = null;
+        Token PIPE227=null;
+        BigraphTermParser.wide1_return wide126 = null;
 
-        BigraphTermParser.wide1_return wide124 = null;
+        BigraphTermParser.wide1_return wide128 = null;
 
 
-        Object PIPE223_tree=null;
+        Object PIPE227_tree=null;
         RewriteRuleTokenStream stream_PIPE2=new RewriteRuleTokenStream(adaptor,"token PIPE2");
         RewriteRuleSubtreeStream stream_wide1=new RewriteRuleSubtreeStream(adaptor,"rule wide1");
         try {
             // src/bigraphspace/parser/antlr/BigraphTerm.g:67:1: ( wide1 ( PIPE2 wide1 )* -> ( wide1 )+ )
             // src/bigraphspace/parser/antlr/BigraphTerm.g:67:3: wide1 ( PIPE2 wide1 )*
             {
-            pushFollow(FOLLOW_wide1_in_wide435);
-            wide122=wide1();
+            pushFollow(FOLLOW_wide1_in_wide445);
+            wide126=wide1();
 
             state._fsp--;
 
-            stream_wide1.add(wide122.getTree());
+            stream_wide1.add(wide126.getTree());
             // src/bigraphspace/parser/antlr/BigraphTerm.g:67:9: ( PIPE2 wide1 )*
-            loop8:
+            loop10:
             do {
-                int alt8=2;
-                int LA8_0 = input.LA(1);
+                int alt10=2;
+                int LA10_0 = input.LA(1);
 
-                if ( (LA8_0==PIPE2) ) {
-                    alt8=1;
+                if ( (LA10_0==PIPE2) ) {
+                    alt10=1;
                 }
 
 
-                switch (alt8) {
+                switch (alt10) {
             	case 1 :
             	    // src/bigraphspace/parser/antlr/BigraphTerm.g:67:11: PIPE2 wide1
             	    {
-            	    PIPE223=(Token)match(input,PIPE2,FOLLOW_PIPE2_in_wide439);  
-            	    stream_PIPE2.add(PIPE223);
+            	    PIPE227=(Token)match(input,PIPE2,FOLLOW_PIPE2_in_wide449);  
+            	    stream_PIPE2.add(PIPE227);
 
-            	    pushFollow(FOLLOW_wide1_in_wide441);
-            	    wide124=wide1();
+            	    pushFollow(FOLLOW_wide1_in_wide451);
+            	    wide128=wide1();
 
             	    state._fsp--;
 
-            	    stream_wide1.add(wide124.getTree());
+            	    stream_wide1.add(wide128.getTree());
 
             	    }
             	    break;
 
             	default :
-            	    break loop8;
+            	    break loop10;
                 }
             } while (true);
 
@@ -875,7 +937,7 @@ public class BigraphTermParser extends Parser {
 
         Object root_0 = null;
 
-        BigraphTermParser.prime_return prime25 = null;
+        BigraphTermParser.prime_return prime29 = null;
 
 
         RewriteRuleSubtreeStream stream_prime=new RewriteRuleSubtreeStream(adaptor,"rule prime");
@@ -883,12 +945,12 @@ public class BigraphTermParser extends Parser {
             // src/bigraphspace/parser/antlr/BigraphTerm.g:71:1: ( prime -> ^( ROOT prime ) )
             // src/bigraphspace/parser/antlr/BigraphTerm.g:71:3: prime
             {
-            pushFollow(FOLLOW_prime_in_wide1458);
-            prime25=prime();
+            pushFollow(FOLLOW_prime_in_wide1468);
+            prime29=prime();
 
             state._fsp--;
 
-            stream_prime.add(prime25.getTree());
+            stream_prime.add(prime29.getTree());
 
 
             // AST REWRITE
@@ -950,33 +1012,33 @@ public class BigraphTermParser extends Parser {
 
         Object root_0 = null;
 
-        Token PIPE27=null;
-        BigraphTermParser.prime1_return prime126 = null;
+        Token PIPE31=null;
+        BigraphTermParser.prime1_return prime130 = null;
 
-        BigraphTermParser.prime1_return prime128 = null;
+        BigraphTermParser.prime1_return prime132 = null;
 
 
-        Object PIPE27_tree=null;
+        Object PIPE31_tree=null;
         RewriteRuleTokenStream stream_PIPE=new RewriteRuleTokenStream(adaptor,"token PIPE");
         RewriteRuleSubtreeStream stream_prime1=new RewriteRuleSubtreeStream(adaptor,"rule prime1");
         try {
             // src/bigraphspace/parser/antlr/BigraphTerm.g:75:1: ( -> ^( EMPTY ) | prime1 ( PIPE prime1 )* -> ( prime1 )+ )
-            int alt10=2;
-            int LA10_0 = input.LA(1);
+            int alt12=2;
+            int LA12_0 = input.LA(1);
 
-            if ( (LA10_0==EOF||LA10_0==WHERE||(LA10_0>=ARROW && LA10_0<=DOT)||LA10_0==PIPE2||LA10_0==RPAREN) ) {
-                alt10=1;
+            if ( (LA12_0==EOF||LA12_0==WHERE||LA12_0==ARROW||LA12_0==DOT||LA12_0==PIPE2||LA12_0==RPAREN) ) {
+                alt12=1;
             }
-            else if ( (LA10_0==IDENTIFIER||(LA10_0>=LSQUARE && LA10_0<=NUMBER)||LA10_0==STRING) ) {
-                alt10=2;
+            else if ( (LA12_0==IDENTIFIER||(LA12_0>=LSQUARE && LA12_0<=NUMBER)||LA12_0==STRING) ) {
+                alt12=2;
             }
             else {
                 NoViableAltException nvae =
-                    new NoViableAltException("", 10, 0, input);
+                    new NoViableAltException("", 12, 0, input);
 
                 throw nvae;
             }
-            switch (alt10) {
+            switch (alt12) {
                 case 1 :
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:75:3: 
                     {
@@ -1010,42 +1072,42 @@ public class BigraphTermParser extends Parser {
                 case 2 :
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:76:3: prime1 ( PIPE prime1 )*
                     {
-                    pushFollow(FOLLOW_prime1_in_prime487);
-                    prime126=prime1();
+                    pushFollow(FOLLOW_prime1_in_prime497);
+                    prime130=prime1();
 
                     state._fsp--;
 
-                    stream_prime1.add(prime126.getTree());
+                    stream_prime1.add(prime130.getTree());
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:76:10: ( PIPE prime1 )*
-                    loop9:
+                    loop11:
                     do {
-                        int alt9=2;
-                        int LA9_0 = input.LA(1);
+                        int alt11=2;
+                        int LA11_0 = input.LA(1);
 
-                        if ( (LA9_0==PIPE) ) {
-                            alt9=1;
+                        if ( (LA11_0==PIPE) ) {
+                            alt11=1;
                         }
 
 
-                        switch (alt9) {
+                        switch (alt11) {
                     	case 1 :
                     	    // src/bigraphspace/parser/antlr/BigraphTerm.g:76:12: PIPE prime1
                     	    {
-                    	    PIPE27=(Token)match(input,PIPE,FOLLOW_PIPE_in_prime491);  
-                    	    stream_PIPE.add(PIPE27);
+                    	    PIPE31=(Token)match(input,PIPE,FOLLOW_PIPE_in_prime501);  
+                    	    stream_PIPE.add(PIPE31);
 
-                    	    pushFollow(FOLLOW_prime1_in_prime493);
-                    	    prime128=prime1();
+                    	    pushFollow(FOLLOW_prime1_in_prime503);
+                    	    prime132=prime1();
 
                     	    state._fsp--;
 
-                    	    stream_prime1.add(prime128.getTree());
+                    	    stream_prime1.add(prime132.getTree());
 
                     	    }
                     	    break;
 
                     	default :
-                    	    break loop9;
+                    	    break loop11;
                         }
                     } while (true);
 
@@ -1111,56 +1173,56 @@ public class BigraphTermParser extends Parser {
 
         Object root_0 = null;
 
-        Token LSQUARE29=null;
-        Token NUMBER30=null;
-        Token RSQUARE31=null;
-        BigraphTermParser.node_return node32 = null;
+        Token LSQUARE33=null;
+        Token NUMBER34=null;
+        Token RSQUARE35=null;
+        BigraphTermParser.node_return node36 = null;
 
 
-        Object LSQUARE29_tree=null;
-        Object NUMBER30_tree=null;
-        Object RSQUARE31_tree=null;
+        Object LSQUARE33_tree=null;
+        Object NUMBER34_tree=null;
+        Object RSQUARE35_tree=null;
         RewriteRuleTokenStream stream_LSQUARE=new RewriteRuleTokenStream(adaptor,"token LSQUARE");
         RewriteRuleTokenStream stream_RSQUARE=new RewriteRuleTokenStream(adaptor,"token RSQUARE");
         RewriteRuleTokenStream stream_NUMBER=new RewriteRuleTokenStream(adaptor,"token NUMBER");
         RewriteRuleSubtreeStream stream_node=new RewriteRuleSubtreeStream(adaptor,"rule node");
         try {
             // src/bigraphspace/parser/antlr/BigraphTerm.g:80:1: ( LSQUARE ( NUMBER )? RSQUARE -> ^( UNDERSCORE ( NUMBER )? ) | node -> ( node )+ )
-            int alt12=2;
-            int LA12_0 = input.LA(1);
+            int alt14=2;
+            int LA14_0 = input.LA(1);
 
-            if ( (LA12_0==LSQUARE) ) {
-                alt12=1;
+            if ( (LA14_0==LSQUARE) ) {
+                alt14=1;
             }
-            else if ( (LA12_0==IDENTIFIER||LA12_0==NUMBER||LA12_0==STRING) ) {
-                alt12=2;
+            else if ( (LA14_0==IDENTIFIER||LA14_0==NUMBER||LA14_0==STRING) ) {
+                alt14=2;
             }
             else {
                 NoViableAltException nvae =
-                    new NoViableAltException("", 12, 0, input);
+                    new NoViableAltException("", 14, 0, input);
 
                 throw nvae;
             }
-            switch (alt12) {
+            switch (alt14) {
                 case 1 :
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:80:3: LSQUARE ( NUMBER )? RSQUARE
                     {
-                    LSQUARE29=(Token)match(input,LSQUARE,FOLLOW_LSQUARE_in_prime1510);  
-                    stream_LSQUARE.add(LSQUARE29);
+                    LSQUARE33=(Token)match(input,LSQUARE,FOLLOW_LSQUARE_in_prime1520);  
+                    stream_LSQUARE.add(LSQUARE33);
 
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:80:11: ( NUMBER )?
-                    int alt11=2;
-                    int LA11_0 = input.LA(1);
+                    int alt13=2;
+                    int LA13_0 = input.LA(1);
 
-                    if ( (LA11_0==NUMBER) ) {
-                        alt11=1;
+                    if ( (LA13_0==NUMBER) ) {
+                        alt13=1;
                     }
-                    switch (alt11) {
+                    switch (alt13) {
                         case 1 :
                             // src/bigraphspace/parser/antlr/BigraphTerm.g:80:11: NUMBER
                             {
-                            NUMBER30=(Token)match(input,NUMBER,FOLLOW_NUMBER_in_prime1512);  
-                            stream_NUMBER.add(NUMBER30);
+                            NUMBER34=(Token)match(input,NUMBER,FOLLOW_NUMBER_in_prime1522);  
+                            stream_NUMBER.add(NUMBER34);
 
 
                             }
@@ -1168,8 +1230,8 @@ public class BigraphTermParser extends Parser {
 
                     }
 
-                    RSQUARE31=(Token)match(input,RSQUARE,FOLLOW_RSQUARE_in_prime1515);  
-                    stream_RSQUARE.add(RSQUARE31);
+                    RSQUARE35=(Token)match(input,RSQUARE,FOLLOW_RSQUARE_in_prime1525);  
+                    stream_RSQUARE.add(RSQUARE35);
 
 
 
@@ -1209,12 +1271,12 @@ public class BigraphTermParser extends Parser {
                 case 2 :
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:81:3: node
                     {
-                    pushFollow(FOLLOW_node_in_prime1530);
-                    node32=node();
+                    pushFollow(FOLLOW_node_in_prime1540);
+                    node36=node();
 
                     state._fsp--;
 
-                    stream_node.add(node32.getTree());
+                    stream_node.add(node36.getTree());
 
 
                     // AST REWRITE
@@ -1277,13 +1339,13 @@ public class BigraphTermParser extends Parser {
 
         Object root_0 = null;
 
-        BigraphTermParser.control_return control33 = null;
+        BigraphTermParser.control_return control37 = null;
 
-        BigraphTermParser.support_return support34 = null;
+        BigraphTermParser.support_return support38 = null;
 
-        BigraphTermParser.ports_return ports35 = null;
+        BigraphTermParser.ports_return ports39 = null;
 
-        BigraphTermParser.children_return children36 = null;
+        BigraphTermParser.children_return children40 = null;
 
 
         RewriteRuleSubtreeStream stream_control=new RewriteRuleSubtreeStream(adaptor,"rule control");
@@ -1294,29 +1356,29 @@ public class BigraphTermParser extends Parser {
             // src/bigraphspace/parser/antlr/BigraphTerm.g:86:1: ( control ( support )? ( ports )? ( children )? -> ^( NODE control ^( SUPPORT ( support )? ) ^( PORTS ( ports )? ) ^( CHILDREN ( children )? ) ) )
             // src/bigraphspace/parser/antlr/BigraphTerm.g:86:3: control ( support )? ( ports )? ( children )?
             {
-            pushFollow(FOLLOW_control_in_node547);
-            control33=control();
+            pushFollow(FOLLOW_control_in_node557);
+            control37=control();
 
             state._fsp--;
 
-            stream_control.add(control33.getTree());
+            stream_control.add(control37.getTree());
             // src/bigraphspace/parser/antlr/BigraphTerm.g:86:11: ( support )?
-            int alt13=2;
-            int LA13_0 = input.LA(1);
+            int alt15=2;
+            int LA15_0 = input.LA(1);
 
-            if ( (LA13_0==AT) ) {
-                alt13=1;
+            if ( (LA15_0==AT) ) {
+                alt15=1;
             }
-            switch (alt13) {
+            switch (alt15) {
                 case 1 :
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:86:11: support
                     {
-                    pushFollow(FOLLOW_support_in_node549);
-                    support34=support();
+                    pushFollow(FOLLOW_support_in_node559);
+                    support38=support();
 
                     state._fsp--;
 
-                    stream_support.add(support34.getTree());
+                    stream_support.add(support38.getTree());
 
                     }
                     break;
@@ -1324,22 +1386,22 @@ public class BigraphTermParser extends Parser {
             }
 
             // src/bigraphspace/parser/antlr/BigraphTerm.g:86:20: ( ports )?
-            int alt14=2;
-            int LA14_0 = input.LA(1);
+            int alt16=2;
+            int LA16_0 = input.LA(1);
 
-            if ( (LA14_0==LBRACE) ) {
-                alt14=1;
+            if ( (LA16_0==LBRACE) ) {
+                alt16=1;
             }
-            switch (alt14) {
+            switch (alt16) {
                 case 1 :
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:86:20: ports
                     {
-                    pushFollow(FOLLOW_ports_in_node552);
-                    ports35=ports();
+                    pushFollow(FOLLOW_ports_in_node562);
+                    ports39=ports();
 
                     state._fsp--;
 
-                    stream_ports.add(ports35.getTree());
+                    stream_ports.add(ports39.getTree());
 
                     }
                     break;
@@ -1347,22 +1409,22 @@ public class BigraphTermParser extends Parser {
             }
 
             // src/bigraphspace/parser/antlr/BigraphTerm.g:86:27: ( children )?
-            int alt15=2;
-            int LA15_0 = input.LA(1);
+            int alt17=2;
+            int LA17_0 = input.LA(1);
 
-            if ( (LA15_0==LPAREN) ) {
-                alt15=1;
+            if ( (LA17_0==LPAREN) ) {
+                alt17=1;
             }
-            switch (alt15) {
+            switch (alt17) {
                 case 1 :
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:86:27: children
                     {
-                    pushFollow(FOLLOW_children_in_node555);
-                    children36=children();
+                    pushFollow(FOLLOW_children_in_node565);
+                    children40=children();
 
                     state._fsp--;
 
-                    stream_children.add(children36.getTree());
+                    stream_children.add(children40.getTree());
 
                     }
                     break;
@@ -1372,7 +1434,7 @@ public class BigraphTermParser extends Parser {
 
 
             // AST REWRITE
-            // elements: children, control, ports, support
+            // elements: ports, children, control, support
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -1472,17 +1534,17 @@ public class BigraphTermParser extends Parser {
 
         Object root_0 = null;
 
-        Token COLON38=null;
-        Token IDENTIFIER40=null;
-        BigraphTermParser.tuple_return tuple37 = null;
+        Token COLON42=null;
+        Token IDENTIFIER44=null;
+        BigraphTermParser.tuple_return tuple41 = null;
 
-        BigraphTermParser.type_return type39 = null;
+        BigraphTermParser.type_return type43 = null;
 
-        BigraphTermParser.indexes_return indexes41 = null;
+        BigraphTermParser.indexes_return indexes45 = null;
 
 
-        Object COLON38_tree=null;
-        Object IDENTIFIER40_tree=null;
+        Object COLON42_tree=null;
+        Object IDENTIFIER44_tree=null;
         RewriteRuleTokenStream stream_COLON=new RewriteRuleTokenStream(adaptor,"token COLON");
         RewriteRuleTokenStream stream_IDENTIFIER=new RewriteRuleTokenStream(adaptor,"token IDENTIFIER");
         RewriteRuleSubtreeStream stream_tuple=new RewriteRuleSubtreeStream(adaptor,"rule tuple");
@@ -1490,53 +1552,53 @@ public class BigraphTermParser extends Parser {
         RewriteRuleSubtreeStream stream_type=new RewriteRuleSubtreeStream(adaptor,"rule type");
         try {
             // src/bigraphspace/parser/antlr/BigraphTerm.g:90:1: ( tuple COLON type -> ^( CONTROL type tuple ) | IDENTIFIER ( indexes )? -> ^( CONTROL IDENTIFIER ( indexes )? ) )
-            int alt17=2;
-            int LA17_0 = input.LA(1);
+            int alt19=2;
+            int LA19_0 = input.LA(1);
 
-            if ( (LA17_0==IDENTIFIER) ) {
-                int LA17_1 = input.LA(2);
+            if ( (LA19_0==IDENTIFIER) ) {
+                int LA19_1 = input.LA(2);
 
-                if ( (LA17_1==EOF||LA17_1==WHERE||(LA17_1>=ARROW && LA17_1<=DOT)||(LA17_1>=PIPE2 && LA17_1<=PIPE)||LA17_1==LANGLE||(LA17_1>=AT && LA17_1<=LBRACE)||(LA17_1>=LPAREN && LA17_1<=RPAREN)) ) {
-                    alt17=2;
+                if ( (LA19_1==COMMA||LA19_1==COLON) ) {
+                    alt19=1;
                 }
-                else if ( (LA17_1==COMMA||LA17_1==COLON) ) {
-                    alt17=1;
+                else if ( (LA19_1==EOF||LA19_1==WHERE||LA19_1==ARROW||LA19_1==DOT||(LA19_1>=PIPE2 && LA19_1<=PIPE)||LA19_1==LANGLE||(LA19_1>=AT && LA19_1<=LBRACE)||(LA19_1>=LPAREN && LA19_1<=RPAREN)) ) {
+                    alt19=2;
                 }
                 else {
                     NoViableAltException nvae =
-                        new NoViableAltException("", 17, 1, input);
+                        new NoViableAltException("", 19, 1, input);
 
                     throw nvae;
                 }
             }
-            else if ( (LA17_0==NUMBER||LA17_0==STRING) ) {
-                alt17=1;
+            else if ( (LA19_0==NUMBER||LA19_0==STRING) ) {
+                alt19=1;
             }
             else {
                 NoViableAltException nvae =
-                    new NoViableAltException("", 17, 0, input);
+                    new NoViableAltException("", 19, 0, input);
 
                 throw nvae;
             }
-            switch (alt17) {
+            switch (alt19) {
                 case 1 :
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:90:3: tuple COLON type
                     {
-                    pushFollow(FOLLOW_tuple_in_control602);
-                    tuple37=tuple();
+                    pushFollow(FOLLOW_tuple_in_control612);
+                    tuple41=tuple();
 
                     state._fsp--;
 
-                    stream_tuple.add(tuple37.getTree());
-                    COLON38=(Token)match(input,COLON,FOLLOW_COLON_in_control604);  
-                    stream_COLON.add(COLON38);
+                    stream_tuple.add(tuple41.getTree());
+                    COLON42=(Token)match(input,COLON,FOLLOW_COLON_in_control614);  
+                    stream_COLON.add(COLON42);
 
-                    pushFollow(FOLLOW_type_in_control606);
-                    type39=type();
+                    pushFollow(FOLLOW_type_in_control616);
+                    type43=type();
 
                     state._fsp--;
 
-                    stream_type.add(type39.getTree());
+                    stream_type.add(type43.getTree());
 
 
                     // AST REWRITE
@@ -1571,26 +1633,26 @@ public class BigraphTermParser extends Parser {
                 case 2 :
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:91:3: IDENTIFIER ( indexes )?
                     {
-                    IDENTIFIER40=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_control622);  
-                    stream_IDENTIFIER.add(IDENTIFIER40);
+                    IDENTIFIER44=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_control632);  
+                    stream_IDENTIFIER.add(IDENTIFIER44);
 
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:91:14: ( indexes )?
-                    int alt16=2;
-                    int LA16_0 = input.LA(1);
+                    int alt18=2;
+                    int LA18_0 = input.LA(1);
 
-                    if ( (LA16_0==LANGLE) ) {
-                        alt16=1;
+                    if ( (LA18_0==LANGLE) ) {
+                        alt18=1;
                     }
-                    switch (alt16) {
+                    switch (alt18) {
                         case 1 :
                             // src/bigraphspace/parser/antlr/BigraphTerm.g:91:14: indexes
                             {
-                            pushFollow(FOLLOW_indexes_in_control624);
-                            indexes41=indexes();
+                            pushFollow(FOLLOW_indexes_in_control634);
+                            indexes45=indexes();
 
                             state._fsp--;
 
-                            stream_indexes.add(indexes41.getTree());
+                            stream_indexes.add(indexes45.getTree());
 
                             }
                             break;
@@ -1666,17 +1728,17 @@ public class BigraphTermParser extends Parser {
 
         Object root_0 = null;
 
-        Token LANGLE42=null;
-        Token COMMA44=null;
-        Token RANGLE46=null;
-        BigraphTermParser.index_return index43 = null;
+        Token LANGLE46=null;
+        Token COMMA48=null;
+        Token RANGLE50=null;
+        BigraphTermParser.index_return index47 = null;
 
-        BigraphTermParser.index_return index45 = null;
+        BigraphTermParser.index_return index49 = null;
 
 
-        Object LANGLE42_tree=null;
-        Object COMMA44_tree=null;
-        Object RANGLE46_tree=null;
+        Object LANGLE46_tree=null;
+        Object COMMA48_tree=null;
+        Object RANGLE50_tree=null;
         RewriteRuleTokenStream stream_RANGLE=new RewriteRuleTokenStream(adaptor,"token RANGLE");
         RewriteRuleTokenStream stream_COMMA=new RewriteRuleTokenStream(adaptor,"token COMMA");
         RewriteRuleTokenStream stream_LANGLE=new RewriteRuleTokenStream(adaptor,"token LANGLE");
@@ -1685,56 +1747,56 @@ public class BigraphTermParser extends Parser {
             // src/bigraphspace/parser/antlr/BigraphTerm.g:95:1: ( LANGLE ( index ( COMMA index )* )? RANGLE -> ( index )* )
             // src/bigraphspace/parser/antlr/BigraphTerm.g:95:3: LANGLE ( index ( COMMA index )* )? RANGLE
             {
-            LANGLE42=(Token)match(input,LANGLE,FOLLOW_LANGLE_in_indexes647);  
-            stream_LANGLE.add(LANGLE42);
+            LANGLE46=(Token)match(input,LANGLE,FOLLOW_LANGLE_in_indexes657);  
+            stream_LANGLE.add(LANGLE46);
 
             // src/bigraphspace/parser/antlr/BigraphTerm.g:95:10: ( index ( COMMA index )* )?
-            int alt19=2;
-            int LA19_0 = input.LA(1);
+            int alt21=2;
+            int LA21_0 = input.LA(1);
 
-            if ( (LA19_0==IDENTIFIER||LA19_0==NUMBER||LA19_0==STRING) ) {
-                alt19=1;
+            if ( (LA21_0==IDENTIFIER||LA21_0==NUMBER||LA21_0==STRING) ) {
+                alt21=1;
             }
-            switch (alt19) {
+            switch (alt21) {
                 case 1 :
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:95:12: index ( COMMA index )*
                     {
-                    pushFollow(FOLLOW_index_in_indexes651);
-                    index43=index();
+                    pushFollow(FOLLOW_index_in_indexes661);
+                    index47=index();
 
                     state._fsp--;
 
-                    stream_index.add(index43.getTree());
+                    stream_index.add(index47.getTree());
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:95:18: ( COMMA index )*
-                    loop18:
+                    loop20:
                     do {
-                        int alt18=2;
-                        int LA18_0 = input.LA(1);
+                        int alt20=2;
+                        int LA20_0 = input.LA(1);
 
-                        if ( (LA18_0==COMMA) ) {
-                            alt18=1;
+                        if ( (LA20_0==COMMA) ) {
+                            alt20=1;
                         }
 
 
-                        switch (alt18) {
+                        switch (alt20) {
                     	case 1 :
                     	    // src/bigraphspace/parser/antlr/BigraphTerm.g:95:20: COMMA index
                     	    {
-                    	    COMMA44=(Token)match(input,COMMA,FOLLOW_COMMA_in_indexes655);  
-                    	    stream_COMMA.add(COMMA44);
+                    	    COMMA48=(Token)match(input,COMMA,FOLLOW_COMMA_in_indexes665);  
+                    	    stream_COMMA.add(COMMA48);
 
-                    	    pushFollow(FOLLOW_index_in_indexes657);
-                    	    index45=index();
+                    	    pushFollow(FOLLOW_index_in_indexes667);
+                    	    index49=index();
 
                     	    state._fsp--;
 
-                    	    stream_index.add(index45.getTree());
+                    	    stream_index.add(index49.getTree());
 
                     	    }
                     	    break;
 
                     	default :
-                    	    break loop18;
+                    	    break loop20;
                         }
                     } while (true);
 
@@ -1744,8 +1806,8 @@ public class BigraphTermParser extends Parser {
 
             }
 
-            RANGLE46=(Token)match(input,RANGLE,FOLLOW_RANGLE_in_indexes665);  
-            stream_RANGLE.add(RANGLE46);
+            RANGLE50=(Token)match(input,RANGLE,FOLLOW_RANGLE_in_indexes675);  
+            stream_RANGLE.add(RANGLE50);
 
 
 
@@ -1805,9 +1867,9 @@ public class BigraphTermParser extends Parser {
 
         Object root_0 = null;
 
-        Token set47=null;
+        Token set51=null;
 
-        Object set47_tree=null;
+        Object set51_tree=null;
 
         try {
             // src/bigraphspace/parser/antlr/BigraphTerm.g:101:1: ( NUMBER | STRING | IDENTIFIER )
@@ -1815,10 +1877,10 @@ public class BigraphTermParser extends Parser {
             {
             root_0 = (Object)adaptor.nil();
 
-            set47=(Token)input.LT(1);
+            set51=(Token)input.LT(1);
             if ( input.LA(1)==IDENTIFIER||input.LA(1)==NUMBER||input.LA(1)==STRING ) {
                 input.consume();
-                adaptor.addChild(root_0, (Object)adaptor.create(set47));
+                adaptor.addChild(root_0, (Object)adaptor.create(set51));
                 state.errorRecovery=false;
             }
             else {
@@ -1860,55 +1922,55 @@ public class BigraphTermParser extends Parser {
 
         Object root_0 = null;
 
-        Token COMMA49=null;
-        BigraphTermParser.index_return index48 = null;
+        Token COMMA53=null;
+        BigraphTermParser.index_return index52 = null;
 
-        BigraphTermParser.index_return index50 = null;
+        BigraphTermParser.index_return index54 = null;
 
 
-        Object COMMA49_tree=null;
+        Object COMMA53_tree=null;
         RewriteRuleTokenStream stream_COMMA=new RewriteRuleTokenStream(adaptor,"token COMMA");
         RewriteRuleSubtreeStream stream_index=new RewriteRuleSubtreeStream(adaptor,"rule index");
         try {
             // src/bigraphspace/parser/antlr/BigraphTerm.g:107:1: ( index ( COMMA index )* -> ( index )* )
             // src/bigraphspace/parser/antlr/BigraphTerm.g:107:3: index ( COMMA index )*
             {
-            pushFollow(FOLLOW_index_in_tuple703);
-            index48=index();
+            pushFollow(FOLLOW_index_in_tuple713);
+            index52=index();
 
             state._fsp--;
 
-            stream_index.add(index48.getTree());
+            stream_index.add(index52.getTree());
             // src/bigraphspace/parser/antlr/BigraphTerm.g:107:9: ( COMMA index )*
-            loop20:
+            loop22:
             do {
-                int alt20=2;
-                int LA20_0 = input.LA(1);
+                int alt22=2;
+                int LA22_0 = input.LA(1);
 
-                if ( (LA20_0==COMMA) ) {
-                    alt20=1;
+                if ( (LA22_0==COMMA) ) {
+                    alt22=1;
                 }
 
 
-                switch (alt20) {
+                switch (alt22) {
             	case 1 :
             	    // src/bigraphspace/parser/antlr/BigraphTerm.g:107:11: COMMA index
             	    {
-            	    COMMA49=(Token)match(input,COMMA,FOLLOW_COMMA_in_tuple707);  
-            	    stream_COMMA.add(COMMA49);
+            	    COMMA53=(Token)match(input,COMMA,FOLLOW_COMMA_in_tuple717);  
+            	    stream_COMMA.add(COMMA53);
 
-            	    pushFollow(FOLLOW_index_in_tuple709);
-            	    index50=index();
+            	    pushFollow(FOLLOW_index_in_tuple719);
+            	    index54=index();
 
             	    state._fsp--;
 
-            	    stream_index.add(index50.getTree());
+            	    stream_index.add(index54.getTree());
 
             	    }
             	    break;
 
             	default :
-            	    break loop20;
+            	    break loop22;
                 }
             } while (true);
 
@@ -1970,17 +2032,17 @@ public class BigraphTermParser extends Parser {
 
         Object root_0 = null;
 
-        Token IDENTIFIER51=null;
+        Token IDENTIFIER55=null;
 
-        Object IDENTIFIER51_tree=null;
+        Object IDENTIFIER55_tree=null;
         RewriteRuleTokenStream stream_IDENTIFIER=new RewriteRuleTokenStream(adaptor,"token IDENTIFIER");
 
         try {
             // src/bigraphspace/parser/antlr/BigraphTerm.g:112:1: ( IDENTIFIER -> IDENTIFIER )
             // src/bigraphspace/parser/antlr/BigraphTerm.g:112:3: IDENTIFIER
             {
-            IDENTIFIER51=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_type728);  
-            stream_IDENTIFIER.add(IDENTIFIER51);
+            IDENTIFIER55=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_type738);  
+            stream_IDENTIFIER.add(IDENTIFIER55);
 
 
 
@@ -2035,11 +2097,11 @@ public class BigraphTermParser extends Parser {
 
         Object root_0 = null;
 
-        Token AT52=null;
-        Token IDENTIFIER53=null;
+        Token AT56=null;
+        Token IDENTIFIER57=null;
 
-        Object AT52_tree=null;
-        Object IDENTIFIER53_tree=null;
+        Object AT56_tree=null;
+        Object IDENTIFIER57_tree=null;
         RewriteRuleTokenStream stream_AT=new RewriteRuleTokenStream(adaptor,"token AT");
         RewriteRuleTokenStream stream_IDENTIFIER=new RewriteRuleTokenStream(adaptor,"token IDENTIFIER");
 
@@ -2047,11 +2109,11 @@ public class BigraphTermParser extends Parser {
             // src/bigraphspace/parser/antlr/BigraphTerm.g:116:1: ( AT IDENTIFIER -> IDENTIFIER )
             // src/bigraphspace/parser/antlr/BigraphTerm.g:116:3: AT IDENTIFIER
             {
-            AT52=(Token)match(input,AT,FOLLOW_AT_in_support741);  
-            stream_AT.add(AT52);
+            AT56=(Token)match(input,AT,FOLLOW_AT_in_support751);  
+            stream_AT.add(AT56);
 
-            IDENTIFIER53=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_support743);  
-            stream_IDENTIFIER.add(IDENTIFIER53);
+            IDENTIFIER57=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_support753);  
+            stream_IDENTIFIER.add(IDENTIFIER57);
 
 
 
@@ -2106,17 +2168,17 @@ public class BigraphTermParser extends Parser {
 
         Object root_0 = null;
 
-        Token LBRACE54=null;
-        Token COMMA56=null;
-        Token RBRACE58=null;
-        BigraphTermParser.port_value_return port_value55 = null;
+        Token LBRACE58=null;
+        Token COMMA60=null;
+        Token RBRACE62=null;
+        BigraphTermParser.port_value_return port_value59 = null;
 
-        BigraphTermParser.port_value_return port_value57 = null;
+        BigraphTermParser.port_value_return port_value61 = null;
 
 
-        Object LBRACE54_tree=null;
-        Object COMMA56_tree=null;
-        Object RBRACE58_tree=null;
+        Object LBRACE58_tree=null;
+        Object COMMA60_tree=null;
+        Object RBRACE62_tree=null;
         RewriteRuleTokenStream stream_RBRACE=new RewriteRuleTokenStream(adaptor,"token RBRACE");
         RewriteRuleTokenStream stream_COMMA=new RewriteRuleTokenStream(adaptor,"token COMMA");
         RewriteRuleTokenStream stream_LBRACE=new RewriteRuleTokenStream(adaptor,"token LBRACE");
@@ -2125,56 +2187,56 @@ public class BigraphTermParser extends Parser {
             // src/bigraphspace/parser/antlr/BigraphTerm.g:120:1: ( LBRACE ( port_value ( COMMA port_value )* )? RBRACE -> ( port_value )* )
             // src/bigraphspace/parser/antlr/BigraphTerm.g:120:3: LBRACE ( port_value ( COMMA port_value )* )? RBRACE
             {
-            LBRACE54=(Token)match(input,LBRACE,FOLLOW_LBRACE_in_ports756);  
-            stream_LBRACE.add(LBRACE54);
+            LBRACE58=(Token)match(input,LBRACE,FOLLOW_LBRACE_in_ports766);  
+            stream_LBRACE.add(LBRACE58);
 
             // src/bigraphspace/parser/antlr/BigraphTerm.g:120:10: ( port_value ( COMMA port_value )* )?
-            int alt22=2;
-            int LA22_0 = input.LA(1);
+            int alt24=2;
+            int LA24_0 = input.LA(1);
 
-            if ( (LA22_0==IDENTIFIER||LA22_0==NUMBER||LA22_0==STRING) ) {
-                alt22=1;
+            if ( (LA24_0==IDENTIFIER||LA24_0==NUMBER||LA24_0==STRING) ) {
+                alt24=1;
             }
-            switch (alt22) {
+            switch (alt24) {
                 case 1 :
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:120:12: port_value ( COMMA port_value )*
                     {
-                    pushFollow(FOLLOW_port_value_in_ports760);
-                    port_value55=port_value();
+                    pushFollow(FOLLOW_port_value_in_ports770);
+                    port_value59=port_value();
 
                     state._fsp--;
 
-                    stream_port_value.add(port_value55.getTree());
+                    stream_port_value.add(port_value59.getTree());
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:120:23: ( COMMA port_value )*
-                    loop21:
+                    loop23:
                     do {
-                        int alt21=2;
-                        int LA21_0 = input.LA(1);
+                        int alt23=2;
+                        int LA23_0 = input.LA(1);
 
-                        if ( (LA21_0==COMMA) ) {
-                            alt21=1;
+                        if ( (LA23_0==COMMA) ) {
+                            alt23=1;
                         }
 
 
-                        switch (alt21) {
+                        switch (alt23) {
                     	case 1 :
                     	    // src/bigraphspace/parser/antlr/BigraphTerm.g:120:25: COMMA port_value
                     	    {
-                    	    COMMA56=(Token)match(input,COMMA,FOLLOW_COMMA_in_ports764);  
-                    	    stream_COMMA.add(COMMA56);
+                    	    COMMA60=(Token)match(input,COMMA,FOLLOW_COMMA_in_ports774);  
+                    	    stream_COMMA.add(COMMA60);
 
-                    	    pushFollow(FOLLOW_port_value_in_ports766);
-                    	    port_value57=port_value();
+                    	    pushFollow(FOLLOW_port_value_in_ports776);
+                    	    port_value61=port_value();
 
                     	    state._fsp--;
 
-                    	    stream_port_value.add(port_value57.getTree());
+                    	    stream_port_value.add(port_value61.getTree());
 
                     	    }
                     	    break;
 
                     	default :
-                    	    break loop21;
+                    	    break loop23;
                         }
                     } while (true);
 
@@ -2184,8 +2246,8 @@ public class BigraphTermParser extends Parser {
 
             }
 
-            RBRACE58=(Token)match(input,RBRACE,FOLLOW_RBRACE_in_ports774);  
-            stream_RBRACE.add(RBRACE58);
+            RBRACE62=(Token)match(input,RBRACE,FOLLOW_RBRACE_in_ports784);  
+            stream_RBRACE.add(RBRACE62);
 
 
 
@@ -2245,75 +2307,75 @@ public class BigraphTermParser extends Parser {
 
         Object root_0 = null;
 
-        Token IDENTIFIER59=null;
-        Token EQUALS60=null;
-        BigraphTermParser.link_name_return link_name61 = null;
+        Token IDENTIFIER63=null;
+        Token EQUALS64=null;
+        BigraphTermParser.link_name_return link_name65 = null;
 
-        BigraphTermParser.link_name_return link_name62 = null;
+        BigraphTermParser.link_name_return link_name66 = null;
 
 
-        Object IDENTIFIER59_tree=null;
-        Object EQUALS60_tree=null;
+        Object IDENTIFIER63_tree=null;
+        Object EQUALS64_tree=null;
         RewriteRuleSubtreeStream stream_link_name=new RewriteRuleSubtreeStream(adaptor,"rule link_name");
         try {
             // src/bigraphspace/parser/antlr/BigraphTerm.g:124:1: ( IDENTIFIER EQUALS link_name | link_name -> ^( UNNAMED link_name ) )
-            int alt23=2;
-            int LA23_0 = input.LA(1);
+            int alt25=2;
+            int LA25_0 = input.LA(1);
 
-            if ( (LA23_0==IDENTIFIER) ) {
-                int LA23_1 = input.LA(2);
+            if ( (LA25_0==IDENTIFIER) ) {
+                int LA25_1 = input.LA(2);
 
-                if ( (LA23_1==EQUALS) ) {
-                    alt23=1;
+                if ( (LA25_1==EQUALS) ) {
+                    alt25=1;
                 }
-                else if ( (LA23_1==COMMA||LA23_1==RBRACE) ) {
-                    alt23=2;
+                else if ( (LA25_1==COMMA||LA25_1==RBRACE) ) {
+                    alt25=2;
                 }
                 else {
                     NoViableAltException nvae =
-                        new NoViableAltException("", 23, 1, input);
+                        new NoViableAltException("", 25, 1, input);
 
                     throw nvae;
                 }
             }
-            else if ( (LA23_0==NUMBER||LA23_0==STRING) ) {
-                alt23=2;
+            else if ( (LA25_0==NUMBER||LA25_0==STRING) ) {
+                alt25=2;
             }
             else {
                 NoViableAltException nvae =
-                    new NoViableAltException("", 23, 0, input);
+                    new NoViableAltException("", 25, 0, input);
 
                 throw nvae;
             }
-            switch (alt23) {
+            switch (alt25) {
                 case 1 :
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:124:3: IDENTIFIER EQUALS link_name
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    IDENTIFIER59=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_port_value788); 
-                    IDENTIFIER59_tree = (Object)adaptor.create(IDENTIFIER59);
-                    root_0 = (Object)adaptor.becomeRoot(IDENTIFIER59_tree, root_0);
+                    IDENTIFIER63=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_port_value798); 
+                    IDENTIFIER63_tree = (Object)adaptor.create(IDENTIFIER63);
+                    root_0 = (Object)adaptor.becomeRoot(IDENTIFIER63_tree, root_0);
 
-                    EQUALS60=(Token)match(input,EQUALS,FOLLOW_EQUALS_in_port_value791); 
-                    pushFollow(FOLLOW_link_name_in_port_value794);
-                    link_name61=link_name();
+                    EQUALS64=(Token)match(input,EQUALS,FOLLOW_EQUALS_in_port_value801); 
+                    pushFollow(FOLLOW_link_name_in_port_value804);
+                    link_name65=link_name();
 
                     state._fsp--;
 
-                    adaptor.addChild(root_0, link_name61.getTree());
+                    adaptor.addChild(root_0, link_name65.getTree());
 
                     }
                     break;
                 case 2 :
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:125:3: link_name
                     {
-                    pushFollow(FOLLOW_link_name_in_port_value798);
-                    link_name62=link_name();
+                    pushFollow(FOLLOW_link_name_in_port_value808);
+                    link_name66=link_name();
 
                     state._fsp--;
 
-                    stream_link_name.add(link_name62.getTree());
+                    stream_link_name.add(link_name66.getTree());
 
 
                     // AST REWRITE
@@ -2377,38 +2439,38 @@ public class BigraphTermParser extends Parser {
 
         Object root_0 = null;
 
-        Token IDENTIFIER63=null;
-        BigraphTermParser.constant_return constant64 = null;
+        Token IDENTIFIER67=null;
+        BigraphTermParser.constant_return constant68 = null;
 
 
-        Object IDENTIFIER63_tree=null;
+        Object IDENTIFIER67_tree=null;
 
         try {
             // src/bigraphspace/parser/antlr/BigraphTerm.g:129:1: ( IDENTIFIER | constant )
-            int alt24=2;
-            int LA24_0 = input.LA(1);
+            int alt26=2;
+            int LA26_0 = input.LA(1);
 
-            if ( (LA24_0==IDENTIFIER) ) {
-                alt24=1;
+            if ( (LA26_0==IDENTIFIER) ) {
+                alt26=1;
             }
-            else if ( (LA24_0==NUMBER||LA24_0==STRING) ) {
-                alt24=2;
+            else if ( (LA26_0==NUMBER||LA26_0==STRING) ) {
+                alt26=2;
             }
             else {
                 NoViableAltException nvae =
-                    new NoViableAltException("", 24, 0, input);
+                    new NoViableAltException("", 26, 0, input);
 
                 throw nvae;
             }
-            switch (alt24) {
+            switch (alt26) {
                 case 1 :
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:129:3: IDENTIFIER
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    IDENTIFIER63=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_link_name817); 
-                    IDENTIFIER63_tree = (Object)adaptor.create(IDENTIFIER63);
-                    adaptor.addChild(root_0, IDENTIFIER63_tree);
+                    IDENTIFIER67=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_link_name827); 
+                    IDENTIFIER67_tree = (Object)adaptor.create(IDENTIFIER67);
+                    adaptor.addChild(root_0, IDENTIFIER67_tree);
 
 
                     }
@@ -2418,12 +2480,12 @@ public class BigraphTermParser extends Parser {
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_constant_in_link_name821);
-                    constant64=constant();
+                    pushFollow(FOLLOW_constant_in_link_name831);
+                    constant68=constant();
 
                     state._fsp--;
 
-                    adaptor.addChild(root_0, constant64.getTree());
+                    adaptor.addChild(root_0, constant68.getTree());
 
                     }
                     break;
@@ -2460,9 +2522,9 @@ public class BigraphTermParser extends Parser {
 
         Object root_0 = null;
 
-        Token set65=null;
+        Token set69=null;
 
-        Object set65_tree=null;
+        Object set69_tree=null;
 
         try {
             // src/bigraphspace/parser/antlr/BigraphTerm.g:134:1: ( NUMBER | STRING )
@@ -2470,10 +2532,10 @@ public class BigraphTermParser extends Parser {
             {
             root_0 = (Object)adaptor.nil();
 
-            set65=(Token)input.LT(1);
+            set69=(Token)input.LT(1);
             if ( input.LA(1)==NUMBER||input.LA(1)==STRING ) {
                 input.consume();
-                adaptor.addChild(root_0, (Object)adaptor.create(set65));
+                adaptor.addChild(root_0, (Object)adaptor.create(set69));
                 state.errorRecovery=false;
             }
             else {
@@ -2515,13 +2577,13 @@ public class BigraphTermParser extends Parser {
 
         Object root_0 = null;
 
-        Token LPAREN66=null;
-        Token RPAREN68=null;
-        BigraphTermParser.prime_return prime67 = null;
+        Token LPAREN70=null;
+        Token RPAREN72=null;
+        BigraphTermParser.prime_return prime71 = null;
 
 
-        Object LPAREN66_tree=null;
-        Object RPAREN68_tree=null;
+        Object LPAREN70_tree=null;
+        Object RPAREN72_tree=null;
         RewriteRuleTokenStream stream_RPAREN=new RewriteRuleTokenStream(adaptor,"token RPAREN");
         RewriteRuleTokenStream stream_LPAREN=new RewriteRuleTokenStream(adaptor,"token LPAREN");
         RewriteRuleSubtreeStream stream_prime=new RewriteRuleSubtreeStream(adaptor,"rule prime");
@@ -2529,17 +2591,17 @@ public class BigraphTermParser extends Parser {
             // src/bigraphspace/parser/antlr/BigraphTerm.g:139:1: ( LPAREN prime RPAREN -> prime )
             // src/bigraphspace/parser/antlr/BigraphTerm.g:139:3: LPAREN prime RPAREN
             {
-            LPAREN66=(Token)match(input,LPAREN,FOLLOW_LPAREN_in_children843);  
-            stream_LPAREN.add(LPAREN66);
+            LPAREN70=(Token)match(input,LPAREN,FOLLOW_LPAREN_in_children853);  
+            stream_LPAREN.add(LPAREN70);
 
-            pushFollow(FOLLOW_prime_in_children845);
-            prime67=prime();
+            pushFollow(FOLLOW_prime_in_children855);
+            prime71=prime();
 
             state._fsp--;
 
-            stream_prime.add(prime67.getTree());
-            RPAREN68=(Token)match(input,RPAREN,FOLLOW_RPAREN_in_children847);  
-            stream_RPAREN.add(RPAREN68);
+            stream_prime.add(prime71.getTree());
+            RPAREN72=(Token)match(input,RPAREN,FOLLOW_RPAREN_in_children857);  
+            stream_RPAREN.add(RPAREN72);
 
 
 
@@ -2594,15 +2656,15 @@ public class BigraphTermParser extends Parser {
 
         Object root_0 = null;
 
-        Token WHERE69=null;
-        Token AND71=null;
-        BigraphTermParser.whereclause_return whereclause70 = null;
+        Token WHERE73=null;
+        Token AND75=null;
+        BigraphTermParser.whereclause_return whereclause74 = null;
 
-        BigraphTermParser.whereclause_return whereclause72 = null;
+        BigraphTermParser.whereclause_return whereclause76 = null;
 
 
-        Object WHERE69_tree=null;
-        Object AND71_tree=null;
+        Object WHERE73_tree=null;
+        Object AND75_tree=null;
         RewriteRuleTokenStream stream_WHERE=new RewriteRuleTokenStream(adaptor,"token WHERE");
         RewriteRuleTokenStream stream_AND=new RewriteRuleTokenStream(adaptor,"token AND");
         RewriteRuleSubtreeStream stream_whereclause=new RewriteRuleSubtreeStream(adaptor,"rule whereclause");
@@ -2610,45 +2672,45 @@ public class BigraphTermParser extends Parser {
             // src/bigraphspace/parser/antlr/BigraphTerm.g:143:1: ( WHERE whereclause ( AND whereclause )* -> ^( WHERE ( whereclause )+ ) )
             // src/bigraphspace/parser/antlr/BigraphTerm.g:143:3: WHERE whereclause ( AND whereclause )*
             {
-            WHERE69=(Token)match(input,WHERE,FOLLOW_WHERE_in_where860);  
-            stream_WHERE.add(WHERE69);
+            WHERE73=(Token)match(input,WHERE,FOLLOW_WHERE_in_where870);  
+            stream_WHERE.add(WHERE73);
 
-            pushFollow(FOLLOW_whereclause_in_where862);
-            whereclause70=whereclause();
+            pushFollow(FOLLOW_whereclause_in_where872);
+            whereclause74=whereclause();
 
             state._fsp--;
 
-            stream_whereclause.add(whereclause70.getTree());
+            stream_whereclause.add(whereclause74.getTree());
             // src/bigraphspace/parser/antlr/BigraphTerm.g:143:21: ( AND whereclause )*
-            loop25:
+            loop27:
             do {
-                int alt25=2;
-                int LA25_0 = input.LA(1);
+                int alt27=2;
+                int LA27_0 = input.LA(1);
 
-                if ( (LA25_0==AND) ) {
-                    alt25=1;
+                if ( (LA27_0==AND) ) {
+                    alt27=1;
                 }
 
 
-                switch (alt25) {
+                switch (alt27) {
             	case 1 :
             	    // src/bigraphspace/parser/antlr/BigraphTerm.g:143:23: AND whereclause
             	    {
-            	    AND71=(Token)match(input,AND,FOLLOW_AND_in_where866);  
-            	    stream_AND.add(AND71);
+            	    AND75=(Token)match(input,AND,FOLLOW_AND_in_where876);  
+            	    stream_AND.add(AND75);
 
-            	    pushFollow(FOLLOW_whereclause_in_where868);
-            	    whereclause72=whereclause();
+            	    pushFollow(FOLLOW_whereclause_in_where878);
+            	    whereclause76=whereclause();
 
             	    state._fsp--;
 
-            	    stream_whereclause.add(whereclause72.getTree());
+            	    stream_whereclause.add(whereclause76.getTree());
 
             	    }
             	    break;
 
             	default :
-            	    break loop25;
+            	    break loop27;
                 }
             } while (true);
 
@@ -2722,99 +2784,99 @@ public class BigraphTermParser extends Parser {
 
         Token i=null;
         Token j=null;
-        Token IDENTIFIER73=null;
-        Token COLON74=null;
-        Token IDENTIFIER76=null;
-        Token NOT77=null;
-        Token IN78=null;
-        Token LBRACE79=null;
-        Token COMMA81=null;
-        Token RBRACE83=null;
-        Token IDENTIFIER84=null;
-        Token IN85=null;
-        Token LBRACE86=null;
-        Token COMMA88=null;
-        Token RBRACE90=null;
-        Token IDENTIFIER91=null;
-        Token LESSTHANOREQUAL92=null;
-        Token NUMBER93=null;
-        Token IDENTIFIER94=null;
-        Token GREATERTHANOREQUAL95=null;
-        Token NUMBER96=null;
-        Token LENGTH97=null;
-        Token LPAREN98=null;
-        Token IDENTIFIER99=null;
-        Token RPAREN100=null;
-        Token LESSTHANOREQUAL101=null;
-        Token NUMBER102=null;
-        Token LENGTH103=null;
-        Token LPAREN104=null;
-        Token IDENTIFIER105=null;
-        Token RPAREN106=null;
-        Token GREATERTHANOREQUAL107=null;
-        Token NUMBER108=null;
+        Token IDENTIFIER77=null;
+        Token COLON78=null;
+        Token IDENTIFIER80=null;
+        Token NOT81=null;
+        Token IN82=null;
+        Token LBRACE83=null;
+        Token COMMA85=null;
+        Token RBRACE87=null;
+        Token IDENTIFIER88=null;
+        Token IN89=null;
+        Token LBRACE90=null;
+        Token COMMA92=null;
+        Token RBRACE94=null;
+        Token IDENTIFIER95=null;
+        Token LESSTHANOREQUAL96=null;
+        Token NUMBER97=null;
+        Token IDENTIFIER98=null;
+        Token GREATERTHANOREQUAL99=null;
+        Token NUMBER100=null;
+        Token LENGTH101=null;
+        Token LPAREN102=null;
+        Token IDENTIFIER103=null;
+        Token RPAREN104=null;
+        Token LESSTHANOREQUAL105=null;
+        Token NUMBER106=null;
+        Token LENGTH107=null;
+        Token LPAREN108=null;
         Token IDENTIFIER109=null;
-        Token MATCHES110=null;
-        Token STRING111=null;
-        Token EQUALS112=null;
-        Token PLUS113=null;
-        Token NUMBER114=null;
-        Token EQUALS115=null;
-        Token MINUS116=null;
-        Token NUMBER117=null;
-        BigraphTermParser.type_return type75 = null;
+        Token RPAREN110=null;
+        Token GREATERTHANOREQUAL111=null;
+        Token NUMBER112=null;
+        Token IDENTIFIER113=null;
+        Token MATCHES114=null;
+        Token STRING115=null;
+        Token EQUALS116=null;
+        Token PLUS117=null;
+        Token NUMBER118=null;
+        Token EQUALS119=null;
+        Token MINUS120=null;
+        Token NUMBER121=null;
+        BigraphTermParser.type_return type79 = null;
 
-        BigraphTermParser.index_return index80 = null;
+        BigraphTermParser.index_return index84 = null;
 
-        BigraphTermParser.index_return index82 = null;
+        BigraphTermParser.index_return index86 = null;
 
-        BigraphTermParser.index_return index87 = null;
+        BigraphTermParser.index_return index91 = null;
 
-        BigraphTermParser.index_return index89 = null;
+        BigraphTermParser.index_return index93 = null;
 
 
         Object i_tree=null;
         Object j_tree=null;
-        Object IDENTIFIER73_tree=null;
-        Object COLON74_tree=null;
-        Object IDENTIFIER76_tree=null;
-        Object NOT77_tree=null;
-        Object IN78_tree=null;
-        Object LBRACE79_tree=null;
-        Object COMMA81_tree=null;
-        Object RBRACE83_tree=null;
-        Object IDENTIFIER84_tree=null;
-        Object IN85_tree=null;
-        Object LBRACE86_tree=null;
-        Object COMMA88_tree=null;
-        Object RBRACE90_tree=null;
-        Object IDENTIFIER91_tree=null;
-        Object LESSTHANOREQUAL92_tree=null;
-        Object NUMBER93_tree=null;
-        Object IDENTIFIER94_tree=null;
-        Object GREATERTHANOREQUAL95_tree=null;
-        Object NUMBER96_tree=null;
-        Object LENGTH97_tree=null;
-        Object LPAREN98_tree=null;
-        Object IDENTIFIER99_tree=null;
-        Object RPAREN100_tree=null;
-        Object LESSTHANOREQUAL101_tree=null;
-        Object NUMBER102_tree=null;
-        Object LENGTH103_tree=null;
-        Object LPAREN104_tree=null;
-        Object IDENTIFIER105_tree=null;
-        Object RPAREN106_tree=null;
-        Object GREATERTHANOREQUAL107_tree=null;
-        Object NUMBER108_tree=null;
+        Object IDENTIFIER77_tree=null;
+        Object COLON78_tree=null;
+        Object IDENTIFIER80_tree=null;
+        Object NOT81_tree=null;
+        Object IN82_tree=null;
+        Object LBRACE83_tree=null;
+        Object COMMA85_tree=null;
+        Object RBRACE87_tree=null;
+        Object IDENTIFIER88_tree=null;
+        Object IN89_tree=null;
+        Object LBRACE90_tree=null;
+        Object COMMA92_tree=null;
+        Object RBRACE94_tree=null;
+        Object IDENTIFIER95_tree=null;
+        Object LESSTHANOREQUAL96_tree=null;
+        Object NUMBER97_tree=null;
+        Object IDENTIFIER98_tree=null;
+        Object GREATERTHANOREQUAL99_tree=null;
+        Object NUMBER100_tree=null;
+        Object LENGTH101_tree=null;
+        Object LPAREN102_tree=null;
+        Object IDENTIFIER103_tree=null;
+        Object RPAREN104_tree=null;
+        Object LESSTHANOREQUAL105_tree=null;
+        Object NUMBER106_tree=null;
+        Object LENGTH107_tree=null;
+        Object LPAREN108_tree=null;
         Object IDENTIFIER109_tree=null;
-        Object MATCHES110_tree=null;
-        Object STRING111_tree=null;
-        Object EQUALS112_tree=null;
-        Object PLUS113_tree=null;
-        Object NUMBER114_tree=null;
-        Object EQUALS115_tree=null;
-        Object MINUS116_tree=null;
-        Object NUMBER117_tree=null;
+        Object RPAREN110_tree=null;
+        Object GREATERTHANOREQUAL111_tree=null;
+        Object NUMBER112_tree=null;
+        Object IDENTIFIER113_tree=null;
+        Object MATCHES114_tree=null;
+        Object STRING115_tree=null;
+        Object EQUALS116_tree=null;
+        Object PLUS117_tree=null;
+        Object NUMBER118_tree=null;
+        Object EQUALS119_tree=null;
+        Object MINUS120_tree=null;
+        Object NUMBER121_tree=null;
         RewriteRuleTokenStream stream_COLON=new RewriteRuleTokenStream(adaptor,"token COLON");
         RewriteRuleTokenStream stream_RPAREN=new RewriteRuleTokenStream(adaptor,"token RPAREN");
         RewriteRuleTokenStream stream_IN=new RewriteRuleTokenStream(adaptor,"token IN");
@@ -2837,24 +2899,24 @@ public class BigraphTermParser extends Parser {
         RewriteRuleSubtreeStream stream_type=new RewriteRuleSubtreeStream(adaptor,"rule type");
         try {
             // src/bigraphspace/parser/antlr/BigraphTerm.g:147:1: ( IDENTIFIER COLON type -> ^( CONSTRAINT IDENTIFIER COLON type ) | IDENTIFIER NOT IN LBRACE ( index ( COMMA index )* )? RBRACE -> ^( CONSTRAINT IDENTIFIER NOTONEOF ( index )* ) | IDENTIFIER IN LBRACE ( index ( COMMA index )* )? RBRACE -> ^( CONSTRAINT IDENTIFIER ONEOF ( index )* ) | IDENTIFIER LESSTHANOREQUAL NUMBER -> ^( CONSTRAINT IDENTIFIER MAXVALUE NUMBER ) | IDENTIFIER GREATERTHANOREQUAL NUMBER -> ^( CONSTRAINT IDENTIFIER MINVALUE NUMBER ) | LENGTH LPAREN IDENTIFIER RPAREN LESSTHANOREQUAL NUMBER -> ^( CONSTRAINT IDENTIFIER MAXLENGTH NUMBER ) | LENGTH LPAREN IDENTIFIER RPAREN GREATERTHANOREQUAL NUMBER -> ^( CONSTRAINT IDENTIFIER MINLENGTH NUMBER ) | IDENTIFIER MATCHES STRING -> ^( CONSTRAINT IDENTIFIER REGEXP STRING ) | i= IDENTIFIER EQUALS j= IDENTIFIER PLUS NUMBER -> ^( CONSTRAINT $i PLUS $j NUMBER ) | i= IDENTIFIER EQUALS j= IDENTIFIER MINUS NUMBER -> ^( CONSTRAINT $i MINUS $j NUMBER ) )
-            int alt30=10;
-            alt30 = dfa30.predict(input);
-            switch (alt30) {
+            int alt32=10;
+            alt32 = dfa32.predict(input);
+            switch (alt32) {
                 case 1 :
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:147:3: IDENTIFIER COLON type
                     {
-                    IDENTIFIER73=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_whereclause891);  
-                    stream_IDENTIFIER.add(IDENTIFIER73);
+                    IDENTIFIER77=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_whereclause901);  
+                    stream_IDENTIFIER.add(IDENTIFIER77);
 
-                    COLON74=(Token)match(input,COLON,FOLLOW_COLON_in_whereclause893);  
-                    stream_COLON.add(COLON74);
+                    COLON78=(Token)match(input,COLON,FOLLOW_COLON_in_whereclause903);  
+                    stream_COLON.add(COLON78);
 
-                    pushFollow(FOLLOW_type_in_whereclause895);
-                    type75=type();
+                    pushFollow(FOLLOW_type_in_whereclause905);
+                    type79=type();
 
                     state._fsp--;
 
-                    stream_type.add(type75.getTree());
+                    stream_type.add(type79.getTree());
 
 
                     // AST REWRITE
@@ -2890,65 +2952,65 @@ public class BigraphTermParser extends Parser {
                 case 2 :
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:148:3: IDENTIFIER NOT IN LBRACE ( index ( COMMA index )* )? RBRACE
                     {
-                    IDENTIFIER76=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_whereclause913);  
-                    stream_IDENTIFIER.add(IDENTIFIER76);
+                    IDENTIFIER80=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_whereclause923);  
+                    stream_IDENTIFIER.add(IDENTIFIER80);
 
-                    NOT77=(Token)match(input,NOT,FOLLOW_NOT_in_whereclause915);  
-                    stream_NOT.add(NOT77);
+                    NOT81=(Token)match(input,NOT,FOLLOW_NOT_in_whereclause925);  
+                    stream_NOT.add(NOT81);
 
-                    IN78=(Token)match(input,IN,FOLLOW_IN_in_whereclause917);  
-                    stream_IN.add(IN78);
+                    IN82=(Token)match(input,IN,FOLLOW_IN_in_whereclause927);  
+                    stream_IN.add(IN82);
 
-                    LBRACE79=(Token)match(input,LBRACE,FOLLOW_LBRACE_in_whereclause919);  
-                    stream_LBRACE.add(LBRACE79);
+                    LBRACE83=(Token)match(input,LBRACE,FOLLOW_LBRACE_in_whereclause929);  
+                    stream_LBRACE.add(LBRACE83);
 
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:148:28: ( index ( COMMA index )* )?
-                    int alt27=2;
-                    int LA27_0 = input.LA(1);
+                    int alt29=2;
+                    int LA29_0 = input.LA(1);
 
-                    if ( (LA27_0==IDENTIFIER||LA27_0==NUMBER||LA27_0==STRING) ) {
-                        alt27=1;
+                    if ( (LA29_0==IDENTIFIER||LA29_0==NUMBER||LA29_0==STRING) ) {
+                        alt29=1;
                     }
-                    switch (alt27) {
+                    switch (alt29) {
                         case 1 :
                             // src/bigraphspace/parser/antlr/BigraphTerm.g:148:30: index ( COMMA index )*
                             {
-                            pushFollow(FOLLOW_index_in_whereclause923);
-                            index80=index();
+                            pushFollow(FOLLOW_index_in_whereclause933);
+                            index84=index();
 
                             state._fsp--;
 
-                            stream_index.add(index80.getTree());
+                            stream_index.add(index84.getTree());
                             // src/bigraphspace/parser/antlr/BigraphTerm.g:148:36: ( COMMA index )*
-                            loop26:
+                            loop28:
                             do {
-                                int alt26=2;
-                                int LA26_0 = input.LA(1);
+                                int alt28=2;
+                                int LA28_0 = input.LA(1);
 
-                                if ( (LA26_0==COMMA) ) {
-                                    alt26=1;
+                                if ( (LA28_0==COMMA) ) {
+                                    alt28=1;
                                 }
 
 
-                                switch (alt26) {
+                                switch (alt28) {
                             	case 1 :
                             	    // src/bigraphspace/parser/antlr/BigraphTerm.g:148:38: COMMA index
                             	    {
-                            	    COMMA81=(Token)match(input,COMMA,FOLLOW_COMMA_in_whereclause927);  
-                            	    stream_COMMA.add(COMMA81);
+                            	    COMMA85=(Token)match(input,COMMA,FOLLOW_COMMA_in_whereclause937);  
+                            	    stream_COMMA.add(COMMA85);
 
-                            	    pushFollow(FOLLOW_index_in_whereclause929);
-                            	    index82=index();
+                            	    pushFollow(FOLLOW_index_in_whereclause939);
+                            	    index86=index();
 
                             	    state._fsp--;
 
-                            	    stream_index.add(index82.getTree());
+                            	    stream_index.add(index86.getTree());
 
                             	    }
                             	    break;
 
                             	default :
-                            	    break loop26;
+                            	    break loop28;
                                 }
                             } while (true);
 
@@ -2958,8 +3020,8 @@ public class BigraphTermParser extends Parser {
 
                     }
 
-                    RBRACE83=(Token)match(input,RBRACE,FOLLOW_RBRACE_in_whereclause937);  
-                    stream_RBRACE.add(RBRACE83);
+                    RBRACE87=(Token)match(input,RBRACE,FOLLOW_RBRACE_in_whereclause947);  
+                    stream_RBRACE.add(RBRACE87);
 
 
 
@@ -3001,62 +3063,62 @@ public class BigraphTermParser extends Parser {
                 case 3 :
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:149:3: IDENTIFIER IN LBRACE ( index ( COMMA index )* )? RBRACE
                     {
-                    IDENTIFIER84=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_whereclause956);  
-                    stream_IDENTIFIER.add(IDENTIFIER84);
+                    IDENTIFIER88=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_whereclause966);  
+                    stream_IDENTIFIER.add(IDENTIFIER88);
 
-                    IN85=(Token)match(input,IN,FOLLOW_IN_in_whereclause958);  
-                    stream_IN.add(IN85);
+                    IN89=(Token)match(input,IN,FOLLOW_IN_in_whereclause968);  
+                    stream_IN.add(IN89);
 
-                    LBRACE86=(Token)match(input,LBRACE,FOLLOW_LBRACE_in_whereclause960);  
-                    stream_LBRACE.add(LBRACE86);
+                    LBRACE90=(Token)match(input,LBRACE,FOLLOW_LBRACE_in_whereclause970);  
+                    stream_LBRACE.add(LBRACE90);
 
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:149:24: ( index ( COMMA index )* )?
-                    int alt29=2;
-                    int LA29_0 = input.LA(1);
+                    int alt31=2;
+                    int LA31_0 = input.LA(1);
 
-                    if ( (LA29_0==IDENTIFIER||LA29_0==NUMBER||LA29_0==STRING) ) {
-                        alt29=1;
+                    if ( (LA31_0==IDENTIFIER||LA31_0==NUMBER||LA31_0==STRING) ) {
+                        alt31=1;
                     }
-                    switch (alt29) {
+                    switch (alt31) {
                         case 1 :
                             // src/bigraphspace/parser/antlr/BigraphTerm.g:149:26: index ( COMMA index )*
                             {
-                            pushFollow(FOLLOW_index_in_whereclause964);
-                            index87=index();
+                            pushFollow(FOLLOW_index_in_whereclause974);
+                            index91=index();
 
                             state._fsp--;
 
-                            stream_index.add(index87.getTree());
+                            stream_index.add(index91.getTree());
                             // src/bigraphspace/parser/antlr/BigraphTerm.g:149:32: ( COMMA index )*
-                            loop28:
+                            loop30:
                             do {
-                                int alt28=2;
-                                int LA28_0 = input.LA(1);
+                                int alt30=2;
+                                int LA30_0 = input.LA(1);
 
-                                if ( (LA28_0==COMMA) ) {
-                                    alt28=1;
+                                if ( (LA30_0==COMMA) ) {
+                                    alt30=1;
                                 }
 
 
-                                switch (alt28) {
+                                switch (alt30) {
                             	case 1 :
                             	    // src/bigraphspace/parser/antlr/BigraphTerm.g:149:34: COMMA index
                             	    {
-                            	    COMMA88=(Token)match(input,COMMA,FOLLOW_COMMA_in_whereclause968);  
-                            	    stream_COMMA.add(COMMA88);
+                            	    COMMA92=(Token)match(input,COMMA,FOLLOW_COMMA_in_whereclause978);  
+                            	    stream_COMMA.add(COMMA92);
 
-                            	    pushFollow(FOLLOW_index_in_whereclause970);
-                            	    index89=index();
+                            	    pushFollow(FOLLOW_index_in_whereclause980);
+                            	    index93=index();
 
                             	    state._fsp--;
 
-                            	    stream_index.add(index89.getTree());
+                            	    stream_index.add(index93.getTree());
 
                             	    }
                             	    break;
 
                             	default :
-                            	    break loop28;
+                            	    break loop30;
                                 }
                             } while (true);
 
@@ -3066,13 +3128,13 @@ public class BigraphTermParser extends Parser {
 
                     }
 
-                    RBRACE90=(Token)match(input,RBRACE,FOLLOW_RBRACE_in_whereclause978);  
-                    stream_RBRACE.add(RBRACE90);
+                    RBRACE94=(Token)match(input,RBRACE,FOLLOW_RBRACE_in_whereclause988);  
+                    stream_RBRACE.add(RBRACE94);
 
 
 
                     // AST REWRITE
-                    // elements: IDENTIFIER, index
+                    // elements: index, IDENTIFIER
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -3109,19 +3171,19 @@ public class BigraphTermParser extends Parser {
                 case 4 :
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:150:3: IDENTIFIER LESSTHANOREQUAL NUMBER
                     {
-                    IDENTIFIER91=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_whereclause997);  
-                    stream_IDENTIFIER.add(IDENTIFIER91);
+                    IDENTIFIER95=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_whereclause1007);  
+                    stream_IDENTIFIER.add(IDENTIFIER95);
 
-                    LESSTHANOREQUAL92=(Token)match(input,LESSTHANOREQUAL,FOLLOW_LESSTHANOREQUAL_in_whereclause999);  
-                    stream_LESSTHANOREQUAL.add(LESSTHANOREQUAL92);
+                    LESSTHANOREQUAL96=(Token)match(input,LESSTHANOREQUAL,FOLLOW_LESSTHANOREQUAL_in_whereclause1009);  
+                    stream_LESSTHANOREQUAL.add(LESSTHANOREQUAL96);
 
-                    NUMBER93=(Token)match(input,NUMBER,FOLLOW_NUMBER_in_whereclause1001);  
-                    stream_NUMBER.add(NUMBER93);
+                    NUMBER97=(Token)match(input,NUMBER,FOLLOW_NUMBER_in_whereclause1011);  
+                    stream_NUMBER.add(NUMBER97);
 
 
 
                     // AST REWRITE
-                    // elements: IDENTIFIER, NUMBER
+                    // elements: NUMBER, IDENTIFIER
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -3153,14 +3215,14 @@ public class BigraphTermParser extends Parser {
                 case 5 :
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:151:3: IDENTIFIER GREATERTHANOREQUAL NUMBER
                     {
-                    IDENTIFIER94=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_whereclause1019);  
-                    stream_IDENTIFIER.add(IDENTIFIER94);
+                    IDENTIFIER98=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_whereclause1029);  
+                    stream_IDENTIFIER.add(IDENTIFIER98);
 
-                    GREATERTHANOREQUAL95=(Token)match(input,GREATERTHANOREQUAL,FOLLOW_GREATERTHANOREQUAL_in_whereclause1021);  
-                    stream_GREATERTHANOREQUAL.add(GREATERTHANOREQUAL95);
+                    GREATERTHANOREQUAL99=(Token)match(input,GREATERTHANOREQUAL,FOLLOW_GREATERTHANOREQUAL_in_whereclause1031);  
+                    stream_GREATERTHANOREQUAL.add(GREATERTHANOREQUAL99);
 
-                    NUMBER96=(Token)match(input,NUMBER,FOLLOW_NUMBER_in_whereclause1023);  
-                    stream_NUMBER.add(NUMBER96);
+                    NUMBER100=(Token)match(input,NUMBER,FOLLOW_NUMBER_in_whereclause1033);  
+                    stream_NUMBER.add(NUMBER100);
 
 
 
@@ -3197,28 +3259,28 @@ public class BigraphTermParser extends Parser {
                 case 6 :
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:152:3: LENGTH LPAREN IDENTIFIER RPAREN LESSTHANOREQUAL NUMBER
                     {
-                    LENGTH97=(Token)match(input,LENGTH,FOLLOW_LENGTH_in_whereclause1041);  
-                    stream_LENGTH.add(LENGTH97);
+                    LENGTH101=(Token)match(input,LENGTH,FOLLOW_LENGTH_in_whereclause1051);  
+                    stream_LENGTH.add(LENGTH101);
 
-                    LPAREN98=(Token)match(input,LPAREN,FOLLOW_LPAREN_in_whereclause1043);  
-                    stream_LPAREN.add(LPAREN98);
+                    LPAREN102=(Token)match(input,LPAREN,FOLLOW_LPAREN_in_whereclause1053);  
+                    stream_LPAREN.add(LPAREN102);
 
-                    IDENTIFIER99=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_whereclause1045);  
-                    stream_IDENTIFIER.add(IDENTIFIER99);
+                    IDENTIFIER103=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_whereclause1055);  
+                    stream_IDENTIFIER.add(IDENTIFIER103);
 
-                    RPAREN100=(Token)match(input,RPAREN,FOLLOW_RPAREN_in_whereclause1047);  
-                    stream_RPAREN.add(RPAREN100);
+                    RPAREN104=(Token)match(input,RPAREN,FOLLOW_RPAREN_in_whereclause1057);  
+                    stream_RPAREN.add(RPAREN104);
 
-                    LESSTHANOREQUAL101=(Token)match(input,LESSTHANOREQUAL,FOLLOW_LESSTHANOREQUAL_in_whereclause1049);  
-                    stream_LESSTHANOREQUAL.add(LESSTHANOREQUAL101);
+                    LESSTHANOREQUAL105=(Token)match(input,LESSTHANOREQUAL,FOLLOW_LESSTHANOREQUAL_in_whereclause1059);  
+                    stream_LESSTHANOREQUAL.add(LESSTHANOREQUAL105);
 
-                    NUMBER102=(Token)match(input,NUMBER,FOLLOW_NUMBER_in_whereclause1051);  
-                    stream_NUMBER.add(NUMBER102);
+                    NUMBER106=(Token)match(input,NUMBER,FOLLOW_NUMBER_in_whereclause1061);  
+                    stream_NUMBER.add(NUMBER106);
 
 
 
                     // AST REWRITE
-                    // elements: NUMBER, IDENTIFIER
+                    // elements: IDENTIFIER, NUMBER
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -3250,28 +3312,28 @@ public class BigraphTermParser extends Parser {
                 case 7 :
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:153:3: LENGTH LPAREN IDENTIFIER RPAREN GREATERTHANOREQUAL NUMBER
                     {
-                    LENGTH103=(Token)match(input,LENGTH,FOLLOW_LENGTH_in_whereclause1069);  
-                    stream_LENGTH.add(LENGTH103);
+                    LENGTH107=(Token)match(input,LENGTH,FOLLOW_LENGTH_in_whereclause1079);  
+                    stream_LENGTH.add(LENGTH107);
 
-                    LPAREN104=(Token)match(input,LPAREN,FOLLOW_LPAREN_in_whereclause1071);  
-                    stream_LPAREN.add(LPAREN104);
+                    LPAREN108=(Token)match(input,LPAREN,FOLLOW_LPAREN_in_whereclause1081);  
+                    stream_LPAREN.add(LPAREN108);
 
-                    IDENTIFIER105=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_whereclause1073);  
-                    stream_IDENTIFIER.add(IDENTIFIER105);
+                    IDENTIFIER109=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_whereclause1083);  
+                    stream_IDENTIFIER.add(IDENTIFIER109);
 
-                    RPAREN106=(Token)match(input,RPAREN,FOLLOW_RPAREN_in_whereclause1075);  
-                    stream_RPAREN.add(RPAREN106);
+                    RPAREN110=(Token)match(input,RPAREN,FOLLOW_RPAREN_in_whereclause1085);  
+                    stream_RPAREN.add(RPAREN110);
 
-                    GREATERTHANOREQUAL107=(Token)match(input,GREATERTHANOREQUAL,FOLLOW_GREATERTHANOREQUAL_in_whereclause1077);  
-                    stream_GREATERTHANOREQUAL.add(GREATERTHANOREQUAL107);
+                    GREATERTHANOREQUAL111=(Token)match(input,GREATERTHANOREQUAL,FOLLOW_GREATERTHANOREQUAL_in_whereclause1087);  
+                    stream_GREATERTHANOREQUAL.add(GREATERTHANOREQUAL111);
 
-                    NUMBER108=(Token)match(input,NUMBER,FOLLOW_NUMBER_in_whereclause1079);  
-                    stream_NUMBER.add(NUMBER108);
+                    NUMBER112=(Token)match(input,NUMBER,FOLLOW_NUMBER_in_whereclause1089);  
+                    stream_NUMBER.add(NUMBER112);
 
 
 
                     // AST REWRITE
-                    // elements: IDENTIFIER, NUMBER
+                    // elements: NUMBER, IDENTIFIER
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -3303,19 +3365,19 @@ public class BigraphTermParser extends Parser {
                 case 8 :
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:154:3: IDENTIFIER MATCHES STRING
                     {
-                    IDENTIFIER109=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_whereclause1097);  
-                    stream_IDENTIFIER.add(IDENTIFIER109);
+                    IDENTIFIER113=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_whereclause1107);  
+                    stream_IDENTIFIER.add(IDENTIFIER113);
 
-                    MATCHES110=(Token)match(input,MATCHES,FOLLOW_MATCHES_in_whereclause1099);  
-                    stream_MATCHES.add(MATCHES110);
+                    MATCHES114=(Token)match(input,MATCHES,FOLLOW_MATCHES_in_whereclause1109);  
+                    stream_MATCHES.add(MATCHES114);
 
-                    STRING111=(Token)match(input,STRING,FOLLOW_STRING_in_whereclause1101);  
-                    stream_STRING.add(STRING111);
+                    STRING115=(Token)match(input,STRING,FOLLOW_STRING_in_whereclause1111);  
+                    stream_STRING.add(STRING115);
 
 
 
                     // AST REWRITE
-                    // elements: IDENTIFIER, STRING
+                    // elements: STRING, IDENTIFIER
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -3347,25 +3409,25 @@ public class BigraphTermParser extends Parser {
                 case 9 :
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:155:3: i= IDENTIFIER EQUALS j= IDENTIFIER PLUS NUMBER
                     {
-                    i=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_whereclause1121);  
+                    i=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_whereclause1131);  
                     stream_IDENTIFIER.add(i);
 
-                    EQUALS112=(Token)match(input,EQUALS,FOLLOW_EQUALS_in_whereclause1123);  
-                    stream_EQUALS.add(EQUALS112);
+                    EQUALS116=(Token)match(input,EQUALS,FOLLOW_EQUALS_in_whereclause1133);  
+                    stream_EQUALS.add(EQUALS116);
 
-                    j=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_whereclause1127);  
+                    j=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_whereclause1137);  
                     stream_IDENTIFIER.add(j);
 
-                    PLUS113=(Token)match(input,PLUS,FOLLOW_PLUS_in_whereclause1129);  
-                    stream_PLUS.add(PLUS113);
+                    PLUS117=(Token)match(input,PLUS,FOLLOW_PLUS_in_whereclause1139);  
+                    stream_PLUS.add(PLUS117);
 
-                    NUMBER114=(Token)match(input,NUMBER,FOLLOW_NUMBER_in_whereclause1131);  
-                    stream_NUMBER.add(NUMBER114);
+                    NUMBER118=(Token)match(input,NUMBER,FOLLOW_NUMBER_in_whereclause1141);  
+                    stream_NUMBER.add(NUMBER118);
 
 
 
                     // AST REWRITE
-                    // elements: i, NUMBER, PLUS, j
+                    // elements: NUMBER, j, i, PLUS
                     // token labels: j, i
                     // rule labels: retval
                     // token list labels: 
@@ -3400,25 +3462,25 @@ public class BigraphTermParser extends Parser {
                 case 10 :
                     // src/bigraphspace/parser/antlr/BigraphTerm.g:156:3: i= IDENTIFIER EQUALS j= IDENTIFIER MINUS NUMBER
                     {
-                    i=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_whereclause1155);  
+                    i=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_whereclause1165);  
                     stream_IDENTIFIER.add(i);
 
-                    EQUALS115=(Token)match(input,EQUALS,FOLLOW_EQUALS_in_whereclause1157);  
-                    stream_EQUALS.add(EQUALS115);
+                    EQUALS119=(Token)match(input,EQUALS,FOLLOW_EQUALS_in_whereclause1167);  
+                    stream_EQUALS.add(EQUALS119);
 
-                    j=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_whereclause1161);  
+                    j=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_whereclause1171);  
                     stream_IDENTIFIER.add(j);
 
-                    MINUS116=(Token)match(input,MINUS,FOLLOW_MINUS_in_whereclause1163);  
-                    stream_MINUS.add(MINUS116);
+                    MINUS120=(Token)match(input,MINUS,FOLLOW_MINUS_in_whereclause1173);  
+                    stream_MINUS.add(MINUS120);
 
-                    NUMBER117=(Token)match(input,NUMBER,FOLLOW_NUMBER_in_whereclause1165);  
-                    stream_NUMBER.add(NUMBER117);
+                    NUMBER121=(Token)match(input,NUMBER,FOLLOW_NUMBER_in_whereclause1175);  
+                    stream_NUMBER.add(NUMBER121);
 
 
 
                     // AST REWRITE
-                    // elements: NUMBER, j, MINUS, i
+                    // elements: MINUS, NUMBER, j, i
                     // token labels: j, i
                     // rule labels: retval
                     // token list labels: 
@@ -3473,23 +3535,79 @@ public class BigraphTermParser extends Parser {
     // Delegated rules
 
 
-    protected DFA30 dfa30 = new DFA30(this);
-    static final String DFA30_eotS =
+    protected DFA5 dfa5 = new DFA5(this);
+    protected DFA32 dfa32 = new DFA32(this);
+    static final String DFA5_eotS =
+        "\7\uffff";
+    static final String DFA5_eofS =
+        "\7\uffff";
+    static final String DFA5_minS =
+        "\1\41\1\42\1\37\1\42\2\uffff\1\37";
+    static final String DFA5_maxS =
+        "\1\41\1\42\1\43\1\42\2\uffff\1\43";
+    static final String DFA5_acceptS =
+        "\4\uffff\1\2\1\1\1\uffff";
+    static final String DFA5_specialS =
+        "\7\uffff}>";
+    static final String[] DFA5_transitionS = {
+            "\1\1",
+            "\1\2",
+            "\1\5\1\4\2\uffff\1\3",
+            "\1\6",
+            "",
+            "",
+            "\1\5\1\4\2\uffff\1\3"
+    };
+
+    static final short[] DFA5_eot = DFA.unpackEncodedString(DFA5_eotS);
+    static final short[] DFA5_eof = DFA.unpackEncodedString(DFA5_eofS);
+    static final char[] DFA5_min = DFA.unpackEncodedStringToUnsignedChars(DFA5_minS);
+    static final char[] DFA5_max = DFA.unpackEncodedStringToUnsignedChars(DFA5_maxS);
+    static final short[] DFA5_accept = DFA.unpackEncodedString(DFA5_acceptS);
+    static final short[] DFA5_special = DFA.unpackEncodedString(DFA5_specialS);
+    static final short[][] DFA5_transition;
+
+    static {
+        int numStates = DFA5_transitionS.length;
+        DFA5_transition = new short[numStates][];
+        for (int i=0; i<numStates; i++) {
+            DFA5_transition[i] = DFA.unpackEncodedString(DFA5_transitionS[i]);
+        }
+    }
+
+    class DFA5 extends DFA {
+
+        public DFA5(BaseRecognizer recognizer) {
+            this.recognizer = recognizer;
+            this.decisionNumber = 5;
+            this.eot = DFA5_eot;
+            this.eof = DFA5_eof;
+            this.min = DFA5_min;
+            this.max = DFA5_max;
+            this.accept = DFA5_accept;
+            this.special = DFA5_special;
+            this.transition = DFA5_transition;
+        }
+        public String getDescription() {
+            return "()* loopback of 50:3: ( closure STAR )*";
+        }
+    }
+    static final String DFA32_eotS =
         "\22\uffff";
-    static final String DFA30_eofS =
+    static final String DFA32_eofS =
         "\22\uffff";
-    static final String DFA30_minS =
-        "\1\12\1\10\1\60\6\uffff\2\41\1\64\1\61\2\uffff\1\62\2\uffff";
-    static final String DFA30_maxS =
-        "\1\41\1\63\1\60\6\uffff\2\41\1\65\1\61\2\uffff\1\63\2\uffff";
-    static final String DFA30_acceptS =
+    static final String DFA32_minS =
+        "\1\12\1\10\1\61\6\uffff\2\42\1\65\1\62\2\uffff\1\63\2\uffff";
+    static final String DFA32_maxS =
+        "\1\42\1\64\1\61\6\uffff\2\42\1\66\1\62\2\uffff\1\64\2\uffff";
+    static final String DFA32_acceptS =
         "\3\uffff\1\1\1\2\1\3\1\4\1\5\1\10\4\uffff\1\11\1\12\1\uffff\1\6"+
         "\1\7";
-    static final String DFA30_specialS =
+    static final String DFA32_specialS =
         "\22\uffff}>";
-    static final String[] DFA30_transitionS = {
-            "\1\2\26\uffff\1\1",
-            "\1\5\1\4\1\uffff\1\10\34\uffff\1\3\6\uffff\1\11\2\uffff\1"+
+    static final String[] DFA32_transitionS = {
+            "\1\2\27\uffff\1\1",
+            "\1\5\1\4\1\uffff\1\10\35\uffff\1\3\6\uffff\1\11\2\uffff\1"+
             "\6\1\7",
             "\1\12",
             "",
@@ -3509,34 +3627,34 @@ public class BigraphTermParser extends Parser {
             ""
     };
 
-    static final short[] DFA30_eot = DFA.unpackEncodedString(DFA30_eotS);
-    static final short[] DFA30_eof = DFA.unpackEncodedString(DFA30_eofS);
-    static final char[] DFA30_min = DFA.unpackEncodedStringToUnsignedChars(DFA30_minS);
-    static final char[] DFA30_max = DFA.unpackEncodedStringToUnsignedChars(DFA30_maxS);
-    static final short[] DFA30_accept = DFA.unpackEncodedString(DFA30_acceptS);
-    static final short[] DFA30_special = DFA.unpackEncodedString(DFA30_specialS);
-    static final short[][] DFA30_transition;
+    static final short[] DFA32_eot = DFA.unpackEncodedString(DFA32_eotS);
+    static final short[] DFA32_eof = DFA.unpackEncodedString(DFA32_eofS);
+    static final char[] DFA32_min = DFA.unpackEncodedStringToUnsignedChars(DFA32_minS);
+    static final char[] DFA32_max = DFA.unpackEncodedStringToUnsignedChars(DFA32_maxS);
+    static final short[] DFA32_accept = DFA.unpackEncodedString(DFA32_acceptS);
+    static final short[] DFA32_special = DFA.unpackEncodedString(DFA32_specialS);
+    static final short[][] DFA32_transition;
 
     static {
-        int numStates = DFA30_transitionS.length;
-        DFA30_transition = new short[numStates][];
+        int numStates = DFA32_transitionS.length;
+        DFA32_transition = new short[numStates][];
         for (int i=0; i<numStates; i++) {
-            DFA30_transition[i] = DFA.unpackEncodedString(DFA30_transitionS[i]);
+            DFA32_transition[i] = DFA.unpackEncodedString(DFA32_transitionS[i]);
         }
     }
 
-    class DFA30 extends DFA {
+    class DFA32 extends DFA {
 
-        public DFA30(BaseRecognizer recognizer) {
+        public DFA32(BaseRecognizer recognizer) {
             this.recognizer = recognizer;
-            this.decisionNumber = 30;
-            this.eot = DFA30_eot;
-            this.eof = DFA30_eof;
-            this.min = DFA30_min;
-            this.max = DFA30_max;
-            this.accept = DFA30_accept;
-            this.special = DFA30_special;
-            this.transition = DFA30_transition;
+            this.decisionNumber = 32;
+            this.eot = DFA32_eot;
+            this.eof = DFA32_eof;
+            this.min = DFA32_min;
+            this.max = DFA32_max;
+            this.accept = DFA32_accept;
+            this.special = DFA32_special;
+            this.transition = DFA32_transition;
         }
         public String getDescription() {
             return "146:1: whereclause : ( IDENTIFIER COLON type -> ^( CONSTRAINT IDENTIFIER COLON type ) | IDENTIFIER NOT IN LBRACE ( index ( COMMA index )* )? RBRACE -> ^( CONSTRAINT IDENTIFIER NOTONEOF ( index )* ) | IDENTIFIER IN LBRACE ( index ( COMMA index )* )? RBRACE -> ^( CONSTRAINT IDENTIFIER ONEOF ( index )* ) | IDENTIFIER LESSTHANOREQUAL NUMBER -> ^( CONSTRAINT IDENTIFIER MAXVALUE NUMBER ) | IDENTIFIER GREATERTHANOREQUAL NUMBER -> ^( CONSTRAINT IDENTIFIER MINVALUE NUMBER ) | LENGTH LPAREN IDENTIFIER RPAREN LESSTHANOREQUAL NUMBER -> ^( CONSTRAINT IDENTIFIER MAXLENGTH NUMBER ) | LENGTH LPAREN IDENTIFIER RPAREN GREATERTHANOREQUAL NUMBER -> ^( CONSTRAINT IDENTIFIER MINLENGTH NUMBER ) | IDENTIFIER MATCHES STRING -> ^( CONSTRAINT IDENTIFIER REGEXP STRING ) | i= IDENTIFIER EQUALS j= IDENTIFIER PLUS NUMBER -> ^( CONSTRAINT $i PLUS $j NUMBER ) | i= IDENTIFIER EQUALS j= IDENTIFIER MINUS NUMBER -> ^( CONSTRAINT $i MINUS $j NUMBER ) );";
@@ -3544,129 +3662,133 @@ public class BigraphTermParser extends Parser {
     }
  
 
-    public static final BitSet FOLLOW_BIGRAPH_in_start260 = new BitSet(new long[]{0x0000086300000000L});
-    public static final BitSet FOLLOW_closures_in_start263 = new BitSet(new long[]{0x0000086300000000L});
-    public static final BitSet FOLLOW_wide_in_start265 = new BitSet(new long[]{0x0000000080000040L});
-    public static final BitSet FOLLOW_substitutions_in_start267 = new BitSet(new long[]{0x0000000000000040L});
-    public static final BitSet FOLLOW_where_in_start269 = new BitSet(new long[]{0x0000000000000000L});
-    public static final BitSet FOLLOW_EOF_in_start272 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RULE_in_start276 = new BitSet(new long[]{0x0000086300000000L});
-    public static final BitSet FOLLOW_wide_in_start279 = new BitSet(new long[]{0x0000000040000000L});
-    public static final BitSet FOLLOW_ARROW_in_start281 = new BitSet(new long[]{0x0000086300000000L});
-    public static final BitSet FOLLOW_wide_in_start284 = new BitSet(new long[]{0x0000000000000000L});
-    public static final BitSet FOLLOW_EOF_in_start286 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_closure_in_closures301 = new BitSet(new long[]{0x0000000080000000L});
-    public static final BitSet FOLLOW_DOT_in_closures303 = new BitSet(new long[]{0x0000000100000002L});
-    public static final BitSet FOLLOW_DOT_in_substitutions328 = new BitSet(new long[]{0x0000000200000000L});
-    public static final BitSet FOLLOW_substitution_in_substitutions330 = new BitSet(new long[]{0x0000000080000002L});
-    public static final BitSet FOLLOW_SLASH_in_closure353 = new BitSet(new long[]{0x0000000200000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_closure355 = new BitSet(new long[]{0x0000000400000002L});
-    public static final BitSet FOLLOW_COMMA_in_closure359 = new BitSet(new long[]{0x0000000200000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_closure361 = new BitSet(new long[]{0x0000000400000002L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_substitution388 = new BitSet(new long[]{0x0000000100000000L});
-    public static final BitSet FOLLOW_SLASH_in_substitution390 = new BitSet(new long[]{0x0000000200000002L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_substitution396 = new BitSet(new long[]{0x0000000400000002L});
-    public static final BitSet FOLLOW_COMMA_in_substitution400 = new BitSet(new long[]{0x0000000200000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_substitution404 = new BitSet(new long[]{0x0000000400000002L});
-    public static final BitSet FOLLOW_wide1_in_wide435 = new BitSet(new long[]{0x0000000800000002L});
-    public static final BitSet FOLLOW_PIPE2_in_wide439 = new BitSet(new long[]{0x0000086300000000L});
-    public static final BitSet FOLLOW_wide1_in_wide441 = new BitSet(new long[]{0x0000000800000002L});
-    public static final BitSet FOLLOW_prime_in_wide1458 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_prime1_in_prime487 = new BitSet(new long[]{0x0000001000000002L});
-    public static final BitSet FOLLOW_PIPE_in_prime491 = new BitSet(new long[]{0x0000087200000000L});
-    public static final BitSet FOLLOW_prime1_in_prime493 = new BitSet(new long[]{0x0000001000000002L});
-    public static final BitSet FOLLOW_LSQUARE_in_prime1510 = new BitSet(new long[]{0x000000C000000000L});
-    public static final BitSet FOLLOW_NUMBER_in_prime1512 = new BitSet(new long[]{0x0000008000000000L});
-    public static final BitSet FOLLOW_RSQUARE_in_prime1515 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_node_in_prime1530 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_control_in_node547 = new BitSet(new long[]{0x0001300000000002L});
-    public static final BitSet FOLLOW_support_in_node549 = new BitSet(new long[]{0x0001200000000002L});
-    public static final BitSet FOLLOW_ports_in_node552 = new BitSet(new long[]{0x0001000000000002L});
-    public static final BitSet FOLLOW_children_in_node555 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_tuple_in_control602 = new BitSet(new long[]{0x0000010000000000L});
-    public static final BitSet FOLLOW_COLON_in_control604 = new BitSet(new long[]{0x0000000200000000L});
-    public static final BitSet FOLLOW_type_in_control606 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_control622 = new BitSet(new long[]{0x0000020000000002L});
-    public static final BitSet FOLLOW_indexes_in_control624 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LANGLE_in_indexes647 = new BitSet(new long[]{0x00000C4200000000L});
-    public static final BitSet FOLLOW_index_in_indexes651 = new BitSet(new long[]{0x0000040400000000L});
-    public static final BitSet FOLLOW_COMMA_in_indexes655 = new BitSet(new long[]{0x0000084200000000L});
-    public static final BitSet FOLLOW_index_in_indexes657 = new BitSet(new long[]{0x0000040400000000L});
-    public static final BitSet FOLLOW_RANGLE_in_indexes665 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_BIGRAPH_in_start260 = new BitSet(new long[]{0x000010C600000000L});
+    public static final BitSet FOLLOW_closures_in_start263 = new BitSet(new long[]{0x000010C600000000L});
+    public static final BitSet FOLLOW_wide_in_start266 = new BitSet(new long[]{0x0000000100000040L});
+    public static final BitSet FOLLOW_substitutions_in_start268 = new BitSet(new long[]{0x0000000000000040L});
+    public static final BitSet FOLLOW_where_in_start271 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_start274 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_RULE_in_start278 = new BitSet(new long[]{0x000010C600000000L});
+    public static final BitSet FOLLOW_wide_in_start281 = new BitSet(new long[]{0x0000000040000000L});
+    public static final BitSet FOLLOW_ARROW_in_start283 = new BitSet(new long[]{0x000010C600000000L});
+    public static final BitSet FOLLOW_wide_in_start286 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_start288 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_closure_in_closures303 = new BitSet(new long[]{0x0000000080000000L});
+    public static final BitSet FOLLOW_STAR_in_closures305 = new BitSet(new long[]{0x0000000200000000L});
+    public static final BitSet FOLLOW_closure_in_closures310 = new BitSet(new long[]{0x0000000100000000L});
+    public static final BitSet FOLLOW_DOT_in_closures312 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DOT_in_substitutions332 = new BitSet(new long[]{0x0000000400000000L});
+    public static final BitSet FOLLOW_substitution_in_substitutions334 = new BitSet(new long[]{0x0000000080000002L});
+    public static final BitSet FOLLOW_STAR_in_substitutions338 = new BitSet(new long[]{0x0000000400000000L});
+    public static final BitSet FOLLOW_substitution_in_substitutions340 = new BitSet(new long[]{0x0000000080000002L});
+    public static final BitSet FOLLOW_SLASH_in_closure363 = new BitSet(new long[]{0x0000000400000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_closure365 = new BitSet(new long[]{0x0000000800000002L});
+    public static final BitSet FOLLOW_COMMA_in_closure369 = new BitSet(new long[]{0x0000000400000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_closure371 = new BitSet(new long[]{0x0000000800000002L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_substitution398 = new BitSet(new long[]{0x0000000200000000L});
+    public static final BitSet FOLLOW_SLASH_in_substitution400 = new BitSet(new long[]{0x0000000400000002L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_substitution406 = new BitSet(new long[]{0x0000000800000002L});
+    public static final BitSet FOLLOW_COMMA_in_substitution410 = new BitSet(new long[]{0x0000000400000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_substitution414 = new BitSet(new long[]{0x0000000800000002L});
+    public static final BitSet FOLLOW_wide1_in_wide445 = new BitSet(new long[]{0x0000001000000002L});
+    public static final BitSet FOLLOW_PIPE2_in_wide449 = new BitSet(new long[]{0x000010C600000000L});
+    public static final BitSet FOLLOW_wide1_in_wide451 = new BitSet(new long[]{0x0000001000000002L});
+    public static final BitSet FOLLOW_prime_in_wide1468 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_prime1_in_prime497 = new BitSet(new long[]{0x0000002000000002L});
+    public static final BitSet FOLLOW_PIPE_in_prime501 = new BitSet(new long[]{0x000010E400000000L});
+    public static final BitSet FOLLOW_prime1_in_prime503 = new BitSet(new long[]{0x0000002000000002L});
+    public static final BitSet FOLLOW_LSQUARE_in_prime1520 = new BitSet(new long[]{0x0000018000000000L});
+    public static final BitSet FOLLOW_NUMBER_in_prime1522 = new BitSet(new long[]{0x0000010000000000L});
+    public static final BitSet FOLLOW_RSQUARE_in_prime1525 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_node_in_prime1540 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_control_in_node557 = new BitSet(new long[]{0x0002600000000002L});
+    public static final BitSet FOLLOW_support_in_node559 = new BitSet(new long[]{0x0002400000000002L});
+    public static final BitSet FOLLOW_ports_in_node562 = new BitSet(new long[]{0x0002000000000002L});
+    public static final BitSet FOLLOW_children_in_node565 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_tuple_in_control612 = new BitSet(new long[]{0x0000020000000000L});
+    public static final BitSet FOLLOW_COLON_in_control614 = new BitSet(new long[]{0x0000000400000000L});
+    public static final BitSet FOLLOW_type_in_control616 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_control632 = new BitSet(new long[]{0x0000040000000002L});
+    public static final BitSet FOLLOW_indexes_in_control634 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LANGLE_in_indexes657 = new BitSet(new long[]{0x0000188400000000L});
+    public static final BitSet FOLLOW_index_in_indexes661 = new BitSet(new long[]{0x0000080800000000L});
+    public static final BitSet FOLLOW_COMMA_in_indexes665 = new BitSet(new long[]{0x0000108400000000L});
+    public static final BitSet FOLLOW_index_in_indexes667 = new BitSet(new long[]{0x0000080800000000L});
+    public static final BitSet FOLLOW_RANGLE_in_indexes675 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_set_in_index0 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_index_in_tuple703 = new BitSet(new long[]{0x0000000400000002L});
-    public static final BitSet FOLLOW_COMMA_in_tuple707 = new BitSet(new long[]{0x0000084200000000L});
-    public static final BitSet FOLLOW_index_in_tuple709 = new BitSet(new long[]{0x0000000400000002L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_type728 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_AT_in_support741 = new BitSet(new long[]{0x0000000200000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_support743 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LBRACE_in_ports756 = new BitSet(new long[]{0x0000484200000000L});
-    public static final BitSet FOLLOW_port_value_in_ports760 = new BitSet(new long[]{0x0000400400000000L});
-    public static final BitSet FOLLOW_COMMA_in_ports764 = new BitSet(new long[]{0x0000084200000000L});
-    public static final BitSet FOLLOW_port_value_in_ports766 = new BitSet(new long[]{0x0000400400000000L});
-    public static final BitSet FOLLOW_RBRACE_in_ports774 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_port_value788 = new BitSet(new long[]{0x0000800000000000L});
-    public static final BitSet FOLLOW_EQUALS_in_port_value791 = new BitSet(new long[]{0x0000084200000000L});
-    public static final BitSet FOLLOW_link_name_in_port_value794 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_link_name_in_port_value798 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_link_name817 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_constant_in_link_name821 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_index_in_tuple713 = new BitSet(new long[]{0x0000000800000002L});
+    public static final BitSet FOLLOW_COMMA_in_tuple717 = new BitSet(new long[]{0x0000108400000000L});
+    public static final BitSet FOLLOW_index_in_tuple719 = new BitSet(new long[]{0x0000000800000002L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_type738 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_AT_in_support751 = new BitSet(new long[]{0x0000000400000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_support753 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LBRACE_in_ports766 = new BitSet(new long[]{0x0000908400000000L});
+    public static final BitSet FOLLOW_port_value_in_ports770 = new BitSet(new long[]{0x0000800800000000L});
+    public static final BitSet FOLLOW_COMMA_in_ports774 = new BitSet(new long[]{0x0000108400000000L});
+    public static final BitSet FOLLOW_port_value_in_ports776 = new BitSet(new long[]{0x0000800800000000L});
+    public static final BitSet FOLLOW_RBRACE_in_ports784 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_port_value798 = new BitSet(new long[]{0x0001000000000000L});
+    public static final BitSet FOLLOW_EQUALS_in_port_value801 = new BitSet(new long[]{0x0000108400000000L});
+    public static final BitSet FOLLOW_link_name_in_port_value804 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_link_name_in_port_value808 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_link_name827 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_constant_in_link_name831 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_set_in_constant0 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LPAREN_in_children843 = new BitSet(new long[]{0x0002086200000000L});
-    public static final BitSet FOLLOW_prime_in_children845 = new BitSet(new long[]{0x0002000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_children847 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_WHERE_in_where860 = new BitSet(new long[]{0x0000000200000400L});
-    public static final BitSet FOLLOW_whereclause_in_where862 = new BitSet(new long[]{0x0000000000000082L});
-    public static final BitSet FOLLOW_AND_in_where866 = new BitSet(new long[]{0x0000000200000400L});
-    public static final BitSet FOLLOW_whereclause_in_where868 = new BitSet(new long[]{0x0000000000000082L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_whereclause891 = new BitSet(new long[]{0x0000010000000000L});
-    public static final BitSet FOLLOW_COLON_in_whereclause893 = new BitSet(new long[]{0x0000000200000000L});
-    public static final BitSet FOLLOW_type_in_whereclause895 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_whereclause913 = new BitSet(new long[]{0x0000000000000200L});
-    public static final BitSet FOLLOW_NOT_in_whereclause915 = new BitSet(new long[]{0x0000000000000100L});
-    public static final BitSet FOLLOW_IN_in_whereclause917 = new BitSet(new long[]{0x0000200000000000L});
-    public static final BitSet FOLLOW_LBRACE_in_whereclause919 = new BitSet(new long[]{0x0000484200000000L});
-    public static final BitSet FOLLOW_index_in_whereclause923 = new BitSet(new long[]{0x0000400400000000L});
-    public static final BitSet FOLLOW_COMMA_in_whereclause927 = new BitSet(new long[]{0x0000084200000000L});
-    public static final BitSet FOLLOW_index_in_whereclause929 = new BitSet(new long[]{0x0000400400000000L});
-    public static final BitSet FOLLOW_RBRACE_in_whereclause937 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_whereclause956 = new BitSet(new long[]{0x0000000000000100L});
-    public static final BitSet FOLLOW_IN_in_whereclause958 = new BitSet(new long[]{0x0000200000000000L});
-    public static final BitSet FOLLOW_LBRACE_in_whereclause960 = new BitSet(new long[]{0x0000484200000000L});
-    public static final BitSet FOLLOW_index_in_whereclause964 = new BitSet(new long[]{0x0000400400000000L});
-    public static final BitSet FOLLOW_COMMA_in_whereclause968 = new BitSet(new long[]{0x0000084200000000L});
-    public static final BitSet FOLLOW_index_in_whereclause970 = new BitSet(new long[]{0x0000400400000000L});
-    public static final BitSet FOLLOW_RBRACE_in_whereclause978 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_whereclause997 = new BitSet(new long[]{0x0004000000000000L});
-    public static final BitSet FOLLOW_LESSTHANOREQUAL_in_whereclause999 = new BitSet(new long[]{0x0000004000000000L});
-    public static final BitSet FOLLOW_NUMBER_in_whereclause1001 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_whereclause1019 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_GREATERTHANOREQUAL_in_whereclause1021 = new BitSet(new long[]{0x0000004000000000L});
-    public static final BitSet FOLLOW_NUMBER_in_whereclause1023 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LENGTH_in_whereclause1041 = new BitSet(new long[]{0x0001000000000000L});
-    public static final BitSet FOLLOW_LPAREN_in_whereclause1043 = new BitSet(new long[]{0x0000000200000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_whereclause1045 = new BitSet(new long[]{0x0002000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_whereclause1047 = new BitSet(new long[]{0x0004000000000000L});
-    public static final BitSet FOLLOW_LESSTHANOREQUAL_in_whereclause1049 = new BitSet(new long[]{0x0000004000000000L});
-    public static final BitSet FOLLOW_NUMBER_in_whereclause1051 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LENGTH_in_whereclause1069 = new BitSet(new long[]{0x0001000000000000L});
-    public static final BitSet FOLLOW_LPAREN_in_whereclause1071 = new BitSet(new long[]{0x0000000200000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_whereclause1073 = new BitSet(new long[]{0x0002000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_whereclause1075 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_GREATERTHANOREQUAL_in_whereclause1077 = new BitSet(new long[]{0x0000004000000000L});
-    public static final BitSet FOLLOW_NUMBER_in_whereclause1079 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_whereclause1097 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_MATCHES_in_whereclause1099 = new BitSet(new long[]{0x0000080000000000L});
-    public static final BitSet FOLLOW_STRING_in_whereclause1101 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_whereclause1121 = new BitSet(new long[]{0x0000800000000000L});
-    public static final BitSet FOLLOW_EQUALS_in_whereclause1123 = new BitSet(new long[]{0x0000000200000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_whereclause1127 = new BitSet(new long[]{0x0010000000000000L});
-    public static final BitSet FOLLOW_PLUS_in_whereclause1129 = new BitSet(new long[]{0x0000004000000000L});
-    public static final BitSet FOLLOW_NUMBER_in_whereclause1131 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_whereclause1155 = new BitSet(new long[]{0x0000800000000000L});
-    public static final BitSet FOLLOW_EQUALS_in_whereclause1157 = new BitSet(new long[]{0x0000000200000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_whereclause1161 = new BitSet(new long[]{0x0020000000000000L});
-    public static final BitSet FOLLOW_MINUS_in_whereclause1163 = new BitSet(new long[]{0x0000004000000000L});
-    public static final BitSet FOLLOW_NUMBER_in_whereclause1165 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LPAREN_in_children853 = new BitSet(new long[]{0x000410C400000000L});
+    public static final BitSet FOLLOW_prime_in_children855 = new BitSet(new long[]{0x0004000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_children857 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_WHERE_in_where870 = new BitSet(new long[]{0x0000000400000400L});
+    public static final BitSet FOLLOW_whereclause_in_where872 = new BitSet(new long[]{0x0000000000000082L});
+    public static final BitSet FOLLOW_AND_in_where876 = new BitSet(new long[]{0x0000000400000400L});
+    public static final BitSet FOLLOW_whereclause_in_where878 = new BitSet(new long[]{0x0000000000000082L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_whereclause901 = new BitSet(new long[]{0x0000020000000000L});
+    public static final BitSet FOLLOW_COLON_in_whereclause903 = new BitSet(new long[]{0x0000000400000000L});
+    public static final BitSet FOLLOW_type_in_whereclause905 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_whereclause923 = new BitSet(new long[]{0x0000000000000200L});
+    public static final BitSet FOLLOW_NOT_in_whereclause925 = new BitSet(new long[]{0x0000000000000100L});
+    public static final BitSet FOLLOW_IN_in_whereclause927 = new BitSet(new long[]{0x0000400000000000L});
+    public static final BitSet FOLLOW_LBRACE_in_whereclause929 = new BitSet(new long[]{0x0000908400000000L});
+    public static final BitSet FOLLOW_index_in_whereclause933 = new BitSet(new long[]{0x0000800800000000L});
+    public static final BitSet FOLLOW_COMMA_in_whereclause937 = new BitSet(new long[]{0x0000108400000000L});
+    public static final BitSet FOLLOW_index_in_whereclause939 = new BitSet(new long[]{0x0000800800000000L});
+    public static final BitSet FOLLOW_RBRACE_in_whereclause947 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_whereclause966 = new BitSet(new long[]{0x0000000000000100L});
+    public static final BitSet FOLLOW_IN_in_whereclause968 = new BitSet(new long[]{0x0000400000000000L});
+    public static final BitSet FOLLOW_LBRACE_in_whereclause970 = new BitSet(new long[]{0x0000908400000000L});
+    public static final BitSet FOLLOW_index_in_whereclause974 = new BitSet(new long[]{0x0000800800000000L});
+    public static final BitSet FOLLOW_COMMA_in_whereclause978 = new BitSet(new long[]{0x0000108400000000L});
+    public static final BitSet FOLLOW_index_in_whereclause980 = new BitSet(new long[]{0x0000800800000000L});
+    public static final BitSet FOLLOW_RBRACE_in_whereclause988 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_whereclause1007 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_LESSTHANOREQUAL_in_whereclause1009 = new BitSet(new long[]{0x0000008000000000L});
+    public static final BitSet FOLLOW_NUMBER_in_whereclause1011 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_whereclause1029 = new BitSet(new long[]{0x0010000000000000L});
+    public static final BitSet FOLLOW_GREATERTHANOREQUAL_in_whereclause1031 = new BitSet(new long[]{0x0000008000000000L});
+    public static final BitSet FOLLOW_NUMBER_in_whereclause1033 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LENGTH_in_whereclause1051 = new BitSet(new long[]{0x0002000000000000L});
+    public static final BitSet FOLLOW_LPAREN_in_whereclause1053 = new BitSet(new long[]{0x0000000400000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_whereclause1055 = new BitSet(new long[]{0x0004000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_whereclause1057 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_LESSTHANOREQUAL_in_whereclause1059 = new BitSet(new long[]{0x0000008000000000L});
+    public static final BitSet FOLLOW_NUMBER_in_whereclause1061 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LENGTH_in_whereclause1079 = new BitSet(new long[]{0x0002000000000000L});
+    public static final BitSet FOLLOW_LPAREN_in_whereclause1081 = new BitSet(new long[]{0x0000000400000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_whereclause1083 = new BitSet(new long[]{0x0004000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_whereclause1085 = new BitSet(new long[]{0x0010000000000000L});
+    public static final BitSet FOLLOW_GREATERTHANOREQUAL_in_whereclause1087 = new BitSet(new long[]{0x0000008000000000L});
+    public static final BitSet FOLLOW_NUMBER_in_whereclause1089 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_whereclause1107 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_MATCHES_in_whereclause1109 = new BitSet(new long[]{0x0000100000000000L});
+    public static final BitSet FOLLOW_STRING_in_whereclause1111 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_whereclause1131 = new BitSet(new long[]{0x0001000000000000L});
+    public static final BitSet FOLLOW_EQUALS_in_whereclause1133 = new BitSet(new long[]{0x0000000400000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_whereclause1137 = new BitSet(new long[]{0x0020000000000000L});
+    public static final BitSet FOLLOW_PLUS_in_whereclause1139 = new BitSet(new long[]{0x0000008000000000L});
+    public static final BitSet FOLLOW_NUMBER_in_whereclause1141 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_whereclause1165 = new BitSet(new long[]{0x0001000000000000L});
+    public static final BitSet FOLLOW_EQUALS_in_whereclause1167 = new BitSet(new long[]{0x0000000400000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_whereclause1171 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_MINUS_in_whereclause1173 = new BitSet(new long[]{0x0000008000000000L});
+    public static final BitSet FOLLOW_NUMBER_in_whereclause1175 = new BitSet(new long[]{0x0000000000000002L});
 
 }

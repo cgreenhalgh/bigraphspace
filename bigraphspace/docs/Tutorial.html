@@ -1,6 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
+<html><head>
 
 
 
@@ -15,8 +14,7 @@
   
   
   
-  <title>Tutorial</title>
-</head>
+  <title>Tutorial</title></head>
 
 <body>
 
@@ -28,7 +26,7 @@
 
 
 
-<p>Chris Greenhalgh, 2009-06-29; updatd 2009-07-29</p>
+<p>Chris Greenhalgh, 2009-06-29; updatd 2009-07-30</p>
 
 
 
@@ -1000,59 +998,63 @@ or<br>
 at least one and '*' zero or more; string literals are shown in double
 quotes; '|' indicates alternatives):</p>
 <ul>
-  <li><span style="font-style: italic;">Bigraph</span> := "<span style="font-family: monospace;">bigraph</span>" <span style="font-style: italic;">Closures Wide Substitutions Variables</span>?</li>
-  <li><span style="font-style: italic;">Closures</span> := ( <span style="font-style: italic;">Closure</span> "<span style="font-family: monospace;">.</span>" )<span style="font-style: italic;">*<br>
-The dot operator corresponds to a (limited) composition operator (it can only be used with closures and substitutions).</span></li>
+  <li><span style="font-style: italic;">Bigraph</span> := "<span style="font-family: monospace;">bigraph</span>" <span style="font-style: italic;">Closures? Wide Substitutions? Variables</span>?</li>
+  <li><span style="font-style: italic;">Closures</span> :=&nbsp;<span style="font-style: italic;">Closure </span>( <span style="font-style: italic;">Closure</span> "<span style="font-family: monospace;">*</span>" )<span style="font-style: italic;">* </span>"<span style="font-family: monospace;">.</span>" <br>The
+dot operator corresponds to a (limited) composition operator (it can
+only be used with closures and substitutions). The "*" corresponds to
+tensor product, i.e. no name may appear in more than one closure.&nbsp;</li>
   <li><span style="font-style: italic;">Closure</span> :=&nbsp;"<span style="font-family: monospace;">/</span>" IDENTIFIER ( "<span style="font-family: monospace;">,</span>" IDENTIFIER )*<br>
-    <span style="font-style: italic;">A closure make the link IDENTIFIER into an edge (i.e. cannot occur in the context of the bigraph).</span>&nbsp;</li>
+    A closure make the link IDENTIFIER into an edge (i.e. cannot occur in the context of the bigraph).&nbsp;</li>
   <li><span style="font-style: italic;">Wide</span> := <span style="font-style: italic;">Prime</span>? ( "<span style="font-family: monospace;">||</span>" <span style="font-style: italic;">Prime</span>? )*<br>
-    <span style="font-style: italic;">The roots of the bigraph.</span></li>
+    The roots of the bigraph.</li>
   <li><span style="font-style: italic;">Prime</span> := <span style="font-style: italic;">Prime</span> "<span style="font-family: monospace;">|</span>" <span style="font-style: italic;">Prime</span> | <span style="font-style: italic;">Node</span> | <span style="font-style: italic;">Site</span></li>
   <li><span style="font-style: italic;">Site</span> :=&nbsp;"<span style="font-family: monospace;">[</span>" NUMBER? "<span style="font-family: monospace;">]</span>"</li>
   <li><span style="font-style: italic;">Node</span> := <span style="font-style: italic;">Control Support</span>? <span style="font-style: italic;">Ports</span>? <span style="font-style: italic;">Children</span>?<br>
-    <span style="font-style: italic;">A single node.</span></li>
+    A single node.</li>
   <li><span style="font-style: italic;">Control</span> := IDENTIFIER | <span style="font-style: italic;">Tuple</span> "<span style="font-family: monospace;">:</span>" <span style="font-style: italic;">Type</span> | IDENTIFIER <span style="font-style: italic;">Indexes</span><br style="font-style: italic;">
-    <span style="font-style: italic;">The first version is a simple control; the second and third are altenate representations of indexed controls.</span>&nbsp;</li>
+    The first version is a simple control; the second and third are altenate representations of indexed controls.&nbsp;</li>
   <li><span style="font-style: italic;">Tuple</span> := <span style="font-style: italic;">Value</span> ( "," <span style="font-style: italic;">Value</span> )*<br>
-    <span style="font-style: italic;">A tuple of index values for an indexed control (e.g. "4:integer")</span></li>
+    A tuple of index values for an indexed control (e.g. "4:integer")</li>
   <li><span style="font-style: italic;">Type</span> := IDENTIFIER<br>
-    <span style="font-style: italic;">Currently the only "type" supported is the name of an indexed control set. This may be elaborated in the future.</span></li>
+    Currently the only "type" supported is the name of an indexed control set. This may be elaborated in the future.</li>
   <li><span style="font-style: italic;">Indexes</span> := "<span style="font-family: monospace;">&lt;</span>" ( <span style="font-style: italic;">Value</span> ( "<span style="font-family: monospace;">,</span>" <span style="font-style: italic;">Value</span> )* )? "<span style="font-family: monospace;">&gt;</span>"<br>
-    <span style="font-style: italic;">Equivalent to a tuple of index values for an indexed control in the second format (e.g. "integer&lt;4&gt;").</span></li>
+    Equivalent to a tuple of index values for an indexed control in the second format (e.g. "integer&lt;4&gt;").</li>
   <li><span style="font-style: italic;">Value</span> := NUMBER | "<span style="font-family: monospace;">"</span>"STRING"<span style="font-family: monospace;">"</span>" | IDENTIFIER<br>
-    <span style="font-style: italic;">Note that variable identifiers are prefixed with a "$" to distinguish them from constant atoms.&nbsp;</span></li>
+    Note that variable identifiers are prefixed with a "$" to distinguish them from constant atoms.&nbsp;</li>
   <li><span style="font-style: italic;">Support</span> := "<span style="font-family: monospace;">@</span>" IDENTIFIER<br>
-    <span style="font-style: italic;">Optional support (identity) of the node.</span></li>
+    Optional support (identity) of the node.</li>
   <li><span style="font-style: italic;">Ports</span> := "<span style="font-family: monospace;">{</span>" <span style="font-style: italic;">Port</span> ( "<span style="font-family: monospace;">,</span>" <span style="font-style: italic;">Port</span> )* )? "<span style="font-family: monospace;">}</span>"<br>
-    <span style="font-style: italic;">Port link values.</span></li>
+    Port link values.</li>
   <li><span style="font-style: italic;">Port</span> := IDENTIFIER | IDENTIFIER "<span style="font-family: monospace;">=</span>" IDENTIFIER<br>
-    <span style="font-style: italic;">The first form is for unnamed
+    The first form is for unnamed
 ports (the IDENTIFIER is the link name); the second for named ports
-(the first IDENTIFIER is the port name, the second is the link name).</span></li>
+(the first IDENTIFIER is the port name, the second is the link name).</li>
   <li><span style="font-style: italic;">Children</span> := "<span style="font-family: monospace;">(</span>" <span style="font-style: italic;">Prime</span>? "<span style="font-family: monospace;">)</span>"&nbsp;</li>
-  <li><span style="font-style: italic;">Substitutions</span> := ( "<span style="font-family: monospace;">.</span>" <span style="font-style: italic;">Substitution</span> )*</li>
+  <li><span style="font-style: italic;">Substitutions</span> :=&nbsp;"<span style="font-family: monospace;">.</span>" <span style="font-style: italic;">Substitution</span> ( <span style="font-style: italic;">Substitution </span>"<span style="font-family: monospace;">*</span>" )*<br>As with Closures, the dot operator corresponds to a (limited) composition operator
+(it can only be used with closures and substitutions). The "*"
+corresponds to tensor product, i.e. no name may appear in more than one substitution.&nbsp;<span style="font-style: italic;"></span></li>
   <li><span style="font-style: italic;">Substitution</span> := IDENTIFIER "<span style="font-family: monospace;">/</span>" ( IDENTIFIER ( "<span style="font-family: monospace;">,</span>" IDENTIFIER )* )<br>
-    <span style="font-style: italic;">The IDENTIFIER on the left is a
+    The IDENTIFIER on the left is a
 link or outer name of the bigraph; the identifiers on the right are
 inner names of the bigraph. A name is "hidden" from any parameter by a
 substitution in which it appears on the left but not also on the right.
 Each IDENTIFIER on the right of a substitution implies an inner name
-that is mapped to the (same) given outer name or link.</span></li>
+that is mapped to the (same) given outer name or link.</li>
   <li><span style="font-style: italic;">Variables</span> := "<span style="font-family: monospace;">where</span>" <span style="font-style: italic;">VariableDefinition</span> ( "<span style="font-family: monospace;">and</span>" (&nbsp;<span style="font-style: italic;">VariableDefinition</span> | <span style="font-style: italic;">Condition</span> ) )*<br>
-    <span style="font-style: italic;">This should only be present in bigraph expressions, and defines the (index) variables on which they depend.</span></li>
+    This should only be present in bigraph expressions, and defines the (index) variables on which they depend.</li>
   <li><span style="font-style: italic;">VariableDefinition</span>&nbsp;:= VARIABLE "<span style="font-family: monospace;">:</span>" BASETYPE<br>
-    <span style="font-style: italic;">A VARIABLE is an IDENTIFIER
+    A VARIABLE is an IDENTIFIER
 beginning with "$". The currently defined BASETYPEs are "integer",
 "real" and "string". Note: at least at the moment these are NOT control
 sets or control types (even though they may look the same). The
 VARIABLE ranges over the base type (subject to following constraints),
 and the BASETYPE must match the BASETYPE of any control index with
-which it is used. </span> </li>
+which it is used.  </li>
   <li><span style="font-style: italic;">Condition</span> :=&nbsp;VARIABLE "<span style="font-family: monospace;">&lt;=</span>" NUMBER | VARIABLE "<span style="font-family: monospace;">&gt;=</span>" NUMBER | "<span style="font-family: monospace;">length</span>" "<span style="font-family: monospace;">(</span>" VARIABLE "<span style="font-family: monospace;">)</span>" "<span style="font-family: monospace;">&lt;=</span>" NUMBER | "<span style="font-family: monospace;">length</span>" "<span style="font-family: monospace;">(</span>" VARIABLE "<span style="font-family: monospace;">)</span>" "<span style="font-family: monospace;">&gt;=</span>" NUMBER | VARIABLE "<span style="font-family: monospace;">matches</span>" "<span style="font-family: monospace;">"</span>"REGEXP"<span style="font-family: monospace;">"</span>" | VARIABLE "<span style="font-family: monospace;">=</span>" VARIABLE ( "<span style="font-family: monospace;">+</span>" | "<span style="font-family: monospace;">-</span>" ) NUMBER | VARIABLE "<span style="font-family: monospace;">in</span>" "<span style="font-family: monospace;">{</span>" ( <span style="font-style: italic;">Value</span> ( "<span style="font-family: monospace;">,</span>" <span style="font-style: italic;">Value</span> )* )? "<span style="font-family: monospace;">}</span>" | VARIABLE "<span style="font-family: monospace;">not</span>" "<span style="font-family: monospace;">in</span>" "<span style="font-family: monospace;">{</span>" ( <span style="font-style: italic;">Value</span> ( "<span style="font-family: monospace;">,</span>" <span style="font-style: italic;">Value</span> )* )? "<span style="font-family: monospace;">}</span>"<br>
-    <span style="font-style: italic;">A VARIABLE must appear in a
+    A VARIABLE must appear in a
 VariableDefinition before it can appear in a Constraint. Hopefully the
 constraints are self-explanatory (in the XML they are named minvalue,
-maxvalue, minlength, maxlength, regexp, difference, oneof and notoneof.</span>  </li>
+maxvalue, minlength, maxlength, regexp, difference, oneof and notoneof.  </li>
 </ul>
 <p>Here are some examples of VariableDefinitions and Constraints (from&nbsp;<a href="../etc/indexed2.btl">etc/indexed2.btl</a>):</p>
 <pre>bigraph<br>	$i:integer | $s:string <br>where<br>	$i:integer and $i&lt;=10 and $i&gt;=4 and $i in { 5,6,7 } and $i not in { 7, 8 }<br>and 	$j:integer and $i=$j+1<br>and	$s:string and length($s)&lt;=4 and length($s)&gt;=2 and $s in { "a","b","c" } and $s not in { "c","d" } and $s matches "a*b*" </pre>
@@ -1923,7 +1925,7 @@ Agents. Cambridge University Press.</p>
 2009-07-30<br>
 <ul>
   <li>added note on bigraph term language expressions/variable notation;</li>
-  <li>new extended term language grammer and updated uses of term language.</li>
+  <li>new extended term language grammer and updated uses of term language.</li><li>changed closure/substitution syntax (to use '*')</li>
 </ul>
 2009-07-29<br>
 <ul>
@@ -1954,5 +1956,4 @@ Agents. Cambridge University Press.</p>
 
 
 
-</body>
-</html>
+</body></html>

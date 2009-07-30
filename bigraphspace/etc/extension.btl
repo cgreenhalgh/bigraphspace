@@ -1,5 +1,5 @@
 bigraph
-	/x . /y,z .
+	/x * /y,z .
 	Room@r1
-	. x/a,b . y/
+	. x/a,b * y/
 	
