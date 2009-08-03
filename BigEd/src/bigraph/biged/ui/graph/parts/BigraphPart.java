@@ -35,8 +35,6 @@
  */
 package bigraph.biged.ui.graph.parts;
 
-import java.util.List;
-
 import org.eclipse.draw2d.ConnectionLayer;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FlowLayout;
@@ -44,41 +42,22 @@ import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.ShortestPathConnectionRouter;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
-import org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy;
-import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
+import org.eclipse.gef.editpolicies.FlowLayoutEditPolicy;
 import org.eclipse.gef.requests.CreateRequest;
-
-import bigraph.biged.model.Bigraph;
-import bigraph.biged.model.Place;
 
 /**
  * @author <a href="ktg@cs.nott.ac.uk">Kevin Glover</a>
  */
-public class BigraphPart extends AbstractGraphicalEditPart
+public class BigraphPart extends PlaceContainerEditPart
 {
-	@Override
-	public void activate()
-	{
-		super.activate();
-	}
-
-	@Override
-	public void deactivate()
-	{
-		super.deactivate();
-	}
-
-	private Bigraph getBigraph()
-	{
-		return (Bigraph) getModel();
-	}
+//	private Bigraph getBigraph()
+//	{
+//		return (Bigraph) getModel();
+//	}
 
 	/*
 	 * (non-Javadoc)
@@ -88,49 +67,26 @@ public class BigraphPart extends AbstractGraphicalEditPart
 	@Override
 	protected void createEditPolicies()
 	{
-		installEditPolicy(EditPolicy.LAYOUT_ROLE, new ConstrainedLayoutEditPolicy()
+		installEditPolicy(EditPolicy.LAYOUT_ROLE, new FlowLayoutEditPolicy()
 		{
 			@Override
-			protected Command createChangeConstraintCommand(final EditPart child, final Object constraint)
+			protected Command getCreateCommand(CreateRequest request)
 			{
-				// if (!(child instanceof ResourcePart)) { return null; }
-				// if (!(constraint instanceof Point)) { return null; }
-				//
-				// final ResourcePart resourcePart = (ResourcePart) child;
-				// final Figure figure = (Figure) resourcePart.getFigure();
-				// final Point oldLocation = figure.getLocation();
-				// final Point newLocation = ((Point) constraint).translate(getLayoutOrigin());
-				//
-				// return new MoveResourceCommand(resourcePart, oldLocation, newLocation);
+				// TODO Auto-generated method stub
 				return null;
 			}
-
+			
 			@Override
-			protected EditPolicy createChildEditPolicy(final EditPart child)
+			protected Command createMoveChildCommand(EditPart child, EditPart after)
 			{
-				return new NonResizableEditPolicy();
+				// TODO Auto-generated method stub
+				return null;
 			}
-
+			
 			@Override
-			protected Object getConstraintFor(final Point point)
+			protected Command createAddCommand(EditPart child, EditPart after)
 			{
-				return point.getCopy();
-			}
-
-			@Override
-			protected Object getConstraintFor(final Rectangle rect)
-			{
-				return rect.getLocation();
-			}
-
-			@Override
-			protected Command getCreateCommand(final CreateRequest request)
-			{
-				// Point constraint = ((Point)
-				// getConstraintFor(request)).translate(getLayoutOrigin());
-				// return new
-				// CreateResourceCommand(PhysConfPlugin.getDefault().getModel(),
-				// (CreateResourceRequest) request, constraint);
+				// TODO Auto-generated method stub
 				return null;
 			}
 		});
@@ -156,17 +112,5 @@ public class BigraphPart extends AbstractGraphicalEditPart
 		connLayer.setConnectionRouter(new ShortestPathConnectionRouter(f));
 
 		return f;
-	}
-
-	@Override
-	protected List<Place> getModelChildren()
-	{
-		return getBigraph().getRoots();
-	}
-
-	@Override
-	protected void refreshChildren()
-	{
-		super.refreshChildren();
 	}
 }

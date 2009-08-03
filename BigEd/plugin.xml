@@ -7,6 +7,7 @@
           point="org.eclipse.ui.editors">
        <editor
              class="bigraph.biged.ui.editors.BigraphEditor"
+             contributorClass="bigraph.biged.ui.editors.BigraphEditorActionBarContributor"
              default="true"
              extensions="*.xml"
              id="bigraph.biged.editors.BigraphEditor"

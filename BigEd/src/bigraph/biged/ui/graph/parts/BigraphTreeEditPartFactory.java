@@ -40,6 +40,7 @@ import org.eclipse.gef.EditPartFactory;
 
 import bigraph.biged.model.Bigraph;
 import bigraph.biged.model.Place;
+import bigraph.biged.model.Port;
 
 /**
  * @author <a href="ktg@cs.nott.ac.uk">Kevin Glover</a>
@@ -57,13 +58,18 @@ public class BigraphTreeEditPartFactory implements EditPartFactory
 		EditPart part = null;
 		if (model instanceof Bigraph)
 		{
-			part = new BigraphTreePart();
+			part = new PlaceContainerTreeEditPart();
 		}
 		else if (model instanceof Place)
 		{
 			part = new PlaceTreePart();
 		}
+		else if (model instanceof Port)
+		{
+			part = new PortTreePart();
+		}
 
+		
 		if (part != null)
 		{
 			part.setModel(model);

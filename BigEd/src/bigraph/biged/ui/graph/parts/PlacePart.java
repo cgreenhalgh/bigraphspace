@@ -1,31 +1,35 @@
 package bigraph.biged.ui.graph.parts;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
-import org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy;
-import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
+import org.eclipse.gef.editpolicies.ComponentEditPolicy;
+import org.eclipse.gef.editpolicies.FlowLayoutEditPolicy;
 import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.gef.requests.GroupRequest;
 
 import bigraph.biged.model.LinkSegment;
 import bigraph.biged.model.Place;
+import bigraph.biged.model.PlaceContainer;
 import bigraph.biged.model.Port;
+import bigraph.biged.ui.commands.AddPlaceCommand;
+import bigraph.biged.ui.commands.DeletePlacesCommand;
+import bigraph.biged.ui.commands.MovePlaceCommand;
 import bigraph.biged.ui.graph.figures.PlaceFigure;
 import bigraph.biged.ui.graph.figures.PortConnectionAnchor;
 
-public class PlacePart extends AbstractGraphicalEditPart implements NodeEditPart
+public class PlacePart extends PlaceContainerEditPart implements NodeEditPart
 {
 
 	private final Map<Port, ConnectionAnchor> portAnchors = new HashMap<Port, ConnectionAnchor>();
@@ -96,6 +100,7 @@ public class PlacePart extends AbstractGraphicalEditPart implements NodeEditPart
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
 
 	private Place getPlace()
 	{
@@ -105,49 +110,87 @@ public class PlacePart extends AbstractGraphicalEditPart implements NodeEditPart
 	@Override
 	protected void createEditPolicies()
 	{
-		installEditPolicy(EditPolicy.LAYOUT_ROLE, new ConstrainedLayoutEditPolicy()
+		installEditPolicy(EditPolicy.COMPONENT_ROLE, new ComponentEditPolicy()
+		{
+			@SuppressWarnings("unchecked")
+			@Override
+			protected Command createDeleteCommand(final GroupRequest request)
+			{
+				final PlaceContainer parent = (PlaceContainer) getHost().getParent().getModel();
+				final Collection<EditPart> parts = request.getEditParts();
+				final Collection<Place> places = new HashSet<Place>();
+				for(final EditPart part: parts)
+				{
+					if(!(part.getModel() instanceof Place))
+					{
+						return null;
+					}
+					places.add((Place) part.getModel());
+				}
+				final DeletePlacesCommand deleteCommand = new DeletePlacesCommand(parent, places);
+				return deleteCommand;
+			}			
+		});
+		
+		installEditPolicy(EditPolicy.LAYOUT_ROLE, new FlowLayoutEditPolicy()
 		{
 			@Override
-			protected Command createChangeConstraintCommand(final EditPart child, final Object constraint)
+			protected Command getCreateCommand(CreateRequest request)
 			{
-				// if (!(child instanceof ResourcePart)) { return null; }
-				// if (!(constraint instanceof Point)) { return null; }
-				//
-				// final ResourcePart resourcePart = (ResourcePart) child;
-				// final Figure figure = (Figure) resourcePart.getFigure();
-				// final Point oldLocation = figure.getLocation();
-				// final Point newLocation = ((Point) constraint).translate(getLayoutOrigin());
-				//
-				// return new MoveResourceCommand(resourcePart, oldLocation, newLocation);
+				// TODO Auto-generated method stub
 				return null;
 			}
-
+			
 			@Override
-			protected EditPolicy createChildEditPolicy(final EditPart child)
+			public Command getCommand(Request request)
 			{
-				return new NonResizableEditPolicy();
+				System.err.println("Request " + request.getType());
+				return super.getCommand(request);
+			}
+
+			@SuppressWarnings("unchecked")
+			@Override
+			protected Command getOrphanChildrenCommand(Request request)
+			{
+				final Collection<EditPart> parts = ((GroupRequest)request).getEditParts();
+				final Collection<Place> places = new HashSet<Place>();
+				for(final EditPart part: parts)
+				{
+					if(!(part.getModel() instanceof Place))
+					{
+						return null;
+					}
+					places.add((Place) part.getModel());
+				}
+				final DeletePlacesCommand deleteCommand = new DeletePlacesCommand(getContainer(), places);
+				return deleteCommand;
 			}
 
 			@Override
-			protected Object getConstraintFor(final Point point)
+			protected Command createMoveChildCommand(EditPart child, EditPart after)
 			{
-				return point.getCopy();
+				if(child.getModel() instanceof Place && after != null && after.getModel() instanceof Place)
+				{
+					return new MovePlaceCommand(getContainer(), (Place)child.getModel(), (Place)after.getModel());						
+				}
+				
+				return null;
 			}
-
+			
 			@Override
-			protected Object getConstraintFor(final Rectangle rect)
+			protected Command createAddCommand(EditPart child, EditPart after)
 			{
-				return rect.getLocation();
-			}
-
-			@Override
-			protected Command getCreateCommand(final CreateRequest request)
-			{
-				// Point constraint = ((Point)
-				// getConstraintFor(request)).translate(getLayoutOrigin());
-				// return new
-				// CreateResourceCommand(PhysConfPlugin.getDefault().getModel(),
-				// (CreateResourceRequest) request, constraint);
+				if(child.getModel() instanceof Place)
+				{
+					if(after == null)
+					{
+						return new AddPlaceCommand(getContainer(), (Place)child.getModel(), null);						
+					}
+					else if(after.getModel() instanceof Place)
+					{
+						return new AddPlaceCommand(getContainer(), (Place)child.getModel(), (Place)after.getModel());						
+					}
+				}
 				return null;
 			}
 		});
@@ -157,12 +200,6 @@ public class PlacePart extends AbstractGraphicalEditPart implements NodeEditPart
 	protected IFigure createFigure()
 	{
 		return new PlaceFigure(getPlace());
-	}
-
-	@Override
-	protected List<Place> getModelChildren()
-	{
-		return getPlace().getChildren();
 	}
 
 	@Override
