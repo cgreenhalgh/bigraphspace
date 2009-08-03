@@ -135,8 +135,17 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette
 	@Override
 	public void doSave(final IProgressMonitor monitor)
 	{
-		// TODO Auto-generated method stub
+		try
+		{
+			//final IFile file = ((IFileEditorInput) getEditorInput()).getFile();
 
+			//final ModelLoader loader = new XMLModelLoader();
+			//bigraph = loader.loadModel(file.getContents());
+		}
+		catch (final Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	@SuppressWarnings("unchecked")

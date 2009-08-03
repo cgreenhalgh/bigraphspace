@@ -1,16 +1,16 @@
 package bigraph.biged.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import bigraphspace.model.PlaceType;
 
-public class Place
+public class Place extends PlaceContainer
 {
 	private final Bigraph bigraph;
-	private final bigraphspace.model.Place place;
-	private final List<Place> children;
+	final bigraphspace.model.Place place;
 	private final List<Port> ports;
 	private final Map<String, Link> edges;
 
@@ -22,10 +22,10 @@ public class Place
 		this.place = place;
 		this.edges = edgeMap;
 
-		children = new ArrayList<Place>();
+		final List<Place> places = getPlaces();
 		for (final bigraphspace.model.Place child : place.getChildren())
 		{
-			children.add(new Place(bigraph, child, edges));
+			places.add(new Place(bigraph, child, edges));
 		}
 
 		ports = new ArrayList<Port>();
@@ -41,11 +41,6 @@ public class Place
 	public Bigraph getBigraph()
 	{
 		return bigraph;
-	}
-
-	public List<Place> getChildren()
-	{
-		return children;
 	}
 
 	public String getControlName()
@@ -88,10 +83,38 @@ public class Place
 		System.err.println(getSupport() + ":" + position);
 		this.position = position;
 		position++;
-		for (final Place place : children)
+		for (final Place place : getPlaces())
 		{
 			position = place.calculatePosition(position);
 		}
 		return position;
+	}
+
+	public boolean remove(final Place child)
+	{
+		place.removeChild(child.place);
+		return super.remove(child);
+	}
+
+	@Override
+	public boolean removeAll(Collection<? extends Place> collection)
+	{
+		for(final Place child: collection)
+		{
+			place.removeChild(child.place);
+		}
+		return super.removeAll(collection);
+	}
+
+	public boolean add(final Place child)
+	{
+		place.addChild(child.place);
+		return super.add(child);
+	}
+	
+	public void add(final int index, final Place child)
+	{
+		place.insertChild(child.place, index);
+		super.add(index, child);
 	}
 }
