@@ -18,15 +18,21 @@ public class AddPlaceCommand extends Command
     	this.afterChild = after;
     }
     
-    public void execute()
+    @Override
+	public boolean canExecute()
+	{
+		return parent.canAdd(newChild);
+	}
+
+	public void execute()
     {
-    	int index = 0;
+    	int index = parent.getPlaces().size();
     	if(afterChild != null)
     	{
     		index = parent.indexOf(afterChild);
-    		if(index < 0 || index >= parent.getPlaces().size())
+    		if(index < 0 || index > parent.getPlaces().size())
     		{
-    			index = 0;
+    			index = parent.getPlaces().size();
     			// or exception
     		}
     	}

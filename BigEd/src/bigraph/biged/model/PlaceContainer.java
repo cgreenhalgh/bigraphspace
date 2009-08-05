@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import bigraphspace.model.PlaceType;
+
 public abstract class PlaceContainer
 {
 	private final List<Place> places = new ArrayList<Place>();
@@ -30,6 +32,11 @@ public abstract class PlaceContainer
 		places.add(child);
 		firePlaceEvent(this, child, PlaceEvent.Type.ADD);		
 		return true;
+	}
+	
+	public boolean canAdd(final Place place)
+	{
+		return place.getType() != PlaceType.root;
 	}
 	
 	public void add(final int index, final Place child)

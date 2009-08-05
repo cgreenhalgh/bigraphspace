@@ -16,6 +16,7 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.ComponentEditPolicy;
 import org.eclipse.gef.editpolicies.FlowLayoutEditPolicy;
+import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.requests.GroupRequest;
 
@@ -28,6 +29,7 @@ import bigraph.biged.ui.commands.DeletePlacesCommand;
 import bigraph.biged.ui.commands.MovePlaceCommand;
 import bigraph.biged.ui.graph.figures.PlaceFigure;
 import bigraph.biged.ui.graph.figures.PortConnectionAnchor;
+import bigraphspace.model.PlaceType;
 
 public class PlacePart extends PlaceContainerEditPart implements NodeEditPart
 {
@@ -100,7 +102,6 @@ public class PlacePart extends PlaceContainerEditPart implements NodeEditPart
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
 
 	private Place getPlace()
 	{
@@ -119,79 +120,87 @@ public class PlacePart extends PlaceContainerEditPart implements NodeEditPart
 				final PlaceContainer parent = (PlaceContainer) getHost().getParent().getModel();
 				final Collection<EditPart> parts = request.getEditParts();
 				final Collection<Place> places = new HashSet<Place>();
-				for(final EditPart part: parts)
+				for (final EditPart part : parts)
 				{
-					if(!(part.getModel() instanceof Place))
-					{
-						return null;
-					}
+					if (!(part.getModel() instanceof Place)) { return null; }
 					places.add((Place) part.getModel());
 				}
 				final DeletePlacesCommand deleteCommand = new DeletePlacesCommand(parent, places);
 				return deleteCommand;
-			}			
+			}
 		});
-		
+
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, new FlowLayoutEditPolicy()
 		{
 			@Override
-			protected Command getCreateCommand(CreateRequest request)
-			{
-				// TODO Auto-generated method stub
-				return null;
-			}
-			
-			@Override
-			public Command getCommand(Request request)
+			public Command getCommand(final Request request)
 			{
 				System.err.println("Request " + request.getType());
 				return super.getCommand(request);
 			}
 
+			@Override
+			protected Command createAddCommand(final EditPart child, final EditPart after)
+			{
+				if (child.getModel() instanceof Place)
+				{
+					final Place childPlace = (Place) child.getModel();
+					if (childPlace.getType() == PlaceType.root) { return null; }
+					if (after == null)
+					{
+						return new AddPlaceCommand(getContainer(), (Place) child.getModel(), null);
+					}
+					else if (after.getModel() instanceof Place) { return new AddPlaceCommand(getContainer(),
+							(Place) child.getModel(), (Place) after.getModel()); }
+				}
+				return null;
+			}
+
+			@Override
+			protected Command createMoveChildCommand(final EditPart child, final EditPart after)
+			{
+				if (child.getModel() instanceof Place)
+				{
+					if (after != null && after.getModel() instanceof Place)
+					{
+						return new MovePlaceCommand(getContainer(), (Place) child.getModel(), (Place) after.getModel());
+					}
+					else
+					{
+						return new MovePlaceCommand(getContainer(), (Place) child.getModel(), null);
+					}
+				}
+
+				return null;
+			}
+
+			@Override
+			protected Command getCloneCommand(final ChangeBoundsRequest request)
+			{
+				// TODO Auto-generated method stub
+				return super.getCloneCommand(request);
+			}
+
+			@Override
+			protected Command getCreateCommand(final CreateRequest request)
+			{
+				// TODO Auto-generated method stub
+				return null;
+			}
+
 			@SuppressWarnings("unchecked")
 			@Override
-			protected Command getOrphanChildrenCommand(Request request)
+			protected Command getOrphanChildrenCommand(final Request request)
 			{
-				final Collection<EditPart> parts = ((GroupRequest)request).getEditParts();
+				final Collection<EditPart> parts = ((GroupRequest) request).getEditParts();
 				final Collection<Place> places = new HashSet<Place>();
-				for(final EditPart part: parts)
+				for (final EditPart part : parts)
 				{
-					if(!(part.getModel() instanceof Place))
-					{
-						return null;
-					}
+					if (!(part.getModel() instanceof Place)) { return null; }
 					places.add((Place) part.getModel());
 				}
 				final DeletePlacesCommand deleteCommand = new DeletePlacesCommand(getContainer(), places);
 				return deleteCommand;
-			}
-
-			@Override
-			protected Command createMoveChildCommand(EditPart child, EditPart after)
-			{
-				if(child.getModel() instanceof Place && after != null && after.getModel() instanceof Place)
-				{
-					return new MovePlaceCommand(getContainer(), (Place)child.getModel(), (Place)after.getModel());						
-				}
-				
-				return null;
-			}
-			
-			@Override
-			protected Command createAddCommand(EditPart child, EditPart after)
-			{
-				if(child.getModel() instanceof Place)
-				{
-					if(after == null)
-					{
-						return new AddPlaceCommand(getContainer(), (Place)child.getModel(), null);						
-					}
-					else if(after.getModel() instanceof Place)
-					{
-						return new AddPlaceCommand(getContainer(), (Place)child.getModel(), (Place)after.getModel());						
-					}
-				}
-				return null;
 			}
 		});
 	}
