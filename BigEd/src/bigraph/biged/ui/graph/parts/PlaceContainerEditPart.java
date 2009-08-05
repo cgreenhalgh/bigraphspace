@@ -45,6 +45,9 @@ public abstract class PlaceContainerEditPart extends AbstractGraphicalEditPart i
 	@Override
 	public void onPlaceEvent(PlaceEvent event)
 	{
-		refreshChildren();
+		if(getParent() != null)
+		{
+			refreshChildren();
+		}
 	}	
 }

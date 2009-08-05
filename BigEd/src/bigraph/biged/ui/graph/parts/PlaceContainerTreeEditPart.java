@@ -46,6 +46,9 @@ public class PlaceContainerTreeEditPart extends AbstractTreeEditPart implements 
 	@Override
 	public void onPlaceEvent(PlaceEvent event)
 	{
-		refreshChildren();
+		if(getParent() != null)
+		{
+			refreshChildren();
+		}
 	}	
 }

@@ -7,6 +7,7 @@ import java.util.Map;
 import bigraphspace.api.BigraphChangedEvent;
 import bigraphspace.api.BigraphChangedListener;
 import bigraphspace.api.ReactiveBigraph;
+import bigraphspace.model.PlaceType;
 
 public class Bigraph extends PlaceContainer
 {
@@ -43,6 +44,12 @@ public class Bigraph extends PlaceContainer
 		}
 
 	}
+	
+	@Override
+	public boolean canAdd(final Place place)
+	{
+		return place.getType() == PlaceType.root;
+	}	
 
 	private void calculatePositions()
 	{
