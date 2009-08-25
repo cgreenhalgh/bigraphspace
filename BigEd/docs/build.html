@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>BigEd Build Notes</title>
+</head>
+
+<body>
+<p>The BigEd plugin is design to allow editing of Bigraphs. Currently it supports 
+the editing of bigraph xml files. It is still early in the development of BigEd, 
+and many features are missing or not working. Use at your own risk. Development is 
+ongoing though, and hopefully you'll be able to see the potential of BigEd.</p>
+
+Required:
+<ul>
+<li><a href="http://download.eclipse.org/eclipse/downloads/">Eclipse 3.5</a></li>
+<li><a href="http://www.eclipse.org/gef/downloads/">Graphical Editor Framework 3.5</a></li>
+</ul>
+
+Build Plugin:
+<ol>
+	<li>Import or Checkout the BigEd project into Eclipse</li> 
+	<li>Select File-&gt;Export... from the menu</li>
+	<li>Select 'Deployable Plugins and Fragments' from the Plugin Development folder, and click Next.</li>
+	<li>Check 'bigraph.biged'</li>
+	<li>Select a directory where you want the plugin exported</li>
+	<li>Finish! A fully built version of BigEd should be in the
+	directory you specified. </li>
+</ol>
+
+Install:
+<ol>
+	<li>Just copy the created plugin jar file into the Eclipse plugins directory are restart eclipse.</li> 
+</ol>
+
+</body>
+</html>

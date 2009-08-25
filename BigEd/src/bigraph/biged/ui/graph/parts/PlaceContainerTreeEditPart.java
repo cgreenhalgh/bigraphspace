@@ -11,11 +11,6 @@ import bigraph.biged.model.PlaceEventListener;
 
 public class PlaceContainerTreeEditPart extends AbstractTreeEditPart implements PlaceEventListener
 {
-	protected PlaceContainer getContainer()
-	{
-		return (PlaceContainer) getModel();
-	}
-	
 	@Override
 	public void activate()
 	{
@@ -35,20 +30,23 @@ public class PlaceContainerTreeEditPart extends AbstractTreeEditPart implements 
 			getContainer().addPlaceEventListener(this);
 		}
 	}
-	
+
+	public void onPlaceEvent(final PlaceEvent event)
+	{
+		if (getParent() != null)
+		{
+			refreshChildren();
+		}
+	}
+
+	protected PlaceContainer getContainer()
+	{
+		return (PlaceContainer) getModel();
+	}
+
 	@Override
 	protected List<Place> getModelChildren()
 	{
 		return getContainer().getPlaces();
-	}	
-	
-
-	@Override
-	public void onPlaceEvent(PlaceEvent event)
-	{
-		if(getParent() != null)
-		{
-			refreshChildren();
-		}
-	}	
+	}
 }

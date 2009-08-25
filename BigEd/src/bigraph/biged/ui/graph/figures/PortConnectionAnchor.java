@@ -24,7 +24,6 @@ public class PortConnectionAnchor extends AbstractConnectionAnchor
 		this.registry = registry;
 	}
 
-	@Override
 	public Point getLocation(final Point reference)
 	{
 		final Point point = new Point(getCenter(getOwner()));

@@ -15,21 +15,17 @@ import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.ComponentEditPolicy;
-import org.eclipse.gef.editpolicies.FlowLayoutEditPolicy;
-import org.eclipse.gef.requests.ChangeBoundsRequest;
-import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.gef.editpolicies.DirectEditPolicy;
+import org.eclipse.gef.requests.DirectEditRequest;
 import org.eclipse.gef.requests.GroupRequest;
 
 import bigraph.biged.model.LinkSegment;
 import bigraph.biged.model.Place;
 import bigraph.biged.model.PlaceContainer;
 import bigraph.biged.model.Port;
-import bigraph.biged.ui.commands.AddPlaceCommand;
 import bigraph.biged.ui.commands.DeletePlacesCommand;
-import bigraph.biged.ui.commands.MovePlaceCommand;
 import bigraph.biged.ui.graph.figures.PlaceFigure;
 import bigraph.biged.ui.graph.figures.PortConnectionAnchor;
-import bigraphspace.model.PlaceType;
 
 public class PlacePart extends PlaceContainerEditPart implements NodeEditPart
 {
@@ -65,7 +61,6 @@ public class PlacePart extends PlaceContainerEditPart implements NodeEditPart
 		return figure.getContainer();
 	}
 
-	@Override
 	public ConnectionAnchor getSourceConnectionAnchor(final ConnectionEditPart connection)
 	{
 		final Object model = connection.getModel();
@@ -77,14 +72,12 @@ public class PlacePart extends PlaceContainerEditPart implements NodeEditPart
 		return null;
 	}
 
-	@Override
 	public ConnectionAnchor getSourceConnectionAnchor(final Request request)
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public ConnectionAnchor getTargetConnectionAnchor(final ConnectionEditPart connection)
 	{
 		final Object model = connection.getModel();
@@ -96,7 +89,6 @@ public class PlacePart extends PlaceContainerEditPart implements NodeEditPart
 		return null;
 	}
 
-	@Override
 	public ConnectionAnchor getTargetConnectionAnchor(final Request request)
 	{
 		// TODO Auto-generated method stub
@@ -111,6 +103,8 @@ public class PlacePart extends PlaceContainerEditPart implements NodeEditPart
 	@Override
 	protected void createEditPolicies()
 	{
+		super.createEditPolicies();
+
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, new ComponentEditPolicy()
 		{
 			@SuppressWarnings("unchecked")
@@ -130,77 +124,19 @@ public class PlacePart extends PlaceContainerEditPart implements NodeEditPart
 			}
 		});
 
-		installEditPolicy(EditPolicy.LAYOUT_ROLE, new FlowLayoutEditPolicy()
+		installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE, new DirectEditPolicy()
 		{
 			@Override
-			public Command getCommand(final Request request)
-			{
-				System.err.println("Request " + request.getType());
-				return super.getCommand(request);
-			}
-
-			@Override
-			protected Command createAddCommand(final EditPart child, final EditPart after)
-			{
-				if (child.getModel() instanceof Place)
-				{
-					final Place childPlace = (Place) child.getModel();
-					if (childPlace.getType() == PlaceType.root) { return null; }
-					if (after == null)
-					{
-						return new AddPlaceCommand(getContainer(), (Place) child.getModel(), null);
-					}
-					else if (after.getModel() instanceof Place) { return new AddPlaceCommand(getContainer(),
-							(Place) child.getModel(), (Place) after.getModel()); }
-				}
-				return null;
-			}
-
-			@Override
-			protected Command createMoveChildCommand(final EditPart child, final EditPart after)
-			{
-				if (child.getModel() instanceof Place)
-				{
-					if (after != null && after.getModel() instanceof Place)
-					{
-						return new MovePlaceCommand(getContainer(), (Place) child.getModel(), (Place) after.getModel());
-					}
-					else
-					{
-						return new MovePlaceCommand(getContainer(), (Place) child.getModel(), null);
-					}
-				}
-
-				return null;
-			}
-
-			@Override
-			protected Command getCloneCommand(final ChangeBoundsRequest request)
-			{
-				// TODO Auto-generated method stub
-				return super.getCloneCommand(request);
-			}
-
-			@Override
-			protected Command getCreateCommand(final CreateRequest request)
+			protected Command getDirectEditCommand(final DirectEditRequest request)
 			{
 				// TODO Auto-generated method stub
 				return null;
 			}
 
-			@SuppressWarnings("unchecked")
 			@Override
-			protected Command getOrphanChildrenCommand(final Request request)
+			protected void showCurrentEditValue(final DirectEditRequest request)
 			{
-				final Collection<EditPart> parts = ((GroupRequest) request).getEditParts();
-				final Collection<Place> places = new HashSet<Place>();
-				for (final EditPart part : parts)
-				{
-					if (!(part.getModel() instanceof Place)) { return null; }
-					places.add((Place) part.getModel());
-				}
-				final DeletePlacesCommand deleteCommand = new DeletePlacesCommand(getContainer(), places);
-				return deleteCommand;
+
 			}
 		});
 	}

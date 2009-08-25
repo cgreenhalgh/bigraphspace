@@ -13,8 +13,6 @@ import bigraphspace.model.xml.DomBigraph;
 
 public class XMLModelLoader implements ModelLoader
 {
-
-	@Override
 	public Bigraph loadModel(final InputStream inputStream) throws IOException
 	{
 		try

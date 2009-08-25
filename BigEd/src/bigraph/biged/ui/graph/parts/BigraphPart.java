@@ -42,56 +42,13 @@ import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.ShortestPathConnectionRouter;
-import org.eclipse.gef.EditPart;
-import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.LayerConstants;
-import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.editpolicies.FlowLayoutEditPolicy;
-import org.eclipse.gef.requests.CreateRequest;
 
 /**
  * @author <a href="ktg@cs.nott.ac.uk">Kevin Glover</a>
  */
 public class BigraphPart extends PlaceContainerEditPart
 {
-//	private Bigraph getBigraph()
-//	{
-//		return (Bigraph) getModel();
-//	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
-	 */
-	@Override
-	protected void createEditPolicies()
-	{
-		installEditPolicy(EditPolicy.LAYOUT_ROLE, new FlowLayoutEditPolicy()
-		{
-			@Override
-			protected Command getCreateCommand(CreateRequest request)
-			{
-				// TODO Auto-generated method stub
-				return null;
-			}
-			
-			@Override
-			protected Command createMoveChildCommand(EditPart child, EditPart after)
-			{
-				// TODO Auto-generated method stub
-				return null;
-			}
-			
-			@Override
-			protected Command createAddCommand(EditPart child, EditPart after)
-			{
-				// TODO Auto-generated method stub
-				return null;
-			}
-		});
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 

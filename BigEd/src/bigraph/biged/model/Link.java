@@ -107,7 +107,6 @@ public class Link
 		final PriorityQueue<LinkSegment> currentSegments = new PriorityQueue<LinkSegment>(edges.size(),
 				new Comparator<LinkSegment>()
 				{
-					@Override
 					public int compare(final LinkSegment o1, final LinkSegment o2)
 					{
 						return o1.getLength() - o2.getLength();

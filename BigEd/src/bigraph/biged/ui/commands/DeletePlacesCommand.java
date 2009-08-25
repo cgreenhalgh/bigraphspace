@@ -11,13 +11,13 @@ public class DeletePlacesCommand extends Command
 {
 	private final PlaceContainer parent;
 	private final Collection<? extends Place> children;
-	
+
 	public DeletePlacesCommand(final PlaceContainer parent, final Collection<? extends Place> children)
 	{
 		this.parent = parent;
 		this.children = children;
 	}
-	
+
 	@Override
 	public boolean canExecute()
 	{

@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.5"?>
 <plugin>
-   <extension-point id="splashExtension" name="Splash Extensions" schema="schema/splashExtension.exsd"/>
+    <extension
+          point="org.eclipse.core.contenttype.contentTypes">
+   <content-type base-type="org.eclipse.core.runtime.xml"
+                 file-extensions="xml"
+                 id="bigraphXML"
+                 name="Bigraph XML File"
+                 priority="high">
+      <describer class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber">
+         <parameter name="element"
+                    value="bigraph">
+         </parameter>
+      </describer>
+   </content-type>
+    </extension>
 
     <extension
           point="org.eclipse.ui.editors">
@@ -9,12 +22,64 @@
              class="bigraph.biged.ui.editors.BigraphEditor"
              contributorClass="bigraph.biged.ui.editors.BigraphEditorActionBarContributor"
              default="true"
-             extensions="*.xml"
              id="bigraph.biged.editors.BigraphEditor"
              name="BigEd">
           <contentTypeBinding
-                contentTypeId="org.eclipse.core.runtime.xml">
+                contentTypeId="bigraph.biged.bigraphXML">
           </contentTypeBinding>
        </editor>
+    </extension>
+    <extension
+          point="org.eclipse.ui.newWizards">
+       <category
+             id="bigraph.biged"
+             name="Bigraph">
+       </category>
+       <wizard
+             category="bigraph.biged"
+             class="bigraph.biged.ui.tabs.NewBigraph"
+             hasPages="true"
+             icon="icons/sample.gif"
+             id="bigraph.biged.ui.wizards.NewBigraph"
+             name="Bigraph"
+             project="false">
+       </wizard>
+    </extension>
+    <extension
+          point="org.eclipse.ui.views.properties.tabbed.propertyContributor">
+       <propertyContributor
+             contributorId="bigraph.biged.ui.properties.contributor"
+             labelProvider="bigraph.biged.ui.BigraphLabelProvider"
+             typeMapper="bigraph.biged.ui.properties.TypeMapper">
+          <propertyCategory
+                category="bigraph"></propertyCategory>
+       </propertyContributor>
+    </extension>
+    <extension
+          point="org.eclipse.ui.views.properties.tabbed.propertySections">
+       <propertySections
+             contributorId="bigraph.biged.ui.properties.contributor">
+          <propertySection
+                class="bigraph.biged.ui.properties.ControlNameSection"
+                enablesFor="1"
+                filter="bigraph.biged.ui.properties.NodeFilter"
+                id="bigraph.biged.ui.properties.ControlNameSection"
+                tab="bigraph.biged.ui.properties.general">
+             <input
+                   type="bigraph.biged.model.Place">
+             </input>
+          </propertySection>
+       </propertySections>
+    </extension>
+    <extension
+          point="org.eclipse.ui.views.properties.tabbed.propertyTabs">
+       <propertyTabs
+             contributorId="bigraph.biged.ui.properties.contributor">
+          <propertyTab
+                category="bigraph"
+                id="bigraph.biged.ui.properties.general"
+                label="General">
+          </propertyTab>
+       </propertyTabs>
     </extension>
 </plugin>
