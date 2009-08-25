@@ -71,8 +71,18 @@ public class BigraphLabelProvider extends LabelProvider
 			{
 				return "root";
 			}
-			else if (place.getType() == PlaceType.site) { return "site"; }
-			return place.getControlName() + ":" + place.getSupport();
+			else if (place.getType() == PlaceType.site)
+			{
+				if (place.getSiteIndex() == null)
+				{
+					return "site";
+				}
+				else
+				{
+					return "site[" + place.getSiteIndex() + "]";
+				}
+			}
+			return place.getControlName() + "@" + place.getSupport();
 		}
 		return object.toString();
 	}

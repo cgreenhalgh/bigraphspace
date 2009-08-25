@@ -11,29 +11,27 @@ import bigraphspace.model.PlaceType;
 
 public class Bigraph extends PlaceContainer
 {
-	private final bigraphspace.model.Bigraph bigraph;
-	private final Map<String, Link> edges = new HashMap<String, Link>();
+	final bigraphspace.model.Bigraph bigraph;
+	final Map<String, Link> edges = new HashMap<String, Link>();
 
 	public Bigraph(final bigraphspace.model.Bigraph bigraph)
 	{
 		this.bigraph = bigraph;
-		if(bigraph instanceof ReactiveBigraph)
+		if (bigraph instanceof ReactiveBigraph)
 		{
-			((ReactiveBigraph)bigraph).addBigraphChangedListener(new BigraphChangedListener()
+			((ReactiveBigraph) bigraph).addBigraphChangedListener(new BigraphChangedListener()
 			{
-				
-				@Override
-				public void bigraphChanged(BigraphChangedEvent bce)
+				public void bigraphChanged(final BigraphChangedEvent bce)
 				{
 					// TODO Auto-generated method stub
-					
+
 				}
 			});
 		}
 		final List<Place> places = getPlaces();
 		for (final bigraphspace.model.Place place : bigraph.getRoots())
 		{
-			places.add(new Place(this, place, edges));
+			places.add(new Place(this, place));
 		}
 
 		calculatePositions();
@@ -44,20 +42,18 @@ public class Bigraph extends PlaceContainer
 		}
 
 	}
-	
+
+	@Override
+	public boolean add(final Place child)
+	{
+		bigraph.addRoot(child.place);
+		return super.add(child);
+	}
+
 	@Override
 	public boolean canAdd(final Place place)
 	{
 		return place.getType() == PlaceType.root;
-	}	
-
-	private void calculatePositions()
-	{
-		int position = 1;
-		for (final Place root : getPlaces())
-		{
-			position = root.calculatePosition(position);
-		}
 	}
 
 	@Override
@@ -67,10 +63,12 @@ public class Bigraph extends PlaceContainer
 		return super.remove(child);
 	}
 
-	@Override
-	public boolean add(final Place child)
+	private void calculatePositions()
 	{
-		bigraph.addRoot(child.place);	
-		return super.add(child);
+		int position = 1;
+		for (final Place root : getPlaces())
+		{
+			position = root.calculatePosition(position);
+		}
 	}
 }

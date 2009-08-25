@@ -10,7 +10,7 @@ public class MovePlaceCommand extends Command
 	private final PlaceContainer parent;
 	private final Place child;
 	private final Place afterChild;
-	
+
 	public MovePlaceCommand(final PlaceContainer parent, final Place child, final Place after)
 	{
 		this.parent = parent;
@@ -36,21 +36,21 @@ public class MovePlaceCommand extends Command
 	public void execute()
 	{
 		parent.remove(child);
-    	int index = parent.getPlaces().size();
-    	if(afterChild != null)
-    	{
-    		index = parent.indexOf(afterChild);
-    		if(index < 0 || index > parent.getPlaces().size())
-    		{
-    			index = parent.getPlaces().size();
-    			// or exception
-    		}
-    	}
-    	parent.add(index, child);
+		int index = parent.getPlaces().size();
+		if (afterChild != null)
+		{
+			index = parent.indexOf(afterChild);
+			if (index < 0 || index > parent.getPlaces().size())
+			{
+				index = parent.getPlaces().size();
+				// or exception
+			}
+		}
+		parent.add(index, child);
 	}
 
 	@Override
 	public void undo()
 	{
 	}
-} 
+}

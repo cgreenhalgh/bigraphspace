@@ -15,6 +15,12 @@ public class PlaceTreePart extends PlaceContainerTreeEditPart
 		return (Place) getModel();
 	}
 
+	@Override
+	protected Image getImage()
+	{
+		return super.getImage();
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	protected List getModelChildren()
@@ -23,12 +29,6 @@ public class PlaceTreePart extends PlaceContainerTreeEditPart
 		children.addAll(getPlace().getPorts());
 		children.addAll(getPlace().getPlaces());
 		return children;
-	}
-
-	@Override
-	protected Image getImage()
-	{
-		return super.getImage();
 	}
 
 	@Override

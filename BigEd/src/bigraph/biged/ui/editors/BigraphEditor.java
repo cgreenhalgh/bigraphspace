@@ -1,5 +1,7 @@
 package bigraph.biged.ui.editors;
 
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.util.EventObject;
 
 import org.eclipse.core.resources.IFile;
@@ -22,14 +24,18 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
+import org.eclipse.ui.views.properties.IPropertySheetPage;
+import org.eclipse.ui.views.properties.tabbed.ITabbedPropertySheetPageContributor;
+import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
 import bigraph.biged.model.Bigraph;
 import bigraph.biged.model.ModelLoader;
 import bigraph.biged.model.XMLModelLoader;
+import bigraph.biged.model.XMLModelSaver;
 import bigraph.biged.ui.graph.parts.BigraphEditPartFactory;
 import bigraph.biged.ui.graph.parts.BigraphTreeEditPartFactory;
 
-public class BigraphEditor extends GraphicalEditorWithFlyoutPalette
+public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements ITabbedPropertySheetPageContributor
 {
 	public class BigraphOutlinePage extends ContentOutlinePage
 	{
@@ -117,7 +123,7 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette
 		}
 	}
 
-	private Bigraph bigraph;
+	Bigraph bigraph;
 	private BigraphOutlinePage outlinePage;
 
 	public BigraphEditor()
@@ -137,10 +143,13 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette
 	{
 		try
 		{
-			//final IFile file = ((IFileEditorInput) getEditorInput()).getFile();
+			final PipedInputStream in = new PipedInputStream();
+			final PipedOutputStream out = new PipedOutputStream(in);
+			final XMLModelSaver saver = new XMLModelSaver();
+			saver.saveModel(bigraph, out);
 
-			//final ModelLoader loader = new XMLModelLoader();
-			//bigraph = loader.loadModel(file.getContents());
+			final IFile file = ((IFileEditorInput) getEditorInput()).getFile();
+			file.setContents(in, true, true, monitor);
 		}
 		catch (final Exception e)
 		{
@@ -160,6 +169,10 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette
 				outlinePage = new BigraphOutlinePage();
 			}
 			return outlinePage;
+		}
+		else if (type == IPropertySheetPage.class)
+		{
+			return new TabbedPropertySheetPage(this);
 		}
 		return super.getAdapter(type);
 	}
@@ -183,8 +196,7 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette
 	@Override
 	protected PaletteRoot getPaletteRoot()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return BigraphEditorPaletteFactory.createPalette(this);
 	}
 
 	@Override
@@ -219,5 +231,10 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette
 	Bigraph getModel()
 	{
 		return bigraph;
+	}
+
+	public String getContributorId()
+	{
+		return "bigraph.biged.ui.properties.contributor";
 	}
 }

@@ -32,35 +32,34 @@ public class PlaceFigure extends Figure
 		name = new Label(BigraphLabelProvider.text(place));
 		name.setLabelAlignment(PositionConstants.LEFT);
 
-
 		if (place.getType() == PlaceType.root)
 		{
-			RoundedRectangle rect = new RoundedRectangle();
+			final RoundedRectangle rect = new RoundedRectangle();
 			rect.setAntialias(SWT.ON);
 			rect.setLineWidth(lineWidth);
 			rect.setLineStyle(Graphics.LINE_DASH);
 			rect.setCornerDimensions(new Dimension(arcLength, arcLength));
-			rect.setForegroundColor(ColorConstants.black);			
-			
-			container = rect;		
+			rect.setForegroundColor(ColorConstants.black);
+
+			container = rect;
 		}
 		else if (place.getType() == PlaceType.site)
 		{
-			RoundedRectangle rect = new RoundedRectangle();
+			final RoundedRectangle rect = new RoundedRectangle();
 			rect.setAntialias(SWT.ON);
-			//container.setBorder(new RoundedLineBorder(Graphics.LINE_DASH, true));
+			// container.setBorder(new RoundedLineBorder(Graphics.LINE_DASH, true));
 			rect.setBackgroundColor(ColorConstants.gray);
 			rect.setLineWidth(lineWidth);
 			rect.setLineStyle(Graphics.LINE_DASH);
 			rect.setCornerDimensions(new Dimension(arcLength, arcLength));
-			rect.setForegroundColor(ColorConstants.black);			
-			container = rect;			
+			rect.setForegroundColor(ColorConstants.black);
+			container = rect;
 		}
 		else
 		{
-			RectangleFigure rect = new RectangleFigure();
+			final RectangleFigure rect = new RectangleFigure();
 			rect.setLineWidth(lineWidth);
-			rect.setForegroundColor(ColorConstants.black);						
+			rect.setForegroundColor(ColorConstants.black);
 			container = rect;
 		}
 

@@ -33,46 +33,33 @@
 
  Created by: Kevin Glover (University of Nottingham)
  */
-package bigraph.biged.ui.graph.parts;
+package bigraph.biged.ui.properties;
 
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.EditPartFactory;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.ui.views.properties.tabbed.AbstractTypeMapper;
 
-import bigraph.biged.model.Bigraph;
-import bigraph.biged.model.Place;
-import bigraph.biged.model.Port;
-
-/**
- * @author <a href="ktg@cs.nott.ac.uk">Kevin Glover</a>
- */
-public class BigraphTreeEditPartFactory implements EditPartFactory
+public class TypeMapper extends AbstractTypeMapper
 {
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.gef.EditPartFactory#createEditPart(org.eclipse.gef.EditPart,
-	 * java.lang.Object)
-	 */
-	public EditPart createEditPart(final EditPart context, final Object model)
+	public static Object getModelObject(final Object object)
 	{
-		EditPart part = null;
-		if (model instanceof Bigraph)
+		Object result = object;
+		if (result instanceof IStructuredSelection)
 		{
-			part = new PlaceContainerTreeEditPart();
-		}
-		else if (model instanceof Place)
-		{
-			part = new PlaceTreePart();
-		}
-		else if (model instanceof Port)
-		{
-			part = new PortTreePart();
+			result = ((IStructuredSelection) result).getFirstElement();
 		}
 
-		if (part != null)
+		if (result instanceof EditPart)
 		{
-			part.setModel(model);
+			result = ((EditPart) result).getModel();
 		}
-		return part;
+
+		return result;
+	}
+
+	@Override
+	public Class<?> mapType(final Object object)
+	{
+		return getModelObject(object).getClass();
 	}
 }
