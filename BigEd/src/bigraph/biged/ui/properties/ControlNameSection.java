@@ -125,6 +125,7 @@ public class ControlNameSection extends AbstractPropertySection implements Modif
 	{
 		super.setInput(part, selection);
 		setPlace((Place) TypeMapper.getModelObject(selection));
+		setValue(place.getControlName());
 	}
 
 	protected void setValue(final Object value)
