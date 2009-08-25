@@ -37,7 +37,7 @@
        </category>
        <wizard
              category="bigraph.biged"
-             class="bigraph.biged.ui.tabs.NewBigraph"
+             class="bigraph.biged.ui.wizards.NewBigraph"
              hasPages="true"
              icon="icons/sample.gif"
              id="bigraph.biged.ui.wizards.NewBigraph"
