@@ -38,23 +38,23 @@ package bigraph.biged.ui.properties;
 /**
  * @author <a href="ktg@cs.nott.ac.uk">Kevin Glover</a>
  */
-public class ControlNameSection extends AbstractPlaceStringPropertySection
+public class SupportNameSection extends AbstractPlaceStringPropertySection
 {
 	@Override
 	protected String getLabel()
 	{
-		return "Control Name";
+		return "Support Name";
 	}
 
 	@Override
 	protected String getValue()
 	{
-		return place.getControlName();
+		return place.getSupport();
 	}
 
 	@Override
 	protected void setValue(String value)
 	{
-		place.setControlName(value);
+		place.setSupport(value);
 	}
 }

@@ -19,6 +19,7 @@ import bigraph.biged.model.Place;
 import bigraph.biged.model.PlaceContainer;
 import bigraph.biged.model.PlaceEvent;
 import bigraph.biged.model.PlaceEventListener;
+import bigraph.biged.model.PlaceEvent.Type;
 import bigraph.biged.ui.commands.AddPlaceCommand;
 import bigraph.biged.ui.commands.DeletePlacesCommand;
 import bigraph.biged.ui.commands.MovePlaceCommand;
@@ -49,7 +50,14 @@ public abstract class PlaceContainerEditPart extends AbstractGraphicalEditPart i
 	{
 		if (getParent() != null)
 		{
-			refreshChildren();
+			if(event.getType() == Type.ADD || event.getType() == Type.REMOVE)
+			{
+				refreshChildren();
+			}
+			else if(event.getType() == Type.CHANGE)
+			{
+				refreshVisuals();
+			}
 		}
 	}
 

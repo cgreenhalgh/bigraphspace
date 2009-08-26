@@ -39,6 +39,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import bigraph.biged.model.Place;
+import bigraph.biged.ui.properties.TypeMapper;
 import bigraphspace.model.PlaceType;
 
 public class BigraphLabelProvider extends LabelProvider
@@ -64,9 +65,10 @@ public class BigraphLabelProvider extends LabelProvider
 	@Override
 	public String getText(final Object object)
 	{
-		if (object instanceof Place)
+		final Object modelObject = TypeMapper.getModelObject(object);
+		if (modelObject instanceof Place)
 		{
-			final Place place = (Place) object;
+			final Place place = (Place) modelObject;
 			if (place.getType() == PlaceType.root)
 			{
 				return "root";
@@ -82,8 +84,12 @@ public class BigraphLabelProvider extends LabelProvider
 					return "site[" + place.getSiteIndex() + "]";
 				}
 			}
+			if(place.getSupport() == null || place.getSupport().trim().equals(""))
+			{
+				return place.getControlName();
+			}
 			return place.getControlName() + "@" + place.getSupport();
 		}
-		return object.toString();
+		return modelObject.toString();
 	}
 }
