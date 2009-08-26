@@ -8,41 +8,47 @@ import bigraph.biged.model.PlaceContainer;
 public class AddPlaceCommand extends Command
 {
 	private final PlaceContainer parent;
-	private final Place newChild;
-	private final Place afterChild;
+	private final Place child;
+	private final Place before;
 
 	public AddPlaceCommand(final PlaceContainer parent, final Place child, final Place after)
 	{
 		this.parent = parent;
-		this.newChild = child;
-		this.afterChild = after;
+		this.child = child;
+		this.before = after;
 	}
 
 	@Override
 	public boolean canExecute()
 	{
-		return parent.canAdd(newChild);
+		return parent.canAdd(child);
 	}
 
 	@Override
+	public boolean canUndo()
+	{
+		return true;
+	}
+	
+	@Override
 	public void execute()
 	{
-		int index = parent.getPlaces().size();
-		if (afterChild != null)
+		int index = parent.indexOf(before);
+		System.out.println("Insert at " + index);
+		
+		if (index < 0 || index >= parent.getPlaces().size())
 		{
-			index = parent.indexOf(afterChild);
-			if (index < 0 || index > parent.getPlaces().size())
-			{
-				index = parent.getPlaces().size();
-				// or exception
-			}
+			parent.add(child);
+		}		
+		else
+		{
+			parent.add(index, child);
 		}
-		parent.add(index, newChild);
 	}
 
 	@Override
 	public void undo()
 	{
-		parent.remove(newChild);
+		parent.remove(child);
 	}
 }

@@ -77,6 +77,11 @@ public class PlacePart extends PlaceContainerEditPart implements NodeEditPart
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public void refreshVisuals()
+	{
+		((PlaceFigure)getFigure()).refresh();
+	}
 
 	public ConnectionAnchor getTargetConnectionAnchor(final ConnectionEditPart connection)
 	{

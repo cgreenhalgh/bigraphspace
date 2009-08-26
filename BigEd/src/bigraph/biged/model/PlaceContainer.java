@@ -15,13 +15,13 @@ public abstract class PlaceContainer
 	public void add(final int index, final Place child)
 	{
 		places.add(index, child);
-		firePlaceEvent(this, child, PlaceEvent.Type.ADD);
+		firePlaceEvent(new PlaceEvent(this, child, PlaceEvent.Type.ADD));
 	}
 
 	public boolean add(final Place child)
 	{
 		places.add(child);
-		firePlaceEvent(this, child, PlaceEvent.Type.ADD);
+		firePlaceEvent(new PlaceEvent(this, child, PlaceEvent.Type.ADD));
 		return true;
 	}
 
@@ -30,7 +30,7 @@ public abstract class PlaceContainer
 		final boolean added = places.addAll(children);
 		if (added)
 		{
-			firePlaceEvent(this, children, PlaceEvent.Type.ADD);
+			firePlaceEvent(new PlaceEvent(this, children, PlaceEvent.Type.ADD));
 		}
 		return added;
 	}
@@ -60,7 +60,7 @@ public abstract class PlaceContainer
 		final boolean removed = places.remove(child);
 		if (removed)
 		{
-			firePlaceEvent(this, child, PlaceEvent.Type.REMOVE);
+			firePlaceEvent(new PlaceEvent(this, child, PlaceEvent.Type.REMOVE));
 		}
 		return removed;
 	}
@@ -68,7 +68,7 @@ public abstract class PlaceContainer
 	public boolean removeAll(final Collection<? extends Place> collection)
 	{
 		final boolean removed = places.removeAll(collection);
-		firePlaceEvent(this, collection, PlaceEvent.Type.REMOVE);
+		firePlaceEvent(new PlaceEvent(this, collection, PlaceEvent.Type.REMOVE));
 		return removed;
 	}
 
@@ -77,22 +77,11 @@ public abstract class PlaceContainer
 		listeners.remove(listener);
 	}
 
-	protected void firePlaceEvent(final PlaceContainer parent, final Collection<? extends Place> places,
-			final PlaceEvent.Type type)
+	protected void firePlaceEvent(final PlaceEvent event)
 	{
-		final PlaceEvent event = new PlaceEvent(parent, places, type);
 		for (final PlaceEventListener listener : listeners)
 		{
 			listener.onPlaceEvent(event);
-		}
-	}
-
-	protected void firePlaceEvent(final PlaceContainer parent, final Place place, final PlaceEvent.Type type)
-	{
-		final PlaceEvent event = new PlaceEvent(parent, place, type);
-		for (final PlaceEventListener listener : listeners)
-		{
-			listener.onPlaceEvent(event);
-		}
+		}		
 	}
 }

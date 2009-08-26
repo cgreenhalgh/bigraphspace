@@ -14,6 +14,13 @@ public class PlaceEvent
 	private final Collection<? extends Place> places;
 	private final Type type;
 
+	public PlaceEvent(final Place place)
+	{
+		parent = null;
+		places = Collections.singleton(place);
+		type = Type.CHANGE;
+	}
+	
 	public PlaceEvent(final PlaceContainer parent, final Collection<? extends Place> places, final Type type)
 	{
 		this.parent = parent;

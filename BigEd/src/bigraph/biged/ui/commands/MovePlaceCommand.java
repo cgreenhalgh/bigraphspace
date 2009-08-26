@@ -9,26 +9,24 @@ public class MovePlaceCommand extends Command
 {
 	private final PlaceContainer parent;
 	private final Place child;
-	private final Place afterChild;
+	private final Place before;
 
-	public MovePlaceCommand(final PlaceContainer parent, final Place child, final Place after)
+	public MovePlaceCommand(final PlaceContainer parent, final Place child, final Place before)
 	{
 		this.parent = parent;
 		this.child = child;
-		this.afterChild = after;
+		this.before = before;
 	}
 
 	@Override
 	public boolean canExecute()
 	{
-		// TODO Auto-generated method stub
 		return super.canExecute();
 	}
 
 	@Override
 	public boolean canUndo()
 	{
-		// TODO Auto-generated method stub
 		return super.canUndo();
 	}
 
@@ -36,17 +34,16 @@ public class MovePlaceCommand extends Command
 	public void execute()
 	{
 		parent.remove(child);
-		int index = parent.getPlaces().size();
-		if (afterChild != null)
+		int index = parent.indexOf(before);
+
+		if (index < 0 || index >= parent.getPlaces().size())
 		{
-			index = parent.indexOf(afterChild);
-			if (index < 0 || index > parent.getPlaces().size())
-			{
-				index = parent.getPlaces().size();
-				// or exception
-			}
+			parent.add(child);
+		}		
+		else
+		{
+			parent.add(index, child);
 		}
-		parent.add(index, child);
 	}
 
 	@Override

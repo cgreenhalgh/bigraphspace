@@ -9,6 +9,7 @@ public class NodeFilter implements IFilter
 {
 	public boolean select(Object toTest)
 	{
-		return toTest instanceof Place && ((Place)toTest).getType() == PlaceType.node;
+		final Object modelObject = TypeMapper.getModelObject(toTest);
+		return modelObject instanceof Place && ((Place)modelObject).getType() == PlaceType.node;
 	}
 }

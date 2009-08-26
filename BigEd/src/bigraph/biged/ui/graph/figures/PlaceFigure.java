@@ -26,9 +26,11 @@ public class PlaceFigure extends Figure
 
 	private final Label name;
 	private final IFigure container;
+	private final Place place;
 
 	public PlaceFigure(final Place place)
 	{
+		this.place = place;
 		name = new Label(BigraphLabelProvider.text(place));
 		name.setLabelAlignment(PositionConstants.LEFT);
 
@@ -85,5 +87,11 @@ public class PlaceFigure extends Figure
 	public IFigure getContainer()
 	{
 		return container;
+	}
+
+	public void refresh()
+	{
+		name.setText(BigraphLabelProvider.text(place));
+		
 	}
 }

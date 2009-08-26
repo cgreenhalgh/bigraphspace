@@ -54,7 +54,8 @@ public class Place extends PlaceContainer
 	@Override
 	public void add(final int index, final Place child)
 	{
-		place.insertChild(child.place, index);
+		System.out.println("Insert child at " + index);
+		place.insertChild(child.place, index + 1);
 		super.add(index, child);
 	}
 
@@ -80,6 +81,12 @@ public class Place extends PlaceContainer
 	public String getControlName()
 	{
 		return place.getControlName();
+	}
+	
+	public void setControlName(final String name)
+	{
+		place.setControlName(name);
+		firePlaceEvent(new PlaceEvent(this));		
 	}
 
 	public List<LinkSegment> getLinkSegments(final boolean source, final boolean target)
@@ -144,5 +151,11 @@ public class Place extends PlaceContainer
 			position = place.calculatePosition(position);
 		}
 		return position;
+	}
+
+	public void setSupport(final String value)
+	{
+		place.setSupport(value);
+		firePlaceEvent(new PlaceEvent(this));
 	}
 }
