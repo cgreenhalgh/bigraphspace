@@ -69,6 +69,16 @@
                    type="bigraph.biged.model.Place">
              </input>
           </propertySection>
+          <propertySection
+                class="bigraph.biged.ui.properties.SupportNameSection"
+                enablesFor="1"
+                filter="bigraph.biged.ui.properties.NodeFilter"
+                id="bigraph.biged.ui.properties.SupportNameSection"
+                tab="bigraph.biged.ui.properties.general">
+             <input
+                   type="bigraph.biged.model.Place">
+             </input>
+          </propertySection>          
        </propertySections>
     </extension>
     <extension
