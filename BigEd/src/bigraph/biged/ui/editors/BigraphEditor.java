@@ -150,6 +150,7 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements I
 
 			final IFile file = ((IFileEditorInput) getEditorInput()).getFile();
 			file.setContents(in, true, true, monitor);
+			getCommandStack().markSaveLocation();			
 		}
 		catch (final Exception e)
 		{
