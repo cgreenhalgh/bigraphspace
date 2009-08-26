@@ -11,13 +11,13 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
@@ -26,12 +26,13 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWizard;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.ide.IDE;
 
 public class NewBigraph extends Wizard implements INewWizard
 {
-	private NewBigraphPage page;
-	private ISelection selection;
+	private WizardNewFileCreationPage page;
+	private IStructuredSelection selection;
 
 	/**
 	 * Constructor for NewBigraph.
@@ -49,7 +50,11 @@ public class NewBigraph extends Wizard implements INewWizard
 	@Override
 	public void addPages()
 	{
-		page = new NewBigraphPage(selection);
+		page = new WizardNewFileCreationPage("Bigraph XML File", selection);
+		page.setTitle("Bigraph XML File");
+		page.setDescription("Create a new bigraph xml file.");
+		page.setFileName("bigraph.xml");
+		page.setFileExtension("xml");
 		addPage(page);
 	}
 
@@ -70,7 +75,7 @@ public class NewBigraph extends Wizard implements INewWizard
 	@Override
 	public boolean performFinish()
 	{
-		final String containerName = page.getContainerName();
+		final IPath containerPath = page.getContainerFullPath();
 		final String fileName = page.getFileName();
 		final IRunnableWithProgress op = new IRunnableWithProgress()
 		{
@@ -78,7 +83,7 @@ public class NewBigraph extends Wizard implements INewWizard
 			{
 				try
 				{
-					doFinish(containerName, fileName, monitor);
+					doFinish(containerPath, fileName, monitor);
 				}
 				catch (final CoreException e)
 				{
@@ -112,16 +117,16 @@ public class NewBigraph extends Wizard implements INewWizard
 	 * contents, and open the editor on the newly created file.
 	 */
 
-	private void doFinish(final String containerName, final String fileName, final IProgressMonitor monitor)
+	private void doFinish(final IPath containerPath, final String fileName, final IProgressMonitor monitor)
 			throws CoreException
 	{
 		// create a sample file
 		monitor.beginTask("Creating " + fileName, 2);
 		final IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		final IResource resource = root.findMember(new Path(containerName));
+		final IResource resource = root.findMember(containerPath);
 		if (!resource.exists() || !(resource instanceof IContainer))
 		{
-			throwCoreException("Container \"" + containerName + "\" does not exist.");
+			throwCoreException("Container \"" + containerPath + "\" does not exist.");
 		}
 		final IContainer container = (IContainer) resource;
 		final IFile file = container.getFile(new Path(fileName));
