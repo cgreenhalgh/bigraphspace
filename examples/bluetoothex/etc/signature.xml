@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.mrl.nott.ac.uk/bigraphs/signature/1.0">
+	<controls>
+		<!-- internal/authoring representation of physical world -->
+		<control name="DescriptionRoom" status="passive">
+			<description>The description (digital) of a physical room, which may
+			be used (for example) in authoring, or internal representation.</description>
+		</control>
+		<control name="DescriptionBluetooth" status="active">
+			<description>A description of a Bluetooth radio within the system,
+			for authoring and/or internal representation</description>
+		</control>
+		<control name="BluetoothAddress" status="active">
+			<description>A Bluetooth address (field)</description>
+		</control>
+		
+		<!-- digital correlates (aspects) of physical things - not just descriptions
+			 but somehow active digital perspectives on the physical thing(s) -->
+		<control name="ExecutionContext" status="active">
+			<description>Where programs and other digital things live on a particular
+			device</description>
+		</control>
+		<control name="BigraphSpaceBluetooth" status="passive">
+			<description>The "bigraph-space" within the device's ExecutionContext
+			where (descriptions of) Bluetooth sensor input are published to processes running
+			on the device</description>
+			<port name="device">
+				<description>The link to the corresponding PhysicalBluetooth</description>
+			</port>
+		</control>
+		<control name="BigraphSpaceScreen" status="passive">
+			<description>The digital representation of a PhysicalScreen within 
+			an ExecutionContext, approximately the ScreenBuffer.</description>
+			<port name="device">
+				<description>THe link to the corresponding PhysicalScreen</description>
+			</port>
+		</control>
+		<control name="BigraphSpaceAuthored" status="passive">
+			<description>The authored configuration as deployed to the device</description>
+		</control>
+		<!-- digital artefacts -->
+		<control name="DigitalDocument" status="active">
+			<description>A document, e.g. the information to be presented to a user
+			about a room. Make passive if exposing internal structure.</description>
+		</control>
+		<control name="Filename" status="active">
+			<description>A document file name (field)</description>
+		</control>
+		<!--  a number! -->
+		<control name="integer" status="atomic">
+			<description>A control-set encoded integer</description>
+			<index type="integer">
+				<description>The number</description>
+			</index>
+		</control>
+		<!--  a string! -->
+		<control name="string" status="atomic">
+			<description>A control-set encoded string</description>
+			<index type="string">
+				<description>The string</description>
+			</index>
+		</control>
+	</controls>
+	<sorts>
+		<!-- implicit sort for ExecutionContext -->
+		<sort name="ExecutionContext">
+			<childsorts>
+				<sort name="BigraphSpaceBluetooth"/>
+				<sort name="BigraphSpaceScreen"/>
+				<sort name="BigraphSpaceAuthored"/>
+			</childsorts>
+		</sort>
+		<!-- implicit sort for BigraphSpaceBluetooth -->
+		<sort name="BigraphSpaceBluetooth">
+			<childsorts>
+				<sort name="DescriptionBluetooth"/>
+			</childsorts>
+		</sort>
+		<!-- implicit sort for DescriptionBluetooth -->
+		<sort name="DescriptionBluetooth">
+			<childsorts>
+				<sort name="BluetoothAddress"/>
+			</childsorts>
+		</sort>
+		<!-- implicit sort for BluetoothAddress -->
+		<sort name="BluetoothAddress">
+			<childsorts>
+				<sort name="string"/>
+			</childsorts>
+		</sort>
+		<!-- implicit sort for BigraphSpaceScreen -->
+		<sort name="BigraphSpaceScreen">
+			<childsorts>
+				<sort name="DigitalDocument"/>
+			</childsorts>
+		</sort>
+		<!-- implicit sort for BigraphSpaceAuthored -->
+		<sort name="BigraphSpaceAuthored">
+			<childsorts>
+				<sort name="DescriptionRoom"/>
+				<sort name="DigitalDocument"/>
+				<sort name="DescriptionBluetooth"/>
+			</childsorts>
+		</sort>
+		<!-- implicit sort for DescriptionRoom -->
+		<sort name="DescriptionRoom">
+			<childsorts>
+				<sort name="DigitalDocument"/>
+				<sort name="DescriptionBluetooth"/>
+			</childsorts>
+		</sort>
+		<!-- implicit sort for DigitalDocument -->
+		<sort name="DigitalDocument">
+			<childsorts>
+				<sort name="Filename"/>
+			</childsorts>
+		</sort>
+		<!-- implicit sort for "Filename" -->
+		<sort name="Filename">
+			<childsorts>
+				<sort name="string"/>
+			</childsorts>
+		</sort>
+	</sorts>
+</definitions>
