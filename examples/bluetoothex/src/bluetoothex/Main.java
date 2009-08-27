@@ -170,7 +170,7 @@ public class Main
 			
 			text.setEditable(false);
 			page.setEditable(false);
-			JScrollPane sp = new JScrollPane(text);
+			JScrollPane sp = new JScrollPane(page);
 			sp.setPreferredSize(new Dimension(600,500));
 			JPanel p = new JPanel();
 			p.setLayout(new BorderLayout());
@@ -187,9 +187,11 @@ public class Main
 					List<Match> matches = rfe.getRedexMatches();
 					for (Match match : matches) {
 						logger.info("Match for display: "+match.getVariableValues());
-						text.setText("Filename: "+match.getVariableValues().get("filename")+" at "+(new Date()));
+						// workaround quoting for now
+						String filename = match.getVariableValues().get("filename").toString().replace("\"", "");
+						text.setText("Filename: "+filename+" at "+(new Date()));
 						try {
-							page.setPage(match.getVariableValues().get("filename").toString());
+						    page.setPage(filename);
 						}
 						catch (Exception e) {
 							logger.error("loading "+match.getVariableValues().get("filename"), e);
