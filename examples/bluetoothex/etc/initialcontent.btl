@@ -14,7 +14,7 @@ bigraph
 						) 
 					)
 				|	DigitalDocument (
-						Filename ( "foo.html":string )
+						Filename ( "http://mrl.nott.ac.uk/~cmg":string )
 					)
 				)
 			)			

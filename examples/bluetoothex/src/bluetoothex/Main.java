@@ -18,6 +18,7 @@ import bigraphspace.api.RuleFiredEvent;
 import bigraphspace.api.RuleFiredListener;
 import bigraphspace.api.RuleCondition;
 import bigraphspace.model.xml.DomReactiveBigraph;
+import bigraphspace.model.xml.DomMatch;
 
 import javax.swing.*;
 import java.awt.*;
@@ -128,6 +129,7 @@ public class Main
 					List<Match> matches = rfe.getRedexMatches();
 					for (Match match : matches) {
 						logger.info("Match for behaviour: "+match.getVariableValues());
+						((DomMatch)match).dump(System.out);
 					}
 					// TODO Auto-generated method stub
 					session.getAll().dump(System.out);
@@ -144,21 +146,37 @@ public class Main
 					"bigraph"+
 					// a screen with a document with a filename...
 					"  BigraphSpaceScreen( "+
-					"    DigitalDocument ( Filename ( $filename:string ) )"+
+					"    [1] "+
+					"  | DigitalDocument ( Filename ( $filename:string ) )"+
 					"  )"+
 					"where $filename:string");
 			//displayRedex.dump(System.out);
 			displayCondition.setPattern(displayRedex);
 			displayCondition.setMaxOccurs(RuleCondition.UNLIMITED);
 			displayRule.setRedex(displayCondition);
-
+			Bigraph displayReactum = readBigraphTermLanguageString(sorting,
+					"bigraph"+
+					// a screen with a document with a filename...
+					"  BigraphSpaceScreen( "+
+					"    [1] "+
+					"  )"+
+					"where $filename:string");
+			displayRule.setReactum(displayReactum);
+			
 			// leave in place? 
 			final JFrame frame = new JFrame("Display");
-			final JEditorPane text = new JEditorPane();
+			final JEditorPane page = new JEditorPane();
+			final JTextField text = new JTextField();
+			
 			text.setEditable(false);
+			page.setEditable(false);
 			JScrollPane sp = new JScrollPane(text);
 			sp.setPreferredSize(new Dimension(600,500));
-			frame.getContentPane().add(sp);
+			JPanel p = new JPanel();
+			p.setLayout(new BorderLayout());
+			p.add(sp, BorderLayout.CENTER);
+			p.add(text, BorderLayout.NORTH);
+			frame.getContentPane().add(p);
 			frame.pack();
 			frame.setVisible(true);
 			
@@ -170,9 +188,14 @@ public class Main
 					for (Match match : matches) {
 						logger.info("Match for display: "+match.getVariableValues());
 						text.setText("Filename: "+match.getVariableValues().get("filename")+" at "+(new Date()));
+						try {
+							page.setPage(match.getVariableValues().get("filename").toString());
+						}
+						catch (Exception e) {
+							logger.error("loading "+match.getVariableValues().get("filename"), e);
+							page.setText(e.toString());
+						}
 					}
-					// TODO Auto-generated method stub
-					
 				}
 				
 			});
@@ -191,6 +214,8 @@ public class Main
 				synchronized public void updateDevices(String newDevices)
 				{
 					session.begin();
+					logger.info("update BT with initial state:");
+					session.getAll().dump(System.out);
 					try {
 						logger.info("Update Devices: " + newDevices);
 						logger.info("Creating redex");
@@ -255,6 +280,8 @@ public class Main
 						// replace
 						logger.info("replace...");
 						session.update(matches.get(0), reactum);
+						session.end();
+						session.begin();
 						session.getAll().dump(System.out);
 						session.end();
 					}
