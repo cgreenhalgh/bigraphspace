@@ -1,0 +1,21 @@
+// Bluetooth example, using signature_bluetoothel.xml, example combined state
+bigraph
+			BigraphSpaceScreen { device=screenlink }
+		|	BigraphSpaceBluetooth { device=bluetoothlink }
+			// deployed authored info (from bluetoothex_authored.btl)
+		|	BigraphSpaceAuthored 
+			(
+				DescriptionRoom 
+				(	// depending on the rules it may or may not matter if the Bluetooth is in the Room.
+					DescriptionBluetooth (
+						BluetoothAddress ( 
+ 							// Algie - cmg phone
+							"00:1c:9a:ed:54:29":string
+						) 
+					)
+				|	DigitalDocument (
+						Filename ( "foo.html":string )
+					)
+				)
+			)			
+	
