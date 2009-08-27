@@ -395,7 +395,7 @@
 			</bigraph>
 		</result>
 	</test>
-	<!-- 8: control indexes - above and below redex -->
+	<!-- 9: control indexes - above and below redex -->
 	<test>
 			<redex>
 				<bigraph>
@@ -436,6 +436,140 @@
 						<integer><index>10</index></integer>
 						<integer><index>12</index></integer>
 					</PhysicalRoom>
+				</root>
+			</bigraph>
+		</result>
+	</test>
+	<!-- 10: unmatched root children preserved (a) -->
+	<test>
+			<redex>
+				<bigraph>
+					<root>
+						<PhysicalHandheld></PhysicalHandheld>
+					</root>
+				</bigraph>
+			</redex>
+			<reactum>
+				<bigraph>
+					<root>
+					</root>
+				</bigraph>
+			</reactum>
+		<target>
+			<bigraph>
+				<root>
+					<PhysicalHandheld></PhysicalHandheld>
+					<PhysicalRoom></PhysicalRoom>
+				</root>
+			</bigraph>
+		</target>
+		<result>
+			<bigraph>
+				<root>
+					<PhysicalRoom></PhysicalRoom>
+				</root>
+			</bigraph>
+		</result>
+	</test>
+	<!-- 11: unmatched root children preserved (b) -->
+	<test>
+			<redex>
+				<bigraph>
+					<root>
+						<PhysicalHandheld></PhysicalHandheld>
+					</root>
+				</bigraph>
+			</redex>
+			<reactum>
+				<bigraph>
+					<root>
+					</root>
+				</bigraph>
+			</reactum>
+		<target>
+			<bigraph>
+				<root>
+					<PhysicalRoom></PhysicalRoom>
+					<PhysicalHandheld></PhysicalHandheld>
+				</root>
+			</bigraph>
+		</target>
+		<result>
+			<bigraph>
+				<root>
+					<PhysicalRoom></PhysicalRoom>
+				</root>
+			</bigraph>
+		</result>
+	</test>
+	<!-- 12: unmatched root children preserved (c) -->
+	<test>
+			<redex>
+				<bigraph>
+					<root>
+						<PhysicalHandheld></PhysicalHandheld>
+					</root>
+				</bigraph>
+			</redex>
+			<reactum>
+				<bigraph>
+					<root>
+						<PhysicalHandheld></PhysicalHandheld>
+					</root>
+				</bigraph>
+			</reactum>
+		<target>
+			<bigraph>
+				<root>
+					<PhysicalRoom></PhysicalRoom>
+					<PhysicalHandheld></PhysicalHandheld>
+				</root>
+			</bigraph>
+		</target>
+		<result>
+			<bigraph>
+				<root>
+					<PhysicalRoom></PhysicalRoom>
+					<PhysicalHandheld></PhysicalHandheld>
+				</root>
+			</bigraph>
+		</result>
+	</test>
+	<!-- 13: multiple root matches preserved  -->
+	<test>
+			<redex>
+				<bigraph>
+					<root>
+						<PhysicalHandheld></PhysicalHandheld>
+					</root>
+					<root>
+						<PhysicalRoom></PhysicalRoom>
+					</root>
+				</bigraph>
+			</redex>
+			<reactum>
+				<bigraph>
+					<root>
+						<PhysicalHandheld></PhysicalHandheld>
+					</root>
+					<root>
+						<PhysicalRoom></PhysicalRoom>
+					</root>
+				</bigraph>
+			</reactum>
+		<target>
+			<bigraph>
+				<root>
+					<PhysicalRoom></PhysicalRoom>
+					<PhysicalHandheld></PhysicalHandheld>
+				</root>
+			</bigraph>
+		</target>
+		<result>
+			<bigraph>
+				<root>
+					<PhysicalRoom></PhysicalRoom>
+					<PhysicalHandheld></PhysicalHandheld>
 				</root>
 			</bigraph>
 		</result>

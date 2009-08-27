@@ -8,17 +8,19 @@
 	<property file="build.properties"/>
 
 	<target name="usage">
-		<echo>targets: init forcegen compile javadoc test clean</echo>
+		<echo>targets: init forcegen compile jar javadoc test clean</echo>
 	</target>
 	
 	<target name="init">
 		<mkdir dir="gen"/>
 		<mkdir dir="build"/>
+		<mkdir dir="dist"/>
 	</target>
 		
 	<target name="clean">
 		<delete dir="build"/>
 		<delete dir="bin"/>
+		<delete dir="dist"/>
 		<delete dir="docs/api"/>
 	</target>
 
@@ -91,6 +93,14 @@
 		<pathelement location="build" />
 	</path>
 
+	<target name="jar" depends="compile">
+	    <jar jarfile="dist/bigraphspace.jar">
+	      <fileset dir="build">
+	        <exclude name="log4j.properties"/>
+	      </fileset>
+	    </jar>
+	</target>
+	
 	<target name="test" depends="compile">
 		<echo>read miniml2.txt</echo>
 	    <java fork="true" classname="bigraphspace.parser.antlr.TestMiniML" failonerror="true">
