@@ -14,7 +14,7 @@ bigraph
 						) 
 					)
 				|	DigitalDocument (
-						Filename ( "http://mrl.nott.ac.uk/~cmg":string )
+						Filename ( "http://www.mrl.nott.ac.uk/~cmg":string )
 					)
 				)
 			)			
