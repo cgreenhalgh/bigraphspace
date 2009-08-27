@@ -76,13 +76,18 @@ public class DomTransformer {
 	}
 	/** copying up to root match, then transform, recurse */
 	Element copyThenTransform(DomMatch match, DomBigraph reactum, DomBigraph result, HashMap<String,String> newLinks, HashMap<String,String> innerNameMap, Element targetEl) throws TransformException {
+		Element resultEl = null;
+		// there may be several matches for the same root!
 		for (DomMatch.ElementMatch rootMatch : match.rootMatches) {
 			if (rootMatch.targetEl==targetEl) {
-				return transformRoot(match, reactum, result, newLinks, innerNameMap, rootMatch);
+				resultEl = transformRoot(match, reactum, result, newLinks, innerNameMap, rootMatch, resultEl);
 			}
 		}
+		if (resultEl!=null)
+			// root match
+			return resultEl;
 		// still here -> trivial copy
-		Element resultEl = (Element)result.getDocument().importNode(targetEl, false);
+		resultEl = (Element)result.getDocument().importNode(targetEl, false);
 		// indexes
 		NodeList indexes = XmlUtils.getChildElementsByTagName(targetEl, Constants.INDEX_ELEMENT_NAME);
 		for (int ii=0; ii<indexes.getLength(); ii++) {
@@ -101,25 +106,30 @@ public class DomTransformer {
 		return resultEl;
 	}
 	/** (start) transform node matched by redex */
-	Element transformRoot(DomMatch match, DomBigraph reactum, DomBigraph result, HashMap<String,String> newLinks, HashMap<String,String> innerNameMap, DomMatch.ElementMatch rootMatch) throws TransformException {
+	Element transformRoot(DomMatch match, DomBigraph reactum, DomBigraph result, HashMap<String,String> newLinks, HashMap<String,String> innerNameMap, DomMatch.ElementMatch rootMatch, Element resultEl) throws TransformException {
 		// the root match node itself is ok
 		// still here -> trivial copy
-		Element resultEl = (Element)result.getDocument().importNode(rootMatch.targetEl, false);
-		NodeList children = rootMatch.targetEl.getChildNodes();
-		nextchild:
-		for (int ci=0; ci<children.getLength(); ci++) {
-			Node child = children.item(ci);
-			if (!(child instanceof Element))
-				continue;
-			// copy any unmatched child trees (non-site and non-node matches)
-			for (DomMatch.ElementMatch nodeMatch : match.nodeMatches)
-				if (nodeMatch.targetEl==child)
-					continue nextchild;
-			for (DomMatch.ElementsMatch siteMatch : match.siteMatches)
-				for (Element siteEl : siteMatch.targetEls)
-					if (siteEl==child)
-						continue nextchild;
-			resultEl.appendChild(copyThenTransform(match, reactum, result, newLinks, innerNameMap, (Element)child));
+		boolean firstRootHere = (resultEl==null);
+		if (firstRootHere) 
+		{
+			resultEl = (Element)result.getDocument().importNode(rootMatch.targetEl, false);
+		
+			NodeList children = rootMatch.targetEl.getChildNodes();
+			nextchild:
+				for (int ci=0; ci<children.getLength(); ci++) {
+					Node child = children.item(ci);
+					if (!(child instanceof Element))
+						continue;
+					// copy any unmatched child trees (non-site and non-node matches)
+					for (DomMatch.ElementMatch nodeMatch : match.nodeMatches)
+						if (nodeMatch.targetEl==child)
+							continue nextchild;
+					for (DomMatch.ElementsMatch siteMatch : match.siteMatches)
+						for (Element siteEl : siteMatch.targetEls)
+							if (siteEl==child)
+								continue nextchild;
+					resultEl.appendChild(copyThenTransform(match, reactum, result, newLinks, innerNameMap, (Element)child));
+				}
 		}
 		// now put in the stuff in the corresponding reactum root...
 		NodeList reactumRoots = XmlUtils.getChildElementsByTagName(reactum.getBigraphElement(),Constants.ROOT_ELEMENT_NAME);
