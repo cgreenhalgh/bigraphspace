@@ -307,6 +307,38 @@ public class DomMatcher {
 					}
 				match.nodeMatches.add(nodeMatch);
 			}
+			// check that all children of a matched node (not root) and accounted for
+			// by matched child nodes or a child site
+			for (DomMatch.ElementMatch nodeMatch : match.nodeMatches) {
+				// does pattern node have a site as a child?
+				NodeList patternChildren = XmlUtils.getChildElementsByTagName(nodeMatch.patternEl, Constants.SITE_ELEMENT_NAME);
+				if (patternChildren.getLength()>0)
+					// yes - ok
+					continue;
+				// does every child then have a match?
+				NodeList targetChildren = nodeMatch.targetEl.getChildNodes();
+				for (int tci=0; tci<targetChildren.getLength(); tci++) {
+					Node targetChildNode = targetChildren.item(tci);
+					if (!(targetChildNode instanceof Element))
+						continue;//ignore non-nodes
+					Element targetChildEl = (Element)targetChildNode;
+					if (targetChildEl.getNodeName().equals(Constants.INDEX_ELEMENT_NAME))
+						continue;//ignore indexes
+					boolean found = false;
+					for (DomMatch.ElementMatch childNodeMatch : match.nodeMatches) {
+						if (childNodeMatch.targetEl==targetChildEl) {
+							found = true;
+							break;
+						}
+					}
+					if (!found)
+					{
+						logger.debug("Match fails because target node child has no match in pattern");
+						nextMatch(partMatch, targetIxs);
+						continue complete;						
+					}
+				}
+			}
 			// check links and index/control variables
 			// determine the link matches, checking as you go along...
 			for (DomMatch.ElementMatch nodeMatch : match.nodeMatches) {
