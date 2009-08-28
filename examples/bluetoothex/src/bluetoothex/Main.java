@@ -10,6 +10,7 @@ import bigraphspace.model.BasicSignature;
 import bigraphspace.model.VariableDefinition;
 import bigraphspace.model.VariableType;
 
+import bigraphspace.api.BigraphUtils;
 import bigraphspace.api.BigraphFinder;
 import bigraphspace.api.BigraphSession;
 import bigraphspace.api.ReactiveBigraph;
@@ -17,6 +18,8 @@ import bigraphspace.api.ReactionRule;
 import bigraphspace.api.RuleFiredEvent;
 import bigraphspace.api.RuleFiredListener;
 import bigraphspace.api.RuleCondition;
+import bigraphspace.io.BigraphReader;
+import bigraphspace.io.IOConstants;
 import bigraphspace.model.xml.DomReactiveBigraph;
 import bigraphspace.model.xml.DomMatch;
 
@@ -65,19 +68,23 @@ public class Main
 			if (args.length>1) 
 				sigFilename = args[0];
 			logger.info("Loading signature/sorting from "+sigFilename);
-			final Sorting sorting = readSorting(sigFilename);
+			final Sorting sorting = BigraphUtils.readSignatureXml(new File(sigFilename));
 			final BasicSignature signature = sorting.getSignature();
-			logger.info("Loading initial bigraph state from "+configFilename);
-			final Bigraph initialValue = readBigraphTermLanguageFile(sorting, configFilename);
-			
-			final ReactiveBigraph bigraph = new DomReactiveBigraph(initialValue.getSignature());
 			logger.info("Creating bigraphspace");
+			final ReactiveBigraph bigraph = new DomReactiveBigraph(signature);
 			BigraphFinder.setDefaultBigraph(bigraph);
+
+			logger.info("Getting reader");
+			final BigraphReader reader = bigraph.getReader(IOConstants.FORMAT_BTL);
+			
+			logger.info("Loading initial bigraph state from "+configFilename);
+			final Bigraph initialValue = reader.read(new File(configFilename));
+			
 			
 			logger.info("creating behaviour reaction");
 			ReactionRule behaviourRule = new ReactionRule();
 			RuleCondition behaviourCondition = new RuleCondition();
-			Bigraph behaviourRedex = readBigraphTermLanguageString(sorting,
+			Bigraph behaviourRedex = reader.read(
 					"bigraph"+
 					// a detected bluetooth radio...
 					"  BigraphSpaceBluetooth( "+
@@ -100,7 +107,7 @@ public class Main
 			behaviourRule.setRedex(behaviourCondition);
 			
 			logger.info("Creating reactum");
-			Bigraph behaviourReactum = readBigraphTermLanguageString(sorting,
+			Bigraph behaviourReactum = reader.read(
 					"bigraph"+
 					// remove detected bluetooth radio...
 					"  BigraphSpaceBluetooth( "+
@@ -142,7 +149,7 @@ public class Main
 			logger.info("Creating display reaction");
 			ReactionRule displayRule = new ReactionRule();
 			RuleCondition displayCondition = new RuleCondition();
-			Bigraph displayRedex = readBigraphTermLanguageString(sorting,
+			Bigraph displayRedex = reader.read(
 					"bigraph"+
 					// a screen with a document with a filename...
 					"  BigraphSpaceScreen( "+
@@ -154,7 +161,7 @@ public class Main
 			displayCondition.setPattern(displayRedex);
 			displayCondition.setMaxOccurs(RuleCondition.UNLIMITED);
 			displayRule.setRedex(displayCondition);
-			Bigraph displayReactum = readBigraphTermLanguageString(sorting,
+			Bigraph displayReactum = reader.read(
 					"bigraph"+
 					// a screen with a document with a filename...
 					"  BigraphSpaceScreen( "+
@@ -221,7 +228,7 @@ public class Main
 					try {
 						logger.info("Update Devices: " + newDevices);
 						logger.info("Creating redex");
-						Bigraph redex = readBigraphTermLanguageString(sorting,
+						Bigraph redex = reader.read(
 								"bigraph BigraphSpaceBluetooth ( [1] )");
 						/*new DomBigraph(initialValue.getSignature());
 						Place root = redex.createRoot();
@@ -257,7 +264,7 @@ public class Main
 						}
 						reactumBuf.append(")");
 						logger.info("reactum BTL: "+reactumBuf);
-						Bigraph reactum = readBigraphTermLanguageString(sorting,reactumBuf.toString());
+						Bigraph reactum = reader.read(reactumBuf.toString());
 						/*new DomBigraph(initialValue.getSignature());
 						root = reactum.createRoot();
 						reactum.addRoot(root);
@@ -299,86 +306,6 @@ public class Main
 		catch (Exception e)
 		{
 			logger.error("Main", e);
-		}
-	}
-	static Sorting readSorting(String sigfile) throws IOException {
-		// term lang
-		try {
-			BasicSignature sig = null;
-			Sorting sorting = null;
-
-			sorting = Sorting.readSorting(new File(sigfile));
-			if (sorting!=null)
-				sig = sorting.getSignature();
-			else
-				sig = SignatureFactory.readSignature(new File(sigfile));
-			return sorting;
-		}
-		catch (IOException ioe) {
-			throw ioe;
-		}
-		catch (Exception e) {
-			throw new IOException(e.getMessage(), e);
-		}
-	}
-	static Bigraph readBigraphTermLanguageFile(Sorting sorting, String btlfile) throws IOException {
-		// term lang
-		try {
-			BigraphTermLexer lex = new BigraphTermLexer(new ANTLRFileStream(btlfile));
-			return readBigraphTermLanguage(sorting, lex);
-		}
-		catch (IOException ioe) {
-			throw ioe;
-		}
-		catch (Exception e) {
-			throw new IOException(e.getMessage(), e);
-		}
-	}
-	static Bigraph readBigraphTermLanguage(Sorting sorting, BigraphTermLexer lex) throws IOException {
-		// term lang
-		try {
-			CommonTokenStream tokens = new CommonTokenStream(lex);
-
-			BigraphTermParser parser = new BigraphTermParser(tokens);
-			BigraphTermParser.start_return val = parser.start();
-			System.out.println("-> "+val);
-			Object tree = val.getTree();
-			System.out.println("tree = "+(tree!=null ? tree.getClass().getName() : "")+" "+tree);
-			if (tree instanceof CommonTree) {
-				Document doc = BigraphTermUtils.toDocument((CommonTree)tree);
-				BasicSignature sig = null;
-				sig = sorting.getSignature();
-				System.out.println("=== Bigraph Model ===");
-
-				DomBigraph bigraph = new DomBigraph(sig, doc);
-				//bigraph.dump(System.out);
-
-				System.out.println("=== validate signature ===");
-				sig.validate(bigraph);
-				System.out.println("=== validate sorting ===");
-				sorting.validate(bigraph);
-				return bigraph;
-			}
-			throw new IOException("Did not parse to CommonTree: "+tree);
-		}
-		catch (IOException ioe) {
-			throw ioe;
-		}
-		catch (Exception e) {
-			throw new IOException(e.getMessage(), e);
-		}
-	}
-	static Bigraph readBigraphTermLanguageString(Sorting sorting, String btlstring) throws IOException {
-		// term lang
-		try {
-			BigraphTermLexer lex = new BigraphTermLexer(new ANTLRStringStream(btlstring));
-			return readBigraphTermLanguage(sorting, lex);
-		}
-		catch (IOException ioe) {
-			throw ioe;
-		}
-		catch (Exception e) {
-			throw new IOException(e.getMessage(), e);
 		}
 	}
 	/*
