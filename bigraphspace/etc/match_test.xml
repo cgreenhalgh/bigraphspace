@@ -628,6 +628,7 @@
 						<integer _support="Rn">
 							<index variable="x"/>
 						</integer>
+						<site index="1"/>
 					</PhysicalRoom>
 				</root>
 			</bigraph>
@@ -932,5 +933,30 @@
 			<nodematch pattern="y" target="12"/>
 			<variable pattern="y" target="12"/>
 		</match>
+	</test>
+	<!-- 27: no site => exhaustive match of children -->
+	<test>
+		<pattern>
+			<bigraph>
+				<root>
+					<PhysicalRoom _support="_PR1">
+						<PhysicalHandheld _support="_PH1">
+						</PhysicalHandheld>
+					</PhysicalRoom>
+				</root>
+			</bigraph>
+		</pattern>
+		<target>
+			<bigraph>
+				<root>
+					<PhysicalRoom _support="_PR1">
+						<PhysicalHandheld _support="_PH1">
+						</PhysicalHandheld>
+						<PhysicalHandheld _support="_PH2">
+						</PhysicalHandheld>
+					</PhysicalRoom>
+				</root>
+			</bigraph>
+		</target>
 	</test>
 </tests>

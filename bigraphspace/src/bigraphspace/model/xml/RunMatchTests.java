@@ -100,9 +100,12 @@ public class RunMatchTests {
 				}
 				logger.info("Try matching");
 				List<DomMatch> matches = matcher.match(pattern, target, DomMatcher.UNLIMITED);
-				logger.info("Get "+matches.size()+" matches (expected "+matchEls.getLength()+"):");
-				if (matches.size()!=matchEls.getLength())
+				if (matches.size()!=matchEls.getLength()) {
+					logger.error("Get "+matches.size()+" matches (expected "+matchEls.getLength()+"):");
 					failed = true;
+				}
+				else
+					logger.info("Get "+matches.size()+" matches as expected");
 				int mi = 0;
 				for (DomMatch match : matches) {
 					match.dump(System.out);
