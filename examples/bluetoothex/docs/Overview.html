@@ -1,74 +1,146 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html><head><meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Bluetoothex Example Bigraphspace Application</title></head><body><h1>Bluetoothex Example Bigraphspace Application</h1>Chris Greenhalgh, 2009-08-27<br><h2>Introduction</h2><p>Bluetoothex
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>Bluetoothex Example Bigraphspace Application</title>
+</head>
+
+<body>
+<h1>Bluetoothex Example Bigraphspace Application</h1>
+Chris Greenhalgh, 2009-08-27<br>
+<h2>Introduction</h2>
+<p>Bluetoothex
 is an example application developed using bigraphspace, in fact it is
-arguably the first application (excluding BigEd, the Eclipse plug-in).</p><p>This
+arguably the first application (excluding BigEd, the Eclipse plug-in).</p>
+<p>This
 application is based on a simple ubicomp scenario that has been used in
 previous discussions of bigraphs: a mobile user with a hand-held device
 is presented with document(s) appropriate to their current location as
-they move around some site of interest (such as a museum).&nbsp;</p><p>The
+they move around some site of interest (such as a museum).&nbsp;</p>
+<p>The
 technical basis assumed is the use of bluetooth "beacons" (i.e.
 discoverable bluetooth devices) placed physically within the site of
 interest, each of which is associated with a locally relevant document;
 the mobile device periodically scans for beacons and displays the
-corresponding document to the user.</p><h2>Bigraphspace implementation</h2><h3>Initialisation</h3><p>The application would be run on the mobile device. It begins by loading the following bigraph (from <a href="../etc/initialcontent.btl">etc/initialcontent.btl</a>):</p><pre>bigraph<br>	BigraphSpaceScreen <br>|	BigraphSpaceBluetooth <br>|	BigraphSpaceAuthored (<br>		DescriptionRoom (<br>			DescriptionBluetooth (<br>				BluetoothAddress ( "00:1c:9a:ed:54:29":string )<br>			)<br>		|	DigitalDocument (<br>				Filename ( "http://www.mrl.nott.ac.uk/~cmg":string )<br>			)<br>		)<br>	)			<br></pre><p><img style="width: 602px; height: 375px;" alt="" src="images/initial_bigraph.PNG"></p><p>The three top level nodes are:</p><ul><li>BigraphSpaceScreen - which represents the screen buffer;</li><li>BigraphSpaceBluetooth - which represents the internally published reports of observed bluetooth beacons; and</li><li>BigraphSpaceAuthored - which represents the authored configuration downloaded onto the device.</li></ul><p>In
+corresponding document to the user.</p>
+<h2>Bigraphspace implementation</h2>
+<h3>Initialisation</h3>
+<p>The application would be run on the mobile device. It begins by loading the following bigraph (from <a href="../etc/initialcontent.btl">etc/initialcontent.btl</a>):</p>
+<pre>bigraph<br>	BigraphSpaceScreen <br>|	BigraphSpaceBluetooth <br>|	BigraphSpaceAuthored (<br>		DescriptionRoom (<br>			DescriptionBluetooth (<br>				BluetoothAddress ( "00:1c:9a:ed:54:29":string )<br>			)<br>		|	DigitalDocument (<br>				Filename ( "http://www.mrl.nott.ac.uk/~cmg":string )<br>			)<br>		)<br>	)			<br></pre>
+<p><img style="width: 602px; height: 375px;" alt="" src="images/initial_bigraph.PNG"></p>
+<p>The three top level nodes are:</p>
+<ul>
+  <li>BigraphSpaceScreen - which represents the screen buffer;</li>
+  <li>BigraphSpaceBluetooth - which represents the internally published reports of observed bluetooth beacons; and</li>
+  <li>BigraphSpaceAuthored - which represents the authored configuration downloaded onto the device.</li>
+</ul>
+<p>In
 this example, there is one configured region of interest, the single
 DescriptionRoom node in the BigraphSpaceAuthored node. It contains -
 and therefore associates - the bluetooth beacon with bluetooth address
 "00:1c:9a:ed:54:29" and the document with URL
-"http://www.mrl.nott.ac.uk/~cmg".</p><h3>Input</h3><p>The application
+"http://www.mrl.nott.ac.uk/~cmg".</p>
+<h3>Input</h3>
+<p>The application
 has a timer thread which periodically (every 15 seconds) does a
 bluetooth hardware scan using its local bluetooth radio (a low-level
 I/O operation). Each time this thread runs it clears any previous
 content of the BigraphSpaceBluetooth node and inserts into the
 now-empty node a DescriptionBluetooth node (like the one in
-BigraphSpaceAuthored) for every observed bluetooth beacon.</p><p>This
+BigraphSpaceAuthored) for every observed bluetooth beacon.</p>
+<p>This
 activity cannot be precisely represented using a standard bigraph
 reaction rule in the case of multiple beacons in range (because it
 simultaneously creates DescriptionBluetooth for every observed beacon.
 If only one beacon is in range then it corresponds to a reaction such
-as:</p><pre>bigraph BigraphSpaceBluetooth ( [1] ) =&gt;<br>bigraph BigraphSpaceBluetooth (	DescriptionBluetooth ( BluetoothAddress ( "00:1c:9a:ed:54:29":string ) ) )<br></pre><img style="width: 580px; height: 184px;" alt="" src="images/bluetooth_beacon_reaction.PNG"><h3>Response</h3><p>The "behaviour" of the application is represented by one reaction rule with a bigraph expression as its redex:</p><pre>bigraph<br>// a detected bluetooth radio...<br>	BigraphSpaceBluetooth( [1] <br>	| 	DescriptionBluetooth ( BluetoothAddress ( $address:string ) )<br>	)<br>// leave authoring unchanged<br>||	BigraphSpaceAuthored( [2]<br>	|	DescriptionRoom( <br>			DescriptionBluetooth ( BluetoothAddress ( $address:string ) )<br>		|	DigitalDocument ( [3] )<br>		)<br>	)<br>// a screen...<br>||	BigraphSpaceScreen( [4] )<br>// variables...<br>where	$address:string<br><img style="width: 602px; height: 410px;" alt="" src="images/behaviour_redex.PNG"><br></pre><p>Note
+as:</p>
+<pre>bigraph BigraphSpaceBluetooth ( [1] ) =&gt;<br>bigraph BigraphSpaceBluetooth (	DescriptionBluetooth ( BluetoothAddress ( "00:1c:9a:ed:54:29":string ) ) )<br></pre>
+<img style="width: 580px; height: 184px;" alt="" src="images/bluetooth_beacon_reaction.PNG">
+<h3>Response</h3>
+<p>The "behaviour" of the application is represented by one reaction rule with a bigraph expression as its redex:</p>
+<pre>bigraph<br>// a detected bluetooth radio...<br>	BigraphSpaceBluetooth( [1] <br>	| 	DescriptionBluetooth ( BluetoothAddress ( $address:string ) )<br>	)<br>// leave authoring unchanged<br>||	BigraphSpaceAuthored( [2]<br>	|	DescriptionRoom( <br>			DescriptionBluetooth ( BluetoothAddress ( $address:string ) )<br>		|	DigitalDocument ( [3] )<br>		)<br>	)<br>// a screen...<br>||	BigraphSpaceScreen( [4] )<br>// variables...<br>where	$address:string<br><img style="width: 602px; height: 410px;" alt="" src="images/behaviour_redex.PNG"><br></pre>
+<p>Note
 the use of the index variable $address which allows the redex to match
 any bluetooth address, provided that the same address is present both
 in the bluetooth beacon report (in BigraphSpaceBluetooth) and&nbsp;in
-the authored configuration.</p><p>The site [1] allows the rule to fire
+the authored configuration.</p>
+<p>The site [1] allows the rule to fire
 even if other beacons are also in sight; the site [2] allows the rule
 to fire if other rooms are also configured; the site [3] abstracts over
 the internal structure of the document to be displayed; the site [4]
-"captures" the current content of the screen.</p><p>So this rule will fire if the bluetooth beacon
+"captures" the current content of the screen.</p>
+<p>So this rule will fire if the bluetooth beacon
 code places a DescriptionBluetooth into the BigraphSpaceBluetooth with
 the same bluetooth address as one in the authored configuration,
 provided that in the authored configuration it is also associated with
-a document (by common nesting within a DescriptionRoom).</p><p>The reactum - also parameterised in $address, as bound by the redex - is as follows:</p><pre>bigraph<br>// remove detected bluetooth radio...<br>	BigraphSpaceBluetooth( [1] )<br>// leave authoring unchanged<br>||	BigraphSpaceAuthored( [2]<br>	|	DescriptionRoom( <br>			DescriptionBluetooth ( BluetoothAddress ( $address:string ) )<br>		|	DigitalDocument ( [3] )<br>		)<br>	)<br>// update screen<br>||	BigraphSpaceScreen( <br>		DigitalDocument ( [3] ) <br>	)<br>where $address:string<br></pre><img style="width: 604px; height: 407px;" alt="" src="images/behaviour_reactum.PNG"><p>Note
+a document (by common nesting within a DescriptionRoom).</p>
+<p>The reactum - also parameterised in $address, as bound by the redex - is as follows:</p>
+<pre>bigraph<br>// remove detected bluetooth radio...<br>	BigraphSpaceBluetooth( [1] )<br>// leave authoring unchanged<br>||	BigraphSpaceAuthored( [2]<br>	|	DescriptionRoom( <br>			DescriptionBluetooth ( BluetoothAddress ( $address:string ) )<br>		|	DigitalDocument ( [3] )<br>		)<br>	)<br>// update screen<br>||	BigraphSpaceScreen( <br>		DigitalDocument ( [3] ) <br>	)<br>where $address:string<br></pre>
+<img style="width: 604px; height: 407px;" alt="" src="images/behaviour_reactum.PNG">
+<p>Note
 that the internal structure of the document (its filename, in this
 case) is copied from the authored description into the
-BigraphSpaceScreen, replacing any previous things on the screen.</p><p>Note
+BigraphSpaceScreen, replacing any previous things on the screen.</p>
+<p>Note
 also that the bluetooth beacon report is removed from the
 BigraphSpaceBluetooth, suppressing further firing of this rule until or
-unless the bluetooth input process runs again.</p><h3>Output</h3><p>Finally,
+unless the bluetooth input process runs again.</p>
+<h3>Output</h3>
+<p>Finally,
 the application has a further reaction rule and associated event
-listener to handle displaying documents on the actual device.&nbsp;</p><p>The&nbsp;reaction rule (expression) is as follows:</p><pre>bigraph BigraphSpaceScreen( [1] | DigitalDocument ( Filename ( $filename:string ) ) )<br>where $filename:string<br></pre><p>=&gt;</p><pre>bigraph BigraphSpaceScreen( [1] )<br>where $filename:string<br></pre><img style="width: 575px; height: 228px;" alt="" src="images/display_reaction.PNG"><p>I.e. one DigitalDocument (which in this case must have a Filename "field") is removed from the BigraphScreenSpace.&nbsp;</p><p>The
+listener to handle displaying documents on the actual device.&nbsp;</p>
+<p>The&nbsp;reaction rule (expression) is as follows:</p>
+<pre>bigraph BigraphSpaceScreen( [1] | DigitalDocument ( Filename ( $filename:string ) ) )<br>where $filename:string<br></pre>
+<p>=&gt;</p>
+<pre>bigraph BigraphSpaceScreen( [1] )<br>where $filename:string<br></pre>
+<img style="width: 575px; height: 228px;" alt="" src="images/display_reaction.PNG">
+<p>I.e. one DigitalDocument (which in this case must have a Filename "field") is removed from the BigraphScreenSpace.&nbsp;</p>
+<p>The
 program event listener which fires when this reaction occurs attempts
-to load the specified file as a URL on the device screen.</p><h3> Additional Behaviour Notes</h3><p>This
+to load the specified file as a URL on the device screen:</p>
+<p><img style="width: 425px; height: 332px;" alt="" src="images/bluetoothex_screenshot.PNG"></p>
+<h3> Additional Behaviour Notes</h3>
+<p>This
 is the first time I have really used the indexed controls (for
 strings), to avoid the use of constant links, and I think it works OK
-(conceptually it is preferable IMO).</p><p>Because the application
+(conceptually it is preferable IMO).</p>
+<p>Because the application
 scans for bluetooth beacons repeatedly, and replaces the
 DescriptionBluetooth nodes each time, the application will re-display
-the document each time the beacon is scanned in range.&nbsp;</p><p>It
+the document each time the beacon is scanned in range.&nbsp;</p>
+<p>It
 is hard - but interesting - to try to work out how other temporal
 behaviours could be implemented and modelled, e.g. show only the first
-time, show on first observation after a gap.</p><p>If several beacons
+time, show on first observation after a gap.</p>
+<p>If several beacons
 are observed at the same time which have associated documents then
 those documents will be displayed rapidly in an arbitrary order each
-time the bluetooth scanning activity runs.&nbsp;</p><p>Again, it is
+time the bluetooth scanning activity runs.&nbsp;</p>
+<p>Again, it is
 hard - but interesting - to try and work out how other strategies could
 be implemented and modelled, both at the level of pure bigraphs, and
-with the addition of higher-level constructs or constraints.</p><h2>Building and running</h2><p>The
+with the addition of higher-level constructs or constraints.</p>
+<h2>Building and running</h2>
+<p>The
 build uses ANT. It currently assumes that bigraphspace.jar has been
 built already (in ../../bigraphspace/dist, using "ant jar" in the
-bigraphspace directory).</p><p>The test is run with "ant test".&nbsp;</p><p>The Bluetooth scanning is a rather old Win32-specific implementation; source and build file included (for Visual C++), but with no warranty.</p><h3>Initial Reflections</h3><p>I
+bigraphspace directory).</p>
+<p>The test is run with "ant test".&nbsp;</p>
+<p>The Bluetooth scanning is a rather old Win32-specific
+implementation; source and build file included (for Visual C++), but
+with no warranty.</p>
+<h3>Initial Reflections</h3>
+<p>I
 wrote some generic helper routines to implement this (e.g. to read
 signatures and&nbsp;BTL bigraphs) which should be migrated to the core
-library at some point.</p><p>The programmatic API for building bigraphs
+library at some point.</p>
+<p>The programmatic API for building bigraphs
 is rather verbose, long-winded and not fully implemented (watch out for
-"unimplemented" exceptions when you run your application).&nbsp;</p><h2>Change Log</h2><p>2009-08-27</p><ul><li>first version&nbsp; </li></ul></body></html>
+"unimplemented" exceptions when you run your application).&nbsp;</p>
+<h2>Change Log</h2>
+<p>2009-08-27</p>
+<ul>
+  <li>first version&nbsp; </li>
+</ul>
+</body>
+</html>
