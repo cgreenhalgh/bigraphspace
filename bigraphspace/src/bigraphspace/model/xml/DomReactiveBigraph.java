@@ -21,6 +21,9 @@ import bigraphspace.api.ReactiveBigraph;
 import bigraphspace.api.RuleCondition;
 import bigraphspace.api.RuleFiredEvent;
 import bigraphspace.api.BigraphSession.Mode;
+import bigraphspace.io.BigraphReader;
+import bigraphspace.io.BigraphWriter;
+import bigraphspace.io.UnsupportedFormatException;
 import bigraphspace.model.BasicSignature;
 import bigraphspace.model.Bigraph;
 import bigraphspace.model.Match;
@@ -397,4 +400,46 @@ public class DomReactiveBigraph implements ReactiveBigraph, BigraphSessionHandle
 		// TODO check active
 		return true;
 	}
+	/* (non-Javadoc)
+	 * @see bigraphspace.io.IOFactory#getReader()
+	 */
+	//@Override
+	public BigraphReader getReader() throws UnsupportedFormatException {
+		return XmlIOFactory.getReader(this.bigraph.getSignature());
+	}
+	/* (non-Javadoc)
+	 * @see bigraphspace.io.IOFactory#getReader(java.lang.String)
+	 */
+	//@Override
+	public BigraphReader getReader(String format) throws UnsupportedFormatException {
+		return XmlIOFactory.getReader(format, this.bigraph.getSignature());
+	}
+	/* (non-Javadoc)
+	 * @see bigraphspace.io.IOFactory#getWriter()
+	 */
+	//@Override
+	public BigraphWriter getWriter() throws UnsupportedFormatException {
+		return XmlIOFactory.getWriter();
+	}
+	/* (non-Javadoc)
+	 * @see bigraphspace.io.IOFactory#getWriter(java.lang.String)
+	 */
+	//@Override
+	public BigraphWriter getWriter(String format) throws UnsupportedFormatException {
+		return XmlIOFactory.getWriter(format);
+	}
+	/* (non-Javadoc)
+	 * @see bigraphspace.api.ReactiveBigraph#newBigraph()
+	 */
+	//@Override
+	public Bigraph createBigraph() {
+		// TODO Auto-generated method stub
+		try {
+			return new DomBigraph(this.bigraph.getSignature());
+		}
+		catch (Exception e) {
+			throw new RuntimeException("Unable to create newBigraph",e);
+		}
+	}
+
 }

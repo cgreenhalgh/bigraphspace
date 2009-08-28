@@ -13,6 +13,8 @@ import bigraphspace.model.Match;
 import bigraphspace.model.Place;
 import bigraphspace.model.Port;
 
+import java.io.PrintWriter;
+import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -228,9 +230,12 @@ public class DomMatch implements Match {
 	public Map<String, Object> getVariableValues() {
 		return variableValues;
 	}
-
 	/** dump - debug */
 	public void dump(PrintStream ps) {
+		dump(new PrintWriter(new OutputStreamWriter(ps)));
+	}
+	/** dump - debug */
+	public void dump(PrintWriter ps) {
 		dump(ps, "Pattern", pattern);
 		dump(ps, "Target", target);
 		ps.println(linkMatches.size()+" link matches:");
@@ -247,7 +252,7 @@ public class DomMatch implements Match {
 		ps.println();
 	}		
 	/** dump - debug */
-	protected void dump(PrintStream ps, String title, DomBigraph bigraph) {
+	protected void dump(PrintWriter ps, String title, DomBigraph bigraph) {
 		List<Place> roots = bigraph.getRoots();
 		ps.println("XML Bigraph "+title+":");
 		ps.println("bigraph");
@@ -266,7 +271,7 @@ public class DomMatch implements Match {
 		bigraph.dumpVariables(ps);
 	}
 	/** dump an element, recursively */
-	public void dump(PrintStream ps, Place place, int indent) {
+	public void dump(PrintWriter ps, Place place, int indent) {
 		String tag = "";
 		// find in match?
 		DomPlace domPlace = (DomPlace)place;

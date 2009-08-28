@@ -4,16 +4,19 @@
 package bigraphspace.model;
 
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Set;
 import java.util.Map;
+import bigraphspace.io.IOFactory;
 
 /** Abstract bigraph interface. Implementation-independent.
+ * See bigraphspace.io.IOFactory interface for IO methods.
  * 
  * @author cmg
  *
  */
-public interface Bigraph {
+public interface Bigraph extends IOFactory {
 	/** get root(s) */
 	public List<Place> getRoots();
 	/** clear (roots) */
@@ -90,4 +93,6 @@ public interface Bigraph {
 	
 	/** dump - debug */
 	public void dump(PrintStream ps);
+	/** dump - debug */
+	public void dump(PrintWriter pw);
 }
