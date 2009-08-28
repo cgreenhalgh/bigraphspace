@@ -6,6 +6,8 @@ package bigraphspace.model.xml;
 import java.io.IOException;
 import java.io.File;
 import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.OutputStreamWriter;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.HashMap;
@@ -22,6 +24,9 @@ import org.xml.sax.SAXException;
 
 import org.apache.log4j.Logger;
 
+import bigraphspace.io.BigraphReader;
+import bigraphspace.io.BigraphWriter;
+import bigraphspace.io.UnsupportedFormatException;
 import bigraphspace.model.BasicSignature;
 import bigraphspace.model.Bigraph;
 import bigraphspace.model.Control;
@@ -432,8 +437,16 @@ public class DomBigraph implements Bigraph {
 		}
 		// noop
 	}
-	/** dump - debug */
+	
+	/* (non-Javadoc)
+	 * @see bigraphspace.model.Bigraph#dump(java.io.PrintStream)
+	 */
+	//	@Override
 	public void dump(PrintStream ps) {
+		dump(new PrintWriter(new OutputStreamWriter(ps)));
+	}
+	/** dump - debug */
+	public void dump(PrintWriter ps) {
 		List<Place> roots = this.getRoots();
 		ps.println("bigraph");
 		dumpEdges(ps);
@@ -450,7 +463,7 @@ public class DomBigraph implements Bigraph {
 		dumpHiddenAndInnerNames(ps);
 		dumpVariables(ps);
 	}
-	public void dumpEdges(PrintStream ps) {
+	public void dumpEdges(PrintWriter ps) {
 		Set<String> edges = this.getEdgeNames();
 		if (edges.size()==0)
 			return;
@@ -466,7 +479,7 @@ public class DomBigraph implements Bigraph {
 		}
 		ps.println(" .");
 	}
-	public void dumpHiddenAndInnerNames(PrintStream ps) {
+	public void dumpHiddenAndInnerNames(PrintWriter ps) {
 		Set<String> hiddens = this.getHiddenNames();
 		Set<String> names = new TreeSet<String>();
 		names.addAll(hiddens);
@@ -501,7 +514,7 @@ public class DomBigraph implements Bigraph {
 		ps.println();
 	}
 	/** dump debug */
-	public void dumpVariables(PrintStream ps) {
+	public void dumpVariables(PrintWriter ps) {
 		Map<String,VariableDefinition> variables = this.getVariables();
 		if (variables.size()==0)
 			return;
@@ -611,7 +624,7 @@ public class DomBigraph implements Bigraph {
 		return value.toString();
 	}
 	/** dump an element, recursively */
-	public void dump(PrintStream ps, Place place, int indent) {
+	public void dump(PrintWriter ps, Place place, int indent) {
 		//ps.print("*");
 		String support = place.getSupport()!=null ? "@"+place.getSupport() : "";
 		if (place.isSite()) {
@@ -678,6 +691,34 @@ public class DomBigraph implements Bigraph {
 		}
 		else 
 			ps.println();
+	}
+	/* (non-Javadoc)
+	 * @see bigraphspace.io.IOFactory#getReader()
+	 */
+	//@Override
+	public BigraphReader getReader() throws UnsupportedFormatException {
+		return XmlIOFactory.getReader(this.signature);
+	}
+	/* (non-Javadoc)
+	 * @see bigraphspace.io.IOFactory#getReader(java.lang.String)
+	 */
+	//@Override
+	public BigraphReader getReader(String format) throws UnsupportedFormatException {
+		return XmlIOFactory.getReader(format, this.signature);
+	}
+	/* (non-Javadoc)
+	 * @see bigraphspace.io.IOFactory#getWriter()
+	 */
+	//@Override
+	public BigraphWriter getWriter() throws UnsupportedFormatException {
+		return XmlIOFactory.getWriter();
+	}
+	/* (non-Javadoc)
+	 * @see bigraphspace.io.IOFactory#getWriter(java.lang.String)
+	 */
+	//@Override
+	public BigraphWriter getWriter(String format) throws UnsupportedFormatException {
+		return XmlIOFactory.getWriter(format);
 	}
 
 }
