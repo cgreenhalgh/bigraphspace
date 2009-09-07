@@ -3,6 +3,8 @@ package bigraph.biged.ui.graph.parts;
 import org.eclipse.gef.editparts.AbstractTreeEditPart;
 import org.eclipse.swt.graphics.Image;
 
+import bigraph.biged.ui.BigraphLabelProvider;
+
 public class PortTreePart extends AbstractTreeEditPart
 {
 	@Override
@@ -14,6 +16,6 @@ public class PortTreePart extends AbstractTreeEditPart
 	@Override
 	protected String getText()
 	{
-		return getModel().toString();
+		return BigraphLabelProvider.text(this);
 	}
 }

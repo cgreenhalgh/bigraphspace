@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import bigraphspace.model.IndexValue;
 import bigraphspace.model.PlaceType;
 
 public class Place extends PlaceContainer
@@ -107,6 +108,11 @@ public class Place extends PlaceContainer
 	public int getPosition()
 	{
 		return position;
+	}
+	
+	public List<IndexValue> getControlIndexes()
+	{
+		return place.getControlIndexes();
 	}
 
 	public Integer getSiteIndex()
