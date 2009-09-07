@@ -35,11 +35,14 @@
  */
 package bigraph.biged.ui;
 
+import java.util.List;
+
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import bigraph.biged.model.Place;
 import bigraph.biged.ui.properties.TypeMapper;
+import bigraphspace.model.IndexValue;
 import bigraphspace.model.PlaceType;
 
 public class BigraphLabelProvider extends LabelProvider
@@ -84,11 +87,37 @@ public class BigraphLabelProvider extends LabelProvider
 					return "site[" + place.getSiteIndex() + "]";
 				}
 			}
-			if(place.getSupport() == null || place.getSupport().trim().equals(""))
+			else
 			{
-				return place.getControlName();
+				String name = "";
+				boolean comma = false;
+				List<IndexValue> values = place.getControlIndexes();
+				for(final IndexValue value: values)
+				{
+					if(comma)
+					{
+						name+= ", ";
+					}
+					else
+					{
+						comma = true;
+					}
+					name += value.getValue().toString();
+				}
+				
+				if(comma)
+				{
+					name += ":";
+				}
+				
+				name += place.getControlName();
+				
+				if(place.getSupport() != null && !place.getSupport().trim().equals(""))
+				{
+					name += "@" + place.getSupport();
+				}
+				return name;
 			}
-			return place.getControlName() + "@" + place.getSupport();
 		}
 		return modelObject.toString();
 	}

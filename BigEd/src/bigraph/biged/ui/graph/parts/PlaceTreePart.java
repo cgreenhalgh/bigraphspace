@@ -6,7 +6,7 @@ import java.util.List;
 import org.eclipse.swt.graphics.Image;
 
 import bigraph.biged.model.Place;
-import bigraphspace.model.PlaceType;
+import bigraph.biged.ui.BigraphLabelProvider;
 
 public class PlaceTreePart extends PlaceContainerTreeEditPart
 {
@@ -34,12 +34,6 @@ public class PlaceTreePart extends PlaceContainerTreeEditPart
 	@Override
 	protected String getText()
 	{
-		final Place place = getPlace();
-		if (place.getType() == PlaceType.root)
-		{
-			return "root";
-		}
-		else if (place.getType() == PlaceType.site) { return "site"; }
-		return place.getControlName() + " " + place.getSupport();
+		return BigraphLabelProvider.text(this);
 	}
 }
