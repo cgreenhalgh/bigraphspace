@@ -25,7 +25,7 @@ public abstract class AbstractPlaceStringPropertySection extends AbstractPlaceSi
 	{
 		labelText = getWidgetFactory().createText(parent, ""); //$NON-NLS-1$
 		final FormData data = new FormData();
-		data.left = new FormAttachment(0, STANDARD_LABEL_WIDTH * 2);
+		data.left = new FormAttachment(0, STANDARD_LABEL_WIDTH + 20);
 		data.right = new FormAttachment(100, 0);
 		data.top = new FormAttachment(0, ITabbedPropertyConstants.VSPACE);
 		labelText.setLayoutData(data);

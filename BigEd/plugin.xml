@@ -60,6 +60,12 @@
        <propertySections
              contributorId="bigraph.biged.ui.properties.contributor">
           <propertySection
+                class="bigraph.biged.ui.properties.ControlIndexesSection"
+                filter="bigraph.biged.ui.properties.NodeFilter"
+                id="bigraph.biged.ui.properties.ControlIndexesSection"
+                tab="bigraph.biged.ui.properties.general">
+          </propertySection>
+          <propertySection
                 class="bigraph.biged.ui.properties.ControlNameSection"
                 enablesFor="1"
                 filter="bigraph.biged.ui.properties.NodeFilter"

@@ -43,7 +43,7 @@ public class ControlNameSection extends AbstractPlaceStringPropertySection
 	@Override
 	protected String getLabel()
 	{
-		return "Control Name";
+		return "Control Name:";
 	}
 
 	@Override
