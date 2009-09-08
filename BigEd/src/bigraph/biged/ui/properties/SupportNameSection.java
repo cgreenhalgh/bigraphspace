@@ -43,7 +43,7 @@ public class SupportNameSection extends AbstractPlaceStringPropertySection
 	@Override
 	protected String getLabel()
 	{
-		return "Support Name";
+		return "Support Name:";
 	}
 
 	@Override

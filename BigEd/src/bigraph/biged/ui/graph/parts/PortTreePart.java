@@ -10,7 +10,7 @@ public class PortTreePart extends AbstractTreeEditPart
 	@Override
 	protected Image getImage()
 	{
-		return super.getImage();
+		return BigraphLabelProvider.image(this);
 	}
 
 	@Override

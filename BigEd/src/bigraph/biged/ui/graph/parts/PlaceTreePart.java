@@ -18,7 +18,7 @@ public class PlaceTreePart extends PlaceContainerTreeEditPart
 	@Override
 	protected Image getImage()
 	{
-		return super.getImage();
+		return BigraphLabelProvider.image(this);
 	}
 
 	@SuppressWarnings("unchecked")
