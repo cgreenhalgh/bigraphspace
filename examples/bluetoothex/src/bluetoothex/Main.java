@@ -19,6 +19,7 @@ import bigraphspace.api.RuleFiredEvent;
 import bigraphspace.api.RuleFiredListener;
 import bigraphspace.api.RuleCondition;
 import bigraphspace.io.BigraphReader;
+import bigraphspace.io.BigraphWriter;
 import bigraphspace.io.IOConstants;
 import bigraphspace.model.xml.DomReactiveBigraph;
 import bigraphspace.model.xml.DomMatch;
@@ -55,6 +56,7 @@ public class Main
 	/** logger 
 	 */
 	static Logger logger = Logger.getLogger(Main.class);
+	
 	/** app main
 	 */
 	public static void main(String args[])
@@ -94,7 +96,7 @@ public class Main
 					"||BigraphSpaceAuthored( "+
 					"    [2]"+
 					"  | DescriptionRoom( "+
-					"      DescriptionBluetooth ( BluetoothAddress ( $address:string ) )"+
+					"      DescriptionBluetooth ( BluetoothAddress ( $address:string ) | [5]  )"+
 					"    | DigitalDocument ( [3] )"+
 					"    )"+
 					"  )"+
@@ -117,7 +119,7 @@ public class Main
 					"||BigraphSpaceAuthored( "+
 					"    [2]"+
 					"  | DescriptionRoom( "+
-					"      DescriptionBluetooth ( BluetoothAddress ( $address:string ) )"+
+					"      DescriptionBluetooth ( BluetoothAddress ( $address:string ) | [5]  )"+
 					"    | DigitalDocument ( [3] )"+
 					"    )"+
 					"  )"+
@@ -140,6 +142,7 @@ public class Main
 					}
 					// TODO Auto-generated method stub
 					session.getAll().dump(System.out);
+					dumpBigraph(session.getAll(),"behaviour-rule");
 				}
 				
 			});
@@ -154,7 +157,7 @@ public class Main
 					// a screen with a document with a filename...
 					"  BigraphSpaceScreen( "+
 					"    [1] "+
-					"  | DigitalDocument ( Filename ( $filename:string ) )"+
+					"  | DigitalDocument ( Filename ( $filename:string ) | [2] )"+
 					"  )"+
 					"where $filename:string");
 			//displayRedex.dump(System.out);
@@ -205,6 +208,12 @@ public class Main
 							page.setText(e.toString());
 						}
 					}
+					dumpBigraph(session.getAll(),"output-rule");
+					new Thread() {
+						public void run() {
+							dumpBigraph(bigraph,"output-async");
+						}
+					}.start();
 				}
 				
 			});
@@ -216,6 +225,7 @@ public class Main
 			session.begin();
 			session.setAll(initialValue);
 			session.end();
+			dumpBigraph(bigraph,"initial");
 			
 			System.out.println("Running...");
 			BluetoothDiscover bt = new BluetoothDiscover()
@@ -288,8 +298,11 @@ public class Main
 						*/
 						// replace
 						logger.info("replace...");
+						dumpBigraph(session.getAll(),"bluetooth-match");
 						session.update(matches.get(0), reactum);
+						dumpBigraph(session.getAll(),"bluetooth-update");
 						session.end();
+						dumpBigraph(bigraph,"bluetooth-after");
 						session.begin();
 						session.getAll().dump(System.out);
 						session.end();
@@ -306,6 +319,36 @@ public class Main
 		catch (Exception e)
 		{
 			logger.error("Main", e);
+		}
+	}
+	/** xml snapshot index 
+	 */
+	static int dumpIndex = 1;
+	/** write xml snapshot */
+	static void dumpBigraph(ReactiveBigraph bigraph, String identifier) {
+		BigraphSession session = bigraph.getSession();
+		session.begin(BigraphSession.Mode.readonly);
+		try {
+			Bigraph bg = session.getAll();
+			dumpBigraph(bg, identifier);
+			session.end();
+		}
+		catch (Exception e) {
+			logger.error("Dumping", e);
+			session.abort();
+		}
+	}
+	/** write xml snapshot */
+	static void dumpBigraph(Bigraph bg, String identifier) {
+		String filename = "bigraphdump-"+dumpIndex+"-"+identifier+".xml";
+		logger.info("Dump "+dumpIndex+": "+identifier+" as "+filename);
+		dumpIndex++;
+		try {
+			BigraphWriter writer = bg.getWriter("XML");
+			writer.write(bg, new File(filename));
+		}
+		catch (Exception e) {
+			logger.error("Dumping", e);
 		}
 	}
 	/*

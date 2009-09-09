@@ -1,21 +1,23 @@
-// signature signature.xml in bluetoothex
 bigraph
-			BigraphSpaceScreen { device=screenlink }
-		|	BigraphSpaceBluetooth { device=bluetoothlink }
-			// deployed authored info 
-		|	BigraphSpaceAuthored 
-			(
-				DescriptionRoom 
-				(	
-					DescriptionBluetooth (
-						BluetoothAddress ( 
- 							// Algie - cmg phone
-							"00:1c:9a:ed:54:29":string
-						) 
-					)
-				|	DigitalDocument (
-						Filename ( "http://www.mrl.nott.ac.uk/~cmg":string )
-					)
-				)
-			)			
-	
+    BigraphSpaceScreen {device=screenlink}
+  | BigraphSpaceBluetooth {device=bluetoothlink}
+  | BigraphSpaceAuthored
+    ( DescriptionRoom
+      ( DigitalDocument
+        ( Filename
+          ( "http://www.mrl.nott.ac.uk/~cmg":string
+          )
+        | Description
+          ( "Chris's home page":string
+          )
+        )
+      | DescriptionBluetooth
+        ( BluetoothAddress
+          ( "00:1c:9a:ed:54:29":string
+          )
+        | Description
+          ( "Chris's phone":string
+          )
+        )
+      )
+    )
