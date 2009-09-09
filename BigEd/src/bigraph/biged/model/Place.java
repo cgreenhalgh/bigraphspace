@@ -114,6 +114,26 @@ public class Place extends PlaceContainer
 	{
 		return place.getControlIndexes();
 	}
+	
+	public void addControlIndex(final Object value)
+	{
+		final IndexValue indexValue = bigraph.bigraph.createIndexValue(value);
+		place.addControlIndex(indexValue);
+		firePlaceEvent(new PlaceEvent(this));
+	}
+	
+	public void removeControlIndex(final IndexValue index)
+	{
+		place.removeControlIndex(index);
+		firePlaceEvent(new PlaceEvent(this));		
+	}
+	
+	public void setControlIndex(final Object value, final int index)
+	{
+		final IndexValue indexValue = bigraph.bigraph.createIndexValue(value);
+		place.setControlIndex(indexValue, index);
+		firePlaceEvent(new PlaceEvent(this));		
+	}
 
 	public Integer getSiteIndex()
 	{

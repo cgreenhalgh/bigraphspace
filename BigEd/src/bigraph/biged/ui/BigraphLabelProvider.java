@@ -119,6 +119,10 @@ public class BigraphLabelProvider extends LabelProvider
 				return name;
 			}
 		}
+		else if(modelObject instanceof IndexValue)
+		{
+			return ((IndexValue)modelObject).getValue().toString();
+		}
 		return modelObject.toString();
 	}
 }
