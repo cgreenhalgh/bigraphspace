@@ -13,6 +13,9 @@
 		<control name="BluetoothAddress" status="active">
 			<description>A Bluetooth address (field)</description>
 		</control>
+		<control name="Description" status="active">
+			<description>A textual description of the containing thing (field)</description>
+		</control>
 		
 		<!-- digital correlates (aspects) of physical things - not just descriptions
 			 but somehow active digital perspectives on the physical thing(s) -->
@@ -80,6 +83,7 @@
 		<sort name="DescriptionBluetooth">
 			<childsorts>
 				<sort name="BluetoothAddress"/>
+				<sort name="Description"/>
 			</childsorts>
 		</sort>
 		<!-- implicit sort for BluetoothAddress -->
@@ -113,6 +117,7 @@
 		<sort name="DigitalDocument">
 			<childsorts>
 				<sort name="Filename"/>
+				<sort name="Description"/>
 			</childsorts>
 		</sort>
 		<!-- implicit sort for "Filename" -->
