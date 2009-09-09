@@ -73,9 +73,9 @@ public class ControlIndexesSection extends AbstractPlacePropertySection
 
 		final Button addButton = getWidgetFactory().createButton(buttonComposite, "Add", 0);
 		removeButton = getWidgetFactory().createButton(buttonComposite, "Remove", 0);
-		getWidgetFactory().createLabel(buttonComposite, " ");
-		final Button upButton = getWidgetFactory().createButton(buttonComposite, "Up", 0);
-		final Button downButton = getWidgetFactory().createButton(buttonComposite, "Down", 0);
+		//getWidgetFactory().createLabel(buttonComposite, " ");
+		//final Button upButton = getWidgetFactory().createButton(buttonComposite, "Up", 0);
+		//final Button downButton = getWidgetFactory().createButton(buttonComposite, "Down", 0);
 
 		addButton.addSelectionListener(new SelectionListener()
 		{
@@ -102,28 +102,6 @@ public class ControlIndexesSection extends AbstractPlacePropertySection
 					final IndexValue indexVal = (IndexValue)viewer.getElementAt(index);
 					place.removeControlIndex(indexVal);
 				}
-			}
-		});
-		upButton.addSelectionListener(new SelectionListener()
-		{
-			public void widgetDefaultSelected(final SelectionEvent e)
-			{
-			}
-
-			public void widgetSelected(final SelectionEvent e)
-			{
-				// TODO Auto-generated method stub
-			}
-		});
-		downButton.addSelectionListener(new SelectionListener()
-		{
-			public void widgetDefaultSelected(final SelectionEvent e)
-			{
-			}
-
-			public void widgetSelected(final SelectionEvent e)
-			{
-				// TODO Auto-generated method stub
 			}
 		});
 
