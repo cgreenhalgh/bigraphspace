@@ -39,7 +39,7 @@ public class DeletePlacesCommand extends Command
 	@Override
 	public String getLabel()
 	{
-		return super.getLabel();
+		return "Delete Place";
 	}
 
 	@Override

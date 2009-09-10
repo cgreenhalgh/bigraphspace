@@ -150,7 +150,7 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements I
 
 			final IFile file = ((IFileEditorInput) getEditorInput()).getFile();
 			file.setContents(in, true, true, monitor);
-			getCommandStack().markSaveLocation();			
+			getCommandStack().markSaveLocation();
 		}
 		catch (final Exception e)
 		{
@@ -171,11 +171,13 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements I
 			}
 			return outlinePage;
 		}
-		else if (type == IPropertySheetPage.class)
-		{
-			return new TabbedPropertySheetPage(this);
-		}
+		else if (type == IPropertySheetPage.class) { return new TabbedPropertySheetPage(this); }
 		return super.getAdapter(type);
+	}
+
+	public String getContributorId()
+	{
+		return "bigraph.biged.ui.properties.contributor";
 	}
 
 	@Override
@@ -232,10 +234,5 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements I
 	Bigraph getModel()
 	{
 		return bigraph;
-	}
-
-	public String getContributorId()
-	{
-		return "bigraph.biged.ui.properties.contributor";
 	}
 }

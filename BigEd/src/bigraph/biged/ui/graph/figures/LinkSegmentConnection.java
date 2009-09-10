@@ -37,6 +37,7 @@ package bigraph.biged.ui.graph.figures;
 
 import java.awt.geom.GeneralPath;
 
+import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PolylineConnection;
@@ -50,6 +51,7 @@ import org.eclipse.swt.widgets.Display;
 public class LinkSegmentConnection extends PolylineConnection
 {
 	private Path path;
+	private final int radius = 3;
 
 	// private final static int defaultControlOffsetX = 40;
 	// private final static int defaultControlOffsetY = 0;
@@ -85,10 +87,10 @@ public class LinkSegmentConnection extends PolylineConnection
 				bounds.union(pointList.getPoint(i));
 			}
 
-			bounds.union(source.x + 3, source.y + 3);
-			bounds.union(source.x - 3, source.y - 3);
-			bounds.union(target.x + 3, target.y + 3);
-			bounds.union(target.x - 3, target.y - 3);
+			bounds.union(source.x + radius, source.y + radius);
+			bounds.union(source.x - radius, source.y - radius);
+			bounds.union(target.x + radius, target.y + radius);
+			bounds.union(target.x - radius, target.y - radius);
 		}
 		return bounds;
 	}
@@ -120,29 +122,31 @@ public class LinkSegmentConnection extends PolylineConnection
 		final Point endPoint = pointList.getLastPoint();
 
 		g.setAntialias(SWT.ON);
+		g.setLineWidth(2);
 		g.drawPath(getPath());
-		g.setBackgroundColor(getForegroundColor());
-		g.fillOval(startPoint.x - 3, startPoint.y - 3, 6, 6);
-		g.fillOval(endPoint.x - 3, endPoint.y - 3, 6, 6);
+		g.setForegroundColor(ColorConstants.black);
+		g.setBackgroundColor(ColorConstants.black);
+		g.fillOval(startPoint.x - radius, startPoint.y - radius, radius * 2, radius * 2);
+		g.fillOval(endPoint.x - radius, endPoint.y - radius, radius * 2, radius * 2);
 	}
 
-	@Override
-	protected boolean shapeContainsPoint(final int x, final int y)
-	{
-		final PointList pointList = getPoints();
-		if (pointList.size() == 0) { return false; }
-		final Point source = pointList.getFirstPoint();
-		final Point target = pointList.getLastPoint();
-
-		final GeneralPath gp = new GeneralPath();
-		gp.moveTo(source.x, source.y);
-		// gp.lineTo(source.x + 10, source.y);
-		// gp.curveTo(source.x + defaultControlOffsetX, source.y, target.x - defaultControlOffsetX,
-		// target.y,
-		// target.x - 10, target.y);
-		gp.lineTo(target.x, target.y);
-
-		return gp.contains(x, y);
-		// return super.shapeContainsPoint(x, y);
-	}
+	// @Override
+	// protected boolean shapeContainsPoint(final int x, final int y)
+	// {
+	// final PointList pointList = getPoints();
+	// if (pointList.size() == 0) { return false; }
+	// final Point source = pointList.getFirstPoint();
+	// final Point target = pointList.getLastPoint();
+	//
+	// final GeneralPath gp = new GeneralPath();
+	// gp.moveTo(source.x, source.y);
+	// // gp.lineTo(source.x + 10, source.y);
+	// // gp.curveTo(source.x + defaultControlOffsetX, source.y, target.x - defaultControlOffsetX,
+	// // target.y,
+	// // target.x - 10, target.y);
+	// gp.lineTo(target.x, target.y);
+	//
+	// return gp.contains(x, y);
+	// // return super.shapeContainsPoint(x, y);
+	// }
 }

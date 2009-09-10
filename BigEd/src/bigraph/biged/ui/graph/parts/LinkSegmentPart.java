@@ -35,6 +35,7 @@
  */
 package bigraph.biged.ui.graph.parts;
 
+import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.gef.EditPolicy;
@@ -92,6 +93,7 @@ public class LinkSegmentPart extends AbstractConnectionEditPart
 	{
 		final PolylineConnection connection = new LinkSegmentConnection();
 		connection.setAntialias(SWT.ON);
+		connection.setForegroundColor(ColorConstants.titleBackground);
 		return connection;
 	}
 
@@ -102,11 +104,11 @@ public class LinkSegmentPart extends AbstractConnectionEditPart
 		final PolylineConnection figure = (PolylineConnection) getFigure();
 		if (getSelected() == 2)
 		{
-			figure.setLineWidth(2);
+			figure.setLineWidth(3);
 		}
 		else
 		{
-			figure.setLineWidth(1);
+			figure.setLineWidth(2);
 		}
 	}
 }

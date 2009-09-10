@@ -92,6 +92,6 @@ public class PlaceFigure extends Figure
 	public void refresh()
 	{
 		name.setText(BigraphLabelProvider.text(place));
-		
+
 	}
 }

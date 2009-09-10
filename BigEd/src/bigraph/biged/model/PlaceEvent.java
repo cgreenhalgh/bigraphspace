@@ -20,7 +20,7 @@ public class PlaceEvent
 		places = Collections.singleton(place);
 		type = Type.CHANGE;
 	}
-	
+
 	public PlaceEvent(final PlaceContainer parent, final Collection<? extends Place> places, final Type type)
 	{
 		this.parent = parent;

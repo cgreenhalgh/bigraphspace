@@ -35,11 +35,21 @@
  */
 package bigraph.biged.ui.properties;
 
+import org.eclipse.gef.commands.Command;
+
+import bigraph.biged.ui.commands.SetControlCommand;
+
 /**
  * @author <a href="ktg@cs.nott.ac.uk">Kevin Glover</a>
  */
 public class ControlNameSection extends AbstractPlaceStringPropertySection
 {
+	@Override
+	protected Command createCommand()
+	{
+		return new SetControlCommand(place, labelText.getText());
+	}
+
 	@Override
 	protected String getLabel()
 	{
@@ -50,11 +60,5 @@ public class ControlNameSection extends AbstractPlaceStringPropertySection
 	protected String getValue()
 	{
 		return place.getControlName();
-	}
-
-	@Override
-	protected void setValue(String value)
-	{
-		place.setControlName(value);
 	}
 }

@@ -36,7 +36,6 @@
 package bigraph.biged;
 
 import java.io.File;
-import java.io.PrintStream;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -46,9 +45,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.console.ConsolePlugin;
-import org.eclipse.ui.console.IConsole;
-import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -94,7 +90,7 @@ public class BigEdPlugin extends AbstractUIPlugin
 
 	private static ImageDescriptor getImageDescriptor(final String path)
 	{
-		return AbstractUIPlugin.imageDescriptorFromPlugin("ect.equip.physconf", path);
+		return AbstractUIPlugin.imageDescriptorFromPlugin("bigraph.biged", path);
 	}
 
 	private final Collection<String> paths = new HashSet<String>();
@@ -124,17 +120,6 @@ public class BigEdPlugin extends AbstractUIPlugin
 		addPath("/");
 		addPath(installPath.toOSString());
 		addPath(installPath.append("/rdf/").toOSString());
-
-		new Thread(new Runnable()
-		{
-			public void run()
-			{
-				final MessageConsole console = new MessageConsole("Standard Out", null);
-				ConsolePlugin.getDefault().getConsoleManager().addConsoles(new IConsole[] { console });
-				System.setErr(new PrintStream(console.newOutputStream()));
-				System.setOut(new PrintStream(console.newOutputStream()));
-			}
-		}).start();
 	}
 
 	/**
@@ -151,32 +136,7 @@ public class BigEdPlugin extends AbstractUIPlugin
 	protected void initializeImageRegistry(final ImageRegistry reg)
 	{
 		super.initializeImageRegistry(reg);
-		reg.put("property", getImageDescriptor("icons/property_obj.gif"));
-		reg.put("read_only", getImageDescriptor("icons/read_only.gif"));
-		reg.put("class", getImageDescriptor("icons/class_obj.gif"));
-		// reg.put("capability",
-		// getImageDescriptor("icons/capability_obj.gif"));
-		// reg.put("component", getImageDescriptor("icons/component_obj.gif"));
-		// reg.put("request",
-		// getImageDescriptor("icons/componentRequest_obj.gif"));
-		reg.put("rule", getImageDescriptor("icons/rule_obj.gif"));
-		reg.put("restriction", getImageDescriptor("icons/restriction_obj.gif"));
-		reg.put("connection", getImageDescriptor("icons/connect.gif"));
-
-		reg.put("refresh", getImageDescriptor("icons/refresh.gif"));
-
-		reg.put("openthing", getImageDescriptor("icons/openthing.gif"));
-		reg.put("thing", getImageDescriptor("icons/thing.gif"));
-
-		reg.put("dataspace", getImageDescriptor("icons/dataspace.gif"));
-
-		reg.put("listLayout", getImageDescriptor("icons/listLayout.gif"));
-		reg.put("treeLayout", getImageDescriptor("icons/treeLayout.gif"));
-
-		reg.put("warning", getImageDescriptor("icons/warning.gif"));
-
-		reg.put("connection_wizard", getImageDescriptor("icons/connection_wiz.gif"));
-
-		reg.put("dataspace_connection", getImageDescriptor("icons/connectDataspace.gif"));
+		reg.put("node", getImageDescriptor("icons/node.png"));
+		reg.put("port", getImageDescriptor("icons/port.gif"));
 	}
 }

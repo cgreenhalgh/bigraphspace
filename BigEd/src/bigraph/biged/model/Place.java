@@ -67,6 +67,19 @@ public class Place extends PlaceContainer
 		return super.add(child);
 	}
 
+	public void addControlIndex(final IndexValue value, final int index)
+	{
+		place.insertControlIndex(value, index);
+	}
+
+	public IndexValue addControlIndex(final Object value)
+	{
+		final IndexValue indexValue = bigraph.bigraph.createIndexValue(value);
+		place.addControlIndex(indexValue);
+		firePlaceEvent(new PlaceEvent(this));
+		return indexValue;
+	}
+
 	@Override
 	public Place clone()
 	{
@@ -79,15 +92,14 @@ public class Place extends PlaceContainer
 		return bigraph;
 	}
 
+	public List<IndexValue> getControlIndexes()
+	{
+		return place.getControlIndexes();
+	}
+
 	public String getControlName()
 	{
 		return place.getControlName();
-	}
-	
-	public void setControlName(final String name)
-	{
-		place.setControlName(name);
-		firePlaceEvent(new PlaceEvent(this));		
 	}
 
 	public List<LinkSegment> getLinkSegments(final boolean source, final boolean target)
@@ -108,31 +120,6 @@ public class Place extends PlaceContainer
 	public int getPosition()
 	{
 		return position;
-	}
-	
-	public List<IndexValue> getControlIndexes()
-	{
-		return place.getControlIndexes();
-	}
-	
-	public void addControlIndex(final Object value)
-	{
-		final IndexValue indexValue = bigraph.bigraph.createIndexValue(value);
-		place.addControlIndex(indexValue);
-		firePlaceEvent(new PlaceEvent(this));
-	}
-	
-	public void removeControlIndex(final IndexValue index)
-	{
-		place.removeControlIndex(index);
-		firePlaceEvent(new PlaceEvent(this));		
-	}
-	
-	public void setControlIndex(final Object value, final int index)
-	{
-		final IndexValue indexValue = bigraph.bigraph.createIndexValue(value);
-		place.setControlIndex(indexValue, index);
-		firePlaceEvent(new PlaceEvent(this));		
 	}
 
 	public Integer getSiteIndex()
@@ -167,6 +154,31 @@ public class Place extends PlaceContainer
 		return super.removeAll(collection);
 	}
 
+	public void removeControlIndex(final IndexValue index)
+	{
+		place.removeControlIndex(index);
+		firePlaceEvent(new PlaceEvent(this));
+	}
+
+	public void setControlIndex(final Object value, final int index)
+	{
+		final IndexValue indexValue = bigraph.bigraph.createIndexValue(value);
+		place.setControlIndex(indexValue, index);
+		firePlaceEvent(new PlaceEvent(this));
+	}
+
+	public void setControlName(final String name)
+	{
+		place.setControlName(name);
+		firePlaceEvent(new PlaceEvent(this));
+	}
+
+	public void setSupport(final String value)
+	{
+		place.setSupport(value);
+		firePlaceEvent(new PlaceEvent(this));
+	}
+
 	int calculatePosition(int position)
 	{
 		System.err.println(getSupport() + "@" + position);
@@ -177,11 +189,5 @@ public class Place extends PlaceContainer
 			position = place.calculatePosition(position);
 		}
 		return position;
-	}
-
-	public void setSupport(final String value)
-	{
-		place.setSupport(value);
-		firePlaceEvent(new PlaceEvent(this));
 	}
 }
