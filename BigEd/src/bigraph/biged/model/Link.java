@@ -105,14 +105,14 @@ public class Link
 		final Collection<Port> remainingPorts = new HashSet<Port>(ports);
 
 		// priority queue capacity >=1
-		final PriorityQueue<LinkSegment> currentSegments = new PriorityQueue<LinkSegment>(edges.size()>0 ? edges.size() : 1,
-				new Comparator<LinkSegment>()
-				{
-					public int compare(final LinkSegment o1, final LinkSegment o2)
-					{
-						return o1.getLength() - o2.getLength();
-					}
-				});
+		final PriorityQueue<LinkSegment> currentSegments = new PriorityQueue<LinkSegment>(edges.size() > 0 ? edges
+				.size() : 1, new Comparator<LinkSegment>()
+		{
+			public int compare(final LinkSegment o1, final LinkSegment o2)
+			{
+				return o1.getLength() - o2.getLength();
+			}
+		});
 
 		final Port currentPort = ports.iterator().next();
 		getEdges(currentPort, edges, addedPorts, currentSegments);

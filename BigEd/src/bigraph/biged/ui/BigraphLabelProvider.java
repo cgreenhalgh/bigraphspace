@@ -40,7 +40,9 @@ import java.util.List;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
+import bigraph.biged.BigEdPlugin;
 import bigraph.biged.model.Place;
+import bigraph.biged.model.Port;
 import bigraph.biged.ui.properties.TypeMapper;
 import bigraphspace.model.IndexValue;
 import bigraphspace.model.PlaceType;
@@ -62,6 +64,13 @@ public class BigraphLabelProvider extends LabelProvider
 	@Override
 	public Image getImage(final Object obj)
 	{
+		final Object modelObject = TypeMapper.getModelObject(obj);
+		if (modelObject instanceof Place)
+		{
+			final Place place = (Place) modelObject;
+			if (place.getType() == PlaceType.node) { return BigEdPlugin.getImage("node"); }
+		}
+		else if (modelObject instanceof Port) { return BigEdPlugin.getImage("port"); }
 		return null; // PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);
 	}
 
@@ -91,12 +100,12 @@ public class BigraphLabelProvider extends LabelProvider
 			{
 				String name = "";
 				boolean comma = false;
-				List<IndexValue> values = place.getControlIndexes();
-				for(final IndexValue value: values)
+				final List<IndexValue> values = place.getControlIndexes();
+				for (final IndexValue value : values)
 				{
-					if(comma)
+					if (comma)
 					{
-						name+= ", ";
+						name += ", ";
 					}
 					else
 					{
@@ -104,25 +113,22 @@ public class BigraphLabelProvider extends LabelProvider
 					}
 					name += value.getValue().toString();
 				}
-				
-				if(comma)
+
+				if (comma)
 				{
 					name += ":";
 				}
-				
+
 				name += place.getControlName();
-				
-				if(place.getSupport() != null && !place.getSupport().trim().equals(""))
+
+				if (place.getSupport() != null && !place.getSupport().trim().equals(""))
 				{
 					name += "@" + place.getSupport();
 				}
 				return name;
 			}
 		}
-		else if(modelObject instanceof IndexValue)
-		{
-			return ((IndexValue)modelObject).getValue().toString();
-		}
+		else if (modelObject instanceof IndexValue) { return ((IndexValue) modelObject).getValue().toString(); }
 		return modelObject.toString();
 	}
 }

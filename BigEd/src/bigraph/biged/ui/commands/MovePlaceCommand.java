@@ -34,12 +34,12 @@ public class MovePlaceCommand extends Command
 	public void execute()
 	{
 		parent.remove(child);
-		int index = parent.indexOf(before);
+		final int index = parent.indexOf(before);
 
 		if (index < 0 || index >= parent.getPlaces().size())
 		{
 			parent.add(child);
-		}		
+		}
 		else
 		{
 			parent.add(index, child);

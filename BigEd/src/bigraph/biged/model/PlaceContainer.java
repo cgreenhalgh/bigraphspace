@@ -82,6 +82,6 @@ public abstract class PlaceContainer
 		for (final PlaceEventListener listener : listeners)
 		{
 			listener.onPlaceEvent(event);
-		}		
+		}
 	}
 }

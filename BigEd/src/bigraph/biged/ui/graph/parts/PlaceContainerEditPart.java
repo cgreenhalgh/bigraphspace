@@ -50,11 +50,11 @@ public abstract class PlaceContainerEditPart extends AbstractGraphicalEditPart i
 	{
 		if (getParent() != null)
 		{
-			if(event.getType() == Type.ADD || event.getType() == Type.REMOVE)
+			if (event.getType() == Type.ADD || event.getType() == Type.REMOVE)
 			{
 				refreshChildren();
 			}
-			else if(event.getType() == Type.CHANGE)
+			else if (event.getType() == Type.CHANGE)
 			{
 				refreshVisuals();
 			}

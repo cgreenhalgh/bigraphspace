@@ -13,14 +13,14 @@ public abstract class AbstractPlaceSinglePropertySection extends AbstractPlacePr
 {
 
 	@Override
-	public void createControls(Composite parent, TabbedPropertySheetPage aTabbedPropertySheetPage)
+	public void createControls(final Composite parent, final TabbedPropertySheetPage aTabbedPropertySheetPage)
 	{
 		super.createControls(parent, aTabbedPropertySheetPage);
-		
+
 		final Composite composite = getWidgetFactory().createFlatFormComposite(parent);
 		final Control control = createControl(composite);
 
-		final CLabel labelLabel = getWidgetFactory().createCLabel(composite, getLabel()); //$NON-NLS-1$
+		final CLabel labelLabel = getWidgetFactory().createCLabel(composite, getLabel());
 		final FormData data = new FormData();
 		data.left = new FormAttachment(0, 0);
 		data.right = new FormAttachment(control, -ITabbedPropertyConstants.HSPACE);
@@ -28,7 +28,7 @@ public abstract class AbstractPlaceSinglePropertySection extends AbstractPlacePr
 		labelLabel.setLayoutData(data);
 	}
 
-	protected abstract String getLabel();
-	
 	protected abstract Control createControl(Composite parent);
+
+	protected abstract String getLabel();
 }

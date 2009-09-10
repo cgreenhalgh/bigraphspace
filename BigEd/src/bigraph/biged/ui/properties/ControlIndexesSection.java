@@ -2,7 +2,6 @@ package bigraph.biged.ui.properties;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -32,6 +31,9 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 import bigraph.biged.model.Place;
 import bigraph.biged.model.PlaceEvent;
 import bigraph.biged.ui.BigraphLabelProvider;
+import bigraph.biged.ui.commands.AddControlIndexCommand;
+import bigraph.biged.ui.commands.DeleteControlIndexCommand;
+import bigraph.biged.ui.commands.SetControlIndexCommand;
 import bigraphspace.model.IndexValue;
 
 public class ControlIndexesSection extends AbstractPlacePropertySection
@@ -73,9 +75,9 @@ public class ControlIndexesSection extends AbstractPlacePropertySection
 
 		final Button addButton = getWidgetFactory().createButton(buttonComposite, "Add", 0);
 		removeButton = getWidgetFactory().createButton(buttonComposite, "Remove", 0);
-		//getWidgetFactory().createLabel(buttonComposite, " ");
-		//final Button upButton = getWidgetFactory().createButton(buttonComposite, "Up", 0);
-		//final Button downButton = getWidgetFactory().createButton(buttonComposite, "Down", 0);
+		// getWidgetFactory().createLabel(buttonComposite, " ");
+		// final Button upButton = getWidgetFactory().createButton(buttonComposite, "Up", 0);
+		// final Button downButton = getWidgetFactory().createButton(buttonComposite, "Down", 0);
 
 		addButton.addSelectionListener(new SelectionListener()
 		{
@@ -85,7 +87,7 @@ public class ControlIndexesSection extends AbstractPlacePropertySection
 
 			public void widgetSelected(final SelectionEvent e)
 			{
-				place.addControlIndex("\"\"");
+				commandStack.execute(new AddControlIndexCommand(place, "\"\""));
 			}
 		});
 		removeButton.addSelectionListener(new SelectionListener()
@@ -97,10 +99,10 @@ public class ControlIndexesSection extends AbstractPlacePropertySection
 			public void widgetSelected(final SelectionEvent e)
 			{
 				final int index = viewer.getTable().getSelectionIndex();
-				if(index != -1)
+				if (index != -1)
 				{
-					final IndexValue indexVal = (IndexValue)viewer.getElementAt(index);
-					place.removeControlIndex(indexVal);
+					final IndexValue indexVal = (IndexValue) viewer.getElementAt(index);
+					commandStack.execute(new DeleteControlIndexCommand(place, index, indexVal));
 				}
 			}
 		});
@@ -135,7 +137,7 @@ public class ControlIndexesSection extends AbstractPlacePropertySection
 			public void selectionChanged(final SelectionChangedEvent event)
 			{
 				updateSelection();
-			}			
+			}
 		});
 
 		data = new FormData();
@@ -163,9 +165,9 @@ public class ControlIndexesSection extends AbstractPlacePropertySection
 		indexValue.setLayoutData(data);
 		indexValue.addModifyListener(new ModifyListener()
 		{
-			public void modifyText(ModifyEvent e)
+			public void modifyText(final ModifyEvent e)
 			{
-				modified = true;				
+				modified = true;
 			}
 		});
 		indexValue.addSelectionListener(new SelectionAdapter()
@@ -173,7 +175,7 @@ public class ControlIndexesSection extends AbstractPlacePropertySection
 			@Override
 			public void widgetDefaultSelected(final SelectionEvent e)
 			{
-				setValue(indexValue.getText());
+				execute();
 			}
 		});
 		indexValue.addFocusListener(new FocusAdapter()
@@ -181,9 +183,9 @@ public class ControlIndexesSection extends AbstractPlacePropertySection
 			@Override
 			public void focusLost(final FocusEvent e)
 			{
-				setValue(indexValue.getText());
+				execute();
 			}
-		});		
+		});
 
 		final Label valueLabel = getWidgetFactory().createLabel(detailsSectionClient, "Index Value:");
 		data = new FormData();
@@ -193,51 +195,11 @@ public class ControlIndexesSection extends AbstractPlacePropertySection
 		valueLabel.setLayoutData(data);
 	}
 
-	private void setValue(final String value)
-	{
-		if(modified)
-		{
-			modified = false;
-			IStructuredSelection selection = (IStructuredSelection)viewer.getSelection();
-			if(selection.isEmpty())
-			{
-				indexValue.setText("");
-			}
-			else
-			{
-				final Object obj = selection.getFirstElement();
-				if(obj instanceof IndexValue)
-				{
-					place.setControlIndex(value, viewer.getTable().getSelectionIndex());
-				}
-			}
-		}		
-	}
-	
 	public void onPlaceEvent(final PlaceEvent event)
 	{
 		refresh();
 	}
 
-	private void updateSelection()
-	{
-		final int index = viewer.getTable().getSelectionIndex();
-		if(index == -1)
-		{
-			indexValue.setText("");
-			indexValue.setEnabled(false);		
-			removeButton.setEnabled(false);
-		}
-		else
-		{
-			indexValue.setEnabled(true);
-			final IndexValue indexVal = (IndexValue)viewer.getElementAt(index);
-			indexValue.setText(indexVal.getValue().toString());
-			removeButton.setEnabled(true);			
-		}
-		modified = false;
-	}
-	
 	@Override
 	public void refresh()
 	{
@@ -247,7 +209,7 @@ public class ControlIndexesSection extends AbstractPlacePropertySection
 			{
 				int index = viewer.getTable().getSelectionIndex();
 				viewer.setInput(place);
-				if(index == -1 && viewer.getTable().getItemCount() > 0)
+				if (index == -1 && viewer.getTable().getItemCount() > 0)
 				{
 					index = 0;
 				}
@@ -255,5 +217,41 @@ public class ControlIndexesSection extends AbstractPlacePropertySection
 				updateSelection();
 			}
 		});
+	}
+
+	private void execute()
+	{
+		if (modified)
+		{
+			modified = false;
+			final int selectionIndex = viewer.getTable().getSelectionIndex();
+			if (selectionIndex == -1)
+			{
+				indexValue.setText("");
+			}
+			else
+			{
+				commandStack.execute(new SetControlIndexCommand(place, indexValue.getText(), selectionIndex));
+			}
+		}
+	}
+
+	private void updateSelection()
+	{
+		final int index = viewer.getTable().getSelectionIndex();
+		if (index == -1)
+		{
+			indexValue.setText("");
+			indexValue.setEnabled(false);
+			removeButton.setEnabled(false);
+		}
+		else
+		{
+			indexValue.setEnabled(true);
+			final IndexValue indexVal = (IndexValue) viewer.getElementAt(index);
+			indexValue.setText(indexVal.getValue().toString());
+			removeButton.setEnabled(true);
+		}
+		modified = false;
 	}
 }

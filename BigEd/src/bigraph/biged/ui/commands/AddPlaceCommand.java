@@ -29,21 +29,27 @@ public class AddPlaceCommand extends Command
 	{
 		return true;
 	}
-	
+
 	@Override
 	public void execute()
 	{
-		int index = parent.indexOf(before);
+		final int index = parent.indexOf(before);
 		System.out.println("Insert at " + index);
-		
+
 		if (index < 0 || index >= parent.getPlaces().size())
 		{
 			parent.add(child);
-		}		
+		}
 		else
 		{
 			parent.add(index, child);
 		}
+	}
+
+	@Override
+	public String getLabel()
+	{
+		return "Add Place";
 	}
 
 	@Override

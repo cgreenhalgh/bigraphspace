@@ -1,5 +1,6 @@
 package bigraph.biged.ui.properties;
 
+import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
@@ -16,46 +17,24 @@ import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 
 import bigraph.biged.model.PlaceEvent;
 
-public abstract class AbstractPlaceStringPropertySection extends AbstractPlaceSinglePropertySection implements ModifyListener
+public abstract class AbstractPlaceStringPropertySection extends AbstractPlaceSinglePropertySection implements
+		ModifyListener
 {
 	protected Text labelText;
 	private boolean modified;
-	
-	protected Control createControl(final Composite parent)
-	{
-		labelText = getWidgetFactory().createText(parent, ""); //$NON-NLS-1$
-		final FormData data = new FormData();
-		data.left = new FormAttachment(0, STANDARD_LABEL_WIDTH + 20);
-		data.right = new FormAttachment(100, 0);
-		data.top = new FormAttachment(0, ITabbedPropertyConstants.VSPACE);
-		labelText.setLayoutData(data);
-		labelText.addModifyListener(this);
-		labelText.addSelectionListener(new SelectionAdapter()
-		{
-			@Override
-			public void widgetDefaultSelected(final SelectionEvent e)
-			{
-				modified = false;				
-				setValue(labelText.getText());
-			}
 
-		});
-		labelText.addFocusListener(new FocusAdapter()
-		{
-			@Override
-			public void focusLost(final FocusEvent e)
-			{
-				modified = false;				
-				setValue(labelText.getText());
-			}
-		});
-		return labelText;
-	}
-	
 	public void modifyText(final ModifyEvent e)
 	{
 		modified = true;
-	}	
+	}
+
+	public void onPlaceEvent(final PlaceEvent event)
+	{
+		if (!modified)
+		{
+			refresh();
+		}
+	}
 
 	@Override
 	public void refresh()
@@ -67,14 +46,6 @@ public abstract class AbstractPlaceStringPropertySection extends AbstractPlaceSi
 				setText(getValue());
 			}
 		});
-	}
-	
-	public void onPlaceEvent(PlaceEvent event)
-	{
-		if(!modified)
-		{
-			refresh();
-		}
 	}
 
 	private void setText(final String text)
@@ -91,10 +62,50 @@ public abstract class AbstractPlaceStringPropertySection extends AbstractPlaceSi
 		{
 			labelText.setText("");
 		}
-		modified = false;		
+		modified = false;
+	}
+
+	protected abstract Command createCommand();
+
+	@Override
+	protected Control createControl(final Composite parent)
+	{
+		labelText = getWidgetFactory().createText(parent, ""); //$NON-NLS-1$
+		final FormData data = new FormData();
+		data.left = new FormAttachment(0, STANDARD_LABEL_WIDTH + 20);
+		data.right = new FormAttachment(100, 0);
+		data.top = new FormAttachment(0, ITabbedPropertyConstants.VSPACE);
+		labelText.setLayoutData(data);
+		labelText.addModifyListener(this);
+		labelText.addSelectionListener(new SelectionAdapter()
+		{
+			@Override
+			public void widgetDefaultSelected(final SelectionEvent e)
+			{
+				execute();
+			}
+
+		});
+		labelText.addFocusListener(new FocusAdapter()
+		{
+			@Override
+			public void focusLost(final FocusEvent e)
+			{
+				execute();
+			}
+		});
+		return labelText;
+	}
+
+	protected void execute()
+	{
+		final Command command = createCommand();
+		if (command != null)
+		{
+			modified = false;
+			commandStack.execute(command);
+		}
 	}
 
 	protected abstract String getValue();
-	
-	protected abstract void setValue(final String value);
 }
