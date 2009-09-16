@@ -68,4 +68,20 @@ public class DomPort implements Port {
 	public void setName(String portName) {
 		throw new UnsupportedOperationException(DomPort.class.getName()+".setName(String)");
 	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(obj instanceof DomPort)
+		{
+			return attribute.equals(((DomPort)obj).attribute);
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		return attribute.hashCode();
+	}
 }
