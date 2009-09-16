@@ -195,6 +195,22 @@ public class DomPlace implements Place {
 		}
 		return children;
 	}
+	
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(obj instanceof DomPlace)
+		{
+			return element.equals(((DomPlace)obj).element);
+		}
+		return false;
+	}
+	@Override
+	public int hashCode()
+	{
+		return element.hashCode();
+	}
 	/** is child element name */
 	public static boolean isChildElementName(String name) {
 		return !name.equals(Constants.INDEX_ELEMENT_NAME);
