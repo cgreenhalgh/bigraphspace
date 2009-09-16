@@ -1,10 +1,9 @@
 package bigraph.biged.ui.graph.parts;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
@@ -14,28 +13,60 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.CompoundCommand;
+import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.ComponentEditPolicy;
 import org.eclipse.gef.editpolicies.DirectEditPolicy;
+import org.eclipse.gef.editpolicies.FlowLayoutEditPolicy;
+import org.eclipse.gef.requests.ChangeBoundsRequest;
+import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.requests.DirectEditRequest;
 import org.eclipse.gef.requests.GroupRequest;
 
-import bigraph.biged.model.LinkSegment;
-import bigraph.biged.model.Place;
-import bigraph.biged.model.PlaceContainer;
-import bigraph.biged.model.Port;
-import bigraph.biged.ui.commands.DeletePlacesCommand;
+import bigraph.biged.model.Edge;
+import bigraph.biged.model.EdgeSegment;
+import bigraph.biged.model.PlaceEvent;
+import bigraph.biged.model.PlaceEventListener;
+import bigraph.biged.model.PlaceEvent.Type;
+import bigraph.biged.ui.BigraphLabelProvider;
+import bigraph.biged.ui.commands.AddPlaceCommand;
+import bigraph.biged.ui.commands.DeletePlaceCommand;
+import bigraph.biged.ui.commands.DeleteRootCommand;
 import bigraph.biged.ui.graph.figures.PlaceFigure;
 import bigraph.biged.ui.graph.figures.PortConnectionAnchor;
+import bigraphspace.model.Bigraph;
+import bigraphspace.model.Place;
+import bigraphspace.model.Port;
 
-public class PlacePart extends PlaceContainerEditPart implements NodeEditPart
+public class PlacePart extends AbstractGraphicalEditPart implements PlaceEventListener, NodeEditPart
 {
+	@Override
+	public void activate()
+	{
+		if (isActive()) { return; }
+		System.out.println("Activate " + BigraphLabelProvider.text(getModel()));
+		PlaceEvent.addListener(getPlace(), this);
+		super.activate();
+	}
 
-	private final Map<Port, ConnectionAnchor> portAnchors = new HashMap<Port, ConnectionAnchor>();
+	@Override
+	public void deactivate()
+	{
+		if (!isActive()) { return; }
+		System.out.println("Deactivate " + BigraphLabelProvider.text(getModel()));
+		PlaceEvent.removeListener(getPlace(), this);
+		super.deactivate();
+	}
+
+	public BigraphPart getBigraphPart()
+	{
+		return (BigraphPart) getRoot().getContents();
+	}
 
 	@SuppressWarnings("unchecked")
 	public ConnectionAnchor getConnectionAnchor(final Port port)
 	{
-		ConnectionAnchor anchor = portAnchors.get(port);
+		PortConnectionAnchor anchor = PortConnectionAnchor.getAnchor(port);
 		if (anchor != null) { return anchor; }
 
 		IFigure figure = getFigure();
@@ -44,9 +75,9 @@ public class PlacePart extends PlaceContainerEditPart implements NodeEditPart
 			figure = ((PlaceFigure) figure).getContainer();
 		}
 
-		anchor = new PortConnectionAnchor(figure, port, getViewer().getEditPartRegistry());
+		anchor = new PortConnectionAnchor(figure, port, getBigraphPart(), getViewer().getEditPartRegistry());
 
-		portAnchors.put(port, anchor);
+		PortConnectionAnchor.addAnchor(port, anchor);
 
 		return anchor;
 	}
@@ -64,9 +95,9 @@ public class PlacePart extends PlaceContainerEditPart implements NodeEditPart
 	public ConnectionAnchor getSourceConnectionAnchor(final ConnectionEditPart connection)
 	{
 		final Object model = connection.getModel();
-		if (model instanceof LinkSegment)
+		if (model instanceof Edge)
 		{
-			final LinkSegment linkSegment = (LinkSegment) model;
+			final Edge linkSegment = (Edge) model;
 			return getConnectionAnchor(linkSegment.getSource());
 		}
 		return null;
@@ -74,16 +105,15 @@ public class PlacePart extends PlaceContainerEditPart implements NodeEditPart
 
 	public ConnectionAnchor getSourceConnectionAnchor(final Request request)
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public ConnectionAnchor getTargetConnectionAnchor(final ConnectionEditPart connection)
 	{
 		final Object model = connection.getModel();
-		if (model instanceof LinkSegment)
+		if (model instanceof Edge)
 		{
-			final LinkSegment linkSegment = (LinkSegment) model;
+			final Edge linkSegment = (Edge) model;
 			return getConnectionAnchor(linkSegment.getTarget());
 		}
 		return null;
@@ -91,8 +121,23 @@ public class PlacePart extends PlaceContainerEditPart implements NodeEditPart
 
 	public ConnectionAnchor getTargetConnectionAnchor(final Request request)
 	{
-		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void onPlaceEvent(final PlaceEvent event)
+	{
+		if (getParent() != null)
+		{
+			if (event.getType() == Type.ADD || event.getType() == Type.REMOVE)
+			{
+				refreshChildren();
+			}
+			else if (event.getType() == Type.CHANGE)
+			{
+				getParent().refresh();
+				refreshVisuals();
+			}
+		}
 	}
 
 	@Override
@@ -109,24 +154,100 @@ public class PlacePart extends PlaceContainerEditPart implements NodeEditPart
 	@Override
 	protected void createEditPolicies()
 	{
-		super.createEditPolicies();
+		installEditPolicy(EditPolicy.LAYOUT_ROLE, new FlowLayoutEditPolicy()
+		{
+			@Override
+			public Command getCommand(final Request request)
+			{
+				System.err.println("Request " + request.getType());
+				return super.getCommand(request);
+			}
+
+			@Override
+			protected Command createAddCommand(final EditPart child, final EditPart after)
+			{
+				if (child.getModel() instanceof Place)
+				{
+					final Place childPlace = (Place) child.getModel();
+					return new AddPlaceCommand(getPlace(), childPlace);
+				}
+				return null;
+			}
+
+			protected Command createCloneCommand(final EditPart child, final EditPart after)
+			{
+				return null;
+			}
+
+			@Override
+			protected Command createMoveChildCommand(final EditPart child, final EditPart after)
+			{
+				return null;
+			}
+
+			@SuppressWarnings("unchecked")
+			@Override
+			protected Command getCloneCommand(final ChangeBoundsRequest request)
+			{
+				final List<EditPart> editParts = request.getEditParts();
+				final CompoundCommand command = new CompoundCommand();
+				for (final EditPart child : editParts)
+				{
+					command.add(createCloneCommand(child, getInsertionReference(request)));
+				}
+				return command.unwrap();
+			}
+
+			@Override
+			protected Command getCreateCommand(final CreateRequest request)
+			{
+				if (request.getNewObject() instanceof Place)
+				{
+					final Place childPlace = (Place) request.getNewObject();
+					return new AddPlaceCommand(getPlace(), childPlace);
+				}
+				return null;
+			}
+
+			@SuppressWarnings("unchecked")
+			@Override
+			protected Command getOrphanChildrenCommand(final Request request)
+			{
+				final Collection<EditPart> parts = ((GroupRequest) request).getEditParts();
+				if (parts.size() == 0) { return null; }
+				if (parts.size() > 1)
+				{
+					System.err.println("Multiple delete requests!");
+				}
+
+				final EditPart part = parts.iterator().next();
+				final Object model = part.getModel();
+				if (model instanceof Place)
+				{
+					final DeletePlaceCommand deleteCommand = new DeletePlaceCommand(getPlace(), (Place) model);
+					return deleteCommand;
+				}
+				return null;
+			}
+		});
 
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, new ComponentEditPolicy()
 		{
-			@SuppressWarnings("unchecked")
 			@Override
 			protected Command createDeleteCommand(final GroupRequest request)
 			{
-				final PlaceContainer parent = (PlaceContainer) getHost().getParent().getModel();
-				final Collection<EditPart> parts = request.getEditParts();
-				final Collection<Place> places = new HashSet<Place>();
-				for (final EditPart part : parts)
+				final Object parent = getParent().getModel();
+				if (parent instanceof Place)
 				{
-					if (!(part.getModel() instanceof Place)) { return null; }
-					places.add((Place) part.getModel());
+					final DeletePlaceCommand deleteCommand = new DeletePlaceCommand((Place) parent, getPlace());
+					return deleteCommand;
 				}
-				final DeletePlacesCommand deleteCommand = new DeletePlacesCommand(parent, places);
-				return deleteCommand;
+				else if (parent instanceof Bigraph)
+				{
+					final DeleteRootCommand deleteCommand = new DeleteRootCommand((Bigraph) parent, getPlace());
+					return deleteCommand;
+				}
+				return null;
 			}
 		});
 
@@ -154,14 +275,32 @@ public class PlacePart extends PlaceContainerEditPart implements NodeEditPart
 	}
 
 	@Override
-	protected List<LinkSegment> getModelSourceConnections()
+	protected List<Place> getModelChildren()
 	{
-		return getPlace().getLinkSegments(true, false);
+		final List<Place> list = getPlace().getChildren();
+		Collections.sort(list, new Comparator<Place>()
+		{
+			public int compare(final Place o1, final Place o2)
+			{
+				final String s1 = BigraphLabelProvider.text(o1);
+				final String s2 = BigraphLabelProvider.text(o2);
+				return s1.compareTo(s2);
+			}
+		});
+		return list;
 	}
 
 	@Override
-	protected List<LinkSegment> getModelTargetConnections()
+	protected List<EdgeSegment> getModelSourceConnections()
 	{
-		return getPlace().getLinkSegments(false, true);
+		return getBigraphPart().getEdgeSegments(getPlace(), true, false);
+		//return getBigraphPart().getEdges(getPlace());
+	}
+
+	@Override
+	protected List<EdgeSegment> getModelTargetConnections()
+	{
+		return getBigraphPart().getEdgeSegments(getPlace(), false, true);		
+		//return getBigraphPart().getEdges(getPlace());
 	}
 }

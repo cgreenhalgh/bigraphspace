@@ -3,26 +3,34 @@ package bigraph.biged.ui.commands;
 import org.eclipse.gef.commands.Command;
 
 import bigraph.biged.model.PlaceEvent;
-import bigraphspace.model.IndexValue;
 import bigraphspace.model.Place;
 
-public class DeleteControlIndexCommand extends Command
+public class SetPlaceSupportCommand extends Command
 {
 	private final Place place;
-	private int index;
-	private final IndexValue value;
+	private final String newName;
+	private String oldName;
 
-	public DeleteControlIndexCommand(final Place place, final IndexValue value)
+	public SetPlaceSupportCommand(final Place place, final String newName)
 	{
 		this.place = place;
-		this.value = value;
+		if(newName == null || newName.equals(""))
+		{
+			this.newName = null;
+		}
+		else
+		{
+			this.newName = newName;
+		}
+		oldName = place.getSupport();
 	}
 
 	@Override
 	public boolean canExecute()
 	{
-		return true;
+		return oldName != newName && (oldName == null || !oldName.equals(newName)); 	
 	}
+	
 
 	@Override
 	public boolean canUndo()
@@ -33,21 +41,15 @@ public class DeleteControlIndexCommand extends Command
 	@Override
 	public void execute()
 	{
-		index = place.getControlIndexes().indexOf(value);
-		place.removeControlIndex(value);
+		oldName = place.getSupport();
+		place.setSupport(newName);
 		PlaceEvent.fireEvent(new PlaceEvent(place, PlaceEvent.Type.CHANGE));		
-	}
-
-	@Override
-	public String getLabel()
-	{
-		return "Delete Control Index";
 	}
 
 	@Override
 	public void undo()
 	{
-		place.insertControlIndex(value, index);
+		place.setSupport(oldName);
 		PlaceEvent.fireEvent(new PlaceEvent(place, PlaceEvent.Type.CHANGE));		
 	}
 }

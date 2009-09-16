@@ -9,6 +9,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 
 import bigraphspace.model.BasicSignature;
+import bigraphspace.model.Bigraph;
 import bigraphspace.model.xml.DomBigraph;
 
 public class XMLModelLoader implements ModelLoader
@@ -30,7 +31,7 @@ public class XMLModelLoader implements ModelLoader
 			final Document doc = builder.parse(inputStream);
 
 			final DomBigraph bigraph = new DomBigraph(new BasicSignature(), doc);
-			return new Bigraph(bigraph);
+			return bigraph;
 		}
 		catch (final Exception e)
 		{

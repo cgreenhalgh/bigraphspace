@@ -1,122 +1,73 @@
 package bigraph.biged.ui.properties;
 
-import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.forms.widgets.ExpandableComposite;
-import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
-import bigraph.biged.model.Place;
-import bigraph.biged.model.PlaceEvent;
-import bigraph.biged.ui.BigraphLabelProvider;
-import bigraph.biged.ui.commands.AddControlIndexCommand;
+import bigraph.biged.ui.commands.CreateControlIndexCommand;
 import bigraph.biged.ui.commands.DeleteControlIndexCommand;
 import bigraph.biged.ui.commands.SetControlIndexCommand;
 import bigraphspace.model.IndexValue;
+import bigraphspace.model.Place;
 
-public class ControlIndexesSection extends AbstractPlacePropertySection
+public class ControlIndexesSection extends AbstractPlaceListPropertySection
 {
-	private Text indexValue;
-	private TableViewer viewer;
-	private boolean modified;
-	private Button removeButton;
+	private TextCommandHandler indexValue;
 
 	@Override
-	public void createControls(final Composite parent, final TabbedPropertySheetPage aTabbedPropertySheetPage)
+	protected void setCommandStack(CommandStack commandStack)
 	{
-		super.createControls(parent, aTabbedPropertySheetPage);
+		super.setCommandStack(commandStack);
+		indexValue.setCommandStack(commandStack);
+	}
 
-		final Composite composite = getWidgetFactory().createFlatFormComposite(parent);
-
+	@Override
+	protected void createDetailsPanel(final Composite parent, final TabbedPropertySheetPage aTabbedPropertySheetPage)
+	{
+		final Text indexText = getWidgetFactory().createText(parent, "");
 		FormData data = new FormData();
-		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(50, -ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(0, ITabbedPropertyConstants.VSPACE);
-		final Section indexesSection = getWidgetFactory().createSection(
-																		composite,
-																		Section.DESCRIPTION
-																				| ExpandableComposite.TITLE_BAR
-																				| ExpandableComposite.EXPANDED);
-		final Composite indexesSectionClient = getWidgetFactory().createComposite(indexesSection);
-		indexesSection.setLayoutData(data);
-		indexesSection.setClient(indexesSectionClient);
-		indexesSection.setText("Control Indexes");
-		indexesSection.setDescription("Description");
-		indexesSectionClient.setLayout(new FormLayout());
-
-		data = new FormData();
+		data.left = new FormAttachment(0, STANDARD_LABEL_WIDTH);
 		data.right = new FormAttachment(100, 0);
 		data.top = new FormAttachment(0, ITabbedPropertyConstants.VSPACE);
-		final Composite buttonComposite = getWidgetFactory().createComposite(indexesSectionClient);
-		buttonComposite.setLayout(new FillLayout(SWT.VERTICAL));
-		buttonComposite.setLayoutData(data);
-
-		final Button addButton = getWidgetFactory().createButton(buttonComposite, "Add", 0);
-		removeButton = getWidgetFactory().createButton(buttonComposite, "Remove", 0);
-		// getWidgetFactory().createLabel(buttonComposite, " ");
-		// final Button upButton = getWidgetFactory().createButton(buttonComposite, "Up", 0);
-		// final Button downButton = getWidgetFactory().createButton(buttonComposite, "Down", 0);
-
-		addButton.addSelectionListener(new SelectionListener()
+		indexText.setLayoutData(data);
+		indexValue = new TextCommandHandler(indexText)
 		{
-			public void widgetDefaultSelected(final SelectionEvent e)
+			@Override
+			protected Command getCommand(final String textValue)
 			{
+				final Object selection = getSelectedObject();
+				if (selection == null) { return null; }
+				return new SetControlIndexCommand(bigraph, place, (IndexValue) selection, textValue);
 			}
+		};
 
-			public void widgetSelected(final SelectionEvent e)
-			{
-				commandStack.execute(new AddControlIndexCommand(place, "\"\""));
-			}
-		});
-		removeButton.addSelectionListener(new SelectionListener()
-		{
-			public void widgetDefaultSelected(final SelectionEvent e)
-			{
-			}
-
-			public void widgetSelected(final SelectionEvent e)
-			{
-				final int index = viewer.getTable().getSelectionIndex();
-				if (index != -1)
-				{
-					final IndexValue indexVal = (IndexValue) viewer.getElementAt(index);
-					commandStack.execute(new DeleteControlIndexCommand(place, index, indexVal));
-				}
-			}
-		});
-
+		final Label valueLabel = getWidgetFactory().createLabel(parent, "Index Value:");
 		data = new FormData();
 		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(buttonComposite, -ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(0, ITabbedPropertyConstants.VSPACE);
-		data.bottom = new FormAttachment(buttonComposite, 0, SWT.BOTTOM);
-		final Table indexList = getWidgetFactory().createTable(indexesSectionClient, SWT.SINGLE);
-		indexList.setLayoutData(data);
-		viewer = new TableViewer(indexList);
-		viewer.setLabelProvider(new BigraphLabelProvider());
-		viewer.setContentProvider(new IStructuredContentProvider()
+		data.right = new FormAttachment(indexText, -ITabbedPropertyConstants.HSPACE);
+		data.top = new FormAttachment(indexText, 0, SWT.TOP);
+		valueLabel.setLayoutData(data);
+	}
+
+	@Override
+	protected Command getAddCommand()
+	{
+		return new CreateControlIndexCommand(bigraph, place);
+	}
+
+	@Override
+	protected IStructuredContentProvider getContentProvider()
+	{
+		return new IStructuredContentProvider()
 		{
 			public void dispose()
 			{
@@ -131,127 +82,40 @@ public class ControlIndexesSection extends AbstractPlacePropertySection
 			public void inputChanged(final Viewer viewer, final Object oldInput, final Object newInput)
 			{
 			}
-		});
-		viewer.addSelectionChangedListener(new ISelectionChangedListener()
-		{
-			public void selectionChanged(final SelectionChangedEvent event)
-			{
-				updateSelection();
-			}
-		});
-
-		data = new FormData();
-		data.left = new FormAttachment(indexesSection, ITabbedPropertyConstants.HSPACE);
-		data.right = new FormAttachment(100, 0);
-		data.top = new FormAttachment(0, ITabbedPropertyConstants.VSPACE);
-		final Section detailsSection = getWidgetFactory().createSection(
-																		composite,
-																		Section.DESCRIPTION
-																				| ExpandableComposite.TITLE_BAR
-																				| ExpandableComposite.EXPANDED);
-		final Composite detailsSectionClient = getWidgetFactory().createComposite(detailsSection);
-		detailsSection.setText("Index Details");
-		detailsSection.setLayoutData(data);
-
-		detailsSection.setClient(detailsSectionClient);
-		detailsSection.setDescription("Description");
-		detailsSectionClient.setLayout(new FormLayout());
-
-		indexValue = getWidgetFactory().createText(detailsSectionClient, "");
-		data = new FormData();
-		data.left = new FormAttachment(0, STANDARD_LABEL_WIDTH);
-		data.right = new FormAttachment(100, 0);
-		data.top = new FormAttachment(0, ITabbedPropertyConstants.VSPACE);
-		indexValue.setLayoutData(data);
-		indexValue.addModifyListener(new ModifyListener()
-		{
-			public void modifyText(final ModifyEvent e)
-			{
-				modified = true;
-			}
-		});
-		indexValue.addSelectionListener(new SelectionAdapter()
-		{
-			@Override
-			public void widgetDefaultSelected(final SelectionEvent e)
-			{
-				execute();
-			}
-		});
-		indexValue.addFocusListener(new FocusAdapter()
-		{
-			@Override
-			public void focusLost(final FocusEvent e)
-			{
-				execute();
-			}
-		});
-
-		final Label valueLabel = getWidgetFactory().createLabel(detailsSectionClient, "Index Value:");
-		data = new FormData();
-		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(indexValue, -ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(indexValue, 0, SWT.TOP);
-		valueLabel.setLayoutData(data);
-	}
-
-	public void onPlaceEvent(final PlaceEvent event)
-	{
-		refresh();
+		};
 	}
 
 	@Override
-	public void refresh()
+	protected Command getDeleteCommand(final Object item)
 	{
-		Display.getDefault().asyncExec(new Runnable()
-		{
-			public void run()
-			{
-				int index = viewer.getTable().getSelectionIndex();
-				viewer.setInput(place);
-				if (index == -1 && viewer.getTable().getItemCount() > 0)
-				{
-					index = 0;
-				}
-				viewer.getTable().setSelection(index);
-				updateSelection();
-			}
-		});
+		if (item == null) { return null; }
+		return new DeleteControlIndexCommand(place, (IndexValue) item);
 	}
 
-	private void execute()
+	@Override
+	protected String getDetailsTitle()
 	{
-		if (modified)
-		{
-			modified = false;
-			final int selectionIndex = viewer.getTable().getSelectionIndex();
-			if (selectionIndex == -1)
-			{
-				indexValue.setText("");
-			}
-			else
-			{
-				commandStack.execute(new SetControlIndexCommand(place, indexValue.getText(), selectionIndex));
-			}
-		}
+		return "Control Index Details";
 	}
 
-	private void updateSelection()
+	@Override
+	protected String getListTitle()
 	{
-		final int index = viewer.getTable().getSelectionIndex();
-		if (index == -1)
+		return "Control Indexes";
+	}
+
+	@Override
+	protected void updateSelection()
+	{
+		super.updateSelection();
+		final Object selection = getSelectedObject();
+		if (selection == null)
 		{
-			indexValue.setText("");
-			indexValue.setEnabled(false);
-			removeButton.setEnabled(false);
+			indexValue.setText(null);
 		}
 		else
 		{
-			indexValue.setEnabled(true);
-			final IndexValue indexVal = (IndexValue) viewer.getElementAt(index);
-			indexValue.setText(indexVal.getValue().toString());
-			removeButton.setEnabled(true);
+			indexValue.setText(((IndexValue) selection).getValue().toString());
 		}
-		modified = false;
 	}
 }

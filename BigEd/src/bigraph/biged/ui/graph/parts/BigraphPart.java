@@ -35,6 +35,13 @@
  */
 package bigraph.biged.ui.graph.parts;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+
 import org.eclipse.draw2d.ConnectionLayer;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FlowLayout;
@@ -42,13 +49,35 @@ import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.ShortestPathConnectionRouter;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.LayerConstants;
+import org.eclipse.gef.Request;
+import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.CompoundCommand;
+import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+import org.eclipse.gef.editpolicies.FlowLayoutEditPolicy;
+import org.eclipse.gef.requests.ChangeBoundsRequest;
+import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.gef.requests.GroupRequest;
+
+import bigraph.biged.model.Edge;
+import bigraph.biged.model.EdgeSegment;
+import bigraph.biged.model.PlaceEvent;
+import bigraph.biged.model.PlaceEventListener;
+import bigraph.biged.model.PlaceEvent.Type;
+import bigraph.biged.ui.commands.AddRootCommand;
+import bigraphspace.model.Bigraph;
+import bigraphspace.model.Place;
+import bigraphspace.model.Port;
 
 /**
  * @author <a href="ktg@cs.nott.ac.uk">Kevin Glover</a>
  */
-public class BigraphPart extends PlaceContainerEditPart
+public class BigraphPart extends AbstractGraphicalEditPart implements PlaceEventListener
 {
+	private final Map<String, Edge> edges = new HashMap<String, Edge>();
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -70,4 +99,222 @@ public class BigraphPart extends PlaceContainerEditPart
 
 		return f;
 	}
+	
+	@Override
+	public void activate()
+	{
+		if (!isActive())
+		{
+			super.activate();
+			// TODO getContainer().addPlaceEventListener(this);
+		}
+	}
+
+	@Override
+	public void deactivate()
+	{
+		if (isActive())
+		{
+			super.deactivate();
+			// TODO getContainer().addPlaceEventListener(this);
+		}
+	}
+
+	public void onPlaceEvent(final PlaceEvent event)
+	{
+		if (getParent() != null)
+		{
+			if (event.getType() == Type.ADD || event.getType() == Type.REMOVE)
+			{
+				refreshChildren();
+			}
+			else if (event.getType() == Type.CHANGE)
+			{
+				refreshVisuals();
+			}
+		}
+	}
+
+	@Override
+	protected void createEditPolicies()
+	{
+		installEditPolicy(EditPolicy.LAYOUT_ROLE, new FlowLayoutEditPolicy()
+		{
+			@Override
+			public Command getCommand(final Request request)
+			{
+				System.err.println("Request " + request.getType());
+				return super.getCommand(request);
+			}
+
+			@Override
+			protected Command createAddCommand(final EditPart child, final EditPart after)
+			{
+				if (child.getModel() instanceof Place)
+				{
+					final Place childPlace = (Place) child.getModel();
+					if (after == null)
+					{
+						return new AddRootCommand(getBigraph(), childPlace, null);
+					}
+					else if (after.getModel() instanceof Place) { return new AddRootCommand(getBigraph(),
+							childPlace, (Place) after.getModel()); }
+				}
+				return null;
+			}
+
+			protected Command createCloneCommand(final EditPart child, final EditPart after)
+			{
+//				if (child.getModel() instanceof Place)
+//				{
+//					final Place childPlace = (Place) child.getModel();
+//					if (!getContainer().canAdd(childPlace)) { return null; }
+//					if (after == null)
+//					{
+//						return new AddPlaceCommand(getContainer(), childPlace.clone(), null);
+//					}
+//					else if (after.getModel() instanceof Place) { return new AddPlaceCommand(getContainer(), childPlace
+//							.clone(), (Place) after.getModel()); }
+//				}
+				return null;
+			}
+
+			@Override
+			protected Command createMoveChildCommand(final EditPart child, final EditPart after)
+			{
+				if (child.getModel() instanceof Place)
+				{
+					if (after != null && after.getModel() instanceof Place)
+					{
+						//return new MovePlaceCommand(getModel(), (Place) child.getModel(), (Place) after.getModel());
+					}
+					else
+					{
+						//return new MovePlaceCommand(getModel(), (Place) child.getModel(), null);
+					}
+				}
+
+				return null;
+			}
+
+			@SuppressWarnings("unchecked")
+			@Override
+			protected Command getCloneCommand(final ChangeBoundsRequest request)
+			{
+				final List<EditPart> editParts = request.getEditParts();
+				final CompoundCommand command = new CompoundCommand();
+				for (final EditPart child : editParts)
+				{
+					command.add(createCloneCommand(child, getInsertionReference(request)));
+				}
+				return command.unwrap();
+			}
+
+			@Override
+			protected Command getCreateCommand(final CreateRequest request)
+			{
+				final EditPart after = getInsertionReference(request);
+				if (request.getNewObject() instanceof Place)
+				{
+					final Place childPlace = (Place) request.getNewObject();
+					if (after == null)
+					{
+						return new AddRootCommand(getBigraph(), childPlace, null);
+					}
+					else if (after.getModel() instanceof Place) { return new AddRootCommand(getBigraph(),
+							childPlace, (Place) after.getModel()); }
+				}
+				return null;
+			}
+
+			@SuppressWarnings("unchecked")
+			@Override
+			protected Command getOrphanChildrenCommand(final Request request)
+			{
+				final Collection<EditPart> parts = ((GroupRequest) request).getEditParts();
+				final Collection<Place> places = new HashSet<Place>();
+				for (final EditPart part : parts)
+				{
+					if (!(part.getModel() instanceof Place)) { return null; }
+					places.add((Place) part.getModel());
+				}
+				//final DeletePlaceCommand deleteCommand = new DeleteRootCommand(getBigraph(), places);
+				return null;
+			}
+		});
+	}
+	
+	public List<Edge> getEdges(final Place place)
+	{
+		final List<Edge> edgeList = new ArrayList<Edge>();
+		for(final Port port: place.getPorts())
+		{
+			edgeList.add(edges.get(port.getLinkName()));
+		}
+		
+		return edgeList;
+	}
+	
+	public List<EdgeSegment> getEdgeSegments(final Place place, final boolean source, final boolean target)
+	{
+		final List<EdgeSegment> edgeSegments = new ArrayList<EdgeSegment>();
+		for(final Port port: place.getPorts())
+		{
+			final Edge edge = edges.get(port.getLinkName());
+			edgeSegments.addAll(edge.getSegments(port, source, target));
+		}		
+		return edgeSegments;
+	}
+	
+	public void updateEdges()
+	{
+		final Map<String, Edge> newEdges = new HashMap<String, Edge>();
+		int position = 0;
+		for(final Place place: getBigraph().getRoots())
+		{
+			position = Edge.findEdges(place, newEdges, position);
+		}
+		
+		for(final Edge edge: newEdges.values())
+		{
+			if(edges.get(edge.getName()) == null)
+			{
+				edges.put(edge.getName(), edge);
+			}
+			else
+			{
+				edges.get(edge.getName()).updatePorts(edge.getPorts());
+			}
+		}
+		
+		for(final Edge edge: edges.values())
+		{
+			if(newEdges.get(edge.getName()) == null)
+			{
+				edges.remove(edge.getName());
+			}
+			else
+			{
+				edge.update();
+			}
+		}
+	}
+	
+	@Override
+	public void setModel(Object model)
+	{
+		super.setModel(model);
+		updateEdges();
+	}
+
+	public Bigraph getBigraph()
+	{
+		return (Bigraph)getModel();
+	}
+	
+	@Override
+	protected List<Place> getModelChildren()
+	{
+		return getBigraph().getRoots();
+	}	
 }

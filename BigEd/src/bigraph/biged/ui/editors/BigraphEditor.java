@@ -28,12 +28,12 @@ import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertySheetPageContributor;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
-import bigraph.biged.model.Bigraph;
 import bigraph.biged.model.ModelLoader;
 import bigraph.biged.model.XMLModelLoader;
 import bigraph.biged.model.XMLModelSaver;
 import bigraph.biged.ui.graph.parts.BigraphEditPartFactory;
 import bigraph.biged.ui.graph.parts.BigraphTreeEditPartFactory;
+import bigraphspace.model.Bigraph;
 
 public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements ITabbedPropertySheetPageContributor
 {
@@ -76,7 +76,7 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements I
 			// hook outline viewer
 			getSelectionSynchronizer().addViewer(getViewer());
 			// initialize outline viewer with model
-			getViewer().setContents(getModel());
+			getViewer().setContents(getBigraph());
 			// show outline viewer
 		}
 
@@ -123,7 +123,7 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements I
 		}
 	}
 
-	Bigraph bigraph;
+	private Bigraph bigraph;
 	private BigraphOutlinePage outlinePage;
 
 	public BigraphEditor()
@@ -208,10 +208,15 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements I
 		super.initializeGraphicalViewer();
 
 		final GraphicalViewer graphicalViewer = getGraphicalViewer();
-		graphicalViewer.setContents(getModel());
+		graphicalViewer.setContents(getBigraph());
 		// graphicalViewer.addDropTargetListener(createTransferDropTargetListener());
 	}
 
+	public Bigraph getBigraph()
+	{
+		return bigraph;
+	}
+	
 	@Override
 	protected void setInput(final IEditorInput input)
 	{
@@ -229,10 +234,5 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements I
 		{
 			e.printStackTrace();
 		}
-	}
-
-	Bigraph getModel()
-	{
-		return bigraph;
 	}
 }

@@ -41,11 +41,11 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import bigraph.biged.BigEdPlugin;
-import bigraph.biged.model.Place;
-import bigraph.biged.model.Port;
 import bigraph.biged.ui.properties.TypeMapper;
 import bigraphspace.model.IndexValue;
+import bigraphspace.model.Place;
 import bigraphspace.model.PlaceType;
+import bigraphspace.model.Port;
 
 public class BigraphLabelProvider extends LabelProvider
 {
@@ -121,12 +121,16 @@ public class BigraphLabelProvider extends LabelProvider
 
 				name += place.getControlName();
 
-				if (place.getSupport() != null && !place.getSupport().trim().equals(""))
+				if (place.getSupport() != null)
 				{
 					name += "@" + place.getSupport();
 				}
 				return name;
 			}
+		}
+		else if(modelObject instanceof Port)
+		{
+			return ((Port)modelObject).getName();
 		}
 		else if (modelObject instanceof IndexValue) { return ((IndexValue) modelObject).getValue().toString(); }
 		return modelObject.toString();

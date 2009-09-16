@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.eclipse.gef.editparts.AbstractTreeEditPart;
 
-import bigraph.biged.model.Place;
-import bigraph.biged.model.PlaceContainer;
 import bigraph.biged.model.PlaceEvent;
 import bigraph.biged.model.PlaceEventListener;
+import bigraphspace.model.Bigraph;
+import bigraphspace.model.Place;
 
-public class PlaceContainerTreeEditPart extends AbstractTreeEditPart implements PlaceEventListener
+public class BigraphTreePart extends AbstractTreeEditPart implements PlaceEventListener
 {
 	@Override
 	public void activate()
@@ -17,7 +17,7 @@ public class PlaceContainerTreeEditPart extends AbstractTreeEditPart implements 
 		if (!isActive())
 		{
 			super.activate();
-			getContainer().addPlaceEventListener(this);
+			// getContainer().addPlaceEventListener(this);
 		}
 	}
 
@@ -27,7 +27,7 @@ public class PlaceContainerTreeEditPart extends AbstractTreeEditPart implements 
 		if (isActive())
 		{
 			super.deactivate();
-			getContainer().addPlaceEventListener(this);
+			// getContainer().addPlaceEventListener(this);
 		}
 	}
 
@@ -39,14 +39,14 @@ public class PlaceContainerTreeEditPart extends AbstractTreeEditPart implements 
 		}
 	}
 
-	protected PlaceContainer getContainer()
+	private Bigraph getBigraph()
 	{
-		return (PlaceContainer) getModel();
+		return (Bigraph) getModel();
 	}
 
 	@Override
 	protected List<Place> getModelChildren()
 	{
-		return getContainer().getPlaces();
+		return getBigraph().getRoots();
 	}
 }

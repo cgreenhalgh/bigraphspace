@@ -35,7 +35,6 @@
  */
 package bigraph.biged.ui.graph.parts;
 
-import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.gef.EditPolicy;
@@ -44,23 +43,22 @@ import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gef.editpolicies.ConnectionEditPolicy;
 import org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy;
 import org.eclipse.gef.requests.GroupRequest;
-import org.eclipse.swt.SWT;
 
-import bigraph.biged.model.LinkSegment;
-import bigraph.biged.ui.graph.figures.LinkSegmentConnection;
+import bigraph.biged.model.Edge;
+import bigraph.biged.ui.graph.figures.EdgeConnection;
 
 /**
  * @author <a href="ktg@cs.nott.ac.uk">Kevin Glover</a>
  */
-public class LinkSegmentPart extends AbstractConnectionEditPart
+public class EdgePart extends AbstractConnectionEditPart
 {
-	public LinkSegmentPart()
+	public EdgePart()
 	{
 	}
 
-	public LinkSegment getEdge()
+	public Edge getEdge()
 	{
-		return (LinkSegment) getModel();
+		return (Edge) getModel();
 	}
 
 	/*
@@ -89,11 +87,18 @@ public class LinkSegmentPart extends AbstractConnectionEditPart
 	}
 
 	@Override
+	public void activate()
+	{
+		System.out.println("Activate");
+		super.activate();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
 	protected IFigure createFigure()
 	{
-		final PolylineConnection connection = new LinkSegmentConnection();
-		connection.setAntialias(SWT.ON);
-		connection.setForegroundColor(ColorConstants.titleBackground);
+		final EdgeConnection connection = new EdgeConnection(getEdge(), getViewer().getEditPartRegistry());
+		
 		return connection;
 	}
 

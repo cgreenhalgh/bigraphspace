@@ -8,6 +8,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import bigraphspace.model.Bigraph;
 import bigraphspace.model.xml.DomBigraph;
 
 public class XMLModelSaver
@@ -16,9 +17,9 @@ public class XMLModelSaver
 	{
 		try
 		{
-			if (bigraph.bigraph instanceof DomBigraph)
+			if (bigraph instanceof DomBigraph)
 			{
-				final DomBigraph domgraph = (DomBigraph) bigraph.bigraph;
+				final DomBigraph domgraph = (DomBigraph) bigraph;
 
 				final DOMSource source = new DOMSource(domgraph.getDocument());
 				final StreamResult result = new StreamResult(outputStream);
