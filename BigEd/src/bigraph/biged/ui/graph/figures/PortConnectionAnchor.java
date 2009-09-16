@@ -1,5 +1,6 @@
 package bigraph.biged.ui.graph.figures;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.draw2d.AbstractConnectionAnchor;
@@ -7,21 +8,34 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.GraphicalEditPart;
 
-import bigraph.biged.model.LinkSegment;
-import bigraph.biged.model.Port;
+import bigraph.biged.ui.graph.parts.BigraphPart;
+import bigraphspace.model.Port;
 
 public class PortConnectionAnchor extends AbstractConnectionAnchor
 {
+	private final static Map<Port, PortConnectionAnchor> portAnchors = new HashMap<Port, PortConnectionAnchor>();
+
+	public static PortConnectionAnchor getAnchor(final Port port)
+	{
+		return portAnchors.get(port);
+	}
+	
+	public static void addAnchor(final Port port, final PortConnectionAnchor anchor)
+	{
+		portAnchors.put(port, anchor);
+	}
+	
 	private final Port port;
 	private final Map<Object, EditPart> registry;
+	private final BigraphPart part;
 
-	public PortConnectionAnchor(final IFigure figure, final Port port, final Map<Object, EditPart> registry)
+	public PortConnectionAnchor(final IFigure figure, final Port port, BigraphPart bigraphPart, final Map<Object, EditPart> registry)
 	{
 		super(figure);
 		this.port = port;
 		this.registry = registry;
+		this.part = bigraphPart;
 	}
 
 	public Point getLocation(final Point reference)
@@ -29,33 +43,33 @@ public class PortConnectionAnchor extends AbstractConnectionAnchor
 		final Point point = new Point(getCenter(getOwner()));
 		int count = 1;
 
-		for (final LinkSegment segment : port.getLinkSegments(true, true))
-		{
-			IFigure figure = null;
-			if (segment.getSource() == port)
-			{
-				final EditPart part = registry.get(segment.getTarget().getPlace());
-				if (part instanceof GraphicalEditPart)
-				{
-					figure = ((GraphicalEditPart) part).getFigure();
-				}
-			}
-			else
-			{
-				final EditPart part = registry.get(segment.getSource().getPlace());
-				if (part instanceof GraphicalEditPart)
-				{
-					figure = ((GraphicalEditPart) part).getFigure();
-				}
-			}
-
-			if (figure != null)
-			{
-				count++;
-
-				point.translate(getCenter(figure));
-			}
-		}
+//		for (final LinkSegment segment : port.getLinkSegments(true, true))
+//		{
+//			IFigure figure = null;
+//			if (segment.getSource() == port)
+//			{
+//				final EditPart part = registry.get(segment.getTarget().getPlace());
+//				if (part instanceof GraphicalEditPart)
+//				{
+//					figure = ((GraphicalEditPart) part).getFigure();
+//				}
+//			}
+//			else
+//			{
+//				final EditPart part = registry.get(segment.getSource().getPlace());
+//				if (part instanceof GraphicalEditPart)
+//				{
+//					figure = ((GraphicalEditPart) part).getFigure();
+//				}
+//			}
+//
+//			if (figure != null)
+//			{
+//				count++;
+//
+//				point.translate(getCenter(figure));
+//			}
+//		}
 		point.x /= count;
 		point.y /= count;
 
@@ -98,4 +112,8 @@ public class PortConnectionAnchor extends AbstractConnectionAnchor
 		}
 	}
 
+	public Port getPort()
+	{
+		return port;
+	}
 }

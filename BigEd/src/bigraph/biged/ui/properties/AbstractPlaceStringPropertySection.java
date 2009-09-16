@@ -1,12 +1,7 @@
 package bigraph.biged.ui.properties;
 
 import org.eclipse.gef.commands.Command;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
@@ -17,25 +12,22 @@ import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 
 import bigraph.biged.model.PlaceEvent;
 
-public abstract class AbstractPlaceStringPropertySection extends AbstractPlaceSinglePropertySection implements
-		ModifyListener
+public abstract class AbstractPlaceStringPropertySection extends AbstractPlaceSinglePropertySection
 {
-	protected Text labelText;
-	private boolean modified;
-
-	public void modifyText(final ModifyEvent e)
-	{
-		modified = true;
-	}
+	protected TextCommandHandler text;
 
 	public void onPlaceEvent(final PlaceEvent event)
 	{
-		if (!modified)
-		{
-			refresh();
-		}
+		refresh();
 	}
 
+	@Override
+	protected void setCommandStack(CommandStack commandStack)
+	{
+		super.setCommandStack(commandStack);
+		text.setCommandStack(commandStack);
+	}
+	
 	@Override
 	public void refresh()
 	{
@@ -43,68 +35,31 @@ public abstract class AbstractPlaceStringPropertySection extends AbstractPlaceSi
 		{
 			public void run()
 			{
-				setText(getValue());
+				text.setText(getValue());
 			}
 		});
 	}
 
-	private void setText(final String text)
-	{
-		if (labelText.isDisposed()) { return; }
-		if (text != null)
-		{
-			if (!labelText.getText().equals(text))
-			{
-				labelText.setText(text);
-			}
-		}
-		else
-		{
-			labelText.setText("");
-		}
-		modified = false;
-	}
-
-	protected abstract Command createCommand();
+	protected abstract Command createCommand(final String text);
 
 	@Override
 	protected Control createControl(final Composite parent)
 	{
-		labelText = getWidgetFactory().createText(parent, ""); //$NON-NLS-1$
+		final Text textField = getWidgetFactory().createText(parent, ""); //$NON-NLS-1$
 		final FormData data = new FormData();
 		data.left = new FormAttachment(0, STANDARD_LABEL_WIDTH + 20);
 		data.right = new FormAttachment(100, 0);
 		data.top = new FormAttachment(0, ITabbedPropertyConstants.VSPACE);
-		labelText.setLayoutData(data);
-		labelText.addModifyListener(this);
-		labelText.addSelectionListener(new SelectionAdapter()
+		textField.setLayoutData(data);
+		text = new TextCommandHandler(textField)
 		{
 			@Override
-			public void widgetDefaultSelected(final SelectionEvent e)
+			protected Command getCommand(final String textValue)
 			{
-				execute();
+				return createCommand(textValue);
 			}
-
-		});
-		labelText.addFocusListener(new FocusAdapter()
-		{
-			@Override
-			public void focusLost(final FocusEvent e)
-			{
-				execute();
-			}
-		});
-		return labelText;
-	}
-
-	protected void execute()
-	{
-		final Command command = createCommand();
-		if (command != null)
-		{
-			modified = false;
-			commandStack.execute(command);
-		}
+		};
+		return textField;
 	}
 
 	protected abstract String getValue();

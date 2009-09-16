@@ -2,7 +2,7 @@ package bigraph.biged.ui.editors;
 
 import org.eclipse.gef.requests.CreationFactory;
 
-import bigraph.biged.model.Place;
+import bigraphspace.model.Place;
 import bigraphspace.model.PlaceType;
 
 public class PlaceFactory implements CreationFactory
@@ -18,7 +18,18 @@ public class PlaceFactory implements CreationFactory
 
 	public Object getNewObject()
 	{
-		return new Place(editor.bigraph, type);
+		switch(type)
+		{
+			case node:
+				return editor.getBigraph().createNode("node");				
+			
+			case site:
+				return editor.getBigraph().createSite();
+				
+			case root:
+				return editor.getBigraph().createRoot();
+		}
+		return null;
 	}
 
 	public Object getObjectType()

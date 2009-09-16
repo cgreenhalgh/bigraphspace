@@ -38,9 +38,10 @@ package bigraph.biged.ui.graph.parts;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
 
-import bigraph.biged.model.Bigraph;
-import bigraph.biged.model.LinkSegment;
-import bigraph.biged.model.Place;
+import bigraph.biged.model.Edge;
+import bigraph.biged.model.EdgeSegment;
+import bigraphspace.model.Bigraph;
+import bigraphspace.model.Place;
 
 /**
  * @author <a href="ktg@cs.nott.ac.uk">Kevin Glover</a>
@@ -64,9 +65,13 @@ public class BigraphEditPartFactory implements EditPartFactory
 		{
 			part = new PlacePart();
 		}
-		else if (model instanceof LinkSegment)
+		else if (model instanceof Edge)
 		{
-			part = new LinkSegmentPart();
+			part = new EdgePart();
+		}
+		else if (model instanceof EdgeSegment)
+		{
+			part = new EdgeSegmentPart();
 		}
 
 		if (part != null)

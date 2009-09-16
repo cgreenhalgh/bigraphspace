@@ -33,32 +33,36 @@
 
  Created by: Kevin Glover (University of Nottingham)
  */
-package bigraph.biged.ui.properties;
+package bigraph.biged.ui.graph.figures;
 
-import org.eclipse.gef.commands.Command;
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Connection;
+import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.PolylineConnection;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.swt.SWT;
 
-import bigraph.biged.ui.commands.SetPlaceControlCommand;
-
-/**
- * @author <a href="ktg@cs.nott.ac.uk">Kevin Glover</a>
- */
-public class ControlNameSection extends AbstractPlaceStringPropertySection
+public class EdgeSegmentConnection extends PolylineConnection implements Connection
 {
-	@Override
-	protected Command createCommand(final String textValue)
-	{
-		return new SetPlaceControlCommand(place, textValue);
-	}
+	private final static int radius = 3;
 
-	@Override
-	protected String getLabel()
+	
+	public EdgeSegmentConnection()
 	{
-		return "Control Name:";
+		setLineWidth(2);
+		setAntialias(SWT.ON);
+		setForegroundColor(ColorConstants.titleBackground);
 	}
-
+		
 	@Override
-	protected String getValue()
+	protected void outlineShape(final Graphics g)
 	{
-		return place.getControlName();
+		super.outlineShape(g);
+		
+		Point location = getSourceAnchor().getLocation(null);
+		g.fillOval(location.x - radius, location.y - radius, radius * 2, radius * 2);			
+		location = getTargetAnchor().getLocation(null);
+		g.fillOval(location.x - radius, location.y - radius, radius * 2, radius * 2);			
+		
 	}
 }

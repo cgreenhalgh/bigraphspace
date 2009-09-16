@@ -19,7 +19,7 @@ import org.eclipse.gef.palette.PaletteToolbar;
 import org.eclipse.gef.palette.PanningSelectionToolEntry;
 import org.eclipse.gef.palette.ToolEntry;
 
-import bigraph.biged.model.Place;
+import bigraphspace.model.Place;
 import bigraphspace.model.PlaceType;
 
 /**

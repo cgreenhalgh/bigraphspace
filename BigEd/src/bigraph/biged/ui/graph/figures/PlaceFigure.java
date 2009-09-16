@@ -14,8 +14,8 @@ import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.swt.SWT;
 
-import bigraph.biged.model.Place;
 import bigraph.biged.ui.BigraphLabelProvider;
+import bigraphspace.model.Place;
 import bigraphspace.model.PlaceType;
 
 public class PlaceFigure extends Figure

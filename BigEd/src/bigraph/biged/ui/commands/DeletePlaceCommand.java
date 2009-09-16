@@ -4,14 +4,14 @@ import org.eclipse.gef.commands.Command;
 
 import bigraph.biged.model.PlaceEvent;
 import bigraphspace.model.Place;
-import bigraphspace.model.PlaceType;
 
-public class AddPlaceCommand extends Command
+public class DeletePlaceCommand extends Command
 {
 	private final Place parent;
 	private final Place child;
+	private int index;
 
-	public AddPlaceCommand(final Place parent, final Place child)
+	public DeletePlaceCommand(final Place parent, final Place child)
 	{
 		this.parent = parent;
 		this.child = child;
@@ -20,7 +20,7 @@ public class AddPlaceCommand extends Command
 	@Override
 	public boolean canExecute()
 	{
-		return child.getType() != PlaceType.root;
+		return true;
 	}
 
 	@Override
@@ -32,20 +32,21 @@ public class AddPlaceCommand extends Command
 	@Override
 	public void execute()
 	{
-		parent.addChild(child);
-		PlaceEvent.fireEvent(new PlaceEvent(parent, child, PlaceEvent.Type.ADD));
+		index = parent.getChildren().indexOf(child);
+		parent.removeChild(child);
+		PlaceEvent.fireEvent(new PlaceEvent(parent, child, PlaceEvent.Type.REMOVE));		
 	}
 
 	@Override
 	public String getLabel()
 	{
-		return "Add Place";
+		return "Delete Place";
 	}
 
 	@Override
 	public void undo()
 	{
-		(parent).removeChild(child);
-		PlaceEvent.fireEvent(new PlaceEvent(parent, child, PlaceEvent.Type.REMOVE));
+		parent.insertChild(child, index);		
+		PlaceEvent.fireEvent(new PlaceEvent(parent, child, PlaceEvent.Type.ADD));		
 	}
 }
