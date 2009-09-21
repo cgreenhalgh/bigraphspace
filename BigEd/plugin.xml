@@ -8,11 +8,17 @@
                  id="bigraphXML"
                  name="Bigraph XML File"
                  priority="high">
-      <describer class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber">
+      <describer class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber2">
          <parameter name="element"
                     value="bigraph">
          </parameter>
       </describer>
+   </content-type>
+   <content-type
+         file-extensions="btl"
+         id="bigraphBTL"
+         name="Bigraph Text File"
+         priority="normal">
    </content-type>
     </extension>
 
@@ -26,6 +32,9 @@
              name="BigEd">
           <contentTypeBinding
                 contentTypeId="bigraph.biged.bigraphXML">
+          </contentTypeBinding>
+          <contentTypeBinding
+                contentTypeId="bigraph.biged.bigraphBTL">
           </contentTypeBinding>
        </editor>
     </extension>
@@ -89,6 +98,14 @@
                 tab="bigraph.biged.ui.properties.general">
              <input
                    type="bigraphspace.model.Place">
+             </input>
+          </propertySection>
+          <propertySection
+                class="bigraph.biged.ui.properties.EdgePortSection"
+                id="bigraph.biged.ui.properties.EdgePortSection"
+                tab="bigraph.biged.ui.properties.general">
+             <input
+                   type="bigraph.biged.model.Edge">
              </input>
           </propertySection>          
        </propertySections>

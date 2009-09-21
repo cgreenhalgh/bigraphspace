@@ -1,33 +1,27 @@
 package bigraph.biged.ui.properties;
 
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.commands.CommandStack;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 
-import bigraph.biged.model.PlaceEvent;
+import bigraph.biged.model.BigraphEvent;
 
-public abstract class AbstractPlaceStringPropertySection extends AbstractPlaceSinglePropertySection
+public abstract class AbstractStringPropertySection extends AbstractSinglePropertySection
 {
 	protected TextCommandHandler text;
 
-	public void onPlaceEvent(final PlaceEvent event)
+	public void onPlaceEvent(final BigraphEvent event)
 	{
 		refresh();
 	}
 
-	@Override
-	protected void setCommandStack(CommandStack commandStack)
-	{
-		super.setCommandStack(commandStack);
-		text.setCommandStack(commandStack);
-	}
-	
 	@Override
 	public void refresh()
 	{
@@ -38,6 +32,13 @@ public abstract class AbstractPlaceStringPropertySection extends AbstractPlaceSi
 				text.setText(getValue());
 			}
 		});
+	}
+
+	@Override
+	public void setInput(final IWorkbenchPart part, final ISelection selection)
+	{
+		super.setInput(part, selection);
+		text.setCommandStack(getCommandStack());
 	}
 
 	protected abstract Command createCommand(final String text);
@@ -60,6 +61,13 @@ public abstract class AbstractPlaceStringPropertySection extends AbstractPlaceSi
 			}
 		};
 		return textField;
+	}
+
+	@Override
+	protected String getLabel()
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	protected abstract String getValue();

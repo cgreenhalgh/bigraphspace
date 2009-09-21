@@ -1,7 +1,8 @@
 package bigraph.biged.ui.properties;
 
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
@@ -10,38 +11,95 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.forms.events.HyperlinkEvent;
+import org.eclipse.ui.forms.events.IHyperlinkListener;
+import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
-import bigraph.biged.ui.commands.CreatePortCommand;
+import bigraph.biged.model.Edge;
+import bigraph.biged.ui.BigraphLabelProvider;
 import bigraph.biged.ui.commands.DeletePortCommand;
 import bigraph.biged.ui.commands.SetPortEdgeNameCommand;
 import bigraph.biged.ui.commands.SetPortNameCommand;
-import bigraphspace.model.Place;
 import bigraphspace.model.Port;
 
-public class PortSection extends AbstractListPropertySection
+public class EdgePortSection extends AbstractListPropertySection
 {
 	private TextCommandHandler portName;
 	private TextCommandHandler edgeName;
+	private Hyperlink link;
 
 	@Override
-	public void setInput(final IWorkbenchPart part, final ISelection selection)
+	public void createControls(final Composite parent, final TabbedPropertySheetPage aTabbedPropertySheetPage)
 	{
-		super.setInput(part, selection);
-		portName.setCommandStack(getCommandStack());
-		edgeName.setCommandStack(getCommandStack());
+		super.createControls(parent, aTabbedPropertySheetPage);
+		viewer.setLabelProvider(new BigraphLabelProvider()
+		{
+
+			@Override
+			public String getText(final Object object)
+			{
+				final Object modelObject = TypeMapper.getModelObject(object);
+				if (modelObject instanceof Port)
+				{
+					final Port port = (Port) modelObject;
+					final Edge edge = (Edge) getModel();
+
+					return getText(edge.getPlace(port)) + " { " + port.getName() + " }";
+				}
+				return super.getText(object);
+			}
+		});
 	}
 
 	@Override
 	protected void createDetailsPanel(final Composite parent, final TabbedPropertySheetPage aTabbedPropertySheetPage)
 	{
-		final Text portNameText = getWidgetFactory().createText(parent, "");
+		link = getWidgetFactory().createHyperlink(parent, "", 0);
 		FormData data = new FormData();
 		data.left = new FormAttachment(0, STANDARD_LABEL_WIDTH);
 		data.right = new FormAttachment(100, 0);
 		data.top = new FormAttachment(0, ITabbedPropertyConstants.VSPACE);
+		link.setLayoutData(data);
+		link.addHyperlinkListener(new IHyperlinkListener()
+		{
+			@Override
+			public void linkActivated(final HyperlinkEvent e)
+			{
+				final Port port = (Port) getSelectedObject();
+				final Edge edge = (Edge) getModel();
+				final EditPartViewer viewer = getViewer();
+				if (viewer != null)
+				{
+					viewer.select((EditPart) viewer.getEditPartRegistry().get(edge.getPlace(port)));
+					getPart().getSite().getPage().activate(getPart());
+				}
+			}
+
+			@Override
+			public void linkEntered(final HyperlinkEvent e)
+			{
+			}
+
+			@Override
+			public void linkExited(final HyperlinkEvent e)
+			{
+			}
+		});
+
+		final Label linkLabel = getWidgetFactory().createLabel(parent, "Place:");
+		data = new FormData();
+		data.left = new FormAttachment(0, 0);
+		data.right = new FormAttachment(link, -ITabbedPropertyConstants.HSPACE);
+		data.top = new FormAttachment(link, 0, SWT.TOP);
+		linkLabel.setLayoutData(data);
+
+		final Text portNameText = getWidgetFactory().createText(parent, "");
+		data = new FormData();
+		data.left = new FormAttachment(0, STANDARD_LABEL_WIDTH);
+		data.right = new FormAttachment(100, 0);
+		data.top = new FormAttachment(link, ITabbedPropertyConstants.VSPACE);
 		portNameText.setLayoutData(data);
 		portName = new TextCommandHandler(portNameText)
 		{
@@ -90,7 +148,7 @@ public class PortSection extends AbstractListPropertySection
 	@Override
 	protected Command getAddCommand()
 	{
-		return new CreatePortCommand(getBigraph(), (Place) getModel());
+		return null;
 	}
 
 	@Override
@@ -98,16 +156,19 @@ public class PortSection extends AbstractListPropertySection
 	{
 		return new IStructuredContentProvider()
 		{
+			@Override
 			public void dispose()
 			{
 			}
 
+			@Override
 			public Object[] getElements(final Object inputElement)
 			{
-				if (inputElement instanceof Place) { return ((Place) inputElement).getPorts().toArray(); }
+				if (inputElement instanceof Edge) { return ((Edge) inputElement).getPorts().toArray(); }
 				return null;
 			}
 
+			@Override
 			public void inputChanged(final Viewer viewer, final Object oldInput, final Object newInput)
 			{
 			}
@@ -117,9 +178,9 @@ public class PortSection extends AbstractListPropertySection
 	@Override
 	protected Command getDeleteCommand(final Object item)
 	{
-		if (item == null) { return null; }
+		final Edge edge = (Edge) getModel();
 		final Port port = (Port) item;
-		return new DeletePortCommand(getBigraph(), (Place) getModel(), port, getBigraph().getEdge(port.getLinkName()));
+		return new DeletePortCommand(getBigraph(), edge.getPlace(port), port, edge);
 	}
 
 	@Override
@@ -135,17 +196,27 @@ public class PortSection extends AbstractListPropertySection
 	}
 
 	@Override
+	protected void setViewerFormData(final FormData data)
+	{
+		data.height = 80;
+		data.bottom = null;
+	}
+
+	@Override
 	protected void updateSelection()
 	{
 		super.updateSelection();
 		final Object selection = getSelectedObject();
 		if (selection == null)
 		{
+			link.setText("");
 			portName.setText(null);
 			edgeName.setText(null);
 		}
 		else
 		{
+			final Edge edge = (Edge) getModel();
+			link.setText(BigraphLabelProvider.text(edge.getPlace((Port) selection)));
 			portName.setText(((Port) selection).getName());
 			edgeName.setText(((Port) selection).getLinkName());
 		}

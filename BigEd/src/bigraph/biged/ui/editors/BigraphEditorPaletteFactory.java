@@ -19,6 +19,7 @@ import org.eclipse.gef.palette.PaletteToolbar;
 import org.eclipse.gef.palette.PanningSelectionToolEntry;
 import org.eclipse.gef.palette.ToolEntry;
 
+import bigraph.biged.BigEdPlugin;
 import bigraphspace.model.Place;
 import bigraphspace.model.PlaceType;
 
@@ -30,25 +31,31 @@ import bigraphspace.model.PlaceType;
  */
 final class BigraphEditorPaletteFactory
 {
+	/**
+	 * Creates the PaletteRoot and adds all palette elements. Use this factory method to create a
+	 * new palette for your graphical editor.
+	 * 
+	 * @return a new PaletteRoot
+	 */
+	static PaletteRoot createPalette(final BigraphEditor editor)
+	{
+		final PaletteRoot palette = new PaletteRoot();
+		palette.add(createToolsGroup(palette));
+		palette.add(createPlacesDrawer(editor));
+		return palette;
+	}
 
-	/** Preference ID used to persist the palette location. */
-	// private static final String PALETTE_DOCK_LOCATION = "ShapesEditorPaletteFactory.Location";
-	/** Preference ID used to persist the palette size. */
-	// private static final String PALETTE_SIZE = "ShapesEditorPaletteFactory.Size";
-	/** Preference ID used to persist the flyout palette's state. */
-	// private static final String PALETTE_STATE = "ShapesEditorPaletteFactory.State";
-
-	/** Create the "Shapes" drawer. */
+	/** Create the "Places" drawer. */
 	private static PaletteContainer createPlacesDrawer(final BigraphEditor editor)
 	{
-		final PaletteDrawer componentsDrawer = new PaletteDrawer("Shapes");
+		final PaletteDrawer componentsDrawer = new PaletteDrawer("Places");
 
 		CombinedTemplateCreationEntry component = new CombinedTemplateCreationEntry("Root", "Create a Root",
 				Place.class, new PlaceFactory(editor, PlaceType.root), null, null);
 		componentsDrawer.add(component);
 
 		component = new CombinedTemplateCreationEntry("Place", "Create a Place", Place.class, new PlaceFactory(editor,
-				PlaceType.node), null, null);
+				PlaceType.node), BigEdPlugin.getDescriptor("node"), null);
 		componentsDrawer.add(component);
 
 		component = new CombinedTemplateCreationEntry("Site", "Create a Site", Place.class, new PlaceFactory(editor,
@@ -72,20 +79,6 @@ final class BigraphEditorPaletteFactory
 		toolbar.add(new MarqueeToolEntry());
 
 		return toolbar;
-	}
-
-	/**
-	 * Creates the PaletteRoot and adds all palette elements. Use this factory method to create a
-	 * new palette for your graphical editor.
-	 * 
-	 * @return a new PaletteRoot
-	 */
-	static PaletteRoot createPalette(final BigraphEditor editor)
-	{
-		final PaletteRoot palette = new PaletteRoot();
-		palette.add(createToolsGroup(palette));
-		palette.add(createPlacesDrawer(editor));
-		return palette;
 	}
 
 	/** Utility class. */

@@ -5,6 +5,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -21,12 +22,12 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
-import bigraph.biged.model.PlaceEvent;
+import bigraph.biged.model.BigraphEvent;
 import bigraph.biged.ui.BigraphLabelProvider;
 
-public abstract class AbstractPlaceListPropertySection extends AbstractPlacePropertySection
+public abstract class AbstractListPropertySection extends AbstractPropertySection
 {
-	private TableViewer viewer;
+	protected TableViewer viewer;
 	private Button removeButton;
 
 	@Override
@@ -75,7 +76,7 @@ public abstract class AbstractPlaceListPropertySection extends AbstractPlaceProp
 				final Command addCommand = getAddCommand();
 				if (addCommand != null)
 				{
-					commandStack.execute(addCommand);
+					getCommandStack().execute(addCommand);
 				}
 			}
 		});
@@ -90,7 +91,7 @@ public abstract class AbstractPlaceListPropertySection extends AbstractPlaceProp
 				final Command deleteCommand = getDeleteCommand(getSelectedObject());
 				if (deleteCommand != null)
 				{
-					commandStack.execute(deleteCommand);
+					getCommandStack().execute(deleteCommand);
 				}
 			}
 		});
@@ -100,10 +101,12 @@ public abstract class AbstractPlaceListPropertySection extends AbstractPlaceProp
 		data.right = new FormAttachment(buttonComposite, -ITabbedPropertyConstants.HSPACE);
 		data.top = new FormAttachment(0, ITabbedPropertyConstants.VSPACE);
 		data.bottom = new FormAttachment(buttonComposite, 0, SWT.BOTTOM);
+		setViewerFormData(data);
 		final Table indexList = getWidgetFactory().createTable(indexesSectionClient, SWT.SINGLE | SWT.FULL_SELECTION);
 		indexList.setLayoutData(data);
 		viewer = new TableViewer(indexList);
 		viewer.setLabelProvider(new BigraphLabelProvider());
+		viewer.setSorter(new ViewerSorter());
 		viewer.setContentProvider(getContentProvider());
 		viewer.addSelectionChangedListener(new ISelectionChangedListener()
 		{
@@ -132,7 +135,7 @@ public abstract class AbstractPlaceListPropertySection extends AbstractPlaceProp
 		createDetailsPanel(detailsSectionClient, aTabbedPropertySheetPage);
 	}
 
-	public void onPlaceEvent(final PlaceEvent event)
+	public void onPlaceEvent(final BigraphEvent event)
 	{
 		refresh();
 	}
@@ -144,8 +147,9 @@ public abstract class AbstractPlaceListPropertySection extends AbstractPlaceProp
 		{
 			public void run()
 			{
+				if(viewer.getControl().isDisposed()) { return; }
 				int index = viewer.getTable().getSelectionIndex();
-				viewer.setInput(place);
+				viewer.setInput(getModel());
 				if (index == -1 && viewer.getTable().getItemCount() > 0)
 				{
 					index = 0;
@@ -179,6 +183,10 @@ public abstract class AbstractPlaceListPropertySection extends AbstractPlaceProp
 		{
 			return viewer.getTable().getItem(selectionIndex).getData();
 		}
+	}
+
+	protected void setViewerFormData(final FormData data)
+	{
 	}
 
 	protected void updateSelection()

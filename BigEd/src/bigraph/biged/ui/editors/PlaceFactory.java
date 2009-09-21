@@ -18,16 +18,16 @@ public class PlaceFactory implements CreationFactory
 
 	public Object getNewObject()
 	{
-		switch(type)
+		switch (type)
 		{
 			case node:
-				return editor.getBigraph().createNode("node");				
-			
+				return editor.getBigraph().getBigraph().createNode("node");
+
 			case site:
-				return editor.getBigraph().createSite();
-				
+				return editor.getBigraph().getBigraph().createSite();
+
 			case root:
-				return editor.getBigraph().createRoot();
+				return editor.getBigraph().getBigraph().createRoot();
 		}
 		return null;
 	}

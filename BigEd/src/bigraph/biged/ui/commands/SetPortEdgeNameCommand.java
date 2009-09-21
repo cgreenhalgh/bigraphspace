@@ -1,26 +1,26 @@
 package bigraph.biged.ui.commands;
 
-import org.eclipse.gef.commands.Command;
-
+import bigraph.biged.model.Bigraph;
 import bigraphspace.model.Port;
 
-public class SetPortEdgeNameCommand extends Command
+public class SetPortEdgeNameCommand extends AbstractBigraphCommand
 {
 	private final Port port;
 	private final String newEdge;
 	private String oldEdge;
 
-	public SetPortEdgeNameCommand(final Port port, final String newEdge)
+	public SetPortEdgeNameCommand(final Bigraph bigraph, final Port port, final String newEdge)
 	{
+		super(bigraph);
 		this.port = port;
-		if(newEdge == null || newEdge.equals(""))
+		if (newEdge == null || newEdge.equals(""))
 		{
 			this.newEdge = null;
 		}
 		else
 		{
 			this.newEdge = newEdge;
-		}		
+		}
 		this.oldEdge = port.getLinkName();
 	}
 
@@ -41,13 +41,13 @@ public class SetPortEdgeNameCommand extends Command
 	{
 		oldEdge = port.getLinkName();
 		port.setLinkName(newEdge);
-		// TODO PlaceEvent.fireEvent(new PlaceEvent(port, PlaceEvent.Type.CHANGE));		
+		// bigraph.fireEvent(new BigraphEvent(port, BigraphEvent.Type.CHANGE));
 	}
 
 	@Override
 	public void undo()
 	{
 		port.setLinkName(oldEdge);
-		// TODO PlaceEvent.fireEvent(new PlaceEvent(port, PlaceEvent.Type.CHANGE));		
+		// TODO PlaceEvent.fireEvent(new PlaceEvent(port, PlaceEvent.Type.CHANGE));
 	}
 }

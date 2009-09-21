@@ -1,20 +1,18 @@
 package bigraph.biged.ui.commands;
 
-import org.eclipse.gef.commands.Command;
-
-import bigraphspace.model.Bigraph;
+import bigraph.biged.model.Bigraph;
+import bigraph.biged.model.BigraphEvent;
 import bigraphspace.model.Place;
 import bigraphspace.model.PlaceType;
 
-public class AddRootCommand extends Command
+public class AddRootCommand extends AbstractBigraphCommand
 {
-	private final Bigraph parent;
 	private final Place child;
 	private final Place before;
 
-	public AddRootCommand(final Bigraph parent, final Place child, final Place after)
+	public AddRootCommand(final Bigraph bigraph, final Place child, final Place after)
 	{
-		this.parent = parent;
+		super(bigraph);
 		this.child = child;
 		this.before = after;
 	}
@@ -34,17 +32,18 @@ public class AddRootCommand extends Command
 	@Override
 	public void execute()
 	{
-		final int index = parent.getRoots().indexOf(before);
+		final int index = bigraph.getBigraph().getRoots().indexOf(before);
 		System.out.println("Insert at " + index);
 
-		if (index < 0 || index >= parent.getRoots().size())
+		if (index < 0 || index >= bigraph.getBigraph().getRoots().size())
 		{
-			parent.addRoot(child);		
+			bigraph.getBigraph().addRoot(child);
 		}
 		else
 		{
-			parent.insertRoot(child, index);
+			bigraph.getBigraph().insertRoot(child, index);
 		}
+		bigraph.fireEvent(new BigraphEvent(bigraph, child, BigraphEvent.Type.ADD));
 	}
 
 	@Override
@@ -56,6 +55,7 @@ public class AddRootCommand extends Command
 	@Override
 	public void undo()
 	{
-		parent.removeRoot(child);
+		bigraph.getBigraph().removeRoot(child);
+		bigraph.fireEvent(new BigraphEvent(bigraph, child, BigraphEvent.Type.REMOVE));
 	}
 }

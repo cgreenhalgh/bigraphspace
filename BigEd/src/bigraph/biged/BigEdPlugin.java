@@ -35,13 +35,6 @@
  */
 package bigraph.biged;
 
-import java.io.File;
-import java.util.Collection;
-import java.util.HashSet;
-
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
@@ -81,19 +74,10 @@ public class BigEdPlugin extends AbstractUIPlugin
 		return getDefault().getImageRegistry().get(key);
 	}
 
-	public static IPath getInstallDirectory()
-	{
-		final String path = Platform.getInstallLocation().getURL().getPath();
-		if (path.endsWith("/eclipse/plugins/")) { return new Path("F:/artect/"); }
-		return new Path(Platform.getInstallLocation().getURL().getPath());
-	}
-
 	private static ImageDescriptor getImageDescriptor(final String path)
 	{
 		return AbstractUIPlugin.imageDescriptorFromPlugin("bigraph.biged", path);
 	}
-
-	private final Collection<String> paths = new HashSet<String>();
 
 	/**
 	 * The constructor.
@@ -101,25 +85,6 @@ public class BigEdPlugin extends AbstractUIPlugin
 	public BigEdPlugin()
 	{
 		plugin = this;
-	}
-
-	public void addPath(final String path)
-	{
-		paths.add(path);
-	}
-
-	@Override
-	public void start(final BundleContext context) throws Exception
-	{
-		super.start(context);
-		final IPath installPath = BigEdPlugin.getInstallDirectory();
-		System.setProperty("java.library.path", installPath.toOSString() + File.pathSeparator
-				+ installPath.append("/common/").toOSString() + File.pathSeparator
-				+ System.getProperty("java.library.path"));
-
-		addPath("/");
-		addPath(installPath.toOSString());
-		addPath(installPath.append("/rdf/").toOSString());
 	}
 
 	/**
@@ -138,5 +103,7 @@ public class BigEdPlugin extends AbstractUIPlugin
 		super.initializeImageRegistry(reg);
 		reg.put("node", getImageDescriptor("icons/node.png"));
 		reg.put("port", getImageDescriptor("icons/port.gif"));
+		reg.put("portx", getImageDescriptor("icons/portx.png"));
+		reg.put("edge", getImageDescriptor("icons/edge.gif"));
 	}
 }

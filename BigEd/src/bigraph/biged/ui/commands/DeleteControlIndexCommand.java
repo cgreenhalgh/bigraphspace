@@ -1,19 +1,19 @@
 package bigraph.biged.ui.commands;
 
-import org.eclipse.gef.commands.Command;
-
-import bigraph.biged.model.PlaceEvent;
+import bigraph.biged.model.Bigraph;
+import bigraph.biged.model.BigraphEvent;
 import bigraphspace.model.IndexValue;
 import bigraphspace.model.Place;
 
-public class DeleteControlIndexCommand extends Command
+public class DeleteControlIndexCommand extends AbstractBigraphCommand
 {
 	private final Place place;
 	private int index;
 	private final IndexValue value;
 
-	public DeleteControlIndexCommand(final Place place, final IndexValue value)
+	public DeleteControlIndexCommand(final Bigraph bigraph, final Place place, final IndexValue value)
 	{
+		super(bigraph);
 		this.place = place;
 		this.value = value;
 	}
@@ -35,7 +35,7 @@ public class DeleteControlIndexCommand extends Command
 	{
 		index = place.getControlIndexes().indexOf(value);
 		place.removeControlIndex(value);
-		PlaceEvent.fireEvent(new PlaceEvent(place, PlaceEvent.Type.CHANGE));		
+		bigraph.fireEvent(new BigraphEvent(place, value, BigraphEvent.Type.CHANGE));
 	}
 
 	@Override
@@ -48,6 +48,6 @@ public class DeleteControlIndexCommand extends Command
 	public void undo()
 	{
 		place.insertControlIndex(value, index);
-		PlaceEvent.fireEvent(new PlaceEvent(place, PlaceEvent.Type.CHANGE));		
+		bigraph.fireEvent(new BigraphEvent(place, value, BigraphEvent.Type.CHANGE));
 	}
 }
