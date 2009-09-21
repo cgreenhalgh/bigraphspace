@@ -24,11 +24,6 @@ public abstract class TextCommandHandler implements ModifyListener, SelectionLis
 		textField.addFocusListener(this);
 	}
 
-	public void setCommandStack(final CommandStack commandStack)
-	{
-		this.commandStack = commandStack;
-	}
-	
 	public void focusGained(final FocusEvent e)
 	{
 	}
@@ -43,9 +38,14 @@ public abstract class TextCommandHandler implements ModifyListener, SelectionLis
 		modified = true;
 	}
 
+	public void setCommandStack(final CommandStack commandStack)
+	{
+		this.commandStack = commandStack;
+	}
+
 	public void setText(final String text)
 	{
-		if(textField.isDisposed()) { return; }
+		if (textField.isDisposed()) { return; }
 		if (text == null)
 		{
 			textField.setText("");
@@ -53,7 +53,7 @@ public abstract class TextCommandHandler implements ModifyListener, SelectionLis
 		}
 		else
 		{
-			if(!textField.getText().equals(text))
+			if (!textField.getText().equals(text))
 			{
 				textField.setText(text);
 				textField.setEnabled(true);
@@ -72,6 +72,8 @@ public abstract class TextCommandHandler implements ModifyListener, SelectionLis
 	{
 	}
 
+	protected abstract Command getCommand(final String textValue);
+
 	private void execute()
 	{
 		if (modified)
@@ -83,6 +85,4 @@ public abstract class TextCommandHandler implements ModifyListener, SelectionLis
 			}
 		}
 	}
-
-	protected abstract Command getCommand(final String textValue);
 }

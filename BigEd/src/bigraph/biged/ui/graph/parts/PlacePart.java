@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.ConnectionEditPart;
@@ -14,72 +15,34 @@ import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
-import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.ComponentEditPolicy;
-import org.eclipse.gef.editpolicies.DirectEditPolicy;
 import org.eclipse.gef.editpolicies.FlowLayoutEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
-import org.eclipse.gef.requests.DirectEditRequest;
 import org.eclipse.gef.requests.GroupRequest;
 
+import bigraph.biged.model.Bigraph;
+import bigraph.biged.model.BigraphEvent;
+import bigraph.biged.model.BigraphEventListener;
 import bigraph.biged.model.Edge;
-import bigraph.biged.model.EdgeSegment;
-import bigraph.biged.model.PlaceEvent;
-import bigraph.biged.model.PlaceEventListener;
-import bigraph.biged.model.PlaceEvent.Type;
+import bigraph.biged.model.BigraphEvent.Type;
 import bigraph.biged.ui.BigraphLabelProvider;
 import bigraph.biged.ui.commands.AddPlaceCommand;
 import bigraph.biged.ui.commands.DeletePlaceCommand;
 import bigraph.biged.ui.commands.DeleteRootCommand;
 import bigraph.biged.ui.graph.figures.PlaceFigure;
-import bigraph.biged.ui.graph.figures.PortConnectionAnchor;
-import bigraphspace.model.Bigraph;
 import bigraphspace.model.Place;
-import bigraphspace.model.Port;
 
-public class PlacePart extends AbstractGraphicalEditPart implements PlaceEventListener, NodeEditPart
+public class PlacePart extends AbstractBigraphEditPart implements BigraphEventListener, NodeEditPart
 {
-	@Override
-	public void activate()
+	public PlacePart(final Bigraph bigraph)
 	{
-		if (isActive()) { return; }
-		System.out.println("Activate " + BigraphLabelProvider.text(getModel()));
-		PlaceEvent.addListener(getPlace(), this);
-		super.activate();
-	}
-
-	@Override
-	public void deactivate()
-	{
-		if (!isActive()) { return; }
-		System.out.println("Deactivate " + BigraphLabelProvider.text(getModel()));
-		PlaceEvent.removeListener(getPlace(), this);
-		super.deactivate();
+		super(bigraph);
 	}
 
 	public BigraphPart getBigraphPart()
 	{
 		return (BigraphPart) getRoot().getContents();
-	}
-
-	@SuppressWarnings("unchecked")
-	public ConnectionAnchor getConnectionAnchor(final Port port)
-	{
-		PortConnectionAnchor anchor = PortConnectionAnchor.getAnchor(port);
-		if (anchor != null) { return anchor; }
-
-		IFigure figure = getFigure();
-		if (figure instanceof PlaceFigure)
-		{
-			figure = ((PlaceFigure) figure).getContainer();
-		}
-
-		anchor = new PortConnectionAnchor(figure, port, getBigraphPart(), getViewer().getEditPartRegistry());
-
-		PortConnectionAnchor.addAnchor(port, anchor);
-
-		return anchor;
 	}
 
 	/**
@@ -94,13 +57,7 @@ public class PlacePart extends AbstractGraphicalEditPart implements PlaceEventLi
 
 	public ConnectionAnchor getSourceConnectionAnchor(final ConnectionEditPart connection)
 	{
-		final Object model = connection.getModel();
-		if (model instanceof Edge)
-		{
-			final Edge linkSegment = (Edge) model;
-			return getConnectionAnchor(linkSegment.getSource());
-		}
-		return null;
+		return ((Connection) connection.getFigure()).getSourceAnchor();
 	}
 
 	public ConnectionAnchor getSourceConnectionAnchor(final Request request)
@@ -110,13 +67,7 @@ public class PlacePart extends AbstractGraphicalEditPart implements PlaceEventLi
 
 	public ConnectionAnchor getTargetConnectionAnchor(final ConnectionEditPart connection)
 	{
-		final Object model = connection.getModel();
-		if (model instanceof Edge)
-		{
-			final Edge linkSegment = (Edge) model;
-			return getConnectionAnchor(linkSegment.getTarget());
-		}
-		return null;
+		return ((Connection) connection.getFigure()).getTargetAnchor();
 	}
 
 	public ConnectionAnchor getTargetConnectionAnchor(final Request request)
@@ -124,7 +75,7 @@ public class PlacePart extends AbstractGraphicalEditPart implements PlaceEventLi
 		return null;
 	}
 
-	public void onPlaceEvent(final PlaceEvent event)
+	public void onPlaceEvent(final BigraphEvent event)
 	{
 		if (getParent() != null)
 		{
@@ -146,11 +97,6 @@ public class PlacePart extends AbstractGraphicalEditPart implements PlaceEventLi
 		((PlaceFigure) getFigure()).refresh();
 	}
 
-	private Place getPlace()
-	{
-		return (Place) getModel();
-	}
-
 	@Override
 	protected void createEditPolicies()
 	{
@@ -169,7 +115,7 @@ public class PlacePart extends AbstractGraphicalEditPart implements PlaceEventLi
 				if (child.getModel() instanceof Place)
 				{
 					final Place childPlace = (Place) child.getModel();
-					return new AddPlaceCommand(getPlace(), childPlace);
+					return new AddPlaceCommand(getBigraph(), getPlace(), childPlace);
 				}
 				return null;
 			}
@@ -204,7 +150,7 @@ public class PlacePart extends AbstractGraphicalEditPart implements PlaceEventLi
 				if (request.getNewObject() instanceof Place)
 				{
 					final Place childPlace = (Place) request.getNewObject();
-					return new AddPlaceCommand(getPlace(), childPlace);
+					return new AddPlaceCommand(getBigraph(), getPlace(), childPlace);
 				}
 				return null;
 			}
@@ -224,7 +170,8 @@ public class PlacePart extends AbstractGraphicalEditPart implements PlaceEventLi
 				final Object model = part.getModel();
 				if (model instanceof Place)
 				{
-					final DeletePlaceCommand deleteCommand = new DeletePlaceCommand(getPlace(), (Place) model);
+					final DeletePlaceCommand deleteCommand = new DeletePlaceCommand(getBigraph(), getPlace(),
+							(Place) model);
 					return deleteCommand;
 				}
 				return null;
@@ -239,31 +186,16 @@ public class PlacePart extends AbstractGraphicalEditPart implements PlaceEventLi
 				final Object parent = getParent().getModel();
 				if (parent instanceof Place)
 				{
-					final DeletePlaceCommand deleteCommand = new DeletePlaceCommand((Place) parent, getPlace());
+					final DeletePlaceCommand deleteCommand = new DeletePlaceCommand(getBigraph(), (Place) parent,
+							getPlace());
 					return deleteCommand;
 				}
 				else if (parent instanceof Bigraph)
 				{
-					final DeleteRootCommand deleteCommand = new DeleteRootCommand((Bigraph) parent, getPlace());
+					final DeleteRootCommand deleteCommand = new DeleteRootCommand(getBigraph(), getPlace());
 					return deleteCommand;
 				}
 				return null;
-			}
-		});
-
-		installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE, new DirectEditPolicy()
-		{
-			@Override
-			protected Command getDirectEditCommand(final DirectEditRequest request)
-			{
-				// TODO Auto-generated method stub
-				return null;
-			}
-
-			@Override
-			protected void showCurrentEditValue(final DirectEditRequest request)
-			{
-
 			}
 		});
 	}
@@ -291,16 +223,19 @@ public class PlacePart extends AbstractGraphicalEditPart implements PlaceEventLi
 	}
 
 	@Override
-	protected List<EdgeSegment> getModelSourceConnections()
+	protected List<Edge> getModelSourceConnections()
 	{
-		return getBigraphPart().getEdgeSegments(getPlace(), true, false);
-		//return getBigraphPart().getEdges(getPlace());
+		return getBigraph().getEdges(getPlace());
 	}
 
 	@Override
-	protected List<EdgeSegment> getModelTargetConnections()
+	protected List<Edge> getModelTargetConnections()
 	{
-		return getBigraphPart().getEdgeSegments(getPlace(), false, true);		
-		//return getBigraphPart().getEdges(getPlace());
+		return getBigraph().getEdges(getPlace());
+	}
+
+	private Place getPlace()
+	{
+		return (Place) getModel();
 	}
 }

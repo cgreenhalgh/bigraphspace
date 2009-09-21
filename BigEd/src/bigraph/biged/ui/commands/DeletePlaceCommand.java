@@ -1,18 +1,18 @@
 package bigraph.biged.ui.commands;
 
-import org.eclipse.gef.commands.Command;
-
-import bigraph.biged.model.PlaceEvent;
+import bigraph.biged.model.Bigraph;
+import bigraph.biged.model.BigraphEvent;
 import bigraphspace.model.Place;
 
-public class DeletePlaceCommand extends Command
+public class DeletePlaceCommand extends AbstractBigraphCommand
 {
 	private final Place parent;
 	private final Place child;
 	private int index;
 
-	public DeletePlaceCommand(final Place parent, final Place child)
+	public DeletePlaceCommand(final Bigraph bigraph, final Place parent, final Place child)
 	{
+		super(bigraph);
 		this.parent = parent;
 		this.child = child;
 	}
@@ -34,7 +34,7 @@ public class DeletePlaceCommand extends Command
 	{
 		index = parent.getChildren().indexOf(child);
 		parent.removeChild(child);
-		PlaceEvent.fireEvent(new PlaceEvent(parent, child, PlaceEvent.Type.REMOVE));		
+		bigraph.fireEvent(new BigraphEvent(parent, child, BigraphEvent.Type.REMOVE));
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class DeletePlaceCommand extends Command
 	@Override
 	public void undo()
 	{
-		parent.insertChild(child, index);		
-		PlaceEvent.fireEvent(new PlaceEvent(parent, child, PlaceEvent.Type.ADD));		
+		parent.insertChild(child, index);
+		bigraph.fireEvent(new BigraphEvent(parent, child, BigraphEvent.Type.ADD));
 	}
 }

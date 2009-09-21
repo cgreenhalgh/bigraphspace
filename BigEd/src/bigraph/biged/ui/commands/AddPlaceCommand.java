@@ -1,18 +1,18 @@
 package bigraph.biged.ui.commands;
 
-import org.eclipse.gef.commands.Command;
-
-import bigraph.biged.model.PlaceEvent;
+import bigraph.biged.model.Bigraph;
+import bigraph.biged.model.BigraphEvent;
 import bigraphspace.model.Place;
 import bigraphspace.model.PlaceType;
 
-public class AddPlaceCommand extends Command
+public class AddPlaceCommand extends AbstractBigraphCommand
 {
 	private final Place parent;
 	private final Place child;
 
-	public AddPlaceCommand(final Place parent, final Place child)
+	public AddPlaceCommand(final Bigraph bigraph, final Place parent, final Place child)
 	{
+		super(bigraph);
 		this.parent = parent;
 		this.child = child;
 	}
@@ -33,7 +33,7 @@ public class AddPlaceCommand extends Command
 	public void execute()
 	{
 		parent.addChild(child);
-		PlaceEvent.fireEvent(new PlaceEvent(parent, child, PlaceEvent.Type.ADD));
+		bigraph.fireEvent(new BigraphEvent(parent, child, BigraphEvent.Type.ADD));
 	}
 
 	@Override
@@ -46,6 +46,6 @@ public class AddPlaceCommand extends Command
 	public void undo()
 	{
 		(parent).removeChild(child);
-		PlaceEvent.fireEvent(new PlaceEvent(parent, child, PlaceEvent.Type.REMOVE));
+		bigraph.fireEvent(new BigraphEvent(parent, child, BigraphEvent.Type.REMOVE));
 	}
 }

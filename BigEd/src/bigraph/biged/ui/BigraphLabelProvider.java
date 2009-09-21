@@ -41,6 +41,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import bigraph.biged.BigEdPlugin;
+import bigraph.biged.model.Edge;
 import bigraph.biged.ui.properties.TypeMapper;
 import bigraphspace.model.IndexValue;
 import bigraphspace.model.Place;
@@ -70,7 +71,11 @@ public class BigraphLabelProvider extends LabelProvider
 			final Place place = (Place) modelObject;
 			if (place.getType() == PlaceType.node) { return BigEdPlugin.getImage("node"); }
 		}
-		else if (modelObject instanceof Port) { return BigEdPlugin.getImage("port"); }
+		else if (modelObject instanceof Port)
+		{
+			return BigEdPlugin.getImage("port");
+		}
+		else if (modelObject instanceof Edge) { return BigEdPlugin.getImage("edge"); }
 		return null; // PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);
 	}
 
@@ -128,9 +133,15 @@ public class BigraphLabelProvider extends LabelProvider
 				return name;
 			}
 		}
-		else if(modelObject instanceof Port)
+		else if (modelObject instanceof Port)
 		{
-			return ((Port)modelObject).getName();
+			final Port port = (Port) modelObject;
+			return port.getName() + "=\"" + port.getLinkName() + "\"";
+		}
+		else if (modelObject instanceof Edge)
+		{
+			final Edge edge = (Edge) modelObject;
+			return edge.getName();
 		}
 		else if (modelObject instanceof IndexValue) { return ((IndexValue) modelObject).getValue().toString(); }
 		return modelObject.toString();

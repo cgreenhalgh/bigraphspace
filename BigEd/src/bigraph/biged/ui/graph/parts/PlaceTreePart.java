@@ -1,41 +1,21 @@
 package bigraph.biged.ui.graph.parts;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.gef.editparts.AbstractTreeEditPart;
 import org.eclipse.swt.graphics.Image;
 
-import bigraph.biged.model.PlaceEvent;
-import bigraph.biged.model.PlaceEventListener;
+import bigraph.biged.model.Bigraph;
+import bigraph.biged.ui.BigraphLabelComparator;
 import bigraph.biged.ui.BigraphLabelProvider;
 import bigraphspace.model.Place;
 
-public class PlaceTreePart extends AbstractTreeEditPart implements PlaceEventListener
+public class PlaceTreePart extends AbstractBigraphTreeEditPart
 {
-	@Override
-	public void activate()
+	public PlaceTreePart(final Bigraph bigraph)
 	{
-		if (!isActive())
-		{
-			super.activate();
-			//getContainer().addPlaceEventListener(this);
-		}
-	}
-
-	@Override
-	public void deactivate()
-	{
-		if (isActive())
-		{
-			super.deactivate();
-			//getContainer().addPlaceEventListener(this);
-		}
-	}	
-	
-	private Place getPlace()
-	{
-		return (Place) getModel();
+		super(bigraph);
 	}
 
 	@Override
@@ -49,8 +29,13 @@ public class PlaceTreePart extends AbstractTreeEditPart implements PlaceEventLis
 	protected List getModelChildren()
 	{
 		final List children = new ArrayList();
-		children.addAll(getPlace().getPorts());
-		children.addAll(getPlace().getChildren());
+		
+		final List ports = getPlace().getPorts();
+		Collections.sort(ports, new BigraphLabelComparator());
+		children.addAll(ports);
+		final List places = getPlace().getChildren();
+		Collections.sort(places, new BigraphLabelComparator());
+		children.addAll(places);
 		return children;
 	}
 
@@ -60,11 +45,8 @@ public class PlaceTreePart extends AbstractTreeEditPart implements PlaceEventLis
 		return BigraphLabelProvider.text(this);
 	}
 
-	public void onPlaceEvent(PlaceEvent event)
+	private Place getPlace()
 	{
-		if (getParent() != null)
-		{
-			refreshChildren();
-		}		
+		return (Place) getModel();
 	}
 }

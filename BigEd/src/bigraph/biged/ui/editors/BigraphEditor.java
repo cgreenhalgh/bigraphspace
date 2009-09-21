@@ -6,6 +6,7 @@ import java.util.EventObject;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
@@ -22,18 +23,21 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.actions.ActionFactory;
+import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertySheetPageContributor;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
-import bigraph.biged.model.ModelLoader;
-import bigraph.biged.model.XMLModelLoader;
-import bigraph.biged.model.XMLModelSaver;
+import bigraph.biged.model.Bigraph;
 import bigraph.biged.ui.graph.parts.BigraphEditPartFactory;
 import bigraph.biged.ui.graph.parts.BigraphTreeEditPartFactory;
-import bigraphspace.model.Bigraph;
+import bigraphspace.io.BigraphReader;
+import bigraphspace.io.BigraphWriter;
+import bigraphspace.io.IOConstants;
+import bigraphspace.model.BasicSignature;
+import bigraphspace.model.xml.XmlIOFactory;
 
 public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements ITabbedPropertySheetPageContributor
 {
@@ -60,24 +64,11 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements I
 		@Override
 		public void createControl(final Composite parent)
 		{
-			// create outline viewer page
 			getViewer().createControl(parent);
-			// configure outline viewer
 			getViewer().setEditDomain(getEditDomain());
 			getViewer().setEditPartFactory(new BigraphTreeEditPartFactory());
-			// configure & add context menu to viewer
-			// final ContextMenuProvider cmProvider = new
-			// ShapesEditorContextMenuProvider(getViewer(),
-			// getActionRegistry());
-			// getViewer().setContextMenu(cmProvider);
-			// getSite().registerContextMenu("org.eclipse.gef.examples.shapes.outline.contextmenu",
-			// cmProvider,
-			// getSite().getSelectionProvider());
-			// hook outline viewer
 			getSelectionSynchronizer().addViewer(getViewer());
-			// initialize outline viewer with model
 			getViewer().setContents(getBigraph());
-			// show outline viewer
 		}
 
 		/*
@@ -88,9 +79,7 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements I
 		@Override
 		public void dispose()
 		{
-			// unhook outline viewer
 			getSelectionSynchronizer().removeViewer(getViewer());
-			// dispose
 			super.dispose();
 		}
 
@@ -123,8 +112,10 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements I
 		}
 	}
 
-	private Bigraph bigraph;
+	protected Bigraph bigraph;
+
 	private BigraphOutlinePage outlinePage;
+	private String format;
 
 	public BigraphEditor()
 	{
@@ -145,8 +136,8 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements I
 		{
 			final PipedInputStream in = new PipedInputStream();
 			final PipedOutputStream out = new PipedOutputStream(in);
-			final XMLModelSaver saver = new XMLModelSaver();
-			saver.saveModel(bigraph, out);
+			final BigraphWriter writer = XmlIOFactory.getWriter(format);
+			writer.write(bigraph.getBigraph(), out);
 
 			final IFile file = ((IFileEditorInput) getEditorInput()).getFile();
 			file.setContents(in, true, true, monitor);
@@ -173,6 +164,11 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements I
 		}
 		else if (type == IPropertySheetPage.class) { return new TabbedPropertySheetPage(this); }
 		return super.getAdapter(type);
+	}
+
+	public Bigraph getBigraph()
+	{
+		return bigraph;
 	}
 
 	public String getContributorId()
@@ -212,11 +208,6 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements I
 		// graphicalViewer.addDropTargetListener(createTransferDropTargetListener());
 	}
 
-	public Bigraph getBigraph()
-	{
-		return bigraph;
-	}
-	
 	@Override
 	protected void setInput(final IEditorInput input)
 	{
@@ -224,9 +215,17 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements I
 		try
 		{
 			final IFile file = ((IFileEditorInput) input).getFile();
-
-			final ModelLoader loader = new XMLModelLoader();
-			bigraph = loader.loadModel(file.getContents());
+			final IContentType contentType = IDE.getContentType(file);
+			if (contentType.getId().equals("bigraph.biged.bigraphBTL"))
+			{
+				format = IOConstants.FORMAT_BTL;
+			}
+			else
+			{
+				format = IOConstants.FORMAT_XML;
+			}
+			final BigraphReader reader = XmlIOFactory.getReader(format, new BasicSignature());
+			bigraph = new Bigraph(reader.read(file.getContents()));
 
 			setPartName(file.getName());
 		}

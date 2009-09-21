@@ -1,22 +1,18 @@
 package bigraph.biged.ui.commands;
 
-import org.eclipse.gef.commands.Command;
-
-
-import bigraph.biged.model.PlaceEvent;
-import bigraphspace.model.Bigraph;
+import bigraph.biged.model.Bigraph;
+import bigraph.biged.model.BigraphEvent;
 import bigraphspace.model.IndexValue;
 import bigraphspace.model.Place;
 
-public class CreateControlIndexCommand extends Command
+public class CreateControlIndexCommand extends AbstractBigraphCommand
 {
-	private final Bigraph bigraph; 
 	private final Place place;
 	private IndexValue indexValue;
 
 	public CreateControlIndexCommand(final Bigraph bigraph, final Place place)
 	{
-		this.bigraph = bigraph;
+		super(bigraph);
 		this.place = place;
 	}
 
@@ -35,9 +31,9 @@ public class CreateControlIndexCommand extends Command
 	@Override
 	public void execute()
 	{
-		indexValue = bigraph.createIndexValue("\"\"");
+		indexValue = bigraph.getBigraph().createIndexValue("\"\"");
 		place.addControlIndex(indexValue);
-		PlaceEvent.fireEvent(new PlaceEvent(place, PlaceEvent.Type.CHANGE));
+		bigraph.fireEvent(new BigraphEvent(place, indexValue, BigraphEvent.Type.CHANGE));
 	}
 
 	@Override
@@ -50,6 +46,6 @@ public class CreateControlIndexCommand extends Command
 	public void undo()
 	{
 		place.removeControlIndex(indexValue);
-		PlaceEvent.fireEvent(new PlaceEvent(place, PlaceEvent.Type.CHANGE));
+		bigraph.fireEvent(new BigraphEvent(place, indexValue, BigraphEvent.Type.CHANGE));
 	}
 }

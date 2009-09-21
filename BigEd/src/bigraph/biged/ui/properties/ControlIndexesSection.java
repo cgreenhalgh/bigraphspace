@@ -1,7 +1,7 @@
 package bigraph.biged.ui.properties;
 
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.commands.CommandStack;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
@@ -10,6 +10,7 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
@@ -19,15 +20,15 @@ import bigraph.biged.ui.commands.SetControlIndexCommand;
 import bigraphspace.model.IndexValue;
 import bigraphspace.model.Place;
 
-public class ControlIndexesSection extends AbstractPlaceListPropertySection
+public class ControlIndexesSection extends AbstractListPropertySection
 {
 	private TextCommandHandler indexValue;
 
 	@Override
-	protected void setCommandStack(CommandStack commandStack)
+	public void setInput(final IWorkbenchPart part, final ISelection selection)
 	{
-		super.setCommandStack(commandStack);
-		indexValue.setCommandStack(commandStack);
+		super.setInput(part, selection);
+		indexValue.setCommandStack(getCommandStack());
 	}
 
 	@Override
@@ -46,7 +47,7 @@ public class ControlIndexesSection extends AbstractPlaceListPropertySection
 			{
 				final Object selection = getSelectedObject();
 				if (selection == null) { return null; }
-				return new SetControlIndexCommand(bigraph, place, (IndexValue) selection, textValue);
+				return new SetControlIndexCommand(getBigraph(), (Place) getModel(), (IndexValue) selection, textValue);
 			}
 		};
 
@@ -61,7 +62,7 @@ public class ControlIndexesSection extends AbstractPlaceListPropertySection
 	@Override
 	protected Command getAddCommand()
 	{
-		return new CreateControlIndexCommand(bigraph, place);
+		return new CreateControlIndexCommand(getBigraph(), (Place) getModel());
 	}
 
 	@Override
@@ -89,7 +90,7 @@ public class ControlIndexesSection extends AbstractPlaceListPropertySection
 	protected Command getDeleteCommand(final Object item)
 	{
 		if (item == null) { return null; }
-		return new DeleteControlIndexCommand(place, (IndexValue) item);
+		return new DeleteControlIndexCommand(getBigraph(), (Place) getModel(), (IndexValue) item);
 	}
 
 	@Override

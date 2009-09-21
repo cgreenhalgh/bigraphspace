@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
-public abstract class AbstractPlaceSinglePropertySection extends AbstractPlacePropertySection
+public abstract class AbstractSinglePropertySection extends AbstractPropertySection
 {
 
 	@Override

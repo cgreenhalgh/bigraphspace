@@ -38,16 +38,17 @@ package bigraph.biged.ui.properties;
 import org.eclipse.gef.commands.Command;
 
 import bigraph.biged.ui.commands.SetPlaceSupportCommand;
+import bigraphspace.model.Place;
 
 /**
  * @author <a href="ktg@cs.nott.ac.uk">Kevin Glover</a>
  */
-public class SupportNameSection extends AbstractPlaceStringPropertySection
+public class SupportNameSection extends AbstractStringPropertySection
 {
 	@Override
 	protected Command createCommand(final String textValue)
 	{
-		return new SetPlaceSupportCommand(place, textValue);
+		return new SetPlaceSupportCommand(getBigraph(), (Place) getModel(), textValue);
 	}
 
 	@Override
@@ -59,6 +60,6 @@ public class SupportNameSection extends AbstractPlaceStringPropertySection
 	@Override
 	protected String getValue()
 	{
-		return place.getSupport();
+		return ((Place) getModel()).getSupport();
 	}
 }

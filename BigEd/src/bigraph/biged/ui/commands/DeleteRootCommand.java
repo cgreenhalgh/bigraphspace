@@ -1,19 +1,18 @@
 package bigraph.biged.ui.commands;
 
-import org.eclipse.gef.commands.Command;
-
-import bigraphspace.model.Bigraph;
+import bigraph.biged.model.Bigraph;
+import bigraph.biged.model.BigraphEvent;
+import bigraph.biged.model.BigraphEvent.Type;
 import bigraphspace.model.Place;
 
-public class DeleteRootCommand extends Command
+public class DeleteRootCommand extends AbstractBigraphCommand
 {
-	private final Bigraph parent;
 	private final Place child;
 	private int index;
 
-	public DeleteRootCommand(final Bigraph parent, final Place child)
+	public DeleteRootCommand(final Bigraph bigraph, final Place child)
 	{
-		this.parent = parent;
+		super(bigraph);
 		this.child = child;
 	}
 
@@ -32,8 +31,9 @@ public class DeleteRootCommand extends Command
 	@Override
 	public void execute()
 	{
-		index = parent.getRoots().indexOf(child);
-		parent.removeRoot(child);
+		index = bigraph.getBigraph().getRoots().indexOf(child);
+		bigraph.getBigraph().removeRoot(child);
+		bigraph.fireEvent(new BigraphEvent(bigraph, child, Type.REMOVE));
 	}
 
 	@Override
@@ -45,6 +45,7 @@ public class DeleteRootCommand extends Command
 	@Override
 	public void undo()
 	{
-		parent.insertRoot(child, index);
+		bigraph.getBigraph().insertRoot(child, index);
+		bigraph.fireEvent(new BigraphEvent(bigraph, child, Type.ADD));
 	}
 }

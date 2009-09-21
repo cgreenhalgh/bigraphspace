@@ -1,20 +1,18 @@
 package bigraph.biged.ui.commands;
 
-import org.eclipse.gef.commands.Command;
-
-import bigraphspace.model.Bigraph;
+import bigraph.biged.model.Bigraph;
+import bigraph.biged.model.BigraphEvent;
 import bigraphspace.model.Place;
 import bigraphspace.model.Port;
 
-public class CreatePortCommand extends Command
+public class CreatePortCommand extends AbstractBigraphCommand
 {
-	private final Bigraph bigraph;
 	private final Place place;
 	private Port port;
 
 	public CreatePortCommand(final Bigraph bigraph, final Place place)
 	{
-		this.bigraph = bigraph;
+		super(bigraph);
 		this.place = place;
 	}
 
@@ -33,9 +31,9 @@ public class CreatePortCommand extends Command
 	@Override
 	public void execute()
 	{
-		//port = bigraph.createPort(); 
+		port = bigraph.getBigraph().createPort(Port.DEFAULT_PORT_NAME_PREFIX);
 		place.addPort(port);
-		// TODO PlaceEvent.fireEvent(new PlaceEvent(parent, child, PlaceEvent.Type.ADD));
+		bigraph.fireEvent(new BigraphEvent(place, port, BigraphEvent.Type.ADD));
 	}
 
 	@Override
@@ -48,6 +46,6 @@ public class CreatePortCommand extends Command
 	public void undo()
 	{
 		place.removePort(port);
-		// TODO PlaceEvent.fireEvent(new PlaceEvent(parent, child, PlaceEvent.Type.REMOVE));
+		bigraph.fireEvent(new BigraphEvent(place, port, BigraphEvent.Type.REMOVE));
 	}
 }
