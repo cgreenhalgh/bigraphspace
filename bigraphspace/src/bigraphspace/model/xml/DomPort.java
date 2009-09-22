@@ -66,7 +66,7 @@ public class DomPort implements Port {
 	 */
 	//@Override
 	public void setName(String portName) {
-		throw new UnsupportedOperationException(DomPort.class.getName()+".setName(String)");
+		attribute.getOwnerDocument().renameNode(attribute, null, portName);
 	}
 	
 	@Override
