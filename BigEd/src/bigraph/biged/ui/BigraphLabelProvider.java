@@ -82,6 +82,7 @@ public class BigraphLabelProvider extends LabelProvider
 	@Override
 	public String getText(final Object object)
 	{
+		if(object == null) { return "null"; }
 		final Object modelObject = TypeMapper.getModelObject(object);
 		if (modelObject instanceof Place)
 		{

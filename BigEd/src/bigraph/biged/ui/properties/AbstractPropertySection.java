@@ -14,6 +14,7 @@ public abstract class AbstractPropertySection extends org.eclipse.ui.views.prope
 		implements BigraphEventListener
 {
 	private Object model;
+	private Bigraph bigraph;
 	private CommandStack commandStack;
 
 	@Override
@@ -29,8 +30,9 @@ public abstract class AbstractPropertySection extends org.eclipse.ui.views.prope
 		if (getBigraph() != null)
 		{
 			getBigraph().removeListener(model, this);
-			model = null;
 		}
+		model = null;
+		bigraph = null;
 		super.setInput(part, selection);
 		if (getBigraph() != null)
 		{
@@ -40,9 +42,12 @@ public abstract class AbstractPropertySection extends org.eclipse.ui.views.prope
 
 	protected Bigraph getBigraph()
 	{
-		final EditPartViewer viewer = getViewer();
-		if (viewer != null) { return (Bigraph) viewer.getRootEditPart().getContents().getModel(); }
-		return null;
+		if(bigraph == null)
+		{
+			final EditPartViewer viewer = getViewer();
+			if (viewer != null) { bigraph = (Bigraph) viewer.getRootEditPart().getContents().getModel(); }
+		}
+		return bigraph;
 	}
 
 	protected CommandStack getCommandStack()

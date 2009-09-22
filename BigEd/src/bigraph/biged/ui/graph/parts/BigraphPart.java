@@ -59,6 +59,7 @@ import bigraph.biged.model.BigraphEvent;
 import bigraph.biged.model.BigraphEventListener;
 import bigraph.biged.model.BigraphEvent.Type;
 import bigraph.biged.ui.commands.AddRootCommand;
+import bigraph.biged.ui.commands.MoveRootCommand;
 import bigraphspace.model.Place;
 
 /**
@@ -138,12 +139,12 @@ public class BigraphPart extends AbstractBigraphEditPart implements BigraphEvent
 				{
 					if (after != null && after.getModel() instanceof Place)
 					{
-						// return new MovePlaceCommand(getModel(), (Place) child.getModel(), (Place)
-						// after.getModel());
+						return new MoveRootCommand(getBigraph(), (Place) child.getModel(), (Place)
+						 after.getModel());
 					}
 					else
 					{
-						// return new MovePlaceCommand(getModel(), (Place) child.getModel(), null);
+						return new MoveRootCommand(getBigraph(), (Place) child.getModel(), null);
 					}
 				}
 

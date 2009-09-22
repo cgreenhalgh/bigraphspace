@@ -2,6 +2,7 @@ package bigraph.biged.ui.commands;
 
 import bigraph.biged.model.Bigraph;
 import bigraph.biged.model.BigraphEvent;
+import bigraph.biged.ui.BigraphLabelProvider;
 import bigraphspace.model.Place;
 import bigraphspace.model.Port;
 
@@ -12,20 +13,8 @@ public class CreatePortCommand extends AbstractBigraphCommand
 
 	public CreatePortCommand(final Bigraph bigraph, final Place place)
 	{
-		super(bigraph);
+		super(bigraph, "Create new Port on " + BigraphLabelProvider.text(place));
 		this.place = place;
-	}
-
-	@Override
-	public boolean canExecute()
-	{
-		return true;
-	}
-
-	@Override
-	public boolean canUndo()
-	{
-		return true;
 	}
 
 	@Override
@@ -34,12 +23,6 @@ public class CreatePortCommand extends AbstractBigraphCommand
 		port = bigraph.getBigraph().createPort(Port.DEFAULT_PORT_NAME_PREFIX);
 		place.addPort(port);
 		bigraph.fireEvent(new BigraphEvent(place, port, BigraphEvent.Type.ADD));
-	}
-
-	@Override
-	public String getLabel()
-	{
-		return "Add Place";
 	}
 
 	@Override

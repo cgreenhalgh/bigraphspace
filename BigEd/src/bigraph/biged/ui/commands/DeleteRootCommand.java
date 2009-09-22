@@ -12,20 +12,8 @@ public class DeleteRootCommand extends AbstractBigraphCommand
 
 	public DeleteRootCommand(final Bigraph bigraph, final Place child)
 	{
-		super(bigraph);
+		super(bigraph, "Delete Root");
 		this.child = child;
-	}
-
-	@Override
-	public boolean canExecute()
-	{
-		return true;
-	}
-
-	@Override
-	public boolean canUndo()
-	{
-		return true;
 	}
 
 	@Override
@@ -34,12 +22,6 @@ public class DeleteRootCommand extends AbstractBigraphCommand
 		index = bigraph.getBigraph().getRoots().indexOf(child);
 		bigraph.getBigraph().removeRoot(child);
 		bigraph.fireEvent(new BigraphEvent(bigraph, child, Type.REMOVE));
-	}
-
-	@Override
-	public String getLabel()
-	{
-		return "Delete Place";
 	}
 
 	@Override

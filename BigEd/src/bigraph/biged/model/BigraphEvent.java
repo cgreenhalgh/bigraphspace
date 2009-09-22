@@ -38,6 +38,6 @@ public class BigraphEvent
 	@Override
 	public String toString()
 	{
-		return "Event " + BigraphLabelProvider.text(source) + ": " + type;
+		return "Event " + BigraphLabelProvider.text(source) + ": " + type + " " + BigraphLabelProvider.text(changes);
 	}
 }

@@ -2,6 +2,7 @@ package bigraph.biged.ui.commands;
 
 import bigraph.biged.model.Bigraph;
 import bigraph.biged.model.BigraphEvent;
+import bigraph.biged.ui.BigraphLabelProvider;
 import bigraphspace.model.Place;
 
 public class DeletePlaceCommand extends AbstractBigraphCommand
@@ -12,21 +13,9 @@ public class DeletePlaceCommand extends AbstractBigraphCommand
 
 	public DeletePlaceCommand(final Bigraph bigraph, final Place parent, final Place child)
 	{
-		super(bigraph);
+		super(bigraph, "Delete " + BigraphLabelProvider.text(child) + " from " + BigraphLabelProvider.text(parent));
 		this.parent = parent;
 		this.child = child;
-	}
-
-	@Override
-	public boolean canExecute()
-	{
-		return true;
-	}
-
-	@Override
-	public boolean canUndo()
-	{
-		return true;
 	}
 
 	@Override
@@ -35,12 +24,6 @@ public class DeletePlaceCommand extends AbstractBigraphCommand
 		index = parent.getChildren().indexOf(child);
 		parent.removeChild(child);
 		bigraph.fireEvent(new BigraphEvent(parent, child, BigraphEvent.Type.REMOVE));
-	}
-
-	@Override
-	public String getLabel()
-	{
-		return "Delete Place";
 	}
 
 	@Override

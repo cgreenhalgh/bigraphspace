@@ -12,7 +12,7 @@ public class SetPlaceSupportCommand extends AbstractBigraphCommand
 
 	public SetPlaceSupportCommand(final Bigraph bigraph, final Place place, final String newName)
 	{
-		super(bigraph);
+		super(bigraph, "Set Place Support Name to " + newName);
 		this.place = place;
 		if (newName == null || newName.equals(""))
 		{
@@ -32,17 +32,12 @@ public class SetPlaceSupportCommand extends AbstractBigraphCommand
 	}
 
 	@Override
-	public boolean canUndo()
-	{
-		return true;
-	}
-
-	@Override
 	public void execute()
 	{
 		oldName = place.getSupport();
 		place.setSupport(newName);
 		bigraph.fireEvent(new BigraphEvent(place, newName, BigraphEvent.Type.CHANGE));
+		// TODO Update edges
 	}
 
 	@Override
@@ -50,5 +45,6 @@ public class SetPlaceSupportCommand extends AbstractBigraphCommand
 	{
 		place.setSupport(oldName);
 		bigraph.fireEvent(new BigraphEvent(place, oldName, BigraphEvent.Type.CHANGE));
+		// TODO Update edges
 	}
 }

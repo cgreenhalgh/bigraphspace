@@ -1,6 +1,8 @@
 package bigraph.biged.ui.commands;
 
 import bigraph.biged.model.Bigraph;
+import bigraph.biged.model.BigraphEvent;
+import bigraph.biged.ui.BigraphLabelProvider;
 import bigraphspace.model.Port;
 
 public class SetPortNameCommand extends AbstractBigraphCommand
@@ -11,7 +13,7 @@ public class SetPortNameCommand extends AbstractBigraphCommand
 
 	public SetPortNameCommand(final Bigraph bigraph, final Port port, final String newName)
 	{
-		super(bigraph);
+		super(bigraph, "Set " + BigraphLabelProvider.text(port) + " to " + newName);
 		this.port = port;
 		if (newName == null || newName.equals(""))
 		{
@@ -41,13 +43,13 @@ public class SetPortNameCommand extends AbstractBigraphCommand
 	{
 		oldName = port.getName();
 		port.setName(newName);
-		// TODO PlaceEvent.fireEvent(new PlaceEvent(port, PlaceEvent.Type.CHANGE));
+		bigraph.fireEvent(new BigraphEvent(port, newName, BigraphEvent.Type.CHANGE));
 	}
 
 	@Override
 	public void undo()
 	{
 		port.setName(oldName);
-		// TODO PlaceEvent.fireEvent(new PlaceEvent(port, PlaceEvent.Type.CHANGE));
+		bigraph.fireEvent(new BigraphEvent(port, oldName, BigraphEvent.Type.CHANGE));
 	}
 }

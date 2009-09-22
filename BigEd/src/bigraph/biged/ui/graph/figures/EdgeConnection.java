@@ -114,20 +114,20 @@ public class EdgeConnection extends PolylineConnection implements Connection
 			@Override
 			public void route(final Connection connection)
 			{
-				if (segments.isEmpty())
+				//if (segments.isEmpty())
 				{
 					createSegments();
+					
+					final PointList points = getPoints();
+					points.removeAllPoints();
+					for (final Port port : edge.getPorts())
+					{
+						final Point point = getLocation(port);
+						getAnchor(port).setLocation(point);
+						points.addPoint(point);
+					}
+					setPoints(points);					
 				}
-
-				final PointList points = getPoints();
-				points.removeAllPoints();
-				for (final Port port : edge.getPorts())
-				{
-					final Point point = getLocation(port);
-					getAnchor(port).setLocation(point);
-					points.addPoint(point);
-				}
-				setPoints(points);
 			}
 
 			// http://en.wikipedia.org/wiki/Prim's_algorithm
@@ -288,7 +288,6 @@ public class EdgeConnection extends PolylineConnection implements Connection
 		getConnectionRouter().route(this);
 
 		final Rectangle oldBounds = bounds;
-		// super.layout();
 		bounds = null;
 
 		if (!getBounds().contains(oldBounds))
