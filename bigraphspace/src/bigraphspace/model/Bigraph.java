@@ -40,6 +40,8 @@ public interface Bigraph extends IOFactory {
 	public Place createNode(Control control);
 	/** create a new site to be used with this bigraph */
 	public Place createSite();
+	/** create a new port to be used with this bigraph */
+	public Port createPort(final String name);	
 	/** create variable definition */
 	public VariableDefinition createVariableDefinition(String variableName, VariableType baseType);
 	/** create variable constraint */

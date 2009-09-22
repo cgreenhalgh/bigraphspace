@@ -3,26 +3,30 @@
  */
 package bigraphspace.model.xml;
 
-import java.io.IOException;
 import java.io.File;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.io.OutputStreamWriter;
-import java.util.List;
-import java.util.LinkedList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Node;
-import org.w3c.dom.Attr;
-import org.xml.sax.SAXException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 
 import org.apache.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import bigraphspace.io.BigraphReader;
 import bigraphspace.io.BigraphWriter;
@@ -30,19 +34,13 @@ import bigraphspace.io.UnsupportedFormatException;
 import bigraphspace.model.BasicSignature;
 import bigraphspace.model.Bigraph;
 import bigraphspace.model.Control;
+import bigraphspace.model.IndexValue;
 import bigraphspace.model.Place;
 import bigraphspace.model.Port;
-import bigraphspace.model.IndexValue;
-import bigraphspace.model.VariableDefinition;
 import bigraphspace.model.VariableConstraint;
 import bigraphspace.model.VariableConstraintType;
+import bigraphspace.model.VariableDefinition;
 import bigraphspace.model.VariableType;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
 
 
 /** XML/Dom-based implementation of Bigraph interface = Document.
@@ -171,6 +169,11 @@ public class DomBigraph implements Bigraph {
 		return createNode(Constants.SITE_ELEMENT_NAME);
 	}
 
+	public Port createPort(final String name)
+	{
+		return new DomPort(document.createAttribute(name));
+	}
+	
 	/* (non-Javadoc)
 	 * @see bigraphspace.model.Bigraph#createIndexValue(java.lang.Object)
 	 */
