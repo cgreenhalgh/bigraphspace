@@ -36,30 +36,40 @@
 package bigraph.biged.ui.properties;
 
 import org.eclipse.gef.commands.Command;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
-import bigraph.biged.ui.commands.SetPlaceControlCommand;
+import bigraph.biged.ui.commands.SetPlaceSupportCommand;
 import bigraphspace.model.Place;
 
 /**
  * @author <a href="ktg@cs.nott.ac.uk">Kevin Glover</a>
  */
-public class ControlNameSection extends AbstractStringPropertySection
+public class PlaceSupportNameSection extends AbstractStringPropertySection
 {
 	@Override
 	protected Command createCommand(final String textValue)
 	{
-		return new SetPlaceControlCommand(getBigraph(), (Place) getModel(), textValue);
+		return new SetPlaceSupportCommand(getBigraph(), (Place) getModel(), textValue);
+	}
+
+	@Override
+	protected Control createControl(Composite parent)
+	{
+		final Control control = super.createControl(parent);
+		text.setDisableOnNull(false);		
+		return control;
 	}
 
 	@Override
 	protected String getLabel()
 	{
-		return "Control Name:";
+		return "Support Name:";
 	}
 
 	@Override
 	protected String getValue()
 	{
-		return ((Place) getModel()).getControlName();
+		return ((Place) getModel()).getSupport();
 	}
 }

@@ -9,14 +9,14 @@ import bigraphspace.model.Port;
 
 public class Edge
 {
-	public static void findEdges(final Bigraph bigraph, final Place place, final Map<String, Edge> edges)
+	public static void findEdges(final Place place, final Map<String, Edge> edges)
 	{
 		for (final Port port : place.getPorts())
 		{
 			Edge edge = edges.get(port.getLinkName());
 			if (edge == null)
 			{
-				edge = new Edge(bigraph, port.getLinkName());
+				edge = new Edge(port.getLinkName());
 				edges.put(edge.getName(), edge);
 			}
 			edge.internalAddPort(port, place);
@@ -24,24 +24,21 @@ public class Edge
 
 		for (final Place child : place.getChildren())
 		{
-			findEdges(bigraph, child, edges);
+			findEdges(child, edges);
 		}
 	}
 
 	private final String name;
-	private final Bigraph bigraph;
 	private final Map<Port, Place> ports = new HashMap<Port, Place>();
 
-	public Edge(final Bigraph bigraph, final String name)
+	public Edge(final String name)
 	{
-		this.bigraph = bigraph;
 		this.name = name;
 	}
 
 	public void addPort(final Port port, final Place place)
 	{
 		ports.put(port, place);
-		bigraph.fireEvent(new BigraphEvent(this, port, BigraphEvent.Type.ADD));
 	}
 
 	public String getName()
@@ -62,7 +59,6 @@ public class Edge
 	public void removePort(final Port port)
 	{
 		ports.remove(port);
-		bigraph.fireEvent(new BigraphEvent(this, port, BigraphEvent.Type.REMOVE));
 	}
 
 	private void internalAddPort(final Port port, final Place place)

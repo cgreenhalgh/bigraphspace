@@ -12,7 +12,7 @@ public class SetPlaceControlCommand extends AbstractBigraphCommand
 
 	public SetPlaceControlCommand(final Bigraph bigraph, final Place place, final String newName)
 	{
-		super(bigraph);
+		super(bigraph, "Set Place Control Name to " + newName);
 		this.place = place;
 		if (newName == null || newName.equals(""))
 		{
@@ -29,12 +29,6 @@ public class SetPlaceControlCommand extends AbstractBigraphCommand
 	public boolean canExecute()
 	{
 		return oldName != newName && (oldName == null || !oldName.equals(newName));
-	}
-
-	@Override
-	public boolean canUndo()
-	{
-		return true;
 	}
 
 	@Override

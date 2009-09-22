@@ -37,17 +37,25 @@ public class Bigraph
 		}
 		listenerList.add(listener);
 	}
-
-	public void fireEvent(final BigraphEvent event)
+	
+	private void fireEvent(final Collection<BigraphEventListener> listenerList, final BigraphEvent event)
 	{
-		System.out.println(event);
-		final Collection<BigraphEventListener> listenerList = listeners.get(event.getSource());
-		if (listenerList == null) { return; }
-		final Collection<BigraphEventListener> list = new HashSet<BigraphEventListener>(listenerList);
+		if(listenerList == null) { return; }
+		final Collection<BigraphEventListener> list = new HashSet<BigraphEventListener>(listenerList);		
 		for (final BigraphEventListener listener : list)
 		{
 			listener.onPlaceEvent(event);
+		}		
+	}
+
+	public void fireEvent(final BigraphEvent event)
+	{
+		//System.out.println(event);
+		for(final Edge edge: edges.values())
+		{
+			fireEvent(listeners.get(edge), event);
 		}
+		fireEvent(listeners.get(event.getSource()), event);
 	}
 
 	public bigraphspace.model.Bigraph getBigraph()
@@ -65,7 +73,11 @@ public class Bigraph
 		final List<Edge> edgeList = new ArrayList<Edge>();
 		for (final Port port : place.getPorts())
 		{
-			edgeList.add(edges.get(port.getLinkName()));
+			final Edge edge = edges.get(port.getLinkName());
+			if(edge != null)
+			{
+				edgeList.add(edge);
+			}
 		}
 
 		return edgeList;
@@ -75,7 +87,6 @@ public class Bigraph
 	{
 		if (source == null) { return; }
 		if (listener == null) { return; }
-		// System.out.println("Remove Listener for " + BigraphLabelProvider.text(place));
 		final Collection<BigraphEventListener> listenerList = listeners.get(source);
 		if (listenerList == null) { return; }
 		listenerList.remove(listener);
@@ -85,12 +96,12 @@ public class Bigraph
 		}
 	}
 
-	public void updateEdges()
+	private void updateEdges()
 	{
 		final Map<String, Edge> newEdges = new HashMap<String, Edge>();
 		for (final Place place : getBigraph().getRoots())
 		{
-			Edge.findEdges(this, place, newEdges);
+			Edge.findEdges(place, newEdges);
 		}
 
 		for (final Edge edge : newEdges.values())

@@ -69,7 +69,7 @@
        <propertySections
              contributorId="bigraph.biged.ui.properties.contributor">
           <propertySection
-                class="bigraph.biged.ui.properties.PortSection"
+                class="bigraph.biged.ui.properties.PlacePortListSection"
                 filter="bigraph.biged.ui.properties.NodeFilter"
                 id="bigraph.biged.ui.properties.PortSection"
                 tab="bigraph.biged.ui.properties.general">
@@ -81,7 +81,7 @@
                 tab="bigraph.biged.ui.properties.general">
           </propertySection>
           <propertySection
-                class="bigraph.biged.ui.properties.ControlNameSection"
+                class="bigraph.biged.ui.properties.PlaceControlNameSection"
                 enablesFor="1"
                 filter="bigraph.biged.ui.properties.NodeFilter"
                 id="bigraph.biged.ui.properties.ControlNameSection"
@@ -91,7 +91,7 @@
              </input>
           </propertySection>
           <propertySection
-                class="bigraph.biged.ui.properties.SupportNameSection"
+                class="bigraph.biged.ui.properties.PlaceSupportNameSection"
                 enablesFor="1"
                 filter="bigraph.biged.ui.properties.NodeFilter"
                 id="bigraph.biged.ui.properties.SupportNameSection"

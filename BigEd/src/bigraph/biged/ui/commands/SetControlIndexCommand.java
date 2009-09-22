@@ -15,22 +15,10 @@ public class SetControlIndexCommand extends AbstractBigraphCommand
 	public SetControlIndexCommand(final Bigraph bigraph, final Place place, final IndexValue oldValue,
 			final Object newValue)
 	{
-		super(bigraph);
+		super(bigraph, "Set Control Index value to " + newValue);
 		this.place = place;
 		this.newValue = newValue;
 		this.oldValue = oldValue;
-	}
-
-	@Override
-	public boolean canExecute()
-	{
-		return true;
-	}
-
-	@Override
-	public boolean canUndo()
-	{
-		return true;
 	}
 
 	@Override
@@ -40,12 +28,6 @@ public class SetControlIndexCommand extends AbstractBigraphCommand
 		final IndexValue indexValue = bigraph.getBigraph().createIndexValue(newValue);
 		place.setControlIndex(indexValue, index);
 		bigraph.fireEvent(new BigraphEvent(place, indexValue, BigraphEvent.Type.CHANGE));
-	}
-
-	@Override
-	public String getLabel()
-	{
-		return "Set Control Index";
 	}
 
 	@Override

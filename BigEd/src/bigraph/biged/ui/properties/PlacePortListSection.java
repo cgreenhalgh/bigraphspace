@@ -21,7 +21,7 @@ import bigraph.biged.ui.commands.SetPortNameCommand;
 import bigraphspace.model.Place;
 import bigraphspace.model.Port;
 
-public class PortSection extends AbstractListPropertySection
+public class PlacePortListSection extends AbstractListPropertySection
 {
 	private TextCommandHandler portName;
 	private TextCommandHandler edgeName;
@@ -67,7 +67,7 @@ public class PortSection extends AbstractListPropertySection
 		data.right = new FormAttachment(100, 0);
 		data.top = new FormAttachment(portNameText, ITabbedPropertyConstants.VSPACE);
 		edgeNameText.setLayoutData(data);
-		edgeName = new TextCommandHandler(edgeNameText)
+		edgeName = new TextCommandHandler(edgeNameText, false)
 		{
 			@Override
 			protected Command getCommand(final String textValue)

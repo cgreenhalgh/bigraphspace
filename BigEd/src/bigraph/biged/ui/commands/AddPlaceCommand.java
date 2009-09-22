@@ -2,6 +2,7 @@ package bigraph.biged.ui.commands;
 
 import bigraph.biged.model.Bigraph;
 import bigraph.biged.model.BigraphEvent;
+import bigraph.biged.ui.BigraphLabelProvider;
 import bigraphspace.model.Place;
 import bigraphspace.model.PlaceType;
 
@@ -12,7 +13,7 @@ public class AddPlaceCommand extends AbstractBigraphCommand
 
 	public AddPlaceCommand(final Bigraph bigraph, final Place parent, final Place child)
 	{
-		super(bigraph);
+		super(bigraph, "Add " + BigraphLabelProvider.text(child) + " to " + BigraphLabelProvider.text(parent));
 		this.parent = parent;
 		this.child = child;
 	}
@@ -24,22 +25,10 @@ public class AddPlaceCommand extends AbstractBigraphCommand
 	}
 
 	@Override
-	public boolean canUndo()
-	{
-		return true;
-	}
-
-	@Override
 	public void execute()
 	{
 		parent.addChild(child);
 		bigraph.fireEvent(new BigraphEvent(parent, child, BigraphEvent.Type.ADD));
-	}
-
-	@Override
-	public String getLabel()
-	{
-		return "Add Place";
 	}
 
 	@Override

@@ -15,6 +15,7 @@ public abstract class TextCommandHandler implements ModifyListener, SelectionLis
 	private CommandStack commandStack;
 	private boolean modified;
 	private final Text textField;
+	private boolean disableOnNull = true;
 
 	public TextCommandHandler(final Text textField)
 	{
@@ -22,6 +23,20 @@ public abstract class TextCommandHandler implements ModifyListener, SelectionLis
 		textField.addModifyListener(this);
 		textField.addSelectionListener(this);
 		textField.addFocusListener(this);
+	}
+	
+	public TextCommandHandler(final Text textField, final boolean disableOnNull)
+	{
+		this.textField = textField;
+		this.disableOnNull = disableOnNull;
+		textField.addModifyListener(this);
+		textField.addSelectionListener(this);
+		textField.addFocusListener(this);
+	}	
+	
+	public void setDisableOnNull(final boolean disableOnNull)
+	{
+		this.disableOnNull = disableOnNull;
 	}
 
 	public void focusGained(final FocusEvent e)
@@ -49,7 +64,7 @@ public abstract class TextCommandHandler implements ModifyListener, SelectionLis
 		if (text == null)
 		{
 			textField.setText("");
-			textField.setEnabled(false);
+			textField.setEnabled(!disableOnNull);
 		}
 		else
 		{

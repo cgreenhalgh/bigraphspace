@@ -2,6 +2,7 @@ package bigraph.biged.ui.commands;
 
 import bigraph.biged.model.Bigraph;
 import bigraph.biged.model.BigraphEvent;
+import bigraph.biged.ui.BigraphLabelProvider;
 import bigraphspace.model.IndexValue;
 import bigraphspace.model.Place;
 
@@ -13,21 +14,9 @@ public class DeleteControlIndexCommand extends AbstractBigraphCommand
 
 	public DeleteControlIndexCommand(final Bigraph bigraph, final Place place, final IndexValue value)
 	{
-		super(bigraph);
+		super(bigraph, "Delete Control Index " + BigraphLabelProvider.text(value) + " from " + BigraphLabelProvider.text(place));
 		this.place = place;
 		this.value = value;
-	}
-
-	@Override
-	public boolean canExecute()
-	{
-		return true;
-	}
-
-	@Override
-	public boolean canUndo()
-	{
-		return true;
 	}
 
 	@Override
@@ -36,12 +25,6 @@ public class DeleteControlIndexCommand extends AbstractBigraphCommand
 		index = place.getControlIndexes().indexOf(value);
 		place.removeControlIndex(value);
 		bigraph.fireEvent(new BigraphEvent(place, value, BigraphEvent.Type.CHANGE));
-	}
-
-	@Override
-	public String getLabel()
-	{
-		return "Delete Control Index";
 	}
 
 	@Override

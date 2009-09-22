@@ -2,6 +2,7 @@ package bigraph.biged.ui.commands;
 
 import bigraph.biged.model.Bigraph;
 import bigraph.biged.model.BigraphEvent;
+import bigraph.biged.ui.BigraphLabelProvider;
 import bigraphspace.model.Place;
 import bigraphspace.model.PlaceType;
 
@@ -12,7 +13,7 @@ public class AddRootCommand extends AbstractBigraphCommand
 
 	public AddRootCommand(final Bigraph bigraph, final Place child, final Place after)
 	{
-		super(bigraph);
+		super(bigraph, "Add " + BigraphLabelProvider.text(child) + " to bigraph");		
 		this.child = child;
 		this.before = after;
 	}
@@ -21,12 +22,6 @@ public class AddRootCommand extends AbstractBigraphCommand
 	public boolean canExecute()
 	{
 		return child.getType() == PlaceType.root;
-	}
-
-	@Override
-	public boolean canUndo()
-	{
-		return true;
 	}
 
 	@Override
@@ -44,12 +39,6 @@ public class AddRootCommand extends AbstractBigraphCommand
 			bigraph.getBigraph().insertRoot(child, index);
 		}
 		bigraph.fireEvent(new BigraphEvent(bigraph, child, BigraphEvent.Type.ADD));
-	}
-
-	@Override
-	public String getLabel()
-	{
-		return "Add Place";
 	}
 
 	@Override
