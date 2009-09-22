@@ -44,7 +44,7 @@ public class DomPlace implements Place {
 	public void addPort(Port port) {
 		if (port instanceof DomPort) {
 			DomPort domPort = (DomPort)port;
-			element.appendChild(domPort.getAttribute());			
+			element.setAttributeNode(domPort.getAttribute());			
 		}
 		else
 			throw new IllegalArgumentException("addPort called with non-DomPort: "+port);
