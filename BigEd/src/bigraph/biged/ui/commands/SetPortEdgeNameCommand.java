@@ -1,19 +1,24 @@
 package bigraph.biged.ui.commands;
 
+import java.util.Collection;
+
 import bigraph.biged.model.Bigraph;
-import bigraph.biged.model.BigraphEvent;
+import bigraph.biged.model.BigraphEvent.Type;
 import bigraph.biged.ui.BigraphLabelProvider;
+import bigraphspace.model.Place;
 import bigraphspace.model.Port;
 
-public class SetPortEdgeNameCommand extends AbstractBigraphCommand
+public class SetPortEdgeNameCommand extends BigraphCommand
 {
+	private final Place place;
 	private final Port port;
 	private final String newEdge;
 	private String oldEdge;
 
-	public SetPortEdgeNameCommand(final Bigraph bigraph, final Port port, final String newEdge)
+	public SetPortEdgeNameCommand(final Bigraph bigraph, final Place place, final Port port, final String newEdge)
 	{
 		super(bigraph, "Set " + BigraphLabelProvider.text(port) + " to " + newEdge);
+		this.place = place;
 		this.port = port;
 		if (newEdge == null || newEdge.equals(""))
 		{
@@ -33,17 +38,31 @@ public class SetPortEdgeNameCommand extends AbstractBigraphCommand
 	}
 
 	@Override
-	public void execute()
+	public Collection<Object> getAffectedObjects()
 	{
-		oldEdge = port.getLinkName();
-		port.setLinkName(newEdge);
-		bigraph.fireEvent(new BigraphEvent(port, newEdge, BigraphEvent.Type.CHANGE));
+		final Collection<Object> result = super.getAffectedObjects();
+		result.add(place);
+		result.add(bigraph.getEdge(newEdge));
+		result.add(bigraph.getEdge(oldEdge));
+		return result;
 	}
 
 	@Override
-	public void undo()
+	public Type getType(final boolean undo)
 	{
-		port.setLinkName(oldEdge);
-		bigraph.fireEvent(new BigraphEvent(port, oldEdge, BigraphEvent.Type.CHANGE));
+		return Type.CHANGE;
+	}
+
+	@Override
+	protected void doExecute()
+	{
+		oldEdge = port.getLinkName();
+		bigraph.renamePortEdge(place, port, newEdge);
+	}
+
+	@Override
+	protected void doUndo()
+	{
+		bigraph.renamePortEdge(place, port, oldEdge);
 	}
 }

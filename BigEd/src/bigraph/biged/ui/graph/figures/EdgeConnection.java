@@ -109,6 +109,9 @@ public class EdgeConnection extends PolylineConnection implements Connection
 			{
 				super.invalidate(connection);
 				segments.clear();
+				sourcePort = null;
+				targetPort = null;
+				portAnchors.clear();
 			}
 
 			@Override

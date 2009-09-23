@@ -46,13 +46,22 @@
        </category>
        <wizard
              category="bigraph.biged"
-             class="bigraph.biged.ui.wizards.NewBigraph"
+             class="bigraph.biged.ui.wizards.NewBigraphXML"
              hasPages="true"
              icon="icons/sample.gif"
-             id="bigraph.biged.ui.wizards.NewBigraph"
-             name="Bigraph"
+             id="bigraph.biged.ui.wizards.NewBigraphXML"
+             name="Bigraph XML"
              project="false">
        </wizard>
+       <wizard
+             category="bigraph.biged"
+             class="bigraph.biged.ui.wizards.NewBigraphBTL"
+             hasPages="true"
+             icon="icons/sample.gif"
+             id="bigraph.biged.ui.wizards.NewBigraphBTL"
+             name="Bigraph BTL"
+             project="false">
+       </wizard>       
     </extension>
     <extension
           point="org.eclipse.ui.views.properties.tabbed.propertyContributor">
@@ -107,6 +116,22 @@
              <input
                    type="bigraph.biged.model.Edge">
              </input>
+          </propertySection>  
+                      <propertySection
+                class="bigraph.biged.ui.properties.PortEdgeNameSection"
+                id="bigraph.biged.ui.properties.PortEdgeNameSection"
+                tab="bigraph.biged.ui.properties.general">
+             <input
+                   type="bigraphspace.model.Port">
+             </input>                
+          </propertySection>
+          <propertySection
+                class="bigraph.biged.ui.properties.PortNameSection"
+                id="bigraph.biged.ui.properties.PortNameSection"
+                tab="bigraph.biged.ui.properties.general">
+             <input
+                   type="bigraphspace.model.Port">
+             </input>                                
           </propertySection>          
        </propertySections>
     </extension>

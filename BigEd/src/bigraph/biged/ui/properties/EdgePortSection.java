@@ -3,6 +3,7 @@ package bigraph.biged.ui.properties;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.commands.Command;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
@@ -11,6 +12,7 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.forms.events.IHyperlinkListener;
 import org.eclipse.ui.forms.widgets.Hyperlink;
@@ -52,6 +54,14 @@ public class EdgePortSection extends AbstractListPropertySection
 			}
 		});
 	}
+	
+	@Override
+	public void setInput(final IWorkbenchPart part, final ISelection selection)
+	{
+		super.setInput(part, selection);
+		portName.setCommandStack(getCommandStack());
+		edgeName.setCommandStack(getCommandStack());
+	}	
 
 	@Override
 	protected void createDetailsPanel(final Composite parent, final TabbedPropertySheetPage aTabbedPropertySheetPage)
@@ -108,7 +118,8 @@ public class EdgePortSection extends AbstractListPropertySection
 			{
 				final Object selection = getSelectedObject();
 				if (selection == null) { return null; }
-				return new SetPortNameCommand(getBigraph(), (Port) selection, textValue);
+				final Port port = (Port)selection;				
+				return new SetPortNameCommand(getBigraph(), ((Edge)getModel()).getPlace(port), port, textValue);
 			}
 		};
 
@@ -132,7 +143,8 @@ public class EdgePortSection extends AbstractListPropertySection
 			{
 				final Object selection = getSelectedObject();
 				if (selection == null) { return null; }
-				return new SetPortEdgeNameCommand(getBigraph(), (Port) selection, textValue);
+				final Port port = (Port)selection;
+				return new SetPortEdgeNameCommand(getBigraph(), ((Edge)getModel()).getPlace(port), port, textValue);
 			}
 		};
 

@@ -1,10 +1,12 @@
 package bigraph.biged.ui.commands;
 
+import java.util.Collection;
+
 import bigraph.biged.model.Bigraph;
-import bigraph.biged.model.BigraphEvent;
+import bigraph.biged.model.BigraphEvent.Type;
 import bigraphspace.model.Place;
 
-public class SetPlaceControlCommand extends AbstractBigraphCommand
+public class SetPlaceControlCommand extends BigraphCommand
 {
 	private final Place place;
 	private final String newName;
@@ -32,17 +34,29 @@ public class SetPlaceControlCommand extends AbstractBigraphCommand
 	}
 
 	@Override
-	public void execute()
+	public Collection<Object> getAffectedObjects()
 	{
-		oldName = place.getControlName();
-		place.setControlName(newName);
-		bigraph.fireEvent(new BigraphEvent(place, newName, BigraphEvent.Type.CHANGE));
+		final Collection<Object> result = super.getAffectedObjects();
+		result.add(place);
+		return result;
 	}
 
 	@Override
-	public void undo()
+	public Type getType(final boolean undo)
+	{
+		return Type.CHANGE;
+	}
+
+	@Override
+	protected void doExecute()
+	{
+		oldName = place.getControlName();
+		place.setControlName(newName);
+	}
+
+	@Override
+	protected void doUndo()
 	{
 		place.setControlName(oldName);
-		bigraph.fireEvent(new BigraphEvent(place, oldName, BigraphEvent.Type.CHANGE));
 	}
 }

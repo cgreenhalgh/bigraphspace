@@ -87,16 +87,12 @@ public class PlacePart extends AbstractBigraphEditPart implements BigraphEventLi
 	{
 		if (getParent() != null)
 		{
-			if (event.getType() == Type.ADD || event.getType() == Type.REMOVE)
-			{
-				refreshChildren();
-			}
-			else if (event.getType() == Type.CHANGE)
+			if (event.getType() == Type.CHANGE)
 			{
 				getParent().refresh();
-				refreshVisuals();
 			}
 		}
+		refresh();
 	}
 
 	@Override
@@ -110,13 +106,6 @@ public class PlacePart extends AbstractBigraphEditPart implements BigraphEventLi
 	{
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, new FlowLayoutEditPolicy()
 		{
-			@Override
-			public Command getCommand(final Request request)
-			{
-				System.err.println("Request " + request.getType());
-				return super.getCommand(request);
-			}
-
 			@Override
 			protected Command createAddCommand(final EditPart child, final EditPart after)
 			{

@@ -1,13 +1,15 @@
 package bigraph.biged.ui.commands;
 
+import java.util.Collection;
+
 import bigraph.biged.model.Bigraph;
-import bigraph.biged.model.BigraphEvent;
 import bigraph.biged.model.Edge;
+import bigraph.biged.model.BigraphEvent.Type;
 import bigraph.biged.ui.BigraphLabelProvider;
 import bigraphspace.model.Place;
 import bigraphspace.model.Port;
 
-public class DeletePortCommand extends AbstractBigraphCommand
+public class DeletePortCommand extends BigraphCommand
 {
 	private final Place place;
 	private final Port port;
@@ -22,18 +24,38 @@ public class DeletePortCommand extends AbstractBigraphCommand
 	}
 
 	@Override
-	public void execute()
+	public Collection<Object> getAffectedObjects()
 	{
-		place.removePort(port);
-		edge.removePort(port);
-		bigraph.fireEvent(new BigraphEvent(place, port, BigraphEvent.Type.REMOVE));
+		final Collection<Object> result = super.getAffectedObjects();
+		result.add(place);
+		result.add(edge);
+		return result;
 	}
 
 	@Override
-	public void undo()
+	public Type getType(final boolean undo)
+	{
+		if (undo)
+		{
+			return Type.ADD;
+		}
+		else
+		{
+			return Type.REMOVE;
+		}
+	}
+
+	@Override
+	protected void doExecute()
+	{
+		place.removePort(port);
+		edge.removePort(port);
+	}
+
+	@Override
+	protected void doUndo()
 	{
 		place.addPort(port);
 		edge.addPort(port, place);
-		bigraph.fireEvent(new BigraphEvent(place, port, BigraphEvent.Type.ADD));
 	}
 }

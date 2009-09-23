@@ -100,6 +100,7 @@ public class EdgePart extends AbstractConnectionEditPart implements BigraphEvent
 	@Override
 	public void onPlaceEvent(final BigraphEvent event)
 	{
+		refresh();
 		getFigure().revalidate();
 	}
 

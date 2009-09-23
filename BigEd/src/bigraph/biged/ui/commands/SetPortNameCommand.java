@@ -1,20 +1,25 @@
 package bigraph.biged.ui.commands;
 
+import java.util.Collection;
+
 import bigraph.biged.model.Bigraph;
-import bigraph.biged.model.BigraphEvent;
+import bigraph.biged.model.BigraphEvent.Type;
 import bigraph.biged.ui.BigraphLabelProvider;
+import bigraphspace.model.Place;
 import bigraphspace.model.Port;
 
-public class SetPortNameCommand extends AbstractBigraphCommand
+public class SetPortNameCommand extends BigraphCommand
 {
+	private final Place place;
 	private final Port port;
 	private final String newName;
 	private String oldName;
 
-	public SetPortNameCommand(final Bigraph bigraph, final Port port, final String newName)
+	public SetPortNameCommand(final Bigraph bigraph, final Place place, final Port port, final String newName)
 	{
 		super(bigraph, "Set " + BigraphLabelProvider.text(port) + " to " + newName);
 		this.port = port;
+		this.place = place;
 		if (newName == null || newName.equals(""))
 		{
 			this.newName = null;
@@ -39,17 +44,29 @@ public class SetPortNameCommand extends AbstractBigraphCommand
 	}
 
 	@Override
-	public void execute()
+	public Collection<Object> getAffectedObjects()
 	{
-		oldName = port.getName();
-		port.setName(newName);
-		bigraph.fireEvent(new BigraphEvent(port, newName, BigraphEvent.Type.CHANGE));
+		final Collection<Object> result = super.getAffectedObjects();
+		result.add(place);
+		return result;
 	}
 
 	@Override
-	public void undo()
+	public Type getType(final boolean undo)
+	{
+		return Type.CHANGE;
+	}
+
+	@Override
+	protected void doExecute()
+	{
+		oldName = port.getName();
+		port.setName(newName);
+	}
+
+	@Override
+	protected void doUndo()
 	{
 		port.setName(oldName);
-		bigraph.fireEvent(new BigraphEvent(port, oldName, BigraphEvent.Type.CHANGE));
 	}
 }

@@ -137,10 +137,9 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements I
 			final StringWriter string = new StringWriter();
 			final BigraphWriter writer = XmlIOFactory.getWriter(format);
 			writer.write(bigraph.getBigraph(), string);
-			ByteArrayInputStream bytes = new ByteArrayInputStream(string.toString().getBytes());
 
 			final IFile file = ((IFileEditorInput) getEditorInput()).getFile();
-			file.setContents(bytes, true, true, monitor);
+			file.setContents(new ByteArrayInputStream(string.toString().getBytes()), true, true, monitor);
 			getCommandStack().markSaveLocation();
 		}
 		catch (final Exception e)

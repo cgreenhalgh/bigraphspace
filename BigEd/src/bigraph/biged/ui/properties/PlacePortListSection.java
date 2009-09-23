@@ -50,7 +50,7 @@ public class PlacePortListSection extends AbstractListPropertySection
 			{
 				final Object selection = getSelectedObject();
 				if (selection == null) { return null; }
-				return new SetPortNameCommand(getBigraph(), (Port) selection, textValue);
+				return new SetPortNameCommand(getBigraph(), (Place)getModel(), (Port) selection, textValue);
 			}
 		};
 
@@ -74,7 +74,7 @@ public class PlacePortListSection extends AbstractListPropertySection
 			{
 				final Object selection = getSelectedObject();
 				if (selection == null) { return null; }
-				return new SetPortEdgeNameCommand(getBigraph(), (Port) selection, textValue);
+				return new SetPortEdgeNameCommand(getBigraph(), (Place)getModel(), (Port) selection, textValue);
 			}
 		};
 

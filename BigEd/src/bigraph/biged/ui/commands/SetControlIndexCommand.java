@@ -1,11 +1,13 @@
 package bigraph.biged.ui.commands;
 
+import java.util.Collection;
+
 import bigraph.biged.model.Bigraph;
-import bigraph.biged.model.BigraphEvent;
+import bigraph.biged.model.BigraphEvent.Type;
 import bigraphspace.model.IndexValue;
 import bigraphspace.model.Place;
 
-public class SetControlIndexCommand extends AbstractBigraphCommand
+public class SetControlIndexCommand extends BigraphCommand
 {
 	private final Place place;
 	private final Object newValue;
@@ -19,21 +21,34 @@ public class SetControlIndexCommand extends AbstractBigraphCommand
 		this.place = place;
 		this.newValue = newValue;
 		this.oldValue = oldValue;
+		index = place.getControlIndexes().indexOf(oldValue);
 	}
 
 	@Override
-	public void execute()
+	public Collection<Object> getAffectedObjects()
+	{
+		final Collection<Object> result = super.getAffectedObjects();
+		result.add(place);
+		return result;
+	}
+
+	@Override
+	public Type getType(final boolean undo)
+	{
+		return Type.CHANGE;
+	}
+
+	@Override
+	protected void doExecute()
 	{
 		index = place.getControlIndexes().indexOf(oldValue);
 		final IndexValue indexValue = bigraph.getBigraph().createIndexValue(newValue);
 		place.setControlIndex(indexValue, index);
-		bigraph.fireEvent(new BigraphEvent(place, indexValue, BigraphEvent.Type.CHANGE));
 	}
 
 	@Override
-	public void undo()
+	protected void doUndo()
 	{
 		place.setControlIndex(oldValue, index);
-		bigraph.fireEvent(new BigraphEvent(place, oldValue, BigraphEvent.Type.CHANGE));
 	}
 }
