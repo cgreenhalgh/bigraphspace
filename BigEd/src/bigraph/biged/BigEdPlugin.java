@@ -102,6 +102,8 @@ public class BigEdPlugin extends AbstractUIPlugin
 	{
 		super.initializeImageRegistry(reg);
 		reg.put("node", getImageDescriptor("icons/node.png"));
+		reg.put("site", getImageDescriptor("icons/site.png"));
+		reg.put("root", getImageDescriptor("icons/root.png"));		
 		reg.put("port", getImageDescriptor("icons/port.gif"));
 		reg.put("portx", getImageDescriptor("icons/portx.png"));
 		reg.put("edge", getImageDescriptor("icons/edge.gif"));
