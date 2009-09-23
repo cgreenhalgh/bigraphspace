@@ -1,12 +1,14 @@
 package bigraph.biged.ui.commands;
 
+import java.util.Collection;
+
 import bigraph.biged.model.Bigraph;
-import bigraph.biged.model.BigraphEvent;
+import bigraph.biged.model.BigraphEvent.Type;
 import bigraph.biged.ui.BigraphLabelProvider;
 import bigraphspace.model.Place;
 import bigraphspace.model.PlaceType;
 
-public class AddPlaceCommand extends AbstractBigraphCommand
+public class AddPlaceCommand extends BigraphCommand
 {
 	private final Place parent;
 	private final Place child;
@@ -25,16 +27,35 @@ public class AddPlaceCommand extends AbstractBigraphCommand
 	}
 
 	@Override
-	public void execute()
+	public Collection<Object> getAffectedObjects()
 	{
-		parent.addChild(child);
-		bigraph.fireEvent(new BigraphEvent(parent, child, BigraphEvent.Type.ADD));
+		final Collection<Object> result = super.getAffectedObjects();
+		result.add(parent);
+		return result;
 	}
 
 	@Override
-	public void undo()
+	public Type getType(final boolean undo)
 	{
-		(parent).removeChild(child);
-		bigraph.fireEvent(new BigraphEvent(parent, child, BigraphEvent.Type.REMOVE));
+		if (undo)
+		{
+			return Type.REMOVE;
+		}
+		else
+		{
+			return Type.ADD;
+		}
+	}
+
+	@Override
+	protected void doExecute()
+	{
+		parent.addChild(child);
+	}
+
+	@Override
+	protected void doUndo()
+	{
+		parent.removeChild(child);
 	}
 }

@@ -1,19 +1,21 @@
 package bigraph.biged.ui.commands;
 
+import java.util.Collection;
+
 import bigraph.biged.model.Bigraph;
-import bigraph.biged.model.BigraphEvent;
+import bigraph.biged.model.BigraphEvent.Type;
 import bigraph.biged.ui.BigraphLabelProvider;
 import bigraphspace.model.Place;
 import bigraphspace.model.PlaceType;
 
-public class AddRootCommand extends AbstractBigraphCommand
+public class AddRootCommand extends BigraphCommand
 {
 	private final Place child;
 	private final Place before;
 
 	public AddRootCommand(final Bigraph bigraph, final Place child, final Place after)
 	{
-		super(bigraph, "Add " + BigraphLabelProvider.text(child) + " to bigraph");		
+		super(bigraph, "Add " + BigraphLabelProvider.text(child) + " to bigraph");
 		this.child = child;
 		this.before = after;
 	}
@@ -25,7 +27,28 @@ public class AddRootCommand extends AbstractBigraphCommand
 	}
 
 	@Override
-	public void execute()
+	public Collection<Object> getAffectedObjects()
+	{
+		final Collection<Object> result = super.getAffectedObjects();
+		result.add(bigraph);
+		return result;
+	}
+
+	@Override
+	public Type getType(final boolean undo)
+	{
+		if (undo)
+		{
+			return Type.REMOVE;
+		}
+		else
+		{
+			return Type.ADD;
+		}
+	}
+
+	@Override
+	protected void doExecute()
 	{
 		final int index = bigraph.getBigraph().getRoots().indexOf(before);
 		System.out.println("Insert at " + index);
@@ -38,13 +61,11 @@ public class AddRootCommand extends AbstractBigraphCommand
 		{
 			bigraph.getBigraph().insertRoot(child, index);
 		}
-		bigraph.fireEvent(new BigraphEvent(bigraph, child, BigraphEvent.Type.ADD));
 	}
 
 	@Override
-	public void undo()
+	protected void doUndo()
 	{
 		bigraph.getBigraph().removeRoot(child);
-		bigraph.fireEvent(new BigraphEvent(bigraph, child, BigraphEvent.Type.REMOVE));
 	}
 }

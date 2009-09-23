@@ -50,12 +50,15 @@ public class Bigraph
 
 	public void fireEvent(final BigraphEvent event)
 	{
-		//System.out.println(event);
-		for(final Edge edge: edges.values())
+		System.out.println(event);
+//		for(final Edge edge: edges.values())
+//		{
+//			fireEvent(listeners.get(edge), event);
+//		}
+		for(Object object: event.getAffectedObjects())
 		{
-			fireEvent(listeners.get(edge), event);
+			fireEvent(listeners.get(object), event);			
 		}
-		fireEvent(listeners.get(event.getSource()), event);
 	}
 
 	public bigraphspace.model.Bigraph getBigraph()
@@ -63,6 +66,11 @@ public class Bigraph
 		return bigraph;
 	}
 
+	public Collection<Edge> getEdges()
+	{
+		return edges.values();
+	}
+	
 	public Edge getEdge(final String linkName)
 	{
 		return edges.get(linkName);
@@ -94,6 +102,27 @@ public class Bigraph
 		{
 			listeners.remove(source);
 		}
+	}
+	
+	public void renamePortEdge(final Place place, final Port port, final String newEdge)
+	{
+		Edge edge = edges.get(port.getLinkName());
+		if(edge != null)
+		{
+			edge.removePort(port);
+			if(edge.getPorts().isEmpty())
+			{
+				edges.remove(port.getLinkName());
+			}
+		}
+		port.setLinkName(newEdge);
+		edge = edges.get(newEdge);
+		if(edge == null)
+		{
+			edge = new Edge(newEdge);
+			edges.put(newEdge, edge);
+		}
+		edge.addPort(port, place);		
 	}
 
 	private void updateEdges()

@@ -1,6 +1,8 @@
 package bigraph.biged.model;
 
-import bigraph.biged.ui.BigraphLabelProvider;
+import java.util.Collection;
+
+import bigraph.biged.ui.commands.BigraphCommand;
 
 public class BigraphEvent
 {
@@ -9,35 +11,38 @@ public class BigraphEvent
 		ADD, REMOVE, CHANGE
 	}
 
-	private final Object source;
-	private final Object changes;
-	private final Type type;
+	private final boolean undo;
+	private final BigraphCommand command;
 
-	public BigraphEvent(final Object source, final Object changes, final Type type)
+	public BigraphEvent(final BigraphCommand command)
 	{
-		this.source = source;
-		this.changes = changes;
-		this.type = type;
+		this.command = command;
+		this.undo = false;
+	}
+	
+	public BigraphEvent(final BigraphCommand command, final boolean undo)
+	{
+		this.command = command;
+		this.undo = undo;
 	}
 
-	public Object getChanges()
+	public Collection<?> getAffectedObjects()
 	{
-		return changes;
-	}
-
-	public Object getSource()
-	{
-		return source;
+		return command.getAffectedObjects();
 	}
 
 	public Type getType()
 	{
-		return type;
+		return command.getType(undo);
 	}
 
 	@Override
 	public String toString()
 	{
-		return "Event " + BigraphLabelProvider.text(source) + ": " + type + " " + BigraphLabelProvider.text(changes);
+		if(undo)
+		{
+			return "Bigraph Event: Undo " + command.toString();
+		}
+		return "Bigraph Event: " + command.toString();
 	}
 }

@@ -29,7 +29,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.ide.IDE;
 
-public class NewBigraph extends Wizard implements INewWizard
+public class NewBigraphBTL extends Wizard implements INewWizard
 {
 	private WizardNewFileCreationPage page;
 	private IStructuredSelection selection;
@@ -37,7 +37,7 @@ public class NewBigraph extends Wizard implements INewWizard
 	/**
 	 * Constructor for NewBigraph.
 	 */
-	public NewBigraph()
+	public NewBigraphBTL()
 	{
 		super();
 		setNeedsProgressMonitor(true);
@@ -50,11 +50,11 @@ public class NewBigraph extends Wizard implements INewWizard
 	@Override
 	public void addPages()
 	{
-		page = new WizardNewFileCreationPage("Bigraph XML File", selection);
-		page.setTitle("Bigraph XML File");
-		page.setDescription("Create a new bigraph xml file.");
-		page.setFileName("bigraph.xml");
-		page.setFileExtension("xml");
+		page = new WizardNewFileCreationPage("Bigraph BTL File", selection);
+		page.setTitle("Bigraph BTL File");
+		page.setDescription("Create a new bigraph btl file.");
+		page.setFileName("bigraph.btl");
+		page.setFileExtension("btl");
 		addPage(page);
 	}
 
@@ -171,7 +171,7 @@ public class NewBigraph extends Wizard implements INewWizard
 
 	private InputStream openContentStream()
 	{
-		final String contents = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<bigraph>\n\t<root>\n\t</root>\n</bigraph>";
+		final String contents = "bigraph";
 		return new ByteArrayInputStream(contents.getBytes());
 	}
 

@@ -1,11 +1,12 @@
 package bigraph.biged.ui.commands;
 
+import java.util.Collection;
+
 import bigraph.biged.model.Bigraph;
-import bigraph.biged.model.BigraphEvent;
 import bigraph.biged.model.BigraphEvent.Type;
 import bigraphspace.model.Place;
 
-public class DeleteRootCommand extends AbstractBigraphCommand
+public class DeleteRootCommand extends BigraphCommand
 {
 	private final Place child;
 	private int index;
@@ -17,17 +18,36 @@ public class DeleteRootCommand extends AbstractBigraphCommand
 	}
 
 	@Override
-	public void execute()
+	public Collection<Object> getAffectedObjects()
 	{
-		index = bigraph.getBigraph().getRoots().indexOf(child);
-		bigraph.getBigraph().removeRoot(child);
-		bigraph.fireEvent(new BigraphEvent(bigraph, child, Type.REMOVE));
+		final Collection<Object> result = super.getAffectedObjects();
+		result.add(bigraph);
+		return result;
 	}
 
 	@Override
-	public void undo()
+	public Type getType(final boolean undo)
+	{
+		if (undo)
+		{
+			return Type.ADD;
+		}
+		else
+		{
+			return Type.REMOVE;
+		}
+	}
+
+	@Override
+	protected void doExecute()
+	{
+		index = bigraph.getBigraph().getRoots().indexOf(child);
+		bigraph.getBigraph().removeRoot(child);
+	}
+
+	@Override
+	protected void doUndo()
 	{
 		bigraph.getBigraph().insertRoot(child, index);
-		bigraph.fireEvent(new BigraphEvent(bigraph, child, Type.ADD));
 	}
 }
