@@ -1,7 +1,7 @@
 package bigraph.biged.ui.editors;
 
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.StringWriter;
 import java.util.EventObject;
 
 import org.eclipse.core.resources.IFile;
@@ -134,13 +134,13 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements I
 	{
 		try
 		{
-			final PipedInputStream in = new PipedInputStream();
-			final PipedOutputStream out = new PipedOutputStream(in);
+			final StringWriter string = new StringWriter();
 			final BigraphWriter writer = XmlIOFactory.getWriter(format);
-			writer.write(bigraph.getBigraph(), out);
+			writer.write(bigraph.getBigraph(), string);
+			ByteArrayInputStream bytes = new ByteArrayInputStream(string.toString().getBytes());
 
 			final IFile file = ((IFileEditorInput) getEditorInput()).getFile();
-			file.setContents(in, true, true, monitor);
+			file.setContents(bytes, true, true, monitor);
 			getCommandStack().markSaveLocation();
 		}
 		catch (final Exception e)
