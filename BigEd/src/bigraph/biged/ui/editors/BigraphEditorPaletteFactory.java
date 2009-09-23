@@ -51,7 +51,7 @@ final class BigraphEditorPaletteFactory
 		final PaletteDrawer componentsDrawer = new PaletteDrawer("Places");
 
 		CombinedTemplateCreationEntry component = new CombinedTemplateCreationEntry("Root", "Create a Root",
-				Place.class, new PlaceFactory(editor, PlaceType.root), null, null);
+				Place.class, new PlaceFactory(editor, PlaceType.root), BigEdPlugin.getDescriptor("root"), null);
 		componentsDrawer.add(component);
 
 		component = new CombinedTemplateCreationEntry("Place", "Create a Place", Place.class, new PlaceFactory(editor,
@@ -59,7 +59,7 @@ final class BigraphEditorPaletteFactory
 		componentsDrawer.add(component);
 
 		component = new CombinedTemplateCreationEntry("Site", "Create a Site", Place.class, new PlaceFactory(editor,
-				PlaceType.site), null, null);
+				PlaceType.site), BigEdPlugin.getDescriptor("site"), null);
 		componentsDrawer.add(component);
 
 		return componentsDrawer;

@@ -70,6 +70,8 @@ public class BigraphLabelProvider extends LabelProvider
 		{
 			final Place place = (Place) modelObject;
 			if (place.getType() == PlaceType.node) { return BigEdPlugin.getImage("node"); }
+			if(place.getType() == PlaceType.root) {return BigEdPlugin.getImage("root"); }
+			if(place.getType() == PlaceType.site) {return BigEdPlugin.getImage("site"); }			
 		}
 		else if (modelObject instanceof Port)
 		{
