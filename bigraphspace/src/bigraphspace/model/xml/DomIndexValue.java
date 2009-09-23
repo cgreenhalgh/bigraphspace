@@ -26,6 +26,20 @@ public class DomIndexValue implements IndexValue {
 		return element;
 	}
 
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(obj instanceof DomIndexValue)
+		{
+			return element.equals(((DomIndexValue)obj).element);
+		}
+		return false;
+	}
+	@Override
+	public int hashCode()
+	{
+		return element.hashCode();
+	}
 	/* (non-Javadoc)
 	 * @see bigraphspace.model.IndexValue#getValue()
 	 */
