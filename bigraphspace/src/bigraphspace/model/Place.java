@@ -71,5 +71,5 @@ public interface Place {
 	/** get site index (if specified) */
 	public Integer getSiteIndex();
 	/** set site index (if allwoed) */
-	public void setSiteIndex(int index);
+	public void setSiteIndex(Integer index);
 }
