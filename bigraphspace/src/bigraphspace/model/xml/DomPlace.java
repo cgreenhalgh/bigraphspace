@@ -413,9 +413,16 @@ public class DomPlace implements Place {
 	 * @see bigraphspace.model.Place#setSiteIndex(int)
 	 */
 	//@Override
-	public void setSiteIndex(int index) {
+	public void setSiteIndex(Integer index) {
 		if(!isSite())
 			throw new IllegalArgumentException("setSiteIndex on non-site "+this);
-		element.setAttribute(Constants.SITE_INDEX_ATTRIBUTE_NAME, ""+index);
+		if(index == null)
+		{
+			element.removeAttribute(Constants.SITE_INDEX_ATTRIBUTE_NAME);
+		}
+		else
+		{
+			element.setAttribute(Constants.SITE_INDEX_ATTRIBUTE_NAME, index.toString());
+		}
 	}
 }
