@@ -29,7 +29,7 @@ public class PlaceTreePart extends AbstractBigraphTreeEditPart
 	protected List getModelChildren()
 	{
 		final List children = new ArrayList();
-		
+
 		final List ports = getPlace().getPorts();
 		Collections.sort(ports, new BigraphLabelComparator());
 		children.addAll(ports);

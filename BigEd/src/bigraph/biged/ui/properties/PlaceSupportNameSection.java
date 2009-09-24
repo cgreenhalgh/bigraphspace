@@ -36,8 +36,6 @@
 package bigraph.biged.ui.properties;
 
 import org.eclipse.gef.commands.Command;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 
 import bigraph.biged.ui.commands.SetPlaceSupportCommand;
 import bigraphspace.model.Place;
@@ -51,14 +49,6 @@ public class PlaceSupportNameSection extends AbstractStringPropertySection
 	protected Command createCommand(final String textValue)
 	{
 		return new SetPlaceSupportCommand(getBigraph(), (Place) getModel(), textValue);
-	}
-
-	@Override
-	protected Control createControl(Composite parent)
-	{
-		final Control control = super.createControl(parent);
-		text.setDisableOnNull(false);		
-		return control;
 	}
 
 	@Override

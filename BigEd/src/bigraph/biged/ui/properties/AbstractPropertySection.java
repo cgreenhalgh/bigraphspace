@@ -42,10 +42,13 @@ public abstract class AbstractPropertySection extends org.eclipse.ui.views.prope
 
 	protected Bigraph getBigraph()
 	{
-		if(bigraph == null)
+		if (bigraph == null)
 		{
 			final EditPartViewer viewer = getViewer();
-			if (viewer != null) { bigraph = (Bigraph) viewer.getRootEditPart().getContents().getModel(); }
+			if (viewer != null)
+			{
+				bigraph = (Bigraph) viewer.getRootEditPart().getContents().getModel();
+			}
 		}
 		return bigraph;
 	}

@@ -35,46 +35,40 @@
  */
 package bigraph.biged.ui.properties;
 
-import org.eclipse.gef.EditPart;
-import org.eclipse.gef.commands.Command;
-import org.eclipse.jface.viewers.IStructuredSelection;
-
-import bigraph.biged.ui.commands.SetPortNameCommand;
-import bigraphspace.model.Place;
-import bigraphspace.model.Port;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 /**
  * @author <a href="ktg@cs.nott.ac.uk">Kevin Glover</a>
  */
-public class PortNameSection extends AbstractStringPropertySection
+public abstract class AbstractIntegerPropertySection extends AbstractStringPropertySection
 {
-	public Place getPlace()
+
+	@Override
+	protected Control createControl(final Composite parent)
 	{
-		Object result = getSelection();
-		if (result instanceof IStructuredSelection)
+		final Control control = super.createControl(parent);
+		text.addVerifyListener(new VerifyListener()
 		{
-			result = ((IStructuredSelection) result).getFirstElement();
-		}
-
-		if (result instanceof EditPart) { return (Place) ((EditPart) result).getParent().getModel(); }
-		return null;
+			public void verifyText(final VerifyEvent e)
+			{
+				if (!"".equals(e.text))
+				{
+					try
+					{
+						Integer.parseInt(e.text);
+					}
+					catch (final NumberFormatException nfe)
+					{
+						e.doit = false;
+						return;
+					}
+				}
+			}
+		});
+		return control;
 	}
 
-	@Override
-	protected Command createCommand(final String textValue)
-	{
-		return new SetPortNameCommand(getBigraph(), getPlace(), (Port) getModel(), textValue);
-	}
-
-	@Override
-	protected String getLabel()
-	{
-		return "Port Name:";
-	}
-
-	@Override
-	protected String getValue()
-	{
-		return ((Port) getModel()).getName();
-	}
 }

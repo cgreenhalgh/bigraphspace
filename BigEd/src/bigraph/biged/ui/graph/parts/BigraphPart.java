@@ -35,8 +35,6 @@
  */
 package bigraph.biged.ui.graph.parts;
 
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
 import org.eclipse.draw2d.Figure;
@@ -48,16 +46,12 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.commands.CompoundCommand;
-import org.eclipse.gef.editpolicies.FlowLayoutEditPolicy;
-import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.requests.GroupRequest;
 
 import bigraph.biged.model.Bigraph;
 import bigraph.biged.model.BigraphEvent;
 import bigraph.biged.model.BigraphEventListener;
-import bigraph.biged.model.BigraphEvent.Type;
 import bigraph.biged.ui.commands.AddRootCommand;
 import bigraph.biged.ui.commands.MoveRootCommand;
 import bigraphspace.model.Place;
@@ -74,31 +68,14 @@ public class BigraphPart extends AbstractBigraphEditPart implements BigraphEvent
 
 	public void onPlaceEvent(final BigraphEvent event)
 	{
-		if (getParent() != null)
-		{
-			if (event.getType() == Type.ADD || event.getType() == Type.REMOVE)
-			{
-				refreshChildren();
-			}
-			else if (event.getType() == Type.CHANGE)
-			{
-				refreshVisuals();
-			}
-		}
+		refresh();
 	}
 
 	@Override
 	protected void createEditPolicies()
 	{
-		installEditPolicy(EditPolicy.LAYOUT_ROLE, new FlowLayoutEditPolicy()
+		installEditPolicy(EditPolicy.LAYOUT_ROLE, new BigraphLayoutEditPolicy()
 		{
-			@Override
-			public Command getCommand(final Request request)
-			{
-				System.err.println("Request " + request.getType());
-				return super.getCommand(request);
-			}
-
 			@Override
 			protected Command createAddCommand(final EditPart child, final EditPart after)
 			{
@@ -115,20 +92,9 @@ public class BigraphPart extends AbstractBigraphEditPart implements BigraphEvent
 				return null;
 			}
 
+			@Override
 			protected Command createCloneCommand(final EditPart child, final EditPart after)
 			{
-				// if (child.getModel() instanceof Place)
-				// {
-				// final Place childPlace = (Place) child.getModel();
-				// if (!getContainer().canAdd(childPlace)) { return null; }
-				// if (after == null)
-				// {
-				// return new AddPlaceCommand(getContainer(), childPlace.clone(), null);
-				// }
-				// else if (after.getModel() instanceof Place) { return new
-				// AddPlaceCommand(getContainer(), childPlace
-				// .clone(), (Place) after.getModel()); }
-				// }
 				return null;
 			}
 
@@ -139,8 +105,7 @@ public class BigraphPart extends AbstractBigraphEditPart implements BigraphEvent
 				{
 					if (after != null && after.getModel() instanceof Place)
 					{
-						return new MoveRootCommand(getBigraph(), (Place) child.getModel(), (Place)
-						 after.getModel());
+						return new MoveRootCommand(getBigraph(), (Place) child.getModel(), (Place) after.getModel());
 					}
 					else
 					{
@@ -151,17 +116,10 @@ public class BigraphPart extends AbstractBigraphEditPart implements BigraphEvent
 				return null;
 			}
 
-			@SuppressWarnings("unchecked")
 			@Override
-			protected Command getCloneCommand(final ChangeBoundsRequest request)
+			protected Command createOrphanChildCommand(final EditPart child)
 			{
-				final List<EditPart> editParts = request.getEditParts();
-				final CompoundCommand command = new CompoundCommand();
-				for (final EditPart child : editParts)
-				{
-					command.add(createCloneCommand(child, getInsertionReference(request)));
-				}
-				return command.unwrap();
+				return null;
 			}
 
 			@Override
@@ -181,20 +139,56 @@ public class BigraphPart extends AbstractBigraphEditPart implements BigraphEvent
 				return null;
 			}
 
-			@SuppressWarnings("unchecked")
 			@Override
-			protected Command getOrphanChildrenCommand(final Request request)
+			protected int getFeedbackIndexFor(final Request request)
 			{
-				final Collection<EditPart> parts = ((GroupRequest) request).getEditParts();
-				final Collection<Place> places = new HashSet<Place>();
-				for (final EditPart part : parts)
+				if (request instanceof GroupRequest)
 				{
-					if (!(part.getModel() instanceof Place)) { return null; }
-					places.add((Place) part.getModel());
+					final GroupRequest groupRequest = ((GroupRequest) request);
+					if (groupRequest.getEditParts().size() >= 1)
+					{
+						final EditPart part = (EditPart) groupRequest.getEditParts().get(0);
+						if (part.getModel() instanceof Place)
+						{
+							final Place place = (Place) part.getModel();
+							if (place.isRoot())
+							{
+								int index = super.getFeedbackIndexFor(request);
+								if (index == -1)
+								{
+									return Integer.MAX_VALUE;
+								}
+								else
+								{
+									return index;
+								}
+							}
+						}
+					}
 				}
-				// final DeletePlaceCommand deleteCommand = new DeleteRootCommand(getBigraph(),
-				// places);
-				return null;
+				else if (request instanceof CreateRequest)
+				{
+					final CreateRequest createRequest = (CreateRequest) request;
+					final Object newObject = createRequest.getNewObject();
+					if (newObject instanceof Place)
+					{
+						final Place place = (Place) newObject;
+						if (place.isRoot())
+						{
+							int index = super.getFeedbackIndexFor(request);
+							if (index == -1)
+							{
+								return Integer.MAX_VALUE;
+							}
+							else
+							{
+								return index;
+							}
+						}
+					}
+
+				}
+				return -1;
 			}
 		});
 	}

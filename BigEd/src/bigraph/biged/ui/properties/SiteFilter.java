@@ -2,13 +2,14 @@ package bigraph.biged.ui.properties;
 
 import org.eclipse.jface.viewers.IFilter;
 
-import bigraph.biged.model.Edge;
+import bigraphspace.model.Place;
+import bigraphspace.model.PlaceType;
 
-public class EdgeFilter implements IFilter
+public class SiteFilter implements IFilter
 {
 	public boolean select(final Object toTest)
 	{
 		final Object modelObject = TypeMapper.getModelObject(toTest);
-		return modelObject instanceof Edge;
+		return modelObject instanceof Place && ((Place) modelObject).getType() == PlaceType.site;
 	}
 }

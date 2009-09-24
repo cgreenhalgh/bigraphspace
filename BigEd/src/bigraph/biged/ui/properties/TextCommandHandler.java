@@ -8,6 +8,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.widgets.Text;
 
 public abstract class TextCommandHandler implements ModifyListener, SelectionListener, FocusListener
@@ -15,7 +16,6 @@ public abstract class TextCommandHandler implements ModifyListener, SelectionLis
 	private CommandStack commandStack;
 	private boolean modified;
 	private final Text textField;
-	private boolean disableOnNull = true;
 
 	public TextCommandHandler(final Text textField)
 	{
@@ -24,19 +24,10 @@ public abstract class TextCommandHandler implements ModifyListener, SelectionLis
 		textField.addSelectionListener(this);
 		textField.addFocusListener(this);
 	}
-	
-	public TextCommandHandler(final Text textField, final boolean disableOnNull)
+
+	public void addVerifyListener(final VerifyListener verifyListener)
 	{
-		this.textField = textField;
-		this.disableOnNull = disableOnNull;
-		textField.addModifyListener(this);
-		textField.addSelectionListener(this);
-		textField.addFocusListener(this);
-	}	
-	
-	public void setDisableOnNull(final boolean disableOnNull)
-	{
-		this.disableOnNull = disableOnNull;
+		textField.addVerifyListener(verifyListener);
 	}
 
 	public void focusGained(final FocusEvent e)
@@ -58,20 +49,28 @@ public abstract class TextCommandHandler implements ModifyListener, SelectionLis
 		this.commandStack = commandStack;
 	}
 
+	public void setEnabled(final boolean enabled)
+	{
+		if (!enabled)
+		{
+			setText(null);
+		}
+		textField.setEnabled(enabled);
+	}
+
 	public void setText(final String text)
 	{
 		if (textField.isDisposed()) { return; }
 		if (text == null)
 		{
 			textField.setText("");
-			textField.setEnabled(!disableOnNull);
 		}
 		else
 		{
 			if (!textField.getText().equals(text))
 			{
 				textField.setText(text);
-				textField.setEnabled(true);
+				setEnabled(true);
 			}
 		}
 		modified = false;
@@ -80,7 +79,6 @@ public abstract class TextCommandHandler implements ModifyListener, SelectionLis
 	public void widgetDefaultSelected(final SelectionEvent e)
 	{
 		execute();
-
 	}
 
 	public void widgetSelected(final SelectionEvent e)

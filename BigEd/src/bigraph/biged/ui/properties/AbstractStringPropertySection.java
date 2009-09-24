@@ -64,11 +64,7 @@ public abstract class AbstractStringPropertySection extends AbstractSingleProper
 	}
 
 	@Override
-	protected String getLabel()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
+	protected abstract String getLabel();
 
 	protected abstract String getValue();
 }

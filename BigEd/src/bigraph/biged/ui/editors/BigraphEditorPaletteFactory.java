@@ -11,6 +11,7 @@
 package bigraph.biged.ui.editors;
 
 import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
+import org.eclipse.gef.palette.CreationToolEntry;
 import org.eclipse.gef.palette.MarqueeToolEntry;
 import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteDrawer;
@@ -20,7 +21,6 @@ import org.eclipse.gef.palette.PanningSelectionToolEntry;
 import org.eclipse.gef.palette.ToolEntry;
 
 import bigraph.biged.BigEdPlugin;
-import bigraphspace.model.Place;
 import bigraphspace.model.PlaceType;
 
 /**
@@ -50,16 +50,20 @@ final class BigraphEditorPaletteFactory
 	{
 		final PaletteDrawer componentsDrawer = new PaletteDrawer("Places");
 
-		CombinedTemplateCreationEntry component = new CombinedTemplateCreationEntry("Root", "Create a Root",
-				Place.class, new PlaceFactory(editor, PlaceType.root), BigEdPlugin.getDescriptor("root"), null);
+		CreationToolEntry component = new CombinedTemplateCreationEntry("Root", "Create a Root",
+				new PlaceFactory(editor, PlaceType.root), BigEdPlugin.getDescriptor("root"), null);
 		componentsDrawer.add(component);
 
-		component = new CombinedTemplateCreationEntry("Place", "Create a Place", Place.class, new PlaceFactory(editor,
+		component = new CombinedTemplateCreationEntry("Place", "Create a Place", new PlaceFactory(editor,
 				PlaceType.node), BigEdPlugin.getDescriptor("node"), null);
 		componentsDrawer.add(component);
 
-		component = new CombinedTemplateCreationEntry("Site", "Create a Site", Place.class, new PlaceFactory(editor,
-				PlaceType.site), BigEdPlugin.getDescriptor("site"), null);
+		component = new CombinedTemplateCreationEntry("Site", "Create a Site",
+				new PlaceFactory(editor, PlaceType.site), BigEdPlugin.getDescriptor("site"), null);
+		componentsDrawer.add(component);
+
+		component = new CreationToolEntry("Port", "Create a Port", new PortFactory(editor), BigEdPlugin
+				.getDescriptor("port"), null);
 		componentsDrawer.add(component);
 
 		return componentsDrawer;

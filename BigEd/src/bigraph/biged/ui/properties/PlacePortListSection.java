@@ -50,7 +50,7 @@ public class PlacePortListSection extends AbstractListPropertySection
 			{
 				final Object selection = getSelectedObject();
 				if (selection == null) { return null; }
-				return new SetPortNameCommand(getBigraph(), (Place)getModel(), (Port) selection, textValue);
+				return new SetPortNameCommand(getBigraph(), (Place) getModel(), (Port) selection, textValue);
 			}
 		};
 
@@ -67,14 +67,14 @@ public class PlacePortListSection extends AbstractListPropertySection
 		data.right = new FormAttachment(100, 0);
 		data.top = new FormAttachment(portNameText, ITabbedPropertyConstants.VSPACE);
 		edgeNameText.setLayoutData(data);
-		edgeName = new TextCommandHandler(edgeNameText, false)
+		edgeName = new TextCommandHandler(edgeNameText)
 		{
 			@Override
 			protected Command getCommand(final String textValue)
 			{
 				final Object selection = getSelectedObject();
 				if (selection == null) { return null; }
-				return new SetPortEdgeNameCommand(getBigraph(), (Place)getModel(), (Port) selection, textValue);
+				return new SetPortEdgeNameCommand(getBigraph(), (Place) getModel(), (Port) selection, textValue);
 			}
 		};
 
@@ -119,7 +119,7 @@ public class PlacePortListSection extends AbstractListPropertySection
 	{
 		if (item == null) { return null; }
 		final Port port = (Port) item;
-		return new DeletePortCommand(getBigraph(), (Place) getModel(), port, getBigraph().getEdge(port.getLinkName()));
+		return new DeletePortCommand(getBigraph(), (Place) getModel(), port);
 	}
 
 	@Override
@@ -141,8 +141,8 @@ public class PlacePortListSection extends AbstractListPropertySection
 		final Object selection = getSelectedObject();
 		if (selection == null)
 		{
-			portName.setText(null);
-			edgeName.setText(null);
+			portName.setEnabled(false);
+			edgeName.setEnabled(false);
 		}
 		else
 		{
