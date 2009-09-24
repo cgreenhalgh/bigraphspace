@@ -90,14 +90,17 @@
                 tab="bigraph.biged.ui.properties.general">
           </propertySection>
           <propertySection
+                class="bigraph.biged.ui.properties.SiteIndexSection"
+                filter="bigraph.biged.ui.properties.SiteFilter"
+                id="bigraph.biged.ui.properties.SiteIndexSection"
+                tab="bigraph.biged.ui.properties.general">
+          </propertySection>          
+          <propertySection
                 class="bigraph.biged.ui.properties.PlaceControlNameSection"
                 enablesFor="1"
                 filter="bigraph.biged.ui.properties.NodeFilter"
                 id="bigraph.biged.ui.properties.ControlNameSection"
                 tab="bigraph.biged.ui.properties.general">
-             <input
-                   type="bigraphspace.model.Place">
-             </input>
           </propertySection>
           <propertySection
                 class="bigraph.biged.ui.properties.PlaceSupportNameSection"
@@ -105,9 +108,6 @@
                 filter="bigraph.biged.ui.properties.NodeFilter"
                 id="bigraph.biged.ui.properties.SupportNameSection"
                 tab="bigraph.biged.ui.properties.general">
-             <input
-                   type="bigraphspace.model.Place">
-             </input>
           </propertySection>
           <propertySection
                 class="bigraph.biged.ui.properties.EdgePortSection"
