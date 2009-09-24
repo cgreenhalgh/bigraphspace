@@ -3,7 +3,6 @@ package bigraph.biged.ui.commands;
 import java.util.Collection;
 
 import bigraph.biged.model.Bigraph;
-import bigraph.biged.model.Edge;
 import bigraph.biged.model.BigraphEvent.Type;
 import bigraph.biged.ui.BigraphLabelProvider;
 import bigraphspace.model.Place;
@@ -13,14 +12,12 @@ public class DeletePortCommand extends BigraphCommand
 {
 	private final Place place;
 	private final Port port;
-	private final Edge edge;
 
-	public DeletePortCommand(final Bigraph bigraph, final Place place, final Port port, final Edge edge)
+	public DeletePortCommand(final Bigraph bigraph, final Place place, final Port port)
 	{
 		super(bigraph, "Delete " + BigraphLabelProvider.text(port) + " port on " + BigraphLabelProvider.text(place));
 		this.place = place;
 		this.port = port;
-		this.edge = edge;
 	}
 
 	@Override
@@ -28,7 +25,7 @@ public class DeletePortCommand extends BigraphCommand
 	{
 		final Collection<Object> result = super.getAffectedObjects();
 		result.add(place);
-		result.add(edge);
+		result.add(bigraph.getEdge(port.getLinkName()));
 		return result;
 	}
 
@@ -49,13 +46,13 @@ public class DeletePortCommand extends BigraphCommand
 	protected void doExecute()
 	{
 		place.removePort(port);
-		edge.removePort(port);
+		bigraph.removePort(place, port);
 	}
 
 	@Override
 	protected void doUndo()
 	{
 		place.addPort(port);
-		edge.addPort(port, place);
+		bigraph.addPort(place, port);
 	}
 }

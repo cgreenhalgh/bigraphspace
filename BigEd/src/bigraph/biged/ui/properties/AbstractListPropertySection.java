@@ -147,7 +147,7 @@ public abstract class AbstractListPropertySection extends AbstractPropertySectio
 		{
 			public void run()
 			{
-				if(viewer.getControl().isDisposed()) { return; }
+				if (viewer.getControl().isDisposed()) { return; }
 				int index = viewer.getTable().getSelectionIndex();
 				viewer.setInput(getModel());
 				if (index == -1 && viewer.getTable().getItemCount() > 0)

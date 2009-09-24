@@ -117,10 +117,10 @@ public class EdgeConnection extends PolylineConnection implements Connection
 			@Override
 			public void route(final Connection connection)
 			{
-				//if (segments.isEmpty())
+				// if (segments.isEmpty())
 				{
 					createSegments();
-					
+
 					final PointList points = getPoints();
 					points.removeAllPoints();
 					for (final Port port : edge.getPorts())
@@ -129,7 +129,7 @@ public class EdgeConnection extends PolylineConnection implements Connection
 						getAnchor(port).setLocation(point);
 						points.addPoint(point);
 					}
-					setPoints(points);					
+					setPoints(points);
 				}
 			}
 

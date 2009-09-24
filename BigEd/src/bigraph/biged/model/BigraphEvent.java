@@ -19,7 +19,7 @@ public class BigraphEvent
 		this.command = command;
 		this.undo = false;
 	}
-	
+
 	public BigraphEvent(final BigraphCommand command, final boolean undo)
 	{
 		this.command = command;
@@ -39,10 +39,7 @@ public class BigraphEvent
 	@Override
 	public String toString()
 	{
-		if(undo)
-		{
-			return "Bigraph Event: Undo " + command.toString();
-		}
+		if (undo) { return "Bigraph Event: Undo " + command.toString(); }
 		return "Bigraph Event: " + command.toString();
 	}
 }

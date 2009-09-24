@@ -43,7 +43,7 @@ import bigraphspace.model.Place;
 /**
  * @author <a href="ktg@cs.nott.ac.uk">Kevin Glover</a>
  */
-public class PlaceControlNameSection extends AbstractStringPropertySection
+public class PlaceControlNameSection extends AbstractStringSelectPropertySection
 {
 	@Override
 	protected Command createCommand(final String textValue)

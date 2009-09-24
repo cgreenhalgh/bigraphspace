@@ -48,12 +48,6 @@ import bigraphspace.model.Port;
  */
 public class PortEdgeNameSection extends AbstractStringPropertySection
 {
-	@Override
-	protected Command createCommand(final String textValue)
-	{
-		return new SetPortEdgeNameCommand(getBigraph(), getPlace(), (Port) getModel(), textValue);
-	}
-
 	public Place getPlace()
 	{
 		Object result = getSelection();
@@ -63,9 +57,15 @@ public class PortEdgeNameSection extends AbstractStringPropertySection
 		}
 
 		if (result instanceof EditPart) { return (Place) ((EditPart) result).getParent().getModel(); }
-		return null;		
+		return null;
 	}
-	
+
+	@Override
+	protected Command createCommand(final String textValue)
+	{
+		return new SetPortEdgeNameCommand(getBigraph(), getPlace(), (Port) getModel(), textValue);
+	}
+
 	@Override
 	protected String getLabel()
 	{

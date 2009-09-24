@@ -54,14 +54,14 @@ public class EdgePortSection extends AbstractListPropertySection
 			}
 		});
 	}
-	
+
 	@Override
 	public void setInput(final IWorkbenchPart part, final ISelection selection)
 	{
 		super.setInput(part, selection);
 		portName.setCommandStack(getCommandStack());
 		edgeName.setCommandStack(getCommandStack());
-	}	
+	}
 
 	@Override
 	protected void createDetailsPanel(final Composite parent, final TabbedPropertySheetPage aTabbedPropertySheetPage)
@@ -118,8 +118,8 @@ public class EdgePortSection extends AbstractListPropertySection
 			{
 				final Object selection = getSelectedObject();
 				if (selection == null) { return null; }
-				final Port port = (Port)selection;				
-				return new SetPortNameCommand(getBigraph(), ((Edge)getModel()).getPlace(port), port, textValue);
+				final Port port = (Port) selection;
+				return new SetPortNameCommand(getBigraph(), ((Edge) getModel()).getPlace(port), port, textValue);
 			}
 		};
 
@@ -143,8 +143,8 @@ public class EdgePortSection extends AbstractListPropertySection
 			{
 				final Object selection = getSelectedObject();
 				if (selection == null) { return null; }
-				final Port port = (Port)selection;
-				return new SetPortEdgeNameCommand(getBigraph(), ((Edge)getModel()).getPlace(port), port, textValue);
+				final Port port = (Port) selection;
+				return new SetPortEdgeNameCommand(getBigraph(), ((Edge) getModel()).getPlace(port), port, textValue);
 			}
 		};
 
@@ -192,7 +192,7 @@ public class EdgePortSection extends AbstractListPropertySection
 	{
 		final Edge edge = (Edge) getModel();
 		final Port port = (Port) item;
-		return new DeletePortCommand(getBigraph(), edge.getPlace(port), port, edge);
+		return new DeletePortCommand(getBigraph(), edge.getPlace(port), port);
 	}
 
 	@Override
@@ -222,8 +222,8 @@ public class EdgePortSection extends AbstractListPropertySection
 		if (selection == null)
 		{
 			link.setText("");
-			portName.setText(null);
-			edgeName.setText(null);
+			portName.setEnabled(false);
+			edgeName.setEnabled(false);
 		}
 		else
 		{

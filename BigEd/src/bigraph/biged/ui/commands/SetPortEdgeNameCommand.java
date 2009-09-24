@@ -57,12 +57,16 @@ public class SetPortEdgeNameCommand extends BigraphCommand
 	protected void doExecute()
 	{
 		oldEdge = port.getLinkName();
-		bigraph.renamePortEdge(place, port, newEdge);
+		bigraph.removePort(place, port);
+		port.setLinkName(newEdge);
+		bigraph.addPort(place, port);
 	}
 
 	@Override
 	protected void doUndo()
 	{
-		bigraph.renamePortEdge(place, port, oldEdge);
+		bigraph.removePort(place, port);
+		port.setLinkName(oldEdge);
+		bigraph.addPort(place, port);
 	}
 }

@@ -1,7 +1,6 @@
 package bigraph.biged.ui.graph.parts;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -9,22 +8,13 @@ import java.util.List;
 import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Polyline;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.draw2d.geometry.Transposer;
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
-import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.editpolicies.ComponentEditPolicy;
-import org.eclipse.gef.editpolicies.FlowLayoutEditPolicy;
-import org.eclipse.gef.editpolicies.OrderedLayoutEditPolicy;
-import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.requests.GroupRequest;
 
@@ -35,11 +25,13 @@ import bigraph.biged.model.Edge;
 import bigraph.biged.model.BigraphEvent.Type;
 import bigraph.biged.ui.BigraphLabelProvider;
 import bigraph.biged.ui.commands.AddPlaceCommand;
+import bigraph.biged.ui.commands.CreatePortCommand;
 import bigraph.biged.ui.commands.DeletePlaceCommand;
 import bigraph.biged.ui.commands.DeleteRootCommand;
 import bigraph.biged.ui.graph.figures.PlaceFigure;
 import bigraphspace.model.Place;
 import bigraphspace.model.PlaceType;
+import bigraphspace.model.Port;
 
 public class PlacePart extends AbstractBigraphEditPart implements BigraphEventListener, NodeEditPart
 {
@@ -104,7 +96,7 @@ public class PlacePart extends AbstractBigraphEditPart implements BigraphEventLi
 	@Override
 	protected void createEditPolicies()
 	{
-		installEditPolicy(EditPolicy.LAYOUT_ROLE, new FlowLayoutEditPolicy()
+		installEditPolicy(EditPolicy.LAYOUT_ROLE, new BigraphLayoutEditPolicy()
 		{
 			@Override
 			protected Command createAddCommand(final EditPart child, final EditPart after)
@@ -117,6 +109,7 @@ public class PlacePart extends AbstractBigraphEditPart implements BigraphEventLi
 				return null;
 			}
 
+			@Override
 			protected Command createCloneCommand(final EditPart child, final EditPart after)
 			{
 				return null;
@@ -128,17 +121,12 @@ public class PlacePart extends AbstractBigraphEditPart implements BigraphEventLi
 				return null;
 			}
 
-			@SuppressWarnings("unchecked")
 			@Override
-			protected Command getCloneCommand(final ChangeBoundsRequest request)
+			protected Command createOrphanChildCommand(final EditPart child)
 			{
-				final List<EditPart> editParts = request.getEditParts();
-				final CompoundCommand command = new CompoundCommand();
-				for (final EditPart child : editParts)
-				{
-					command.add(createCloneCommand(child, getInsertionReference(request)));
-				}
-				return command.unwrap();
+				if (child.getModel() instanceof Place) { return new DeletePlaceCommand(getBigraph(), getPlace(),
+						(Place) child.getModel()); }
+				return null;
 			}
 
 			@Override
@@ -149,175 +137,54 @@ public class PlacePart extends AbstractBigraphEditPart implements BigraphEventLi
 					final Place childPlace = (Place) request.getNewObject();
 					return new AddPlaceCommand(getBigraph(), getPlace(), childPlace);
 				}
+				else if (request.getNewObjectType().equals(Port.class) && getPlace().getType() == PlaceType.node) { return new CreatePortCommand(
+						getBigraph(), getPlace()); }
 				return null;
 			}
 
-			private int getIndexFor(final Place place)
-			{
-				if(place.getType() == PlaceType.root) { return -1; }
-				if (place.equals(getPlace())) { return -1; }
-				final List<Place> list = new ArrayList<Place>(getPlace().getChildren());
-				if (list.isEmpty() || list.contains(place)) { return -1; }
-				list.add(place);
-				Collections.sort(list, new Comparator<Place>()
-				{
-					public int compare(final Place o1, final Place o2)
-					{
-						final String s1 = BigraphLabelProvider.text(o1);
-						final String s2 = BigraphLabelProvider.text(o2);
-						return s1.compareTo(s2);
-					}
-				});
-				return list.indexOf(place);				
-			}
-			
 			@Override
 			protected int getFeedbackIndexFor(final Request request)
 			{
 				if (request instanceof GroupRequest)
 				{
 					final GroupRequest groupRequest = ((GroupRequest) request);
-					if (groupRequest.getEditParts().size() == 1)
+					if (groupRequest.getEditParts().size() >= 1)
 					{
 						final EditPart part = (EditPart) groupRequest.getEditParts().get(0);
-						if (part.getModel() instanceof Place)
-						{
-							return getIndexFor((Place) part.getModel());
-						}
+						return getIndexFor(part.getModel());
 					}
 				}
-				else if(request instanceof CreateRequest)
+				else if (request instanceof CreateRequest)
 				{
-					final CreateRequest createRequest = (CreateRequest)request;
-					Object newObject = createRequest.getNewObject();
-					if(newObject instanceof Place)
-					{
-						return getIndexFor((Place) newObject);				
-					}
+					final CreateRequest createRequest = (CreateRequest) request;
+					final Object newObject = createRequest.getNewObject();
+					return getIndexFor(newObject);
 				}
-				return super.getFeedbackIndexFor(request);
+				return -1;
 			}
 
-			/**
-			 * @see OrderedLayoutEditPolicy#getInsertionReference(Request)
-			 */
-			@Override
-			protected EditPart getInsertionReference(final Request request)
+			private int getIndexFor(final Object object)
 			{
-				final int index = getFeedbackIndexFor(request);
-				if (index >= getHost().getChildren().size()) { return null; }
-				return super.getInsertionReference(request);
-			}
-
-			@SuppressWarnings("unchecked")
-			@Override
-			protected Command getOrphanChildrenCommand(final Request request)
-			{
-				final Collection<EditPart> parts = ((GroupRequest) request).getEditParts();
-				if (parts.size() == 0) { return null; }
-
-				final CompoundCommand command = new CompoundCommand("Orphan Children");
-				for (final EditPart part : parts)
+				if (object instanceof Place)
 				{
-					final Object model = part.getModel();
-					if (model instanceof Place)
+					final Place place = (Place) object;
+					if (place.getType() == PlaceType.root) { return -1; }
+					if (place.equals(getPlace())) { return -1; }
+					final List<Place> list = new ArrayList<Place>(getPlace().getChildren());
+					if (list.isEmpty() || list.contains(place)) { return -1; }
+					list.add(place);
+					Collections.sort(list, new Comparator<Place>()
 					{
-						final DeletePlaceCommand deleteCommand = new DeletePlaceCommand(getBigraph(), getPlace(),
-								(Place) model);
-						command.add(deleteCommand);
-					}
-				}
-				if (command.isEmpty()) { return null; }
-				return command;
-			}
-
-			@Override
-			protected void showLayoutTargetFeedback(final Request request)
-			{
-				if (getHost().getChildren().size() == 0) { return; }
-				int epIndex = getFeedbackIndexFor(request);
-				if (epIndex == -1) { return; }
-				final Polyline fb = getLineFeedback();
-				final Transposer transposer = new Transposer();
-				transposer.setEnabled(!isHorizontal());
-
-				boolean before = true;
-				Rectangle r = null;
-				if (epIndex >= getHost().getChildren().size())
-				{
-					before = false;
-					epIndex--;
-				}
-				final EditPart editPart = (EditPart) getHost().getChildren().get(epIndex);
-				r = transposer.t(getAbsoluteBounds((GraphicalEditPart) editPart));
-
-				int x = Integer.MIN_VALUE;
-				if (before)
-				{
-					/*
-					 * Want the line to be halfway between the end of the previous and the beginning
-					 * of this one. If at the begining of a line, then start halfway between the
-					 * left edge of the parent and the beginning of the box, but no more than 5
-					 * pixels (it would be too far and be confusing otherwise).
-					 */
-					if (epIndex > 0)
-					{
-						// Need to determine if a line break.
-						final Rectangle boxPrev = transposer.t(getAbsoluteBounds((GraphicalEditPart) getHost()
-								.getChildren().get(epIndex - 1)));
-						final int prevRight = boxPrev.right();
-						if (prevRight < r.x)
+						public int compare(final Place o1, final Place o2)
 						{
-							// Not a line break
-							x = prevRight + (r.x - prevRight) / 2;
+							final String s1 = BigraphLabelProvider.text(o1);
+							final String s2 = BigraphLabelProvider.text(o2);
+							return s1.compareTo(s2);
 						}
-						else if (prevRight == r.x)
-						{
-							x = prevRight + 1;
-						}
-					}
-					if (x == Integer.MIN_VALUE)
-					{
-						// It is a line break.
-						final Rectangle parentBox = transposer.t(getAbsoluteBounds((GraphicalEditPart) getHost()));
-						x = r.x - 5;
-						if (x < parentBox.x)
-						{
-							x = parentBox.x + (r.x - parentBox.x) / 2;
-						}
-					}
+					});
+					return list.indexOf(place);
 				}
-				else
-				{
-					/*
-					 * We only have before==false if we are at the end of a line, so go halfway
-					 * between the right edge and the right edge of the parent, but no more than 5
-					 * pixels.
-					 */
-					final Rectangle parentBox = transposer.t(getAbsoluteBounds((GraphicalEditPart) getHost()));
-					final int rRight = r.x + r.width;
-					final int pRight = parentBox.x + parentBox.width;
-					x = rRight + 5;
-					if (x > pRight)
-					{
-						x = rRight + (pRight - rRight) / 2;
-					}
-				}
-				Point p1 = new Point(x, r.y - 4);
-				p1 = transposer.t(p1);
-				fb.translateToRelative(p1);
-				Point p2 = new Point(x, r.y + r.height + 4);
-				p2 = transposer.t(p2);
-				fb.translateToRelative(p2);
-				fb.setPoint(p1, 0);
-				fb.setPoint(p2, 1);
-			}
-
-			private Rectangle getAbsoluteBounds(final GraphicalEditPart ep)
-			{
-				final Rectangle bounds = ep.getFigure().getBounds().getCopy();
-				ep.getFigure().translateToAbsolute(bounds);
-				return bounds;
+				return -1;
 			}
 		});
 

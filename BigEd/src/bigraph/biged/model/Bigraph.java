@@ -37,27 +37,17 @@ public class Bigraph
 		}
 		listenerList.add(listener);
 	}
-	
-	private void fireEvent(final Collection<BigraphEventListener> listenerList, final BigraphEvent event)
-	{
-		if(listenerList == null) { return; }
-		final Collection<BigraphEventListener> list = new HashSet<BigraphEventListener>(listenerList);		
-		for (final BigraphEventListener listener : list)
-		{
-			listener.onPlaceEvent(event);
-		}		
-	}
 
 	public void fireEvent(final BigraphEvent event)
 	{
 		System.out.println(event);
-//		for(final Edge edge: edges.values())
-//		{
-//			fireEvent(listeners.get(edge), event);
-//		}
-		for(Object object: event.getAffectedObjects())
+		// for(final Edge edge: edges.values())
+		// {
+		// fireEvent(listeners.get(edge), event);
+		// }
+		for (final Object object : event.getAffectedObjects())
 		{
-			fireEvent(listeners.get(object), event);			
+			fireEvent(listeners.get(object), event);
 		}
 	}
 
@@ -66,14 +56,14 @@ public class Bigraph
 		return bigraph;
 	}
 
-	public Collection<Edge> getEdges()
-	{
-		return edges.values();
-	}
-	
 	public Edge getEdge(final String linkName)
 	{
 		return edges.get(linkName);
+	}
+
+	public Collection<Edge> getEdges()
+	{
+		return edges.values();
 	}
 
 	public List<Edge> getEdges(final Place place)
@@ -82,7 +72,7 @@ public class Bigraph
 		for (final Port port : place.getPorts())
 		{
 			final Edge edge = edges.get(port.getLinkName());
-			if(edge != null)
+			if (edge != null)
 			{
 				edgeList.add(edge);
 			}
@@ -103,26 +93,39 @@ public class Bigraph
 			listeners.remove(source);
 		}
 	}
-	
-	public void renamePortEdge(final Place place, final Port port, final String newEdge)
+
+	public void addPort(final Place place, final Port port)
 	{
 		Edge edge = edges.get(port.getLinkName());
-		if(edge != null)
+		if (edge == null)
+		{
+			edge = new Edge(port.getLinkName());
+			edges.put(port.getLinkName(), edge);
+		}
+		edge.addPort(port, place);		
+	}
+	
+	public void removePort(final Place place, final Port port)
+	{
+		Edge edge = edges.get(port.getLinkName());
+		if (edge != null)
 		{
 			edge.removePort(port);
 			if(edge.getPorts().isEmpty())
 			{
-				edges.remove(port.getLinkName());
+				edges.remove(edge.getName());
 			}
 		}
-		port.setLinkName(newEdge);
-		edge = edges.get(newEdge);
-		if(edge == null)
+	}
+	
+	private void fireEvent(final Collection<BigraphEventListener> listenerList, final BigraphEvent event)
+	{
+		if (listenerList == null) { return; }
+		final Collection<BigraphEventListener> list = new HashSet<BigraphEventListener>(listenerList);
+		for (final BigraphEventListener listener : list)
 		{
-			edge = new Edge(newEdge);
-			edges.put(newEdge, edge);
+			listener.onPlaceEvent(event);
 		}
-		edge.addPort(port, place);		
 	}
 
 	private void updateEdges()
