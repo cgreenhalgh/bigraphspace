@@ -130,7 +130,7 @@ public abstract class AbstractListPropertySection extends AbstractPropertySectio
 
 		detailsSection.setClient(detailsSectionClient);
 		// detailsSection.setDescription("Description");
-		detailsSectionClient.setLayout(new FormLayout());
+		detailsSectionClient.setLayout(new FillLayout(SWT.VERTICAL));
 
 		createDetailsPanel(detailsSectionClient, aTabbedPropertySheetPage);
 	}

@@ -38,18 +38,18 @@ package bigraph.biged.ui.properties;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
 /**
  * @author <a href="ktg@cs.nott.ac.uk">Kevin Glover</a>
  */
 public abstract class AbstractIntegerPropertySection extends AbstractStringPropertySection
 {
-
 	@Override
-	protected Control createControl(final Composite parent)
+	public void createControls(final Composite parent, final TabbedPropertySheetPage aTabbedPropertySheetPage)
 	{
-		final Control control = super.createControl(parent);
+		// TODO Auto-generated method stub
+		super.createControls(parent, aTabbedPropertySheetPage);
 		text.addVerifyListener(new VerifyListener()
 		{
 			public void verifyText(final VerifyEvent e)
@@ -68,7 +68,5 @@ public abstract class AbstractIntegerPropertySection extends AbstractStringPrope
 				}
 			}
 		});
-		return control;
 	}
-
 }

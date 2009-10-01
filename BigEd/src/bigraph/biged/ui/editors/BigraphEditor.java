@@ -225,7 +225,7 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements I
 			}
 			final BigraphReader reader = XmlIOFactory.getReader(format, new BasicSignature());
 			bigraph = new Bigraph(reader.read(file.getContents()));
-
+			bigraph.setName(file.getName());
 			setPartName(file.getName());
 		}
 		catch (final Exception e)

@@ -50,8 +50,8 @@ final class BigraphEditorPaletteFactory
 	{
 		final PaletteDrawer componentsDrawer = new PaletteDrawer("Places");
 
-		CreationToolEntry component = new CombinedTemplateCreationEntry("Root", "Create a Root",
-				new PlaceFactory(editor, PlaceType.root), BigEdPlugin.getDescriptor("root"), null);
+		CreationToolEntry component = new CombinedTemplateCreationEntry("Root", "Create a Root", new PlaceFactory(
+				editor, PlaceType.root), BigEdPlugin.getDescriptor("root"), null);
 		componentsDrawer.add(component);
 
 		component = new CombinedTemplateCreationEntry("Place", "Create a Place", new PlaceFactory(editor,

@@ -12,6 +12,7 @@ import bigraphspace.model.Port;
 
 public class Bigraph
 {
+	private String name;
 	private final bigraphspace.model.Bigraph bigraph;
 
 	private final Map<String, Edge> edges = new HashMap<String, Edge>();
@@ -36,6 +37,17 @@ public class Bigraph
 			listeners.put(source, listenerList);
 		}
 		listenerList.add(listener);
+	}
+
+	public void addPort(final Place place, final Port port)
+	{
+		Edge edge = edges.get(port.getLinkName());
+		if (edge == null)
+		{
+			edge = new Edge(port.getLinkName());
+			edges.put(port.getLinkName(), edge);
+		}
+		edge.addPort(port, place);
 	}
 
 	public void fireEvent(final BigraphEvent event)
@@ -94,30 +106,30 @@ public class Bigraph
 		}
 	}
 
-	public void addPort(final Place place, final Port port)
-	{
-		Edge edge = edges.get(port.getLinkName());
-		if (edge == null)
-		{
-			edge = new Edge(port.getLinkName());
-			edges.put(port.getLinkName(), edge);
-		}
-		edge.addPort(port, place);		
-	}
-	
 	public void removePort(final Place place, final Port port)
 	{
-		Edge edge = edges.get(port.getLinkName());
+		final Edge edge = edges.get(port.getLinkName());
 		if (edge != null)
 		{
 			edge.removePort(port);
-			if(edge.getPorts().isEmpty())
+			if (edge.getPorts().isEmpty())
 			{
 				edges.remove(edge.getName());
 			}
 		}
 	}
-	
+
+	public void setName(final String name)
+	{
+		this.name = name;
+	}
+
+	@Override
+	public String toString()
+	{
+		return name;
+	}
+
 	private void fireEvent(final Collection<BigraphEventListener> listenerList, final BigraphEvent event)
 	{
 		if (listenerList == null) { return; }

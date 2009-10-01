@@ -153,7 +153,7 @@ public class BigraphPart extends AbstractBigraphEditPart implements BigraphEvent
 							final Place place = (Place) part.getModel();
 							if (place.isRoot())
 							{
-								int index = super.getFeedbackIndexFor(request);
+								final int index = super.getFeedbackIndexFor(request);
 								if (index == -1)
 								{
 									return Integer.MAX_VALUE;
@@ -175,7 +175,7 @@ public class BigraphPart extends AbstractBigraphEditPart implements BigraphEvent
 						final Place place = (Place) newObject;
 						if (place.isRoot())
 						{
-							int index = super.getFeedbackIndexFor(request);
+							final int index = super.getFeedbackIndexFor(request);
 							if (index == -1)
 							{
 								return Integer.MAX_VALUE;

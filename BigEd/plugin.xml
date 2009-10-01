@@ -7,7 +7,7 @@
                  file-extensions="xml"
                  id="bigraphXML"
                  name="Bigraph XML File"
-                 priority="high">
+                 priority="normal">
       <describer class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber2">
          <parameter name="element"
                     value="bigraph">
@@ -19,6 +19,20 @@
          id="bigraphBTL"
          name="Bigraph Text File"
          priority="normal">
+   </content-type>
+   <content-type
+         base-type="org.eclipse.core.runtime.xml"
+         file-extensions="xml"
+         id="bigraphSignature"
+         name="Bigraph Signature XML"
+         priority="normal">
+      <describer
+            class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber2">
+         <parameter
+               name="element"
+               value="{http://www.mrl.nott.ac.uk/bigraphs/signature/1.0}definitions">
+         </parameter>
+      </describer>
    </content-type>
     </extension>
 
@@ -78,55 +92,70 @@
        <propertySections
              contributorId="bigraph.biged.ui.properties.contributor">
           <propertySection
+                class="bigraph.biged.ui.properties.BigraphSignatureSection"
+                enablesFor="1"
+                id="bigraph.biged.ui.properties.BigraphSignatureSection"
+                tab="bigraph.biged.ui.properties.general">
+             <input
+                   type="bigraph.biged.model.Bigraph">
+             </input>
+          </propertySection>
+          <propertySection
+                class="bigraph.biged.ui.properties.EdgePortSection"
+                enablesFor="1"
+                id="bigraph.biged.ui.properties.EdgePortSection"
+                tab="bigraph.biged.ui.properties.general">
+             <input
+                   type="bigraph.biged.model.Edge">
+             </input>
+          </propertySection>
+          <propertySection
                 class="bigraph.biged.ui.properties.PlacePortListSection"
-                filter="bigraph.biged.ui.properties.NodeFilter"
-                id="bigraph.biged.ui.properties.PortSection"
-                tab="bigraph.biged.ui.properties.general">
-          </propertySection>
-          <propertySection
-                class="bigraph.biged.ui.properties.ControlIndexesSection"
-                filter="bigraph.biged.ui.properties.NodeFilter"
-                id="bigraph.biged.ui.properties.ControlIndexesSection"
-                tab="bigraph.biged.ui.properties.general">
-          </propertySection>
-          <propertySection
-                class="bigraph.biged.ui.properties.SiteIndexSection"
-                filter="bigraph.biged.ui.properties.SiteFilter"
-                id="bigraph.biged.ui.properties.SiteIndexSection"
-                tab="bigraph.biged.ui.properties.general">
-          </propertySection>          
-          <propertySection
-                class="bigraph.biged.ui.properties.PlaceControlNameSection"
                 enablesFor="1"
                 filter="bigraph.biged.ui.properties.NodeFilter"
-                id="bigraph.biged.ui.properties.ControlNameSection"
+                id="bigraph.biged.ui.properties.PlacePortListSection"
+                tab="bigraph.biged.ui.properties.general">
+          </propertySection>
+          <propertySection
+                class="bigraph.biged.ui.properties.PlaceIndexesSection"
+                enablesFor="1"
+                filter="bigraph.biged.ui.properties.NodeFilter"
+                id="bigraph.biged.ui.properties.PlaceIndexesSection"
                 tab="bigraph.biged.ui.properties.general">
           </propertySection>
           <propertySection
                 class="bigraph.biged.ui.properties.PlaceSupportNameSection"
                 enablesFor="1"
                 filter="bigraph.biged.ui.properties.NodeFilter"
-                id="bigraph.biged.ui.properties.SupportNameSection"
+                id="bigraph.biged.ui.properties.PlaceSupportNameSection"
+                tab="bigraph.biged.ui.properties.general">
+          </propertySection>          
+          <propertySection
+                class="bigraph.biged.ui.properties.PlaceControlSection"
+                enablesFor="1"
+                filter="bigraph.biged.ui.properties.NodeFilter"
+                id="bigraph.biged.ui.properties.PlaceControlSection"
                 tab="bigraph.biged.ui.properties.general">
           </propertySection>
           <propertySection
-                class="bigraph.biged.ui.properties.EdgePortSection"
-                id="bigraph.biged.ui.properties.EdgePortSection"
+                class="bigraph.biged.ui.properties.SiteIndexSection"
+                enablesFor="1"
+                filter="bigraph.biged.ui.properties.SiteFilter"
+                id="bigraph.biged.ui.properties.SiteIndexSection"
                 tab="bigraph.biged.ui.properties.general">
-             <input
-                   type="bigraph.biged.model.Edge">
-             </input>
           </propertySection>  
                       <propertySection
-                class="bigraph.biged.ui.properties.PortEdgeNameSection"
-                id="bigraph.biged.ui.properties.PortEdgeNameSection"
-                tab="bigraph.biged.ui.properties.general">
+                            class="bigraph.biged.ui.properties.PortEdgeNameSection"
+                            enablesFor="1"
+                            id="bigraph.biged.ui.properties.PortEdgeNameSection"
+                            tab="bigraph.biged.ui.properties.general">
              <input
                    type="bigraphspace.model.Port">
              </input>                
           </propertySection>
           <propertySection
                 class="bigraph.biged.ui.properties.PortNameSection"
+                enablesFor="1"
                 id="bigraph.biged.ui.properties.PortNameSection"
                 tab="bigraph.biged.ui.properties.general">
              <input
