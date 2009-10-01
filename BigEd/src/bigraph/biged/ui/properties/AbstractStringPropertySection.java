@@ -2,20 +2,25 @@ package bigraph.biged.ui.properties;
 
 import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
+import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
 import bigraph.biged.model.BigraphEvent;
+import bigraph.biged.ui.widget.LabelledText;
 
-public abstract class AbstractStringPropertySection extends AbstractSinglePropertySection
+public abstract class AbstractStringPropertySection extends AbstractPropertySection
 {
-	protected TextCommandHandler text;
+	protected LabelledText text;
+
+	@Override
+	public void createControls(final Composite parent, final TabbedPropertySheetPage aTabbedPropertySheetPage)
+	{
+		super.createControls(parent, aTabbedPropertySheetPage);
+		createControl(parent, aTabbedPropertySheetPage);
+	}
 
 	public void onPlaceEvent(final BigraphEvent event)
 	{
@@ -43,27 +48,21 @@ public abstract class AbstractStringPropertySection extends AbstractSingleProper
 
 	protected abstract Command createCommand(final String text);
 
-	@Override
-	protected Control createControl(final Composite parent)
+	protected void createControl(final Composite parent, final TabbedPropertySheetPage aTabbedPropertySheetPage)
 	{
-		final Text textField = getWidgetFactory().createText(parent, ""); //$NON-NLS-1$
-		final FormData data = new FormData();
-		data.left = new FormAttachment(0, STANDARD_LABEL_WIDTH + 20);
-		data.right = new FormAttachment(100, 0);
-		data.top = new FormAttachment(0, ITabbedPropertyConstants.VSPACE);
-		textField.setLayoutData(data);
-		text = new TextCommandHandler(textField)
+		text = new LabelledText(parent, getWidgetFactory())
 		{
+
 			@Override
 			protected Command getCommand(final String textValue)
 			{
 				return createCommand(textValue);
 			}
 		};
-		return textField;
+		text.setLabel(getLabel());
+		text.setMargins(ITabbedPropertyConstants.HMARGIN + ITabbedPropertyConstants.HSPACE);
 	}
 
-	@Override
 	protected abstract String getLabel();
 
 	protected abstract String getValue();

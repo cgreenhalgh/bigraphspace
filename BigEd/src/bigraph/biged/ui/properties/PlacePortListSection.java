@@ -1,30 +1,31 @@
 package bigraph.biged.ui.properties;
 
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
+import org.eclipse.ui.forms.events.HyperlinkAdapter;
+import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
+import bigraph.biged.model.Bigraph;
 import bigraph.biged.ui.commands.CreatePortCommand;
 import bigraph.biged.ui.commands.DeletePortCommand;
 import bigraph.biged.ui.commands.SetPortEdgeNameCommand;
 import bigraph.biged.ui.commands.SetPortNameCommand;
+import bigraph.biged.ui.widget.LabelledText;
+import bigraph.biged.ui.widget.LabelledTextSelect;
 import bigraphspace.model.Place;
 import bigraphspace.model.Port;
 
 public class PlacePortListSection extends AbstractListPropertySection
 {
-	private TextCommandHandler portName;
-	private TextCommandHandler edgeName;
+	private LabelledText portName;
+	private LabelledText edgeName;
 
 	@Override
 	public void setInput(final IWorkbenchPart part, final ISelection selection)
@@ -37,13 +38,7 @@ public class PlacePortListSection extends AbstractListPropertySection
 	@Override
 	protected void createDetailsPanel(final Composite parent, final TabbedPropertySheetPage aTabbedPropertySheetPage)
 	{
-		final Text portNameText = getWidgetFactory().createText(parent, "");
-		FormData data = new FormData();
-		data.left = new FormAttachment(0, STANDARD_LABEL_WIDTH);
-		data.right = new FormAttachment(100, 0);
-		data.top = new FormAttachment(0, ITabbedPropertyConstants.VSPACE);
-		portNameText.setLayoutData(data);
-		portName = new TextCommandHandler(portNameText)
+		portName = new LabelledText(parent, getWidgetFactory())
 		{
 			@Override
 			protected Command getCommand(final String textValue)
@@ -53,21 +48,9 @@ public class PlacePortListSection extends AbstractListPropertySection
 				return new SetPortNameCommand(getBigraph(), (Place) getModel(), (Port) selection, textValue);
 			}
 		};
+		portName.setLabel("Port Name:");
 
-		final Label portLabel = getWidgetFactory().createLabel(parent, "Port Name:");
-		data = new FormData();
-		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(portNameText, -ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(portNameText, 0, SWT.TOP);
-		portLabel.setLayoutData(data);
-
-		final Text edgeNameText = getWidgetFactory().createText(parent, "");
-		data = new FormData();
-		data.left = new FormAttachment(0, STANDARD_LABEL_WIDTH);
-		data.right = new FormAttachment(100, 0);
-		data.top = new FormAttachment(portNameText, ITabbedPropertyConstants.VSPACE);
-		edgeNameText.setLayoutData(data);
-		edgeName = new TextCommandHandler(edgeNameText)
+		edgeName = new LabelledTextSelect(parent, getWidgetFactory())
 		{
 			@Override
 			protected Command getCommand(final String textValue)
@@ -76,15 +59,30 @@ public class PlacePortListSection extends AbstractListPropertySection
 				if (selection == null) { return null; }
 				return new SetPortEdgeNameCommand(getBigraph(), (Place) getModel(), (Port) selection, textValue);
 			}
+
+			@Override
+			protected IStructuredContentProvider getContentProvider()
+			{
+				// TODO Auto-generated method stub
+				return null;
+			}
 		};
-
-		final Label edgeLabel = getWidgetFactory().createLabel(parent, "Edge Name:");
-		data = new FormData();
-		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(edgeNameText, -ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(edgeNameText, 0, SWT.TOP);
-		edgeLabel.setLayoutData(data);
-
+		edgeName.setLabel("<a>Edge</a>:");
+		edgeName.addHyperlinkListeners(new HyperlinkAdapter()
+		{
+			@Override
+			public void linkActivated(HyperlinkEvent e)
+			{
+				final Port port = (Port)getSelectedObject();
+				final Bigraph bigraph = getBigraph();
+				final EditPartViewer viewer = getViewer();
+				if (viewer != null)
+				{
+					viewer.select((EditPart) viewer.getEditPartRegistry().get(bigraph.getEdge(port.getLinkName())));
+					getPart().getSite().getPage().activate(getPart());
+				}
+			}	
+		});
 	}
 
 	@Override
@@ -146,8 +144,19 @@ public class PlacePortListSection extends AbstractListPropertySection
 		}
 		else
 		{
-			portName.setText(((Port) selection).getName());
-			edgeName.setText(((Port) selection).getLinkName());
+			Port port = (Port)selection;
+			portName.setEnabled(true);
+			edgeName.setEnabled(true);
+			portName.setText(port.getName());
+			edgeName.setText(port.getLinkName());
+			if(port.getLinkName() != null)
+			{
+				edgeName.setLabel("<a>Edge</a>:");				
+			}
+			else
+			{
+				edgeName.setLabel("Edge:");
+			}
 		}
 	}
 }

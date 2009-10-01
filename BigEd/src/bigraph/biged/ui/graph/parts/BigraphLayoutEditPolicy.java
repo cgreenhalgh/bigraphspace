@@ -88,7 +88,7 @@ public abstract class BigraphLayoutEditPolicy extends FlowLayoutEditPolicy
 		{
 			/*
 			 * Want the line to be halfway between the end of the previous and the beginning of this
-			 * one. If at the begining of a line, then start halfway between the left edge of the
+			 * one. If at the beginning of a line, then start halfway between the left edge of the
 			 * parent and the beginning of the box, but no more than 5 pixels (it would be too far
 			 * and be confusing otherwise).
 			 */

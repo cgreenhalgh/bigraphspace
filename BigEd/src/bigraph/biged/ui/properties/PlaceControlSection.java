@@ -36,6 +36,8 @@
 package bigraph.biged.ui.properties;
 
 import org.eclipse.gef.commands.Command;
+import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.Viewer;
 
 import bigraph.biged.ui.commands.SetPlaceControlCommand;
 import bigraphspace.model.Place;
@@ -43,7 +45,7 @@ import bigraphspace.model.Place;
 /**
  * @author <a href="ktg@cs.nott.ac.uk">Kevin Glover</a>
  */
-public class PlaceControlNameSection extends AbstractStringSelectPropertySection
+public class PlaceControlSection extends AbstractStringSelectPropertySection
 {
 	@Override
 	protected Command createCommand(final String textValue)
@@ -54,7 +56,35 @@ public class PlaceControlNameSection extends AbstractStringSelectPropertySection
 	@Override
 	protected String getLabel()
 	{
-		return "Control Name:";
+		return "<a>Control</a>:";
+	}
+
+	@Override
+	protected IStructuredContentProvider getSelectionContentProvider()
+	{
+		return new IStructuredContentProvider()
+		{
+
+			@Override
+			public void dispose()
+			{
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public Object[] getElements(final Object inputElement)
+			{
+				return getBigraph().getBigraph().getSignature().getControls().toArray();
+			}
+
+			@Override
+			public void inputChanged(final Viewer viewer, final Object oldInput, final Object newInput)
+			{
+				// TODO Auto-generated method stub
+
+			}
+		};
 	}
 
 	@Override

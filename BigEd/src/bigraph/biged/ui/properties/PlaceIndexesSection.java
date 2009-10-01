@@ -4,25 +4,20 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
 import bigraph.biged.ui.commands.CreateControlIndexCommand;
 import bigraph.biged.ui.commands.DeleteControlIndexCommand;
 import bigraph.biged.ui.commands.SetControlIndexCommand;
+import bigraph.biged.ui.widget.LabelledText;
 import bigraphspace.model.IndexValue;
 import bigraphspace.model.Place;
 
-public class ControlIndexesSection extends AbstractListPropertySection
+public class PlaceIndexesSection extends AbstractListPropertySection
 {
-	private TextCommandHandler indexValue;
+	private LabelledText indexValue;
 
 	@Override
 	public void setInput(final IWorkbenchPart part, final ISelection selection)
@@ -34,13 +29,7 @@ public class ControlIndexesSection extends AbstractListPropertySection
 	@Override
 	protected void createDetailsPanel(final Composite parent, final TabbedPropertySheetPage aTabbedPropertySheetPage)
 	{
-		final Text indexText = getWidgetFactory().createText(parent, "");
-		FormData data = new FormData();
-		data.left = new FormAttachment(0, STANDARD_LABEL_WIDTH);
-		data.right = new FormAttachment(100, 0);
-		data.top = new FormAttachment(0, ITabbedPropertyConstants.VSPACE);
-		indexText.setLayoutData(data);
-		indexValue = new TextCommandHandler(indexText)
+		indexValue = new LabelledText(parent, getWidgetFactory())
 		{
 			@Override
 			protected Command getCommand(final String textValue)
@@ -50,13 +39,7 @@ public class ControlIndexesSection extends AbstractListPropertySection
 				return new SetControlIndexCommand(getBigraph(), (Place) getModel(), (IndexValue) selection, textValue);
 			}
 		};
-
-		final Label valueLabel = getWidgetFactory().createLabel(parent, "Index Value:");
-		data = new FormData();
-		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(indexText, -ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(indexText, 0, SWT.TOP);
-		valueLabel.setLayoutData(data);
+		indexValue.setLabel("Index Value:");
 	}
 
 	@Override
@@ -112,10 +95,11 @@ public class ControlIndexesSection extends AbstractListPropertySection
 		final Object selection = getSelectedObject();
 		if (selection == null)
 		{
-			indexValue.setText(null);
+			indexValue.setEnabled(false);
 		}
 		else
 		{
+			indexValue.setEnabled(true);
 			indexValue.setText(((IndexValue) selection).getValue().toString());
 		}
 	}

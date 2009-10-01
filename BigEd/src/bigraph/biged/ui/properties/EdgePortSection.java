@@ -6,16 +6,13 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.forms.events.HyperlinkAdapter;
 import org.eclipse.ui.forms.events.HyperlinkEvent;
-import org.eclipse.ui.forms.events.IHyperlinkListener;
-import org.eclipse.ui.forms.widgets.Hyperlink;
+import org.eclipse.ui.forms.widgets.FormText;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
@@ -24,13 +21,15 @@ import bigraph.biged.ui.BigraphLabelProvider;
 import bigraph.biged.ui.commands.DeletePortCommand;
 import bigraph.biged.ui.commands.SetPortEdgeNameCommand;
 import bigraph.biged.ui.commands.SetPortNameCommand;
+import bigraph.biged.ui.widget.LabelledText;
+import bigraph.biged.ui.widget.LabelledTextSelect;
 import bigraphspace.model.Port;
 
 public class EdgePortSection extends AbstractListPropertySection
 {
-	private TextCommandHandler portName;
-	private TextCommandHandler edgeName;
-	private Hyperlink link;
+	private LabelledText portName;
+	private LabelledText edgeName;
+	private FormText link;
 
 	@Override
 	public void createControls(final Composite parent, final TabbedPropertySheetPage aTabbedPropertySheetPage)
@@ -66,13 +65,15 @@ public class EdgePortSection extends AbstractListPropertySection
 	@Override
 	protected void createDetailsPanel(final Composite parent, final TabbedPropertySheetPage aTabbedPropertySheetPage)
 	{
-		link = getWidgetFactory().createHyperlink(parent, "", 0);
+		final Composite composite = getWidgetFactory().createFlatFormComposite(parent);
+		
+		link = getWidgetFactory().createFormText(composite, true);
 		FormData data = new FormData();
 		data.left = new FormAttachment(0, STANDARD_LABEL_WIDTH);
 		data.right = new FormAttachment(100, 0);
 		data.top = new FormAttachment(0, ITabbedPropertyConstants.VSPACE);
 		link.setLayoutData(data);
-		link.addHyperlinkListener(new IHyperlinkListener()
+		link.addHyperlinkListener(new HyperlinkAdapter()
 		{
 			@Override
 			public void linkActivated(final HyperlinkEvent e)
@@ -86,32 +87,9 @@ public class EdgePortSection extends AbstractListPropertySection
 					getPart().getSite().getPage().activate(getPart());
 				}
 			}
-
-			@Override
-			public void linkEntered(final HyperlinkEvent e)
-			{
-			}
-
-			@Override
-			public void linkExited(final HyperlinkEvent e)
-			{
-			}
 		});
 
-		final Label linkLabel = getWidgetFactory().createLabel(parent, "Place:");
-		data = new FormData();
-		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(link, -ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(link, 0, SWT.TOP);
-		linkLabel.setLayoutData(data);
-
-		final Text portNameText = getWidgetFactory().createText(parent, "");
-		data = new FormData();
-		data.left = new FormAttachment(0, STANDARD_LABEL_WIDTH);
-		data.right = new FormAttachment(100, 0);
-		data.top = new FormAttachment(link, ITabbedPropertyConstants.VSPACE);
-		portNameText.setLayoutData(data);
-		portName = new TextCommandHandler(portNameText)
+		portName = new LabelledText(parent, getWidgetFactory())
 		{
 			@Override
 			protected Command getCommand(final String textValue)
@@ -122,21 +100,10 @@ public class EdgePortSection extends AbstractListPropertySection
 				return new SetPortNameCommand(getBigraph(), ((Edge) getModel()).getPlace(port), port, textValue);
 			}
 		};
+		portName.setLabel("Port Name:");
+		portName.setMargins(0);
 
-		final Label portLabel = getWidgetFactory().createLabel(parent, "Port Name:");
-		data = new FormData();
-		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(portNameText, -ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(portNameText, 0, SWT.TOP);
-		portLabel.setLayoutData(data);
-
-		final Text edgeNameText = getWidgetFactory().createText(parent, "");
-		data = new FormData();
-		data.left = new FormAttachment(0, STANDARD_LABEL_WIDTH);
-		data.right = new FormAttachment(100, 0);
-		data.top = new FormAttachment(portNameText, ITabbedPropertyConstants.VSPACE);
-		edgeNameText.setLayoutData(data);
-		edgeName = new TextCommandHandler(edgeNameText)
+		edgeName = new LabelledTextSelect(parent, getWidgetFactory())
 		{
 			@Override
 			protected Command getCommand(final String textValue)
@@ -146,15 +113,16 @@ public class EdgePortSection extends AbstractListPropertySection
 				final Port port = (Port) selection;
 				return new SetPortEdgeNameCommand(getBigraph(), ((Edge) getModel()).getPlace(port), port, textValue);
 			}
+
+			@Override
+			protected IStructuredContentProvider getContentProvider()
+			{
+				// TODO Auto-generated method stub
+				return null;
+			}
 		};
-
-		final Label edgeLabel = getWidgetFactory().createLabel(parent, "Edge Name:");
-		data = new FormData();
-		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(edgeNameText, -ITabbedPropertyConstants.HSPACE);
-		data.top = new FormAttachment(edgeNameText, 0, SWT.TOP);
-		edgeLabel.setLayoutData(data);
-
+		edgeName.setLabel("Edge:");
+		edgeName.setMargins(0);		
 	}
 
 	@Override
@@ -221,14 +189,14 @@ public class EdgePortSection extends AbstractListPropertySection
 		final Object selection = getSelectedObject();
 		if (selection == null)
 		{
-			link.setText("");
+			link.setText("", false, false);
 			portName.setEnabled(false);
 			edgeName.setEnabled(false);
 		}
 		else
 		{
 			final Edge edge = (Edge) getModel();
-			link.setText(BigraphLabelProvider.text(edge.getPlace((Port) selection)));
+			link.setText("<form><p><a>" + BigraphLabelProvider.text(edge.getPlace((Port) selection)) + "</a></p></form>", true, false);
 			portName.setText(((Port) selection).getName());
 			edgeName.setText(((Port) selection).getLinkName());
 		}
