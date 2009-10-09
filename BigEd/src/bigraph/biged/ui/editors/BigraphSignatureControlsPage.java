@@ -29,12 +29,12 @@ import bigraph.biged.ui.BigraphLabelProvider;
 import bigraphspace.model.BasicSignature;
 import bigraphspace.model.signaturexml.SignatureFactory;
 
-public class BigraphSignatureFormPage extends FormPage
+public class BigraphSignatureControlsPage extends FormPage
 {
 	private BasicSignature signature;
 	private TableViewer viewer;
 
-	public BigraphSignatureFormPage(final FormEditor editor, final String id, final String title)
+	public BigraphSignatureControlsPage(final FormEditor editor, final String id, final String title)
 	{
 		super(editor, id, title);
 	}
@@ -67,7 +67,7 @@ public class BigraphSignatureFormPage extends FormPage
 		super.createFormContent(managedForm);
 		final FormToolkit toolkit = managedForm.getToolkit();
 		final ScrolledForm form = managedForm.getForm();
-		form.setText("Signature");
+		form.setText("Controls");
 		toolkit.decorateFormHeading(form.getForm());
 		final ColumnLayout layout = new ColumnLayout();
 		layout.leftMargin = 10;
@@ -94,17 +94,14 @@ public class BigraphSignatureFormPage extends FormPage
 		viewer.setLabelProvider(new BigraphLabelProvider());
 		viewer.setContentProvider(new IStructuredContentProvider()
 		{
-			@Override
 			public void inputChanged(Viewer viewer, Object oldInput, Object newInput)
 			{	
 			}
 			
-			@Override
 			public void dispose()
 			{
 			}
 			
-			@Override
 			public Object[] getElements(Object inputElement)
 			{
 				if(signature != null)

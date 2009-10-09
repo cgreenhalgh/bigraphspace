@@ -146,7 +146,7 @@ public class BigraphSignatureEditor extends FormEditor implements IResourceChang
 	{
 		try
 		{
-			addPage(new BigraphSignatureFormPage(this, "id", "Signature"));
+			addPage(new BigraphSignatureControlsPage(this, "id", "Controls"));
 		}
 		catch (PartInitException e)
 		{
