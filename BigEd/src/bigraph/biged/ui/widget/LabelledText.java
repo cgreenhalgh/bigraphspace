@@ -18,8 +18,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.events.IHyperlinkListener;
 import org.eclipse.ui.forms.widgets.FormText;
+import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public abstract class LabelledText extends Composite
 {
@@ -31,16 +31,16 @@ public abstract class LabelledText extends Composite
 	
 	private final LabelHyperlinkSettings settings;
 
-	public LabelledText(final Composite parent, final TabbedPropertySheetWidgetFactory widgetFactory)
+	public LabelledText(final Composite parent, final FormToolkit formToolkit)
 	{
 		super(parent, 0);
 		setLayout(new FormLayout());
-		widgetFactory.adapt(this);
-		settings = new LabelHyperlinkSettings(getDisplay(), widgetFactory.getHyperlinkGroup());
-		settings.setActiveForeground(widgetFactory.getHyperlinkGroup().getActiveForeground());
-		textLabel = widgetFactory.createFormText(this, true);
+		formToolkit.adapt(this);
+		settings = new LabelHyperlinkSettings(getDisplay(), formToolkit.getHyperlinkGroup());
+		settings.setActiveForeground(formToolkit.getHyperlinkGroup().getActiveForeground());
+		textLabel = formToolkit.createFormText(this, true);
 		textLabel.setHyperlinkSettings(settings);
-		textField = widgetFactory.createText(this, "");
+		textField = formToolkit.createText(this, "");
 		textField.addFocusListener(new FocusAdapter()
 		{
 			public void focusLost(final FocusEvent e)

@@ -9,9 +9,9 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.dialogs.ListSelectionDialog;
+import org.eclipse.ui.dialogs.ListDialog;
+import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 import bigraph.biged.ui.BigraphLabelProvider;
 
@@ -19,16 +19,21 @@ public abstract class LabelledTextSelect extends LabelledText
 {
 	protected final Button button;
 
-	public LabelledTextSelect(final Composite parent, final TabbedPropertySheetWidgetFactory widgetFactory)
+	public LabelledTextSelect(final Composite parent, final FormToolkit formToolkit)
 	{
-		super(parent, widgetFactory);
-		button = widgetFactory.createButton(this, "Select...", SWT.PUSH);
+		super(parent, formToolkit);
+		button = formToolkit.createButton(this, "Select...", SWT.PUSH);
 		button.addSelectionListener(new SelectionAdapter()
 		{
 			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
-				ListSelectionDialog dialog = new ListSelectionDialog(getShell(), null, getContentProvider(), new BigraphLabelProvider(), "Message");
+				ListDialog dialog = new ListDialog(getShell());
+				dialog.setContentProvider(getContentProvider());
+				dialog.setInput("");
+				dialog.setLabelProvider(new BigraphLabelProvider());
+				dialog.setHelpAvailable(false);
+				dialog.setTitle("");
 				if(dialog.open() == Dialog.OK)
 				{
 					// TODO
