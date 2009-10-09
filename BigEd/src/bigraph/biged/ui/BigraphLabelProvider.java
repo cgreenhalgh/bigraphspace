@@ -43,6 +43,7 @@ import org.eclipse.swt.graphics.Image;
 import bigraph.biged.BigEdPlugin;
 import bigraph.biged.model.Edge;
 import bigraph.biged.ui.properties.TypeMapper;
+import bigraphspace.model.Control;
 import bigraphspace.model.IndexValue;
 import bigraphspace.model.Place;
 import bigraphspace.model.PlaceType;
@@ -146,7 +147,11 @@ public class BigraphLabelProvider extends LabelProvider
 			final Edge edge = (Edge) modelObject;
 			return edge.getName();
 		}
-		else if (modelObject instanceof IndexValue) { return ((IndexValue) modelObject).getValue().toString(); }
+		else if (modelObject instanceof IndexValue)
+		{
+			return ((IndexValue) modelObject).getValue().toString();
+		}
+		else if (modelObject instanceof Control) { return ((Control) modelObject).getName(); }
 		return modelObject.toString();
 	}
 }

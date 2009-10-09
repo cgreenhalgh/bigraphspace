@@ -51,6 +51,16 @@
                 contentTypeId="bigraph.biged.bigraphBTL">
           </contentTypeBinding>
        </editor>
+       <editor
+             class="bigraph.biged.ui.editors.BigraphSignatureEditor"
+             contributorClass="bigraph.biged.ui.editors.BigraphSignatureEditorContributor"
+             default="true"
+             id="bigraph.biged.ui.editors.BigraphSignatureEditor"
+             name="Bigraph Signature Editor">
+          <contentTypeBinding
+                contentTypeId="bigraph.biged.bigraphSignature">
+          </contentTypeBinding>
+       </editor>
     </extension>
     <extension
           point="org.eclipse.ui.newWizards">
