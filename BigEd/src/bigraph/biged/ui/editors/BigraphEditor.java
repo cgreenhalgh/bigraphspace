@@ -249,7 +249,6 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements I
 		}
 	}
 
-	@Override
 	public void resourceChanged(IResourceChangeEvent event)
 	{
 		// TODO Auto-generated method stub

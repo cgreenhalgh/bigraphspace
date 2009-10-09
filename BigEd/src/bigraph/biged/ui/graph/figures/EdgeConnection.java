@@ -114,7 +114,6 @@ public class EdgeConnection extends PolylineConnection implements Connection
 				portAnchors.clear();
 			}
 
-			@Override
 			public void route(final Connection connection)
 			{
 				// if (segments.isEmpty())

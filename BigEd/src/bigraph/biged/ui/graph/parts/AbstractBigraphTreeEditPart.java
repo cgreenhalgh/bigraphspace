@@ -36,7 +36,6 @@ public abstract class AbstractBigraphTreeEditPart extends AbstractTreeEditPart i
 		return bigraph;
 	}
 
-	@Override
 	public void onPlaceEvent(final BigraphEvent event)
 	{
 		refresh();

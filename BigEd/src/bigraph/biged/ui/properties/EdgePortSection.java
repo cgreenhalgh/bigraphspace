@@ -119,17 +119,14 @@ public class EdgePortSection extends AbstractListPropertySection
 			{
 				return new IStructuredContentProvider()
 				{					
-					@Override
 					public void inputChanged(Viewer viewer, Object oldInput, Object newInput)
 					{
 					}
 					
-					@Override
 					public void dispose()
 					{
 					}
 					
-					@Override
 					public Object[] getElements(Object inputElement)
 					{
 						return getBigraph().getEdges().toArray();
@@ -152,19 +149,16 @@ public class EdgePortSection extends AbstractListPropertySection
 	{
 		return new IStructuredContentProvider()
 		{
-			@Override
 			public void dispose()
 			{
 			}
 
-			@Override
 			public Object[] getElements(final Object inputElement)
 			{
 				if (inputElement instanceof Edge) { return ((Edge) inputElement).getPorts().toArray(); }
 				return null;
 			}
 
-			@Override
 			public void inputChanged(final Viewer viewer, final Object oldInput, final Object newInput)
 			{
 			}

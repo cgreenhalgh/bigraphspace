@@ -50,8 +50,6 @@ public abstract class LabelledText extends Composite
 		});
 		textField.addModifyListener(new ModifyListener()
 		{
-			
-			@Override
 			public void modifyText(ModifyEvent e)
 			{
 				modified = true;	

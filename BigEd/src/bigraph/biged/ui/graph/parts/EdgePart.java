@@ -97,7 +97,6 @@ public class EdgePart extends AbstractConnectionEditPart implements BigraphEvent
 		return (Edge) getModel();
 	}
 
-	@Override
 	public void onPlaceEvent(final BigraphEvent event)
 	{
 		refresh();

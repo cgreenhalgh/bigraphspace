@@ -24,22 +24,18 @@ public class BigraphSignatureSection extends AbstractStringSelectPropertySection
 	{
 		return new IStructuredContentProvider()
 		{
-
-			@Override
 			public void dispose()
 			{
 				// TODO Auto-generated method stub
 
 			}
 
-			@Override
 			public Object[] getElements(final Object inputElement)
 			{
 				// TODO Auto-generated method stub
 				return null;
 			}
 
-			@Override
 			public void inputChanged(final Viewer viewer, final Object oldInput, final Object newInput)
 			{
 				// TODO Auto-generated method stub
