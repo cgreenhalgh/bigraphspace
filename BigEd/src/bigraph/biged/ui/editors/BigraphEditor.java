@@ -5,6 +5,9 @@ import java.io.StringWriter;
 import java.util.EventObject;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.gef.DefaultEditDomain;
@@ -39,7 +42,7 @@ import bigraphspace.io.IOConstants;
 import bigraphspace.model.BasicSignature;
 import bigraphspace.model.xml.XmlIOFactory;
 
-public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements ITabbedPropertySheetPageContributor
+public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements ITabbedPropertySheetPageContributor, IResourceChangeListener
 {
 	public class BigraphOutlinePage extends ContentOutlinePage
 	{
@@ -120,7 +123,19 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements I
 	public BigraphEditor()
 	{
 		setEditDomain(new DefaultEditDomain(this));
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
 	}
+
+	/**
+	 * The <code>MultiPageEditorPart</code> implementation of this <code>IWorkbenchPart</code>
+	 * method disposes all nested editors. Subclasses may extend.
+	 */
+	@Override
+	public void dispose()
+	{
+		ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
+		super.dispose();
+	}	
 
 	@Override
 	public void commandStackChanged(final EventObject event)
@@ -232,5 +247,12 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements I
 		{
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void resourceChanged(IResourceChangeEvent event)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

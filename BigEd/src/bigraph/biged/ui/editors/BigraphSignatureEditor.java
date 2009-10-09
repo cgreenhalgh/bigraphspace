@@ -6,11 +6,7 @@ import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.FontDialog;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
@@ -31,9 +27,6 @@ import bigraphspace.model.BasicSignature;
  */
 public class BigraphSignatureEditor extends FormEditor implements IResourceChangeListener
 {
-	private BigraphSignatureFormPage signaturePage;
-	private Font font;
-	private StyledText text;
 	private BasicSignature signature;
 
 	/**
@@ -148,30 +141,8 @@ public class BigraphSignatureEditor extends FormEditor implements IResourceChang
 		}
 	}
 
-	/**
-	 * Sets the font related data to be applied to the text in page 2.
-	 */
-	void setFont()
-	{
-		final FontDialog fontDialog = new FontDialog(getSite().getShell());
-		fontDialog.setFontList(text.getFont().getFontData());
-		final FontData fontData = fontDialog.open();
-		if (fontData != null)
-		{
-			if (font != null)
-			{
-				font.dispose();
-			}
-			font = new Font(text.getDisplay(), fontData);
-			text.setFont(font);
-		}
-	}
-
-	/**
-	 * Creates the pages of the multi-page editor.
-	 */
 	@Override
-	protected void createPages()
+	protected void addPages()
 	{
 		try
 		{
@@ -181,26 +152,6 @@ public class BigraphSignatureEditor extends FormEditor implements IResourceChang
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Calculates the contents of page 2 when the it is activated.
-	 */
-	@Override
-	protected void pageChange(final int newPageIndex)
-	{
-		super.pageChange(newPageIndex);
-		if (newPageIndex == 2)
-		{
-			//sortWords();
-		}
-	}
-
-	@Override
-	protected void addPages()
-	{
-		// TODO Auto-generated method stub
-		
+		}	
 	}
 }
