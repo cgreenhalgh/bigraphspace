@@ -27,6 +27,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.ide.IDE;
+import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
@@ -42,7 +43,8 @@ import bigraphspace.io.IOConstants;
 import bigraphspace.model.BasicSignature;
 import bigraphspace.model.xml.XmlIOFactory;
 
-public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements ITabbedPropertySheetPageContributor, IResourceChangeListener
+public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements ITabbedPropertySheetPageContributor,
+		IResourceChangeListener
 {
 	public class BigraphOutlinePage extends ContentOutlinePage
 	{
@@ -126,6 +128,13 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements I
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
 	}
 
+	@Override
+	public void commandStackChanged(final EventObject event)
+	{
+		firePropertyChange(IEditorPart.PROP_DIRTY);
+		super.commandStackChanged(event);
+	}
+
 	/**
 	 * The <code>MultiPageEditorPart</code> implementation of this <code>IWorkbenchPart</code>
 	 * method disposes all nested editors. Subclasses may extend.
@@ -135,13 +144,6 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements I
 	{
 		ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
 		super.dispose();
-	}	
-
-	@Override
-	public void commandStackChanged(final EventObject event)
-	{
-		firePropertyChange(IEditorPart.PROP_DIRTY);
-		super.commandStackChanged(event);
 	}
 
 	@Override
@@ -161,6 +163,19 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements I
 		{
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void doSaveAs()
+	{
+		final SaveExtDialog dialog = new SaveExtDialog(getSite().getShell());
+		if (getEditorInput() instanceof FileEditorInput)
+		{
+			dialog.setOriginalFile(((FileEditorInput) getEditorInput()).getFile());
+		}
+		dialog.setHelpAvailable(false);
+		dialog.open();
+		doSave(null);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -188,6 +203,18 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements I
 	public String getContributorId()
 	{
 		return "bigraph.biged.ui.properties.contributor";
+	}
+
+	@Override
+	public boolean isSaveAsAllowed()
+	{
+		return true;
+	}
+
+	public void resourceChanged(final IResourceChangeEvent event)
+	{
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
@@ -247,11 +274,5 @@ public class BigraphEditor extends GraphicalEditorWithFlyoutPalette implements I
 		{
 			e.printStackTrace();
 		}
-	}
-
-	public void resourceChanged(IResourceChangeEvent event)
-	{
-		// TODO Auto-generated method stub
-		
 	}
 }

@@ -15,7 +15,8 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.ide.IDE;
 
-import bigraphspace.model.BasicSignature;
+import bigraphspace.model.signaturexml.Definitions;
+import bigraphspace.model.signaturexml.Utils;
 
 /**
  * An example showing how to create a multi-page editor. This example has 3 pages:
@@ -27,7 +28,8 @@ import bigraphspace.model.BasicSignature;
  */
 public class BigraphSignatureEditor extends FormEditor implements IResourceChangeListener
 {
-	private BasicSignature signature;
+	// private BasicSignature signature;
+	private Definitions definitions;
 
 	/**
 	 * Creates a multi-page editor example.
@@ -49,11 +51,6 @@ public class BigraphSignatureEditor extends FormEditor implements IResourceChang
 		super.dispose();
 	}
 
-	public BasicSignature getSignature()
-	{
-		return signature;
-	}
-	
 	/**
 	 * Saves the multi-page editor's document.
 	 */
@@ -74,6 +71,11 @@ public class BigraphSignatureEditor extends FormEditor implements IResourceChang
 		editor.doSaveAs();
 		setPageText(0, editor.getTitle());
 		setInput(editor.getEditorInput());
+	}
+
+	public Definitions getDefinitions()
+	{
+		return definitions;
 	}
 
 	/*
@@ -99,11 +101,13 @@ public class BigraphSignatureEditor extends FormEditor implements IResourceChang
 		{
 			final IFile file = ((IFileEditorInput) editorInput).getFile();
 			setPartName(file.getName());
+			definitions = Utils.readDefinitions(file.getLocation().toFile());
+			// signature = SignatureFactory.createSignature(definitions);
 		}
 		catch (final Exception e)
 		{
 			e.printStackTrace();
-		}		
+		}
 	}
 
 	/*
@@ -126,16 +130,16 @@ public class BigraphSignatureEditor extends FormEditor implements IResourceChang
 			{
 				public void run()
 				{
-//					final IWorkbenchPage[] pages = getSite().getWorkbenchWindow().getPages();
-//					for (final IWorkbenchPage page : pages)
-//					{
-//						if (((FileEditorInput) editor.getEditorInput()).getFile().getProject()
-//								.equals(event.getResource()))
-//						{
-//							final IEditorPart editorPart = page.findEditor(editor.getEditorInput());
-//							page.closeEditor(editorPart, true);
-//						}
-//					}
+					// final IWorkbenchPage[] pages = getSite().getWorkbenchWindow().getPages();
+					// for (final IWorkbenchPage page : pages)
+					// {
+					// if (((FileEditorInput) editor.getEditorInput()).getFile().getProject()
+					// .equals(event.getResource()))
+					// {
+					// final IEditorPart editorPart = page.findEditor(editor.getEditorInput());
+					// page.closeEditor(editorPart, true);
+					// }
+					// }
 				}
 			});
 		}
@@ -146,12 +150,15 @@ public class BigraphSignatureEditor extends FormEditor implements IResourceChang
 	{
 		try
 		{
-			addPage(new BigraphSignatureControlsPage(this, "id", "Controls"));
+			addPage(new BigraphSignatureControlsPage(this, "1", "Controls"));
+			addPage(new BigraphSignatureSortingsPage(this, "2", "Sortings"));
+			addPage(new BigraphSignatureRulesPage(this, "3", "Rules"));
+			addPage(new BigraphSignatureRenderersPage(this, "3", "Renderers"));
 		}
-		catch (PartInitException e)
+		catch (final PartInitException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}	
+		}
 	}
 }

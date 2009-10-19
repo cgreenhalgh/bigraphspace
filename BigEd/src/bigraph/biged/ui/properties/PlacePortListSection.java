@@ -64,18 +64,18 @@ public class PlacePortListSection extends AbstractListPropertySection
 			protected IStructuredContentProvider getContentProvider()
 			{
 				return new IStructuredContentProvider()
-				{					
-					public void inputChanged(Viewer viewer, Object oldInput, Object newInput)
-					{
-					}
-					
+				{
 					public void dispose()
 					{
 					}
-					
-					public Object[] getElements(Object inputElement)
+
+					public Object[] getElements(final Object inputElement)
 					{
 						return getBigraph().getEdges().toArray();
+					}
+
+					public void inputChanged(final Viewer viewer, final Object oldInput, final Object newInput)
+					{
 					}
 				};
 			}
@@ -84,9 +84,9 @@ public class PlacePortListSection extends AbstractListPropertySection
 		edgeName.addHyperlinkListeners(new HyperlinkAdapter()
 		{
 			@Override
-			public void linkActivated(HyperlinkEvent e)
+			public void linkActivated(final HyperlinkEvent e)
 			{
-				final Port port = (Port)getSelectedObject();
+				final Port port = (Port) getSelectedObject();
 				final Bigraph bigraph = getBigraph();
 				final EditPartViewer viewer = getViewer();
 				if (viewer != null)
@@ -94,7 +94,7 @@ public class PlacePortListSection extends AbstractListPropertySection
 					viewer.select((EditPart) viewer.getEditPartRegistry().get(bigraph.getEdge(port.getLinkName())));
 					getPart().getSite().getPage().activate(getPart());
 				}
-			}	
+			}
 		});
 	}
 
@@ -157,14 +157,14 @@ public class PlacePortListSection extends AbstractListPropertySection
 		}
 		else
 		{
-			Port port = (Port)selection;
+			final Port port = (Port) selection;
 			portName.setEnabled(true);
 			edgeName.setEnabled(true);
 			portName.setText(port.getName());
 			edgeName.setText(port.getLinkName());
-			if(port.getLinkName() != null)
+			if (port.getLinkName() != null)
 			{
-				edgeName.setLabel("<a>Edge</a>:");				
+				edgeName.setLabel("<a>Edge</a>:");
 			}
 			else
 			{

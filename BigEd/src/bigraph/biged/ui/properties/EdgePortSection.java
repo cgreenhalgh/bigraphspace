@@ -66,9 +66,9 @@ public class EdgePortSection extends AbstractListPropertySection
 	protected void createDetailsPanel(final Composite parent, final TabbedPropertySheetPage aTabbedPropertySheetPage)
 	{
 		final Composite composite = getWidgetFactory().createFlatFormComposite(parent);
-		
+
 		link = getWidgetFactory().createFormText(composite, true);
-		FormData data = new FormData();
+		final FormData data = new FormData();
 		data.left = new FormAttachment(0, STANDARD_LABEL_WIDTH);
 		data.right = new FormAttachment(100, 0);
 		data.top = new FormAttachment(0, ITabbedPropertyConstants.VSPACE);
@@ -118,24 +118,24 @@ public class EdgePortSection extends AbstractListPropertySection
 			protected IStructuredContentProvider getContentProvider()
 			{
 				return new IStructuredContentProvider()
-				{					
-					public void inputChanged(Viewer viewer, Object oldInput, Object newInput)
-					{
-					}
-					
+				{
 					public void dispose()
 					{
 					}
-					
-					public Object[] getElements(Object inputElement)
+
+					public Object[] getElements(final Object inputElement)
 					{
 						return getBigraph().getEdges().toArray();
+					}
+
+					public void inputChanged(final Viewer viewer, final Object oldInput, final Object newInput)
+					{
 					}
 				};
 			}
 		};
 		edgeName.setLabel("Edge:");
-		edgeName.setMargins(0);		
+		edgeName.setMargins(0);
 	}
 
 	@Override
@@ -206,7 +206,8 @@ public class EdgePortSection extends AbstractListPropertySection
 		else
 		{
 			final Edge edge = (Edge) getModel();
-			link.setText("<form><p><a>" + BigraphLabelProvider.text(edge.getPlace((Port) selection)) + "</a></p></form>", true, false);
+			link.setText("<form><p><a>" + BigraphLabelProvider.text(edge.getPlace((Port) selection))
+					+ "</a></p></form>", true, false);
 			portName.setText(((Port) selection).getName());
 			edgeName.setText(((Port) selection).getLinkName());
 		}

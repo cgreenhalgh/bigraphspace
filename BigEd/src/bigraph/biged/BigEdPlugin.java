@@ -107,5 +107,7 @@ public class BigEdPlugin extends AbstractUIPlugin
 		reg.put("port", getImageDescriptor("icons/port.gif"));
 		reg.put("portx", getImageDescriptor("icons/portx.png"));
 		reg.put("edge", getImageDescriptor("icons/edge.gif"));
+		reg.put("control", getImageDescriptor("icons/control.gif"));
+		reg.put("rule", getImageDescriptor("icons/rule.gif"));
 	}
 }

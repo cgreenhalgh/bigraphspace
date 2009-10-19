@@ -1,8 +1,5 @@
 package bigraph.biged.ui.editors;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -13,6 +10,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IEditorInput;
@@ -32,14 +30,13 @@ import org.eclipse.ui.forms.widgets.Section;
 import bigraph.biged.BigEdPlugin;
 import bigraph.biged.ui.BigraphLabelProvider;
 import bigraph.biged.ui.widget.LabelledText;
-import bigraphspace.model.signaturexml.Control;
 import bigraphspace.model.signaturexml.Definitions;
 
-public class BigraphSignatureControlsPage extends FormPage
+public class BigraphSignatureRulesPage extends FormPage
 {
 	private TreeViewer viewer;
 
-	public BigraphSignatureControlsPage(final FormEditor editor, final String id, final String title)
+	public BigraphSignatureRulesPage(final FormEditor editor, final String id, final String title)
 	{
 		super(editor, id, title);
 	}
@@ -60,8 +57,8 @@ public class BigraphSignatureControlsPage extends FormPage
 		super.createFormContent(managedForm);
 		final FormToolkit toolkit = managedForm.getToolkit();
 		final ScrolledForm form = managedForm.getForm();
-		form.setText("Controls");
-		form.setImage(BigEdPlugin.getImage("control"));
+		form.setText("Rules");
+		form.setImage(BigEdPlugin.getImage("rule"));
 		toolkit.decorateFormHeading(form.getForm());
 		final ColumnLayout layout = new ColumnLayout();
 		layout.leftMargin = 10;
@@ -136,7 +133,7 @@ public class BigraphSignatureControlsPage extends FormPage
 	{
 		final Section section = createSection(managedForm);
 		final Composite client = (Composite) section.getClient();
-		section.setText("Defined Controls");
+		section.setText("Defined Rules");
 		final FormToolkit toolkit = managedForm.getToolkit();
 
 		final GridLayout grlayout = new GridLayout();
@@ -156,22 +153,14 @@ public class BigraphSignatureControlsPage extends FormPage
 			@Override
 			public Object[] getChildren(final Object parentElement)
 			{
-				if (parentElement instanceof Control)
-				{
-					final Collection<Object> objects = new HashSet<Object>();
-					final Control control = (Control) parentElement;
-					objects.addAll(control.getPort());
-					objects.addAll(control.getIndex());
-					return objects.toArray();
-				}
 				return null;
 			}
 
 			public Object[] getElements(final Object inputElement)
 			{
 				final Definitions definitions = getDefinitions();
-				if (definitions != null && definitions.getSorts() != null) { return definitions.getControls()
-						.getControl().toArray(); }
+				if (definitions != null && definitions.getSorts() != null) { return definitions.getRules().getRule()
+						.toArray(); }
 				return new Object[] {};
 			}
 
@@ -184,11 +173,6 @@ public class BigraphSignatureControlsPage extends FormPage
 			@Override
 			public boolean hasChildren(final Object element)
 			{
-				if (element instanceof Control)
-				{
-					final Control control = (Control) element;
-					return (!control.getPort().isEmpty()) || (!control.getIndex().isEmpty());
-				}
 				return false;
 			}
 
@@ -205,17 +189,13 @@ public class BigraphSignatureControlsPage extends FormPage
 			}
 		});
 		viewer.setInput(getDefinitions());
-		final GridData gd = new GridData(GridData.FILL_BOTH);
+		GridData gd = new GridData(GridData.FILL_BOTH);
 		gd.heightHint = 200;
 		gd.widthHint = 100;
 		t.setLayoutData(gd);
-
-		final Composite buttonComposite = toolkit.createComposite(client);
-		buttonComposite.setLayout(new FillLayout(SWT.VERTICAL));
-
-		toolkit.createButton(buttonComposite, "Add Control", SWT.PUSH);
-		toolkit.createButton(buttonComposite, "Add Port", SWT.PUSH);
-		toolkit.createButton(buttonComposite, "Add Index", SWT.PUSH);
+		final Button b = toolkit.createButton(client, "Add...", SWT.PUSH);
+		gd = new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
+		b.setLayoutData(gd);
 
 		return section;
 	}

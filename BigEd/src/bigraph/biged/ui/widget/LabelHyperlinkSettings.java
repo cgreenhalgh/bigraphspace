@@ -10,7 +10,7 @@ public class LabelHyperlinkSettings extends HyperlinkSettings
 {
 	private boolean enabled = true;
 	private final Display display;
-	
+
 	public LabelHyperlinkSettings(final Display display, final HyperlinkSettings settings)
 	{
 		super(display);
@@ -20,49 +20,37 @@ public class LabelHyperlinkSettings extends HyperlinkSettings
 		setHyperlinkUnderlineMode(settings.getHyperlinkUnderlineMode());
 	}
 
-	public void setEnabled(final boolean enabled)
-	{
-		this.enabled = enabled;
-	}
-	
 	@Override
 	public Color getActiveForeground()
 	{
-		if(!enabled)
-		{
-			return display.getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW);
-		}
+		if (!enabled) { return display.getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW); }
 		return super.getActiveForeground();
 	}
 
 	@Override
 	public Color getForeground()
 	{
-		if(!enabled)
-		{
-			return display.getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW);
-		}		
+		if (!enabled) { return display.getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW); }
 		return super.getForeground();
-	}
-
-	@Override
-	public int getHyperlinkUnderlineMode()
-	{
-		if(!enabled)
-		{
-			return UNDERLINE_NEVER;
-		}		
-		return super.getHyperlinkUnderlineMode();
 	}
 
 	@Override
 	public Cursor getHyperlinkCursor()
 	{
-		if(!enabled)
-		{
-			return getTextCursor();
-		}
+		if (!enabled) { return getTextCursor(); }
 		return super.getHyperlinkCursor();
+	}
+
+	@Override
+	public int getHyperlinkUnderlineMode()
+	{
+		if (!enabled) { return UNDERLINE_NEVER; }
+		return super.getHyperlinkUnderlineMode();
+	}
+
+	public void setEnabled(final boolean enabled)
+	{
+		this.enabled = enabled;
 	}
 
 }
