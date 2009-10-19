@@ -28,7 +28,7 @@ public abstract class LabelledText extends Composite
 	protected final Text textField;
 	protected final FormText textLabel;
 	protected int margins = 0;
-	
+
 	private final LabelHyperlinkSettings settings;
 
 	public LabelledText(final Composite parent, final FormToolkit formToolkit)
@@ -43,22 +43,23 @@ public abstract class LabelledText extends Composite
 		textField = formToolkit.createText(this, "");
 		textField.addFocusListener(new FocusAdapter()
 		{
+			@Override
 			public void focusLost(final FocusEvent e)
 			{
 				execute();
-			}			
+			}
 		});
 		textField.addModifyListener(new ModifyListener()
 		{
-			public void modifyText(ModifyEvent e)
+			public void modifyText(final ModifyEvent e)
 			{
-				modified = true;	
+				modified = true;
 			}
 		});
 		textField.addSelectionListener(new SelectionAdapter()
 		{
 			@Override
-			public void widgetDefaultSelected(SelectionEvent e)
+			public void widgetDefaultSelected(final SelectionEvent e)
 			{
 				execute();
 			}
@@ -89,11 +90,11 @@ public abstract class LabelledText extends Composite
 		{
 			setText(null);
 			settings.setEnabled(false);
-			textLabel.setForeground(getDisplay().getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW));			
+			textLabel.setForeground(getDisplay().getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW));
 		}
 		else
 		{
-			settings.setEnabled(true);	
+			settings.setEnabled(true);
 			textLabel.setForeground(ColorConstants.black);
 		}
 		textField.setEnabled(enabled);
@@ -134,7 +135,19 @@ public abstract class LabelledText extends Composite
 	{
 		updateLayout();
 	}
-	
+
+	private void execute()
+	{
+		if (modified)
+		{
+			final Command command = getCommand(textField.getText());
+			if (command != null)
+			{
+				commandStack.execute(command);
+			}
+		}
+	}
+
 	private void updateLayout()
 	{
 		FormData data = new FormData();
@@ -148,17 +161,5 @@ public abstract class LabelledText extends Composite
 		data.right = new FormAttachment(100, -margins);
 		data.top = new FormAttachment(0, ITabbedPropertyConstants.VSPACE);
 		textField.setLayoutData(data);
-	}
-
-	private void execute()
-	{
-		if (modified)
-		{
-			final Command command = getCommand(textField.getText());
-			if (command != null)
-			{
-				commandStack.execute(command);
-			}
-		}
 	}
 }

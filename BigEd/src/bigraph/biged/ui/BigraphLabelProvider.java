@@ -48,6 +48,9 @@ import bigraphspace.model.IndexValue;
 import bigraphspace.model.Place;
 import bigraphspace.model.PlaceType;
 import bigraphspace.model.Port;
+import bigraphspace.model.signaturexml.Rule;
+import bigraphspace.model.signaturexml.Sort;
+import bigraphspace.model.signaturexml.SortRef;
 
 public class BigraphLabelProvider extends LabelProvider
 {
@@ -74,9 +77,18 @@ public class BigraphLabelProvider extends LabelProvider
 			if (place.getType() == PlaceType.root) { return BigEdPlugin.getImage("root"); }
 			if (place.getType() == PlaceType.site) { return BigEdPlugin.getImage("site"); }
 		}
-		else if (modelObject instanceof Port)
+		else if (modelObject instanceof Rule)
+		{
+			return BigEdPlugin.getImage("rule");
+		}
+		else if (modelObject instanceof Port || modelObject instanceof bigraphspace.model.signaturexml.Port)
 		{
 			return BigEdPlugin.getImage("port");
+		}
+		else if (modelObject instanceof Control || modelObject instanceof bigraphspace.model.signaturexml.Control
+				|| modelObject instanceof SortRef || modelObject instanceof Sort)
+		{
+			return BigEdPlugin.getImage("control");
 		}
 		else if (modelObject instanceof Edge) { return BigEdPlugin.getImage("edge"); }
 		return null; // PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);
@@ -141,6 +153,31 @@ public class BigraphLabelProvider extends LabelProvider
 		{
 			final Port port = (Port) modelObject;
 			return port.getName() + "=\"" + port.getLinkName() + "\"";
+		}
+		else if (modelObject instanceof Rule)
+		{
+			final Rule rule = (Rule) modelObject;
+			return rule.getDescription();
+		}
+		else if (modelObject instanceof bigraphspace.model.signaturexml.Control)
+		{
+			final bigraphspace.model.signaturexml.Control control = (bigraphspace.model.signaturexml.Control) modelObject;
+			return control.getName();
+		}
+		else if (modelObject instanceof bigraphspace.model.signaturexml.Port)
+		{
+			final bigraphspace.model.signaturexml.Port port = (bigraphspace.model.signaturexml.Port) modelObject;
+			return port.getName();
+		}
+		else if (modelObject instanceof Sort)
+		{
+			final Sort sort = (Sort) modelObject;
+			return sort.getName();
+		}
+		else if (modelObject instanceof SortRef)
+		{
+			final SortRef sort = (SortRef) modelObject;
+			return sort.getName();
 		}
 		else if (modelObject instanceof Edge)
 		{

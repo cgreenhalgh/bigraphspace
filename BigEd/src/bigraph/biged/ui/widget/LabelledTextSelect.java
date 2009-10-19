@@ -1,7 +1,7 @@
 package bigraph.biged.ui.widget;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -26,15 +26,15 @@ public abstract class LabelledTextSelect extends LabelledText
 		button.addSelectionListener(new SelectionAdapter()
 		{
 			@Override
-			public void widgetSelected(SelectionEvent e)
+			public void widgetSelected(final SelectionEvent e)
 			{
-				ListDialog dialog = new ListDialog(getShell());
+				final ListDialog dialog = new ListDialog(getShell());
 				dialog.setContentProvider(getContentProvider());
 				dialog.setInput("");
 				dialog.setLabelProvider(new BigraphLabelProvider());
 				dialog.setHelpAvailable(false);
 				dialog.setTitle("");
-				if(dialog.open() == Dialog.OK)
+				if (dialog.open() == Window.OK)
 				{
 					// TODO
 				}
@@ -43,21 +43,21 @@ public abstract class LabelledTextSelect extends LabelledText
 		updateLayout();
 	}
 
-	protected abstract IStructuredContentProvider getContentProvider();
-	
 	@Override
-	public void setEnabled(boolean enabled)
+	public void setEnabled(final boolean enabled)
 	{
 		super.setEnabled(enabled);
 		button.setEnabled(enabled);
 	}
+
+	protected abstract IStructuredContentProvider getContentProvider();
 
 	@Override
 	protected void refreshLayout()
 	{
 		updateLayout();
 	}
-	
+
 	private void updateLayout()
 	{
 		FormData data = new FormData();
