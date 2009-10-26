@@ -22,6 +22,7 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import org.apache.log4j.Logger;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -171,7 +172,9 @@ public class DomBigraph implements Bigraph {
 
 	public Port createPort(final String name)
 	{
-		return new DomPort(document.createAttribute(name));
+		Attr attr = document.createAttribute(name);
+		attr.setValue(UNSPECIFIED_EDGE_NAME);
+		return new DomPort(attr);
 	}
 	
 	/* (non-Javadoc)
