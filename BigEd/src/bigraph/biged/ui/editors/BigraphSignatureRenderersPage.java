@@ -81,7 +81,7 @@ public class BigraphSignatureRenderersPage extends FormPage
 		{
 
 			@Override
-			protected Command getCommand(final String textValue)
+			protected Command getCommand(final Object textValue)
 			{
 				// TODO Auto-generated method stub
 				return null;
@@ -93,7 +93,7 @@ public class BigraphSignatureRenderersPage extends FormPage
 		{
 
 			@Override
-			protected Command getCommand(final String textValue)
+			protected Command getCommand(final Object textValue)
 			{
 				// TODO Auto-generated method stub
 				return null;

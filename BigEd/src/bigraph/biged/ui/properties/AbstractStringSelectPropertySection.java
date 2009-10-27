@@ -17,7 +17,7 @@ public abstract class AbstractStringSelectPropertySection extends AbstractString
 		{
 
 			@Override
-			protected Command getCommand(final String textValue)
+			protected Command getCommand(final Object textValue)
 			{
 				return createCommand(textValue);
 			}

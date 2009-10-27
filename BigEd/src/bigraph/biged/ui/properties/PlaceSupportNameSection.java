@@ -46,9 +46,9 @@ import bigraphspace.model.Place;
 public class PlaceSupportNameSection extends AbstractStringPropertySection
 {
 	@Override
-	protected Command createCommand(final String textValue)
+	protected Command createCommand(final Object textValue)
 	{
-		return new SetPlaceSupportCommand(getBigraph(), (Place) getModel(), textValue);
+		return new SetPlaceSupportCommand(getBigraph(), (Place) getModel(), textValue.toString());
 	}
 
 	@Override

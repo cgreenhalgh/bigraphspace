@@ -46,7 +46,7 @@ public abstract class AbstractStringPropertySection extends AbstractPropertySect
 		text.setCommandStack(getCommandStack());
 	}
 
-	protected abstract Command createCommand(final String text);
+	protected abstract Command createCommand(final Object text);
 
 	protected void createControl(final Composite parent, final TabbedPropertySheetPage aTabbedPropertySheetPage)
 	{
@@ -54,7 +54,7 @@ public abstract class AbstractStringPropertySection extends AbstractPropertySect
 		{
 
 			@Override
-			protected Command getCommand(final String textValue)
+			protected Command getCommand(final Object textValue)
 			{
 				return createCommand(textValue);
 			}

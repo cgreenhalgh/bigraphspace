@@ -48,9 +48,9 @@ import bigraphspace.model.Place;
 public class PlaceControlSection extends AbstractStringSelectPropertySection
 {
 	@Override
-	protected Command createCommand(final String textValue)
+	protected Command createCommand(final Object textValue)
 	{
-		return new SetPlaceControlCommand(getBigraph(), (Place) getModel(), textValue);
+		return new SetPlaceControlCommand(getBigraph(), (Place) getModel(), textValue.toString());
 	}
 
 	@Override

@@ -41,11 +41,11 @@ public class PlacePortListSection extends AbstractListPropertySection
 		portName = new LabelledText(parent, getWidgetFactory())
 		{
 			@Override
-			protected Command getCommand(final String textValue)
+			protected Command getCommand(final Object textValue)
 			{
 				final Object selection = getSelectedObject();
 				if (selection == null) { return null; }
-				return new SetPortNameCommand(getBigraph(), (Place) getModel(), (Port) selection, textValue);
+				return new SetPortNameCommand(getBigraph(), (Place) getModel(), (Port) selection, textValue.toString());
 			}
 		};
 		portName.setLabel("Port Name:");
@@ -53,11 +53,11 @@ public class PlacePortListSection extends AbstractListPropertySection
 		edgeName = new LabelledTextSelect(parent, getWidgetFactory())
 		{
 			@Override
-			protected Command getCommand(final String textValue)
+			protected Command getCommand(final Object textValue)
 			{
 				final Object selection = getSelectedObject();
 				if (selection == null) { return null; }
-				return new SetPortEdgeNameCommand(getBigraph(), (Place) getModel(), (Port) selection, textValue);
+				return new SetPortEdgeNameCommand(getBigraph(), (Place) getModel(), (Port) selection, textValue.toString());
 			}
 
 			@Override
