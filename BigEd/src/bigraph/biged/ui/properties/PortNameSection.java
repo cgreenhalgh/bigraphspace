@@ -61,9 +61,9 @@ public class PortNameSection extends AbstractStringPropertySection
 	}
 
 	@Override
-	protected Command createCommand(final String textValue)
+	protected Command createCommand(final Object textValue)
 	{
-		return new SetPortNameCommand(getBigraph(), getPlace(), (Port) getModel(), textValue);
+		return new SetPortNameCommand(getBigraph(), getPlace(), (Port) getModel(), textValue.toString());
 	}
 
 	@Override

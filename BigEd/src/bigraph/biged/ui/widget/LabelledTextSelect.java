@@ -17,11 +17,24 @@ import bigraph.biged.ui.BigraphLabelProvider;
 
 public abstract class LabelledTextSelect extends LabelledText
 {
-	protected final Button button;
+	protected Button button;
 
 	public LabelledTextSelect(final Composite parent, final FormToolkit formToolkit)
 	{
 		super(parent, formToolkit);
+	}
+
+	@Override
+	public void setEnabled(final boolean enabled)
+	{
+		super.setEnabled(enabled);
+		button.setEnabled(enabled);
+	}
+
+	@Override
+	protected void createControls(final FormToolkit formToolkit, final int style)
+	{
+		super.createControls(formToolkit, style);
 		button = formToolkit.createButton(this, "Select...", SWT.PUSH);
 		button.addSelectionListener(new SelectionAdapter()
 		{
@@ -40,25 +53,12 @@ public abstract class LabelledTextSelect extends LabelledText
 				}
 			}
 		});
-		updateLayout();
-	}
-
-	@Override
-	public void setEnabled(final boolean enabled)
-	{
-		super.setEnabled(enabled);
-		button.setEnabled(enabled);
 	}
 
 	protected abstract IStructuredContentProvider getContentProvider();
 
 	@Override
 	protected void refreshLayout()
-	{
-		updateLayout();
-	}
-
-	private void updateLayout()
 	{
 		FormData data = new FormData();
 		data.right = new FormAttachment(100, -margins);

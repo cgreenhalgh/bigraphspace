@@ -32,11 +32,11 @@ public class PlaceIndexesSection extends AbstractListPropertySection
 		indexValue = new LabelledText(parent, getWidgetFactory())
 		{
 			@Override
-			protected Command getCommand(final String textValue)
+			protected Command getCommand(final Object textValue)
 			{
 				final Object selection = getSelectedObject();
 				if (selection == null) { return null; }
-				return new SetControlIndexCommand(getBigraph(), (Place) getModel(), (IndexValue) selection, textValue);
+				return new SetControlIndexCommand(getBigraph(), (Place) getModel(), (IndexValue) selection, textValue.toString());
 			}
 		};
 		indexValue.setLabel("Index Value:");

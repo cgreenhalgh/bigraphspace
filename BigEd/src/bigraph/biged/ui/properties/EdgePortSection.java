@@ -92,12 +92,12 @@ public class EdgePortSection extends AbstractListPropertySection
 		portName = new LabelledText(parent, getWidgetFactory())
 		{
 			@Override
-			protected Command getCommand(final String textValue)
+			protected Command getCommand(final Object textValue)
 			{
 				final Object selection = getSelectedObject();
 				if (selection == null) { return null; }
 				final Port port = (Port) selection;
-				return new SetPortNameCommand(getBigraph(), ((Edge) getModel()).getPlace(port), port, textValue);
+				return new SetPortNameCommand(getBigraph(), ((Edge) getModel()).getPlace(port), port, textValue.toString());
 			}
 		};
 		portName.setLabel("Port Name:");
@@ -106,12 +106,12 @@ public class EdgePortSection extends AbstractListPropertySection
 		edgeName = new LabelledTextSelect(parent, getWidgetFactory())
 		{
 			@Override
-			protected Command getCommand(final String textValue)
+			protected Command getCommand(final Object textValue)
 			{
 				final Object selection = getSelectedObject();
 				if (selection == null) { return null; }
 				final Port port = (Port) selection;
-				return new SetPortEdgeNameCommand(getBigraph(), ((Edge) getModel()).getPlace(port), port, textValue);
+				return new SetPortEdgeNameCommand(getBigraph(), ((Edge) getModel()).getPlace(port), port, textValue.toString());
 			}
 
 			@Override

@@ -1,40 +1,50 @@
 package bigraph.biged.ui.editors;
 
-import org.eclipse.gef.commands.Command;
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.gef.GraphicalViewer;
+import org.eclipse.gef.editparts.ScalableRootEditPart;
+import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
-import org.eclipse.ui.forms.events.ExpansionAdapter;
-import org.eclipse.ui.forms.events.ExpansionEvent;
-import org.eclipse.ui.forms.widgets.ColumnLayout;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
+import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 
 import bigraph.biged.BigEdPlugin;
 import bigraph.biged.ui.BigraphLabelProvider;
-import bigraph.biged.ui.widget.LabelledText;
+import bigraph.biged.ui.graph.parts.BigraphEditPartFactory;
+import bigraphspace.model.BasicSignature;
 import bigraphspace.model.signaturexml.Definitions;
+import bigraphspace.model.signaturexml.Rule;
+import bigraphspace.model.xml.DomBigraph;
 
 public class BigraphSignatureRulesPage extends FormPage
 {
-	private TreeViewer viewer;
+	private TableViewer viewer;
+	private GraphicalViewer redexGraph;
+	private GraphicalViewer reactumGraph;
 
 	public BigraphSignatureRulesPage(final FormEditor editor, final String id, final String title)
 	{
@@ -60,49 +70,32 @@ public class BigraphSignatureRulesPage extends FormPage
 		form.setText("Rules");
 		form.setImage(BigEdPlugin.getImage("rule"));
 		toolkit.decorateFormHeading(form.getForm());
-		final ColumnLayout layout = new ColumnLayout();
-		layout.leftMargin = 10;
-		layout.rightMargin = 10;
-		form.getBody().setLayout(layout);
+		form.getBody().setLayout(new FormLayout());		
 
-		createTableSection(managedForm);
-		createDetailSection(managedForm);
-	}
-
-	private Section createDetailSection(final IManagedForm managedForm)
-	{
-		final Section section = createSection(managedForm);
-		final Composite client = (Composite) section.getClient();
-		section.setText("Control Details");
-		final FormToolkit toolkit = managedForm.getToolkit();
-
-		client.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final LabelledText text = new LabelledText(client, toolkit)
-		{
-
-			@Override
-			protected Command getCommand(final String textValue)
-			{
-				// TODO Auto-generated method stub
-				return null;
-			}
-		};
-		text.setLabel("Name:");
-
-		final LabelledText combo = new LabelledText(client, toolkit)
-		{
-
-			@Override
-			protected Command getCommand(final String textValue)
-			{
-				// TODO Auto-generated method stub
-				return null;
-			}
-		};
-		combo.setLabel("Status:");
-
-		return section;
+		Section section1 = createTableSection(managedForm);
+		Section section2 = createRedexSection(managedForm);
+		Section section3 = createReactumSection(managedForm);
+		
+		FormData data = new FormData();
+		data.top = new FormAttachment(0, ITabbedPropertyConstants.VMARGIN);
+		data.left = new FormAttachment(0, ITabbedPropertyConstants.HMARGIN);
+		data.right = new FormAttachment(100, -ITabbedPropertyConstants.HMARGIN);
+		data.height = 100;
+		section1.setLayoutData(data);
+		
+		data = new FormData();
+		data.top = new FormAttachment(section1, ITabbedPropertyConstants.VSPACE, SWT.BOTTOM);
+		data.left = new FormAttachment(0, ITabbedPropertyConstants.HMARGIN);
+		data.right = new FormAttachment(50, -ITabbedPropertyConstants.HSPACE);
+		data.bottom = new FormAttachment(100, -ITabbedPropertyConstants.VMARGIN);
+		section2.setLayoutData(data);
+		
+		data = new FormData();
+		data.top = new FormAttachment(section1, ITabbedPropertyConstants.VSPACE, SWT.BOTTOM);
+		data.left = new FormAttachment(50, ITabbedPropertyConstants.HMARGIN);
+		data.right = new FormAttachment(100, -ITabbedPropertyConstants.HSPACE);
+		data.bottom = new FormAttachment(100, -ITabbedPropertyConstants.VMARGIN);		
+		section3.setLayoutData(data);
 	}
 
 	private Section createSection(final IManagedForm managedForm)
@@ -113,14 +106,6 @@ public class BigraphSignatureRulesPage extends FormPage
 		section.setActiveToggleColor(toolkit.getHyperlinkGroup().getActiveForeground());
 		section.setToggleColor(toolkit.getColors().getColor(IFormColors.SEPARATOR));
 		section.setExpanded(true);
-		section.addExpansionListener(new ExpansionAdapter()
-		{
-			@Override
-			public void expansionStateChanged(final ExpansionEvent e)
-			{
-				form.reflow(false);
-			}
-		});
 
 		final Composite client = toolkit.createComposite(section, SWT.WRAP);
 		section.setClient(client);
@@ -129,6 +114,42 @@ public class BigraphSignatureRulesPage extends FormPage
 		return section;
 	}
 
+	private GraphicalViewer createGraphicalViewer(final Composite parent)
+	{
+		GraphicalViewer graphicalViewer = new ScrollingGraphicalViewer();
+		graphicalViewer.setEditPartFactory(new BigraphEditPartFactory());		
+		graphicalViewer.setRootEditPart(new ScalableRootEditPart());		
+		graphicalViewer.createControl(parent);
+		graphicalViewer.getControl().setBackground(ColorConstants.listBackground);		
+		//getViewer().setEditDomain(getEditDomain());
+		
+		return graphicalViewer;
+	}
+	
+	private Section createRedexSection(final IManagedForm managedForm)
+	{
+		final Section section = createSection(managedForm);
+		final Composite client = (Composite) section.getClient();
+		client.setLayout(new FillLayout());		
+		section.setText("Redex");
+
+		redexGraph = createGraphicalViewer(client);
+	
+		return section;
+	}
+
+	private Section createReactumSection(final IManagedForm managedForm)
+	{
+		final Section section = createSection(managedForm);
+		final Composite client = (Composite) section.getClient();
+		client.setLayout(new FillLayout());
+		section.setText("Reactum");
+
+		reactumGraph = createGraphicalViewer(client);
+		
+		return section;
+	}
+	
 	private Section createTableSection(final IManagedForm managedForm)
 	{
 		final Section section = createSection(managedForm);
@@ -140,9 +161,9 @@ public class BigraphSignatureRulesPage extends FormPage
 		grlayout.numColumns = 2;
 
 		client.setLayout(grlayout);
-		final Tree t = toolkit.createTree(client, SWT.NULL);
+		final Table t = toolkit.createTable(client, SWT.NULL);
 
-		viewer = new TreeViewer(t);
+		viewer = new TableViewer(t);
 		viewer.setLabelProvider(new BigraphLabelProvider());
 		viewer.setContentProvider(new ITreeContentProvider()
 		{
@@ -185,13 +206,25 @@ public class BigraphSignatureRulesPage extends FormPage
 			@Override
 			public void selectionChanged(final SelectionChangedEvent event)
 			{
-				// TODO Auto-generated method stub
+				final Object selection = getViewerSelection();
+				if (selection instanceof Rule)
+				{
+					Rule rule = (Rule)selection;
+					try
+					{
+						redexGraph.setContents(new DomBigraph(new BasicSignature(), rule.getRedex().getAny().getOwnerDocument(), rule.getRedex().getAny()));
+						reactumGraph.setContents(new DomBigraph(new BasicSignature(), rule.getReactum().getAny().getOwnerDocument(), rule.getReactum().getAny()));						
+					}
+					catch (Exception e)
+					{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 			}
 		});
 		viewer.setInput(getDefinitions());
 		GridData gd = new GridData(GridData.FILL_BOTH);
-		gd.heightHint = 200;
-		gd.widthHint = 100;
 		t.setLayoutData(gd);
 		final Button b = toolkit.createButton(client, "Add...", SWT.PUSH);
 		gd = new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
@@ -199,6 +232,12 @@ public class BigraphSignatureRulesPage extends FormPage
 
 		return section;
 	}
+	
+	private Object getViewerSelection()
+	{
+		if (viewer.getSelection().isEmpty()) { return null; }
+		return ((IStructuredSelection) viewer.getSelection()).getFirstElement();
+	}	
 
 	private Definitions getDefinitions()
 	{

@@ -7,7 +7,7 @@ import org.eclipse.jface.viewers.Viewer;
 public class BigraphSignatureSection extends AbstractStringSelectPropertySection
 {
 	@Override
-	protected Command createCommand(final String text)
+	protected Command createCommand(final Object text)
 	{
 		// TODO Auto-generated method stub
 		return null;

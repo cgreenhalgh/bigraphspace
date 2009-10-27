@@ -1,7 +1,5 @@
 package bigraph.biged.ui.widget;
 
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
@@ -11,36 +9,96 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.graphics.FontMetrics;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.events.IHyperlinkListener;
-import org.eclipse.ui.forms.widgets.FormText;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 
-public abstract class LabelledText extends Composite
+public abstract class LabelledText extends LabelledWidget
 {
-	protected CommandStack commandStack;
+	private int lines = 1;
 	protected boolean modified;
-	protected final Text textField;
-	protected final FormText textLabel;
-	protected int margins = 0;
-
-	private final LabelHyperlinkSettings settings;
+	protected Text textField;
 
 	public LabelledText(final Composite parent, final FormToolkit formToolkit)
 	{
-		super(parent, 0);
-		setLayout(new FormLayout());
-		formToolkit.adapt(this);
-		settings = new LabelHyperlinkSettings(getDisplay(), formToolkit.getHyperlinkGroup());
-		settings.setActiveForeground(formToolkit.getHyperlinkGroup().getActiveForeground());
-		textLabel = formToolkit.createFormText(this, true);
-		textLabel.setHyperlinkSettings(settings);
-		textField = formToolkit.createText(this, "");
+		super(parent, formToolkit, 0);
+	}
+	
+	public LabelledText(final Composite parent, final FormToolkit formToolkit, final int style)
+	{
+		super(parent, formToolkit, style);
+	}
+	
+
+	@Override
+	public void addHyperlinkListeners(final IHyperlinkListener hyperlinkListener)
+	{
+		textLabel.addHyperlinkListener(hyperlinkListener);
+	}
+
+	public void addVerifyListener(final VerifyListener verifyListener)
+	{
+		textField.addVerifyListener(verifyListener);
+	}
+
+	@Override
+	public Object getValue()
+	{
+		return textField.getText();
+	}
+	
+	public void setHeight(final int lines)
+	{
+		this.lines = lines;
+		refreshLayout();
+	}
+
+	@Override
+	public void setCommandStack(final CommandStack commandStack)
+	{
+		this.commandStack = commandStack;
+	}
+
+	@Override
+	public void setEnabled(final boolean enabled)
+	{
+		super.setEnabled(enabled);
+		if (!enabled)
+		{
+			setText(null);
+		}
+		textField.setEnabled(enabled);
+	}
+
+	public void setText(final String text)
+	{
+		if (textField.isDisposed()) { return; }
+		if (text == null)
+		{
+			textField.setText("");
+		}
+		else
+		{
+			if (!textField.getText().equals(text))
+			{
+				textField.setText(text);
+				setEnabled(true);
+			}
+		}
+		modified = false;
+	}
+
+	@Override
+	protected void createControls(final FormToolkit formToolkit, final int style)
+	{
+		super.createControls(formToolkit, style);
+		textField = formToolkit.createText(this, "", style);
 		textField.addFocusListener(new FocusAdapter()
 		{
 			@Override
@@ -64,91 +122,10 @@ public abstract class LabelledText extends Composite
 				execute();
 			}
 		});
-		updateLayout();
-	}
-
-	public void addHyperlinkListeners(final IHyperlinkListener hyperlinkListener)
-	{
-		textLabel.addHyperlinkListener(hyperlinkListener);
-	}
-
-	public void addVerifyListener(final VerifyListener verifyListener)
-	{
-		textField.addVerifyListener(verifyListener);
-	}
-
-	public void setCommandStack(final CommandStack commandStack)
-	{
-		this.commandStack = commandStack;
 	}
 
 	@Override
-	public void setEnabled(final boolean enabled)
-	{
-		super.setEnabled(enabled);
-		if (!enabled)
-		{
-			setText(null);
-			settings.setEnabled(false);
-			textLabel.setForeground(getDisplay().getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW));
-		}
-		else
-		{
-			settings.setEnabled(true);
-			textLabel.setForeground(ColorConstants.black);
-		}
-		textField.setEnabled(enabled);
-	}
-
-	public void setLabel(final String label)
-	{
-		this.textLabel.setText("<form><p>" + label + "</p></form>", true, false);
-	}
-
-	public void setMargins(final int margins)
-	{
-		this.margins = margins;
-		refreshLayout();
-	}
-
-	public void setText(final String text)
-	{
-		if (textField.isDisposed()) { return; }
-		if (text == null)
-		{
-			textField.setText("");
-		}
-		else
-		{
-			if (!textField.getText().equals(text))
-			{
-				textField.setText(text);
-				setEnabled(true);
-			}
-		}
-		modified = false;
-	}
-
-	protected abstract Command getCommand(final String textValue);
-
 	protected void refreshLayout()
-	{
-		updateLayout();
-	}
-
-	private void execute()
-	{
-		if (modified)
-		{
-			final Command command = getCommand(textField.getText());
-			if (command != null)
-			{
-				commandStack.execute(command);
-			}
-		}
-	}
-
-	private void updateLayout()
 	{
 		FormData data = new FormData();
 		data.left = new FormAttachment(0, margins);
@@ -160,6 +137,12 @@ public abstract class LabelledText extends Composite
 		data.left = new FormAttachment(textLabel, ITabbedPropertyConstants.HSPACE);
 		data.right = new FormAttachment(100, -margins);
 		data.top = new FormAttachment(0, ITabbedPropertyConstants.VSPACE);
+		if(lines > 1)
+		{
+			GC gc = new GC(textField);
+			FontMetrics fm = gc.getFontMetrics();
+			data.height = fm.getHeight() * lines;
+		}		
 		textField.setLayoutData(data);
 	}
 }

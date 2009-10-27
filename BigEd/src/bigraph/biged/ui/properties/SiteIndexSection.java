@@ -8,9 +8,9 @@ import bigraphspace.model.Place;
 public class SiteIndexSection extends AbstractIntegerPropertySection
 {
 	@Override
-	protected Command createCommand(final String text)
+	protected Command createCommand(final Object text)
 	{
-		return new SetSiteIndexCommand(getBigraph(), (Place) getModel(), text);
+		return new SetSiteIndexCommand(getBigraph(), (Place) getModel(), text.toString());
 	}
 
 	@Override
