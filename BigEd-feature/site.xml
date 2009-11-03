@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/org.eclipse.gef_3.5.1.v20090724-1146-777908193B6696L3DA843563.jar" id="org.eclipse.gef" version="3.5.1.v20090724-1146-777908193B6696L3DA843563">
+      <category name="gef"/>
+   </feature>
+   <feature url="features/bigraph.biged_0.2.0.alpha.jar" id="bigraph.biged" version="0.2.0.alpha">
+      <category name="bigraph"/>
+   </feature>
+   <category-def name="bigraph" label="Bigraphs"/>
+   <category-def name="gef" label="Graphical Editor Framework"/>
+</site>
