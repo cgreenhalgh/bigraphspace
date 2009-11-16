@@ -20,8 +20,12 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
@@ -33,6 +37,7 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 
 import bigraph.biged.BigEdPlugin;
+import bigraph.biged.model.Bigraph;
 import bigraph.biged.ui.BigraphLabelProvider;
 import bigraph.biged.ui.graph.parts.BigraphEditPartFactory;
 import bigraphspace.model.BasicSignature;
@@ -70,32 +75,88 @@ public class BigraphSignatureRulesPage extends FormPage
 		form.setText("Rules");
 		form.setImage(BigEdPlugin.getImage("rule"));
 		toolkit.decorateFormHeading(form.getForm());
-		form.getBody().setLayout(new FormLayout());		
+		form.getBody().setLayout(new FormLayout());
 
-		Section section1 = createTableSection(managedForm);
-		Section section2 = createRedexSection(managedForm);
-		Section section3 = createReactumSection(managedForm);
-		
+		final Section section1 = createTableSection(managedForm);
+		final Section section2 = createRedexSection(managedForm);
+		final Section section3 = createReactumSection(managedForm);
+
 		FormData data = new FormData();
 		data.top = new FormAttachment(0, ITabbedPropertyConstants.VMARGIN);
 		data.left = new FormAttachment(0, ITabbedPropertyConstants.HMARGIN);
 		data.right = new FormAttachment(100, -ITabbedPropertyConstants.HMARGIN);
 		data.height = 100;
 		section1.setLayoutData(data);
-		
+
 		data = new FormData();
 		data.top = new FormAttachment(section1, ITabbedPropertyConstants.VSPACE, SWT.BOTTOM);
 		data.left = new FormAttachment(0, ITabbedPropertyConstants.HMARGIN);
 		data.right = new FormAttachment(50, -ITabbedPropertyConstants.HSPACE);
 		data.bottom = new FormAttachment(100, -ITabbedPropertyConstants.VMARGIN);
 		section2.setLayoutData(data);
-		
+
 		data = new FormData();
 		data.top = new FormAttachment(section1, ITabbedPropertyConstants.VSPACE, SWT.BOTTOM);
 		data.left = new FormAttachment(50, ITabbedPropertyConstants.HMARGIN);
 		data.right = new FormAttachment(100, -ITabbedPropertyConstants.HSPACE);
-		data.bottom = new FormAttachment(100, -ITabbedPropertyConstants.VMARGIN);		
+		data.bottom = new FormAttachment(100, -ITabbedPropertyConstants.VMARGIN);
 		section3.setLayoutData(data);
+	}
+
+	private GraphicalViewer createGraphicalViewer(final Composite parent)
+	{
+		final GraphicalViewer graphicalViewer = new ScrollingGraphicalViewer();
+		graphicalViewer.setEditPartFactory(new BigraphEditPartFactory());
+		graphicalViewer.setRootEditPart(new ScalableRootEditPart());
+		graphicalViewer.createControl(parent);
+		graphicalViewer.getControl().setBackground(ColorConstants.listBackground);
+		// getViewer().setEditDomain(getEditDomain());
+
+		return graphicalViewer;
+	}
+
+	private Section createReactumSection(final IManagedForm managedForm)
+	{
+		final Section section = createSection(managedForm);
+		final ToolBar tbar = new ToolBar(section, SWT.FLAT | SWT.HORIZONTAL);
+		ToolItem titem = new ToolItem(tbar, SWT.NULL);
+		titem.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_TOOL_CUT));
+		titem = new ToolItem(tbar, SWT.PUSH);
+		titem.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_TOOL_COPY));
+		titem = new ToolItem(tbar, SWT.SEPARATOR);
+		titem = new ToolItem(tbar, SWT.PUSH);
+		titem.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_TOOL_DELETE));
+		section.setTextClient(tbar);
+		
+		final Composite client = (Composite) section.getClient();
+		client.setLayout(new FillLayout());
+		section.setText("Reactum");
+
+		reactumGraph = createGraphicalViewer(client);
+
+		return section;
+	}
+
+	private Section createRedexSection(final IManagedForm managedForm)
+	{
+		final Section section = createSection(managedForm);
+		final ToolBar tbar = new ToolBar(section, SWT.FLAT | SWT.HORIZONTAL);
+		ToolItem titem = new ToolItem(tbar, SWT.NULL);
+		titem.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_TOOL_CUT));
+		titem = new ToolItem(tbar, SWT.PUSH);
+		titem.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_TOOL_COPY));
+		titem = new ToolItem(tbar, SWT.SEPARATOR);
+		titem = new ToolItem(tbar, SWT.PUSH);
+		titem.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_TOOL_DELETE));
+		section.setTextClient(tbar);
+
+		final Composite client = (Composite) section.getClient();
+		client.setLayout(new FillLayout());
+		section.setText("Redex");
+
+		redexGraph = createGraphicalViewer(client);
+
+		return section;
 	}
 
 	private Section createSection(final IManagedForm managedForm)
@@ -114,42 +175,6 @@ public class BigraphSignatureRulesPage extends FormPage
 		return section;
 	}
 
-	private GraphicalViewer createGraphicalViewer(final Composite parent)
-	{
-		GraphicalViewer graphicalViewer = new ScrollingGraphicalViewer();
-		graphicalViewer.setEditPartFactory(new BigraphEditPartFactory());		
-		graphicalViewer.setRootEditPart(new ScalableRootEditPart());		
-		graphicalViewer.createControl(parent);
-		graphicalViewer.getControl().setBackground(ColorConstants.listBackground);		
-		//getViewer().setEditDomain(getEditDomain());
-		
-		return graphicalViewer;
-	}
-	
-	private Section createRedexSection(final IManagedForm managedForm)
-	{
-		final Section section = createSection(managedForm);
-		final Composite client = (Composite) section.getClient();
-		client.setLayout(new FillLayout());		
-		section.setText("Redex");
-
-		redexGraph = createGraphicalViewer(client);
-	
-		return section;
-	}
-
-	private Section createReactumSection(final IManagedForm managedForm)
-	{
-		final Section section = createSection(managedForm);
-		final Composite client = (Composite) section.getClient();
-		client.setLayout(new FillLayout());
-		section.setText("Reactum");
-
-		reactumGraph = createGraphicalViewer(client);
-		
-		return section;
-	}
-	
 	private Section createTableSection(final IManagedForm managedForm)
 	{
 		final Section section = createSection(managedForm);
@@ -209,15 +234,18 @@ public class BigraphSignatureRulesPage extends FormPage
 				final Object selection = getViewerSelection();
 				if (selection instanceof Rule)
 				{
-					Rule rule = (Rule)selection;
+					final Rule rule = (Rule) selection;
 					try
 					{
-						redexGraph.setContents(new DomBigraph(new BasicSignature(), rule.getRedex().getAny().getOwnerDocument(), rule.getRedex().getAny()));
-						reactumGraph.setContents(new DomBigraph(new BasicSignature(), rule.getReactum().getAny().getOwnerDocument(), rule.getReactum().getAny()));						
+						Bigraph bigraph = new Bigraph(new DomBigraph(new BasicSignature(), rule.getRedex().getAny()
+								.getOwnerDocument(), rule.getRedex().getAny()));
+						redexGraph.setContents(bigraph);
+						bigraph = new Bigraph(new DomBigraph(new BasicSignature(), rule.getReactum().getAny()
+								.getOwnerDocument(), rule.getReactum().getAny()));
+						reactumGraph.setContents(bigraph);
 					}
-					catch (Exception e)
+					catch (final Exception e)
 					{
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -232,15 +260,15 @@ public class BigraphSignatureRulesPage extends FormPage
 
 		return section;
 	}
-	
-	private Object getViewerSelection()
-	{
-		if (viewer.getSelection().isEmpty()) { return null; }
-		return ((IStructuredSelection) viewer.getSelection()).getFirstElement();
-	}	
 
 	private Definitions getDefinitions()
 	{
 		return ((BigraphSignatureEditor) getEditor()).getDefinitions();
+	}
+
+	private Object getViewerSelection()
+	{
+		if (viewer.getSelection().isEmpty()) { return null; }
+		return ((IStructuredSelection) viewer.getSelection()).getFirstElement();
 	}
 }

@@ -7,13 +7,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import bigraph.biged.ui.graph.figures.PlaceFigure;
 import bigraphspace.model.Place;
 import bigraphspace.model.Port;
+import bigraphspace.model.signaturexml.Definitions;
 
 public class Bigraph
 {
 	private String name;
 	private final bigraphspace.model.Bigraph bigraph;
+	private Definitions definitions;
 
 	private final Map<String, Edge> edges = new HashMap<String, Edge>();
 
@@ -38,7 +41,12 @@ public class Bigraph
 		}
 		listenerList.add(listener);
 	}
-
+	
+	public PlaceFigure getRenderer(final Place place)
+	{
+		return null;
+	}
+	
 	public void addPort(final Place place, final Port port)
 	{
 		Edge edge = edges.get(port.getLinkName());
