@@ -244,7 +244,7 @@ public class PlacePart extends AbstractBigraphEditPart implements BigraphEventLi
 		return getBigraph().getEdges(getPlace());
 	}
 
-	private Place getPlace()
+	public Place getPlace()
 	{
 		return (Place) getModel();
 	}
