@@ -1,6 +1,7 @@
 package bigraph.biged.ui.sections;
 
 import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -16,9 +17,9 @@ public class PortSection extends SignatureSection
 	private LabelledText portName;
 	private LabelledText portDesc;
 
-	public PortSection(Definitions definitions)
+	public PortSection(final Definitions definitions, final CommandStack commandStack)
 	{
-		super(definitions);
+		super(definitions, commandStack);
 	}
 
 	@Override
@@ -27,7 +28,7 @@ public class PortSection extends SignatureSection
 		super.createSection(parent, toolkit, collapsable);
 		final Composite client = (Composite) section.getClient();
 		section.setText("Port Details");
-	
+
 		client.setLayout(new GridLayout(1, true));
 
 		portName = new LabelledText(client, toolkit)
@@ -35,41 +36,45 @@ public class PortSection extends SignatureSection
 			@Override
 			protected Command getCommand(final Object textValue)
 			{
-				if(input instanceof Port)
+				if (input instanceof Port)
 				{
-					// TODO return new SetSignatureControlNameCommand(definitions, (Port)input, textValue.toString());
+					// TODO return new SetSignatureControlNameCommand(definitions, (Port)input,
+					// textValue.toString());
 				}
 				return null;
 			}
 		};
 		portName.setLabel("Name:");
 		portName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		portName.setCommandStack(commandStack);
 
 		portDesc = new LabelledText(client, toolkit, SWT.MULTI)
 		{
 			@Override
 			protected Command getCommand(final Object textValue)
 			{
-				if(input instanceof Port)
+				if (input instanceof Port)
 				{
-					// TODO return new SetSignatureControlDescCommand(definitions, (Port)input, textValue.toString());
+					// TODO return new SetSignatureControlDescCommand(definitions, (Port)input,
+					// textValue.toString());
 				}
 				return null;
 			}
 		};
 		portDesc.setLabel("Description:");
 		portDesc.setHeight(4);
-		portDesc.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));		
+		portDesc.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		portDesc.setCommandStack(commandStack);
 	}
 
 	@Override
-	public void setInput(Object input)
+	public void setInput(final Object input)
 	{
 		super.setInput(input);
-		if(input instanceof Port)
+		if (input instanceof Port)
 		{
 			section.setVisible(true);
-			Port port = (Port)input;			
+			final Port port = (Port) input;
 			portName.setText(port.getName());
 			portDesc.setText(port.getDescription());
 		}

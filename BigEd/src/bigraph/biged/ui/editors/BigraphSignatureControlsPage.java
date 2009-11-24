@@ -3,6 +3,7 @@ package bigraph.biged.ui.editors;
 import java.util.Collection;
 import java.util.HashSet;
 
+import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -22,7 +23,6 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.IManagedForm;
-import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -45,12 +45,14 @@ public class BigraphSignatureControlsPage extends FormPage
 {
 	private final Definitions definitions;
 	private final Collection<SignatureSection> sections = new HashSet<SignatureSection>();
+	private final CommandStack commandStack;
 	private TreeViewer viewer;
 
-	public BigraphSignatureControlsPage(final Definitions definitions, final FormEditor editor, final String id, final String title)
+	public BigraphSignatureControlsPage(final Definitions definitions, final BigraphSignatureEditor editor, final String id, final String title)
 	{
 		super(editor, id, title);
 		this.definitions = definitions;
+		this.commandStack = editor.getCommandStack();
 	}
 
 	@Override
@@ -77,24 +79,24 @@ public class BigraphSignatureControlsPage extends FormPage
 
 		final Section tableSection = createTableSection(managedForm);
 		
-		SignatureSection controlSection = new ControlSection(definitions);
+		SignatureSection controlSection = new ControlSection(definitions, commandStack);
 		controlSection.createSection(managedForm.getForm().getBody(), managedForm.getToolkit(), false);
 		sections.add(controlSection);
 
-		SignatureSection sortingSection = new SortingSection(definitions);
+		SignatureSection sortingSection = new SortingSection(definitions, commandStack);
 		sortingSection.createSection(managedForm.getForm().getBody(), managedForm.getToolkit(), true);
 		sections.add(sortingSection);		
 		
-		SignatureSection rendererSection = new RendererSection(definitions);
+		SignatureSection rendererSection = new RendererSection(definitions, commandStack);
 		rendererSection.createSection(managedForm.getForm().getBody(), managedForm.getToolkit(), true);
 		sections.add(rendererSection);		
 
-		SignatureSection portSection = new PortSection(definitions);
+		SignatureSection portSection = new PortSection(definitions, commandStack);
 		portSection.createSection(managedForm.getForm().getBody(), managedForm.getToolkit(), false);
 		portSection.getSection().setVisible(false);
 		sections.add(portSection);
 		
-		SignatureSection indexSection = new IndexSection(definitions);
+		SignatureSection indexSection = new IndexSection(definitions, commandStack);
 		indexSection.createSection(managedForm.getForm().getBody(), managedForm.getToolkit(), false);
 		indexSection.getSection().setVisible(false);
 		sections.add(indexSection);	

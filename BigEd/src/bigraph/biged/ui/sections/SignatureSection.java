@@ -1,5 +1,6 @@
 package bigraph.biged.ui.sections;
 
+import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.IFormColors;
@@ -14,17 +15,14 @@ public abstract class SignatureSection
 	protected Definitions definitions;
 	protected Section section;
 	protected Object input;
-	
-	public SignatureSection(final Definitions definitions)
+	protected CommandStack commandStack;
+
+	public SignatureSection(final Definitions definitions, final CommandStack commandStack)
 	{
 		this.definitions = definitions;
+		this.commandStack = commandStack;
 	}
-	
-	public void setInput(final Object input)
-	{
-		this.input = input;
-	}
-	
+
 	public void createSection(final Composite parent, final FormToolkit toolkit, final boolean collapsable)
 	{
 		int style = ExpandableComposite.TITLE_BAR;
@@ -41,10 +39,15 @@ public abstract class SignatureSection
 		section.setClient(client);
 		toolkit.paintBordersFor(client);
 	}
-	
+
 	public Section getSection()
 	{
 		return section;
+	}
+
+	public void setInput(final Object input)
+	{
+		this.input = input;
 	}
 
 	public void setLayoutData(final Object data)

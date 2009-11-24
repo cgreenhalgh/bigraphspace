@@ -1,11 +1,17 @@
 package bigraph.biged.ui.editors;
 
+import java.util.EventObject;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.gef.commands.CommandStack;
+import org.eclipse.gef.commands.CommandStackEvent;
+import org.eclipse.gef.commands.CommandStackEventListener;
+import org.eclipse.gef.commands.CommandStackListener;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -22,6 +28,7 @@ public class BigraphSignatureEditor extends FormEditor implements IResourceChang
 {
 	// private BasicSignature signature;
 	private Definitions definitions;
+	private final CommandStack stack = new CommandStack();	
 
 	/**
 	 * Creates a multi-page editor example.
@@ -30,6 +37,22 @@ public class BigraphSignatureEditor extends FormEditor implements IResourceChang
 	{
 		super();
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
+		stack.addCommandStackEventListener(new CommandStackEventListener()
+		{
+			@Override
+			public void stackChanged(CommandStackEvent event)
+			{
+				editorDirtyStateChanged();				
+			}
+		});
+		stack.addCommandStackListener(new CommandStackListener()
+		{
+			@Override
+			public void commandStackChanged(EventObject event)
+			{
+				editorDirtyStateChanged();				
+			}
+		});
 	}
 
 	/**
@@ -49,6 +72,7 @@ public class BigraphSignatureEditor extends FormEditor implements IResourceChang
 	@Override
 	public void doSave(final IProgressMonitor monitor)
 	{
+		// TODO Fix!
 		getEditor(0).doSave(monitor);
 	}
 
@@ -63,6 +87,7 @@ public class BigraphSignatureEditor extends FormEditor implements IResourceChang
 		editor.doSaveAs();
 		setPageText(0, editor.getTitle());
 		setInput(editor.getEditorInput());
+		stack.markSaveLocation();
 	}
 
 	public Definitions getDefinitions()
@@ -138,6 +163,12 @@ public class BigraphSignatureEditor extends FormEditor implements IResourceChang
 	}
 
 	@Override
+	public boolean isDirty()
+	{
+		return stack.isDirty();
+	}
+
+	@Override
 	protected void addPages()
 	{
 		try
@@ -150,5 +181,10 @@ public class BigraphSignatureEditor extends FormEditor implements IResourceChang
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public CommandStack getCommandStack()
+	{
+		return stack;
 	}
 }
