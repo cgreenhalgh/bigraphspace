@@ -213,7 +213,8 @@ public class PlacePart extends AbstractBigraphEditPart implements BigraphEventLi
 	@Override
 	protected IFigure createFigure()
 	{
-		return new PlaceFigure(getPlace());
+		return getBigraph().getRenderer(getPlace());
+		//return new PlaceFigure(getPlace());
 	}
 
 	@Override
