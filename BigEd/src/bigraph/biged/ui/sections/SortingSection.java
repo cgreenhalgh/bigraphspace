@@ -2,6 +2,7 @@ package bigraph.biged.ui.sections;
 
 import java.util.List;
 
+import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -26,9 +27,9 @@ public class SortingSection extends SignatureSection
 {
 	private TableViewer sortings;
 
-	public SortingSection(Definitions definitions)
+	public SortingSection(final Definitions definitions, final CommandStack commandStack)
 	{
-		super(definitions);
+		super(definitions, commandStack);
 	}
 
 	@Override
@@ -38,7 +39,7 @@ public class SortingSection extends SignatureSection
 		final Composite client = (Composite) section.getClient();
 		section.setText("Allowed Children");
 
-		FormLayout layout = new FormLayout();
+		final FormLayout layout = new FormLayout();
 		client.setLayout(layout);
 
 		final Table table = toolkit.createTable(client, SWT.NULL);
@@ -77,22 +78,22 @@ public class SortingSection extends SignatureSection
 		sortings.setLabelProvider(new BigraphLabelProvider());
 
 		final Composite buttonPanel = toolkit.createComposite(client);
-		GridLayout gridLayout = new GridLayout(1, false);
+		final GridLayout gridLayout = new GridLayout(1, false);
 		gridLayout.marginHeight = 0;
 		gridLayout.marginWidth = 0;
 		buttonPanel.setLayout(gridLayout);
-		
+
 		final Button addButton = toolkit.createButton(buttonPanel, "Add...", SWT.PUSH);
 		addButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 		final Button removeButton = toolkit.createButton(buttonPanel, "Remove", SWT.PUSH);
 		removeButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
-		
+
 		FormData data = new FormData();
 		data.top = new FormAttachment(0, ITabbedPropertyConstants.VMARGIN);
 		data.bottom = new FormAttachment(100, -ITabbedPropertyConstants.VMARGIN);
 		data.right = new FormAttachment(100, -ITabbedPropertyConstants.HMARGIN);
 		buttonPanel.setLayoutData(data);
-		
+
 		data = new FormData();
 		data.left = new FormAttachment(0, ITabbedPropertyConstants.HMARGIN);
 		data.top = new FormAttachment(0, ITabbedPropertyConstants.VMARGIN);
@@ -103,14 +104,14 @@ public class SortingSection extends SignatureSection
 	}
 
 	@Override
-	public void setInput(Object input)
+	public void setInput(final Object input)
 	{
 		super.setInput(input);
-		if(input instanceof Control)
+		if (input instanceof Control)
 		{
 			section.setVisible(true);
-			Control control = (Control)input;
-			sortings.setInput(getSort(control));			
+			final Control control = (Control) input;
+			sortings.setInput(getSort(control));
 		}
 		else
 		{

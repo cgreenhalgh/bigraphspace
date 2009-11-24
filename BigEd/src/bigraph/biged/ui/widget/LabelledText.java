@@ -22,7 +22,6 @@ import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 public abstract class LabelledText extends LabelledWidget
 {
 	private int lines = 1;
-	protected boolean modified;
 	protected Text textField;
 
 	public LabelledText(final Composite parent, final FormToolkit formToolkit)

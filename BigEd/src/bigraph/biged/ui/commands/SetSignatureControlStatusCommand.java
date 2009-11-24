@@ -6,15 +6,15 @@ import bigraph.biged.model.BigraphEvent.Type;
 import bigraphspace.model.signaturexml.Control;
 import bigraphspace.model.signaturexml.Definitions;
 
-public class SetSignatureControlNameCommand extends SignatureCommand
+public class SetSignatureControlStatusCommand extends SignatureCommand
 {
 	private final Control control;
 	private final String newName;
 	private String oldName;
 
-	public SetSignatureControlNameCommand(final Definitions definitions, final Control control, final String newName)
+	public SetSignatureControlStatusCommand(final Definitions definitions, final Control control, final String newName)
 	{
-		super(definitions, "Set Signature Control Name to " + newName);
+		super(definitions, "Set Signature Control Status to " + newName);
 		this.control = control;
 		if (newName == null || newName.equals(""))
 		{
@@ -24,7 +24,7 @@ public class SetSignatureControlNameCommand extends SignatureCommand
 		{
 			this.newName = newName;
 		}
-		this.oldName = control.getName();
+		this.oldName = control.getStatus();
 	}
 
 	@Override
@@ -50,13 +50,13 @@ public class SetSignatureControlNameCommand extends SignatureCommand
 	@Override
 	protected void doExecute()
 	{
-		oldName = control.getName();
-		control.setName(newName);
+		oldName = control.getStatus();
+		control.setStatus(newName);
 	}
 
 	@Override
 	protected void doUndo()
 	{
-		control.setName(oldName);
+		control.setStatus(oldName);
 	}
 }

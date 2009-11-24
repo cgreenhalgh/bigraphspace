@@ -1,6 +1,7 @@
 package bigraph.biged.ui.sections;
 
 import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -17,9 +18,9 @@ public class IndexSection extends SignatureSection
 	private LabelledText indexType;
 	private LabelledText indexDesc;
 
-	public IndexSection(Definitions definitions)
+	public IndexSection(final Definitions definitions, final CommandStack commandStack)
 	{
-		super(definitions);
+		super(definitions, commandStack);
 	}
 
 	@Override
@@ -28,7 +29,7 @@ public class IndexSection extends SignatureSection
 		super.createSection(parent, toolkit, collapsable);
 		final Composite client = (Composite) section.getClient();
 		section.setText("Index Details");
-	
+
 		client.setLayout(new GridLayout(1, true));
 
 		indexType = new LabelledText(client, toolkit)
@@ -36,42 +37,45 @@ public class IndexSection extends SignatureSection
 			@Override
 			protected Command getCommand(final Object textValue)
 			{
-				if(input instanceof Port)
+				if (input instanceof Port)
 				{
-					// TODO return new SetSignatureControlNameCommand(definitions, (Port)input, textValue.toString());
+					// TODO return new SetSignatureControlNameCommand(definitions, (Port)input,
+					// textValue.toString());
 				}
 				return null;
 			}
 		};
 		indexType.setLabel("Type:");
 		indexType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		indexType.setCommandStack(commandStack);
 
 		indexDesc = new LabelledText(client, toolkit, SWT.MULTI)
 		{
 			@Override
 			protected Command getCommand(final Object textValue)
 			{
-				if(input instanceof Port)
+				if (input instanceof Port)
 				{
-					// TODO return new SetSignatureControlDescCommand(definitions, (Port)input, textValue.toString());
+					// TODO return new SetSignatureControlDescCommand(definitions, (Port)input,
+					// textValue.toString());
 				}
 				return null;
 			}
 		};
 		indexDesc.setLabel("Description:");
 		indexDesc.setHeight(4);
-		indexDesc.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));		
-		
+		indexDesc.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		indexDesc.setCommandStack(commandStack);
 	}
 
 	@Override
-	public void setInput(Object input)
+	public void setInput(final Object input)
 	{
 		super.setInput(input);
-		if(input instanceof ControlIndex)
+		if (input instanceof ControlIndex)
 		{
 			section.setVisible(true);
-			ControlIndex index = (ControlIndex)input;
+			final ControlIndex index = (ControlIndex) input;
 			indexType.setText(index.getType());
 			indexDesc.setText(index.getDescription());
 		}

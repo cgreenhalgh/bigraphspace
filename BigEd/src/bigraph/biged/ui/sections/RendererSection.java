@@ -5,6 +5,7 @@ import java.util.List;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -39,9 +40,9 @@ public class RendererSection extends SignatureSection
 	private LabelledTextSelect rendererImage;
 	private PlacePart exampleNode;
 
-	public RendererSection(Definitions definitions)
+	public RendererSection(final Definitions definitions, final CommandStack commandStack)
 	{
-		super(definitions);
+		super(definitions, commandStack);
 	}
 
 	@Override
@@ -58,10 +59,8 @@ public class RendererSection extends SignatureSection
 			@Override
 			protected Command getCommand(final Object textValue)
 			{
-				if(input instanceof Control)
-				{
-					return new SetSignatureRendererNameCommand(definitions, (Control)input, textValue.toString());
-				}
+				if (input instanceof Control) { return new SetSignatureRendererNameCommand(definitions,
+						(Control) input, textValue.toString()); }
 				return null;
 			}
 
@@ -71,27 +70,28 @@ public class RendererSection extends SignatureSection
 				return new IStructuredContentProvider()
 				{
 					@Override
-					public void inputChanged(Viewer viewer, Object oldInput, Object newInput)
+					public void dispose()
 					{
 					}
-					
+
 					@Override
-					public void dispose()
-					{			
-					}
-					
-					@Override
-					public Object[] getElements(Object inputElement)
+					public Object[] getElements(final Object inputElement)
 					{
 						// TODO Auto-generated method stub
 						return null;
+					}
+
+					@Override
+					public void inputChanged(final Viewer viewer, final Object oldInput, final Object newInput)
+					{
 					}
 				};
 			}
 		};
 		rendererName.setLabel("Renderer:");
 		rendererName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-		
+		rendererName.setCommandStack(commandStack);
+
 		rendererColour = new LabelledTextSelect(client, toolkit)
 		{
 			@Override
@@ -108,27 +108,28 @@ public class RendererSection extends SignatureSection
 				return new IStructuredContentProvider()
 				{
 					@Override
-					public void inputChanged(Viewer viewer, Object oldInput, Object newInput)
+					public void dispose()
 					{
 					}
-					
+
 					@Override
-					public void dispose()
-					{			
-					}
-					
-					@Override
-					public Object[] getElements(Object inputElement)
+					public Object[] getElements(final Object inputElement)
 					{
 						// TODO Auto-generated method stub
 						return null;
+					}
+
+					@Override
+					public void inputChanged(final Viewer viewer, final Object oldInput, final Object newInput)
+					{
 					}
 				};
 			}
 		};
 		rendererColour.setLabel("Colour:");
 		rendererColour.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-		
+		rendererColour.setCommandStack(commandStack);
+
 		rendererImage = new LabelledTextSelect(client, toolkit)
 		{
 			@Override
@@ -145,58 +146,56 @@ public class RendererSection extends SignatureSection
 				return new IStructuredContentProvider()
 				{
 					@Override
-					public void inputChanged(Viewer viewer, Object oldInput, Object newInput)
+					public void dispose()
 					{
 					}
-					
+
 					@Override
-					public void dispose()
-					{			
-					}
-					
-					@Override
-					public Object[] getElements(Object inputElement)
+					public Object[] getElements(final Object inputElement)
 					{
 						// TODO Auto-generated method stub
 						return null;
+					}
+
+					@Override
+					public void inputChanged(final Viewer viewer, final Object oldInput, final Object newInput)
+					{
 					}
 				};
 			}
 		};
 		rendererImage.setLabel("Image:");
-		rendererImage.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));		
+		rendererImage.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		rendererImage.setCommandStack(commandStack);
 
-		GraphicalViewer rendererExample = createGraphicalViewer(client);
+		final GraphicalViewer rendererExample = createGraphicalViewer(client);
 		try
 		{
-			Bigraph bigraph = new Bigraph(new DomBigraph(new BasicSignature()))
+			final Bigraph bigraph = new Bigraph(new DomBigraph(new BasicSignature()))
 			{
 
 				@Override
-				public PlaceFigure getRenderer(Place place)
+				public PlaceFigure getRenderer(final Place place)
 				{
-					if(place.isRoot())
-					{
-						return new HiddenPlaceFigure(place);
-					}
+					if (place.isRoot()) { return new HiddenPlaceFigure(place); }
 					return super.getRenderer(place);
 				}
-				
+
 			};
-			Place root = bigraph.getBigraph().createRoot();
+			final Place root = bigraph.getBigraph().createRoot();
 			bigraph.getBigraph().addRoot(root);
-			Place examplePlace = bigraph.getBigraph().createNode("Example");
+			final Place examplePlace = bigraph.getBigraph().createNode("Example");
 			root.addChild(examplePlace);
-				
+
 			rendererExample.setContents(bigraph);
-			
+
 			exampleNode = (PlacePart) rendererExample.getEditPartRegistry().get(examplePlace);
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
-		
+
 		FormData data = new FormData();
 		data.top = new FormAttachment(0, ITabbedPropertyConstants.VSPACE);
 		data.left = new FormAttachment(0, 0);
@@ -219,9 +218,37 @@ public class RendererSection extends SignatureSection
 		data.top = new FormAttachment(rendererColour, 3);
 		data.left = new FormAttachment(rendererExample.getControl(), ITabbedPropertyConstants.HMARGIN);
 		data.right = new FormAttachment(100, -ITabbedPropertyConstants.HSPACE);
-		rendererImage.setLayoutData(data);		
-		
-	
+		rendererImage.setLayoutData(data);
+
+	}
+
+	@Override
+	public void setInput(final Object input)
+	{
+		super.setInput(input);
+		if (input instanceof Control)
+		{
+			final Control control = (Control) input;
+			section.setVisible(true);
+			exampleNode.getPlace().setControlName(control.getName());
+
+			final Renderer renderer = getRenderer(control);
+			if (renderer != null)
+			{
+				rendererName.setText(renderer.getClazz());
+			}
+			else
+			{
+				rendererName.setText(null);
+			}
+
+			exampleNode.refresh();
+			section.layout();
+		}
+		else
+		{
+			section.setVisible(false);
+		}
 	}
 
 	private GraphicalViewer createGraphicalViewer(final Composite parent)
@@ -234,48 +261,16 @@ public class RendererSection extends SignatureSection
 		// getViewer().setEditDomain(getEditDomain());
 
 		return graphicalViewer;
-	}	
-	
-	@Override
-	public void setInput(Object input)
-	{
-		super.setInput(input);
-		if (input instanceof Control)
-		{
-			final Control control = (Control) input;
-			section.setVisible(true);
-			exampleNode.getPlace().setControlName(control.getName());
-
-			Renderer renderer = getRenderer(control);
-			if(renderer != null)
-			{
-				rendererName.setText(renderer.getClazz());						
-			}
-			else
-			{
-				rendererName.setText(null);
-			}
-			
-			exampleNode.refresh();
-			section.layout();
-		}
-		else
-		{
-			section.setVisible(false);
-		}		
 	}
-	
+
 	private Renderer getRenderer(final Control control)
 	{
-		if(definitions.getRenderers() == null)
-		{
-			return null;
-		}
+		if (definitions.getRenderers() == null) { return null; }
 		final List<Renderer> renderers = definitions.getRenderers().getRenderer();
 		for (final Renderer renderer : renderers)
 		{
 			if (renderer.getControl().equals(control.getName())) { return renderer; }
 		}
 		return null;
-	}	
+	}
 }
