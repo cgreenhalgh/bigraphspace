@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 import bigraph.biged.ui.graph.figures.PlaceFigure;
+import bigraph.biged.ui.graph.figures.BasicPlaceFigure;
+import bigraph.biged.ui.graph.figures.RootFigure;
+import bigraph.biged.ui.graph.figures.SiteFigure;
 import bigraphspace.model.Place;
 import bigraphspace.model.Port;
 import bigraphspace.model.signaturexml.Definitions;
@@ -44,7 +47,15 @@ public class Bigraph
 	
 	public PlaceFigure getRenderer(final Place place)
 	{
-		return null;
+		if(place.isRoot())
+		{
+			return new RootFigure(place);
+		}
+		else if(place.isSite())
+		{
+			return new SiteFigure(place);
+		}
+		return new BasicPlaceFigure(place);
 	}
 	
 	public void addPort(final Place place, final Port port)

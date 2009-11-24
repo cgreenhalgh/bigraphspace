@@ -48,6 +48,7 @@ import bigraphspace.model.IndexValue;
 import bigraphspace.model.Place;
 import bigraphspace.model.PlaceType;
 import bigraphspace.model.Port;
+import bigraphspace.model.signaturexml.ControlIndex;
 import bigraphspace.model.signaturexml.Rule;
 import bigraphspace.model.signaturexml.Sort;
 import bigraphspace.model.signaturexml.SortRef;
@@ -90,7 +91,7 @@ public class BigraphLabelProvider extends LabelProvider
 		{
 			return BigEdPlugin.getImage("control");
 		}
-		else if (modelObject instanceof Edge) { return BigEdPlugin.getImage("edge"); }
+		else if (modelObject instanceof Edge) { return BigEdPlugin.getImage("edge"); }		
 		return null; // PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);
 	}
 
@@ -168,6 +169,11 @@ public class BigraphLabelProvider extends LabelProvider
 		{
 			final bigraphspace.model.signaturexml.Port port = (bigraphspace.model.signaturexml.Port) modelObject;
 			return port.getName();
+		}
+		else if (modelObject instanceof ControlIndex)
+		{
+			final ControlIndex index = (ControlIndex) modelObject;
+			return index.getType();
 		}
 		else if (modelObject instanceof Sort)
 		{
